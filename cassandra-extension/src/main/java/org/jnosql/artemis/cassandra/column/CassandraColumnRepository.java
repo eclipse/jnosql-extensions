@@ -33,7 +33,7 @@ import java.util.List;
 /**
  * A Cassandra extension of {@link ColumnRepository}
  */
-public interface CassandraRepository extends ColumnRepository {
+public interface CassandraColumnRepository extends ColumnRepository {
 
     /**
      * Saves a ColumnEntity with a defined ConsistencyLevel

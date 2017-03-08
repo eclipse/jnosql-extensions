@@ -50,7 +50,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(WeldJUnit4Runner.class)
-public class DefaultCassandraRepositoryTest {
+public class DefaultCassandraColumnRepositoryTest {
 
     @Inject
     private ColumnEntityConverter converter;
@@ -58,7 +58,7 @@ public class DefaultCassandraRepositoryTest {
     @Inject
     private ColumnWorkflow flow;
 
-    private CassandraRepository repository;
+    private CassandraColumnRepository repository;
 
     private CassandraColumnFamilyManager manager;
 
@@ -67,7 +67,7 @@ public class DefaultCassandraRepositoryTest {
         this.manager = mock(CassandraColumnFamilyManager.class);
         Instance instance = mock(Instance.class);
         when(instance.get()).thenReturn(manager);
-        repository = new DefaultCassandraRepository(instance, converter, flow);
+        repository = new DefaultCassandraColumnRepository(instance, converter, flow);
     }
 
 

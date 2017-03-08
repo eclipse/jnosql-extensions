@@ -39,7 +39,7 @@ import java.util.Objects;
 import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
 
-class DefaultCassandraRepository extends AbstractColumnRepository implements CassandraRepository {
+class DefaultCassandraColumnRepository extends AbstractColumnRepository implements CassandraColumnRepository {
 
     private Instance<CassandraColumnFamilyManager> manager;
 
@@ -48,15 +48,15 @@ class DefaultCassandraRepository extends AbstractColumnRepository implements Cas
     private ColumnWorkflow flow;
 
     @Inject
-    DefaultCassandraRepository(Instance<CassandraColumnFamilyManager> manager,
-                               ColumnEntityConverter converter,
-                               ColumnWorkflow flow) {
+    DefaultCassandraColumnRepository(Instance<CassandraColumnFamilyManager> manager,
+                                     ColumnEntityConverter converter,
+                                     ColumnWorkflow flow) {
         this.manager = manager;
         this.converter = converter;
         this.flow = flow;
     }
 
-    DefaultCassandraRepository() {
+    DefaultCassandraColumnRepository() {
     }
 
 
