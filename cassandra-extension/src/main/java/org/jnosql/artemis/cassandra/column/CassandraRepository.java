@@ -18,7 +18,7 @@
  * under the License.
  */
 
-package org.jnosql.diana.cassandra.column;
+package org.jnosql.artemis.cassandra.column;
 
 
 import com.datastax.driver.core.ConsistencyLevel;

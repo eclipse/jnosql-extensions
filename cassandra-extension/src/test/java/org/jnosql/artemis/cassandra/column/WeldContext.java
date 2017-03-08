@@ -17,15 +17,30 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.jnosql.artemis.cassandra.column;
 
-/**
- * Apache Cassandra is a free and open-source distributed database management system designed to handle large amounts of
- * data across many commodity servers, providing high availability with no single point of failure. Cassandra offers
- * robust support for clusters spanning multiple datacenters, with asynchronous masterless replication allowing low
- * latency operations for all clients.
- * Cassandra also places a high value on performance. In 2012,
- * University of Toronto researchers studying NoSQL systems concluded that "In terms of scalability, there is a clear
- * winner throughout our experiments. Cassandra achieves the highest throughput for the maximum number
- * of nodes in all experiments" although "this comes at the price of high write and read latencies.
- */
-package org.jnosql.diana.cassandra;
+import org.jboss.weld.environment.se.Weld;
+import org.jboss.weld.environment.se.WeldContainer;
+
+public class WeldContext {
+
+    public static final WeldContext INSTANCE = new WeldContext();
+
+    private final Weld weld;
+    private final WeldContainer container;
+
+    private WeldContext() {
+        this.weld = new Weld();
+        this.container = weld.initialize();
+        Runtime.getRuntime().addShutdownHook(new Thread() {
+            @Override
+            public void run() {
+                weld.shutdown();
+            }
+        });
+    }
+
+    public <T> T getBean(Class<T> type) {
+        return container.instance().select(type).get();
+    }
+}

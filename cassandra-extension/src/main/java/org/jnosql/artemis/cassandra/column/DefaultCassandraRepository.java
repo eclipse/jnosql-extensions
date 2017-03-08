@@ -17,7 +17,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.jnosql.diana.cassandra.column;
+package org.jnosql.artemis.cassandra.column;
 
 
 import com.datastax.driver.core.ConsistencyLevel;
@@ -29,6 +29,7 @@ import org.jnosql.diana.api.column.ColumnDeleteQuery;
 import org.jnosql.diana.api.column.ColumnEntity;
 import org.jnosql.diana.api.column.ColumnFamilyManager;
 import org.jnosql.diana.api.column.ColumnQuery;
+import org.jnosql.diana.cassandra.column.CassandraColumnFamilyManager;
 
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
