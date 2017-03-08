@@ -20,11 +20,17 @@
 package org.jnosql.artemis.cassandra.column;
 
 import com.datastax.driver.core.ConsistencyLevel;
+import com.datastax.driver.core.Statement;
+import com.datastax.driver.core.querybuilder.QueryBuilder;
+import org.hamcrest.Matchers;
 import org.jnosql.artemis.column.ColumnEntityConverter;
 import org.jnosql.artemis.column.ColumnWorkflow;
 import org.jnosql.diana.api.column.Column;
+import org.jnosql.diana.api.column.ColumnDeleteQuery;
 import org.jnosql.diana.api.column.ColumnEntity;
+import org.jnosql.diana.api.column.ColumnQuery;
 import org.jnosql.diana.cassandra.column.CassandraColumnFamilyManager;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -35,10 +41,14 @@ import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(WeldJUnit4Runner.class)
@@ -69,7 +79,8 @@ public class DefaultCassandraRepositoryTest {
         ArgumentCaptor<ColumnEntity> captor = ArgumentCaptor.forClass(ColumnEntity.class);
 
         ConsistencyLevel level = ConsistencyLevel.THREE;
-        Mockito.when(manager.
+
+        when(manager.
                 save(Mockito.any(ColumnEntity.class), Mockito.eq(level)))
                 .thenReturn(entity);
 
@@ -91,7 +102,7 @@ public class DefaultCassandraRepositoryTest {
         ArgumentCaptor<ColumnEntity> captor = ArgumentCaptor.forClass(ColumnEntity.class);
 
         ConsistencyLevel level = ConsistencyLevel.THREE;
-        Mockito.when(manager.
+        when(manager.
                 save(Mockito.any(ColumnEntity.class), Mockito.eq(duration),
                         Mockito.eq(level)))
                 .thenReturn(entity);
@@ -103,7 +114,58 @@ public class DefaultCassandraRepositoryTest {
 
         Mockito.verify(manager).save(captor.capture(), Mockito.eq(duration), Mockito.eq(level));
         assertEquals(entity, captor.getValue());
+    }
 
+    @Test
+    public void shouldDelete() {
+        ColumnDeleteQuery query = ColumnDeleteQuery.of("");
+        ConsistencyLevel level = ConsistencyLevel.THREE;
+        repository.delete(query, level);
+        verify(manager).delete(query, level);
+    }
+
+
+    @Test
+    public void shouldFind() {
+        Person person = new Person();
+        person.setName("Name");
+        person.setAge(20);
+
+        ColumnEntity entity = ColumnEntity.of("Person", asList(Column.of("name", "Name"), Column.of("age", 20)));
+        ColumnQuery query = ColumnQuery.of("");
+        ConsistencyLevel level = ConsistencyLevel.THREE;
+        when(manager.find(query, level)).thenReturn(Collections.singletonList(entity));
+
+        List<Person> people = repository.find(query, level);
+        Assert.assertThat(people, Matchers.contains(person));
+    }
+
+    @Test
+    public void shouldFindCQL() {
+        Person person = new Person();
+        person.setName("Name");
+        person.setAge(20);
+        String cql = "select * from Person";
+        ColumnEntity entity = ColumnEntity.of("Person", asList(Column.of("name", "Name"), Column.of("age", 20)));
+
+        when(manager.cql(cql)).thenReturn(Collections.singletonList(entity));
+
+        List<Person> people = repository.cql(cql);
+        Assert.assertThat(people, Matchers.contains(person));
+    }
+
+    @Test
+    public void shouldFindStatment() {
+        Statement statement = QueryBuilder.select().from("Person");
+        Person person = new Person();
+        person.setName("Name");
+        person.setAge(20);
+        ColumnEntity entity = ColumnEntity.of("Person", asList(Column.of("name", "Name"), Column.of("age", 20)));
+
+        when(manager.execute(statement)).thenReturn(Collections.singletonList(entity));
+
+        List<Person> people = repository.execute(statement);
+        Assert.assertThat(people, Matchers.contains(person));
     }
 
 }
