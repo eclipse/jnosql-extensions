@@ -38,17 +38,20 @@ public interface CassandraRepository extends ColumnRepository {
     /**
      * Saves a ColumnEntity with a defined ConsistencyLevel
      *
+     * @param <T>    type
      * @param entity the entity
      * @param level  the {@link ConsistencyLevel}
      * @return the entity saved
      * @throws NullPointerException when both entity or level are null
      */
+
     <T> T save(T entity, ConsistencyLevel level) throws NullPointerException;
 
 
     /**
      * Saves an entity using {@link ConsistencyLevel}
      *
+     * @param <T>    type
      * @param entity the entity
      * @param ttl    the ttl
      * @param level  the level
@@ -70,23 +73,29 @@ public interface CassandraRepository extends ColumnRepository {
     /**
      * Finds using a consistency level
      *
+     * @param <T>   type
      * @param query the query
      * @param level the consistency level
      * @return the query using a consistency level
      */
-    <T> List<T> find(ColumnQuery query, ConsistencyLevel level)throws NullPointerException;;
+    <T> List<T> find(ColumnQuery query, ConsistencyLevel level) throws NullPointerException;
+
+    ;
 
     /**
      * Executes CQL
      *
+     * @param <T>   type
      * @param query the Cassndra query language
      * @return the result of this query
      * @throws NullPointerException when query is null
      */
     <T> List<T> cql(String query) throws NullPointerException;
+
     /**
      * Executes a statement
      *
+     * @param <T>       type
      * @param statement the statement
      * @return the result of this query
      * @throws NullPointerException when statement is null
