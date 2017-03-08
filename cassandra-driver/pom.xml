@@ -27,7 +27,7 @@
     <name>Cassandra driver to Artemis Project</name>
     <parent>
         <groupId>org.jnosql.artemis</groupId>
-        <artifactId>artemis-driver</artifactId>
+        <artifactId>artemis-extension</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
     <properties>

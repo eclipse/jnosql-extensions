@@ -30,7 +30,7 @@
     </parent>
 
     <groupId>org.jnosql.artemis</groupId>
-    <artifactId>artemis-driver</artifactId>
+    <artifactId>artemis-extension</artifactId>
     <packaging>pom</packaging>
     <version>0.0.1-SNAPSHOT</version>
     <name>JNOSQL Artemis Driver Extension</name>
