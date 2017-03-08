@@ -39,9 +39,7 @@ import org.mockito.Mockito;
 
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
-
 import java.time.Duration;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -71,6 +69,7 @@ public class DefaultCassandraRepositoryTest {
         when(instance.get()).thenReturn(manager);
         repository = new DefaultCassandraRepository(instance, converter, flow);
     }
+
 
     @Test
     public void shouldSaveConsntency() {
