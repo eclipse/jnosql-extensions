@@ -31,6 +31,14 @@ public class Person {
         this.age = age;
     }
 
+    public Person(String name, Integer age) {
+        this.name = name;
+        this.age = age;
+    }
+
+    public Person() {
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
