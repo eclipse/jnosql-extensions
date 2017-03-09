@@ -26,9 +26,11 @@ import com.datastax.driver.core.Statement;
 import org.jnosql.artemis.column.ColumnRepository;
 import org.jnosql.diana.api.column.ColumnDeleteQuery;
 import org.jnosql.diana.api.column.ColumnQuery;
+import org.jnosql.diana.cassandra.column.CassandraColumnFamilyManager;
 
 import java.time.Duration;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * A Cassandra extension of {@link ColumnRepository}
@@ -105,8 +107,6 @@ public interface CassandraColumnRepository extends ColumnRepository {
      */
     <T> List<T> find(ColumnQuery query, ConsistencyLevel level) throws NullPointerException;
 
-    ;
-
     /**
      * Executes CQL
      *
@@ -116,6 +116,17 @@ public interface CassandraColumnRepository extends ColumnRepository {
      * @throws NullPointerException when query is null
      */
     <T> List<T> cql(String query) throws NullPointerException;
+
+    /**
+     * Executes CQL
+     *
+     * @param <T>    type
+     * @param query  the Cassandra query language
+     * @param params the params
+     * @return the result of this query
+     * @throws NullPointerException when query is null
+     */
+    <T> List<T> cql(String query, Object... params) throws NullPointerException;
 
     /**
      * Executes a statement

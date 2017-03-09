@@ -28,11 +28,15 @@ import org.jnosql.artemis.reflection.ClassRepresentation;
 import org.jnosql.artemis.reflection.ClassRepresentations;
 import org.jnosql.diana.api.column.ColumnDeleteQuery;
 import org.jnosql.diana.api.column.ColumnQuery;
+import org.jnosql.diana.cassandra.column.CassandraColumnFamilyManager;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.time.Duration;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -69,6 +73,18 @@ class CassandraColumnCrudRepositoryProxy<T> implements InvocationHandler {
 
     @Override
     public Object invoke(Object o, Method method, Object[] args) throws Throwable {
+
+        CQL cql = method.getAnnotation(CQL.class);
+        if (Objects.nonNull(cql)) {
+            List<T> result = Collections.emptyList();
+            if (args == null || args.length == 0) {
+                result = repository.cql(cql.value());
+            } else {
+                result = repository.cql(cql.value(), args);
+            }
+            return CassandraReturnTypeConverterUtil.returnObject(result, typeClass, method);
+        }
+
         String methodName = method.getName();
         switch (methodName) {
             case SAVE:
@@ -92,14 +108,21 @@ class CassandraColumnCrudRepositoryProxy<T> implements InvocationHandler {
         }
 
         if (methodName.startsWith(DELETE_BY)) {
+            Optional<ConsistencyLevel> consistencyLevel = Stream.of(args)
+                    .filter(a -> ConsistencyLevel.class.isInstance(a))
+                    .map(c -> ConsistencyLevel.class.cast(c))
+                    .findFirst();
+
             ColumnDeleteQuery query = deleteQueryParser.parse(methodName, args, classRepresentation);
-            repository.delete(query);
+            if (consistencyLevel.isPresent()) {
+                repository.delete(query, consistencyLevel.get());
+            } else {
+                repository.delete(query);
+            }
             return null;
         }
         return null;
     }
-
-
 
 
     class ColumnCrudRepository implements CassandraCrudRepository {
@@ -148,6 +171,16 @@ class CassandraColumnCrudRepositoryProxy<T> implements InvocationHandler {
         @Override
         public Object save(Object entity, Duration ttl, ConsistencyLevel level) throws NullPointerException {
             return repository.save(entity, ttl, level);
+        }
+
+        @Override
+        public Iterable save(Iterable entities, ConsistencyLevel level) throws NullPointerException {
+            return repository.save(entities, level);
+        }
+
+        @Override
+        public Iterable save(Iterable entities, Duration ttl, ConsistencyLevel level) throws NullPointerException {
+            return repository.save(entities, ttl, level);
         }
     }
 }

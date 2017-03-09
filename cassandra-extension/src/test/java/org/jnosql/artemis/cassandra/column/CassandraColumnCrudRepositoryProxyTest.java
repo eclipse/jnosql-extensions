@@ -22,6 +22,7 @@ package org.jnosql.artemis.cassandra.column;
 import com.datastax.driver.core.ConsistencyLevel;
 import org.jnosql.artemis.CrudRepository;
 import org.jnosql.artemis.reflection.ClassRepresentations;
+import org.jnosql.diana.api.column.ColumnDeleteQuery;
 import org.jnosql.diana.api.column.ColumnQuery;
 import org.junit.Before;
 import org.junit.Test;
@@ -32,6 +33,7 @@ import org.mockito.Mockito;
 import javax.inject.Inject;
 import java.lang.reflect.Proxy;
 import java.time.Duration;
+import java.util.List;
 
 import static java.util.Collections.singletonList;
 import static org.hamcrest.Matchers.containsInAnyOrder;
@@ -127,16 +129,43 @@ public class CassandraColumnCrudRepositoryProxyTest {
     public void shouldFindByName() {
         ConsistencyLevel level = ConsistencyLevel.ANY;
         when(repository.save(Mockito.any(Person.class), Mockito.eq(level))).thenReturn(new Person());
-        ArgumentCaptor<Person> captor =ArgumentCaptor.forClass(Person.class);
+        ArgumentCaptor<Person> captor = ArgumentCaptor.forClass(Person.class);
         personRepository.findByName("Ada", level);
         verify(repository).find(Mockito.any(ColumnQuery.class), Mockito.eq(level));
-
     }
 
+    @Test
+    public void shouldDeleteByName() {
+        ConsistencyLevel level = ConsistencyLevel.ANY;
+        when(repository.save(Mockito.any(Person.class), Mockito.eq(level))).thenReturn(new Person());
+        ArgumentCaptor<Person> captor = ArgumentCaptor.forClass(Person.class);
+        personRepository.deleteByName("Ada", level);
+        verify(repository).delete(Mockito.any(ColumnDeleteQuery.class), Mockito.eq(level));
+    }
+
+    @Test
+    public void shouldFindAll() {
+        personRepository.findAll();
+        verify(repository).cql("select * from Person");
+    }
+
+    @Test
+    public void shouldFindByNameCQL() {
+        personRepository.findByName("Ada");
+        verify(repository).cql(Mockito.eq("select * from Person where name = ?"), Mockito.any());
+    }
 
     interface PersonRepository extends CrudRepository<Person> {
 
         Person findByName(String name, ConsistencyLevel level);
+
+        void deleteByName(String name, ConsistencyLevel level);
+
+        @CQL("select * from Person")
+        List<Person> findAll();
+
+        @CQL("select * from Person where name = ?")
+        List<Person> findByName(String name);
     }
 
 }

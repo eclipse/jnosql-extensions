@@ -49,4 +49,26 @@ public interface CassandraCrudRepository<T> extends CrudRepository<T> {
      * @throws NullPointerException when either entity or ttl or level are null
      */
     T save(T entity, Duration ttl, ConsistencyLevel level) throws NullPointerException;
+    /**
+     * Saves a ColumnEntity with a defined ConsistencyLevel
+     *
+     * @param entities the entity
+     * @param level  the {@link ConsistencyLevel}
+     * @return the entity saved
+     * @throws NullPointerException when both entity or level are null
+     */
+
+    Iterable<T> save(Iterable<T> entities, ConsistencyLevel level) throws NullPointerException;
+
+
+    /**
+     * Saves an entity using {@link ConsistencyLevel}
+     *
+     * @param entities the entity
+     * @param ttl    the ttl
+     * @param level  the level
+     * @return the entity saved
+     * @throws NullPointerException when either entity or ttl or level are null
+     */
+    Iterable<T> save(Iterable<T> entities, Duration ttl, ConsistencyLevel level) throws NullPointerException;
 }

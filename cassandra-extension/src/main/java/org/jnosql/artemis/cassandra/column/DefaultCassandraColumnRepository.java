@@ -30,6 +30,7 @@ import org.jnosql.diana.api.column.ColumnEntity;
 import org.jnosql.diana.api.column.ColumnFamilyManager;
 import org.jnosql.diana.api.column.ColumnQuery;
 import org.jnosql.diana.cassandra.column.CassandraColumnFamilyManager;
+import org.jnosql.diana.cassandra.column.CassandraPrepareStatment;
 
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
@@ -139,9 +140,19 @@ class DefaultCassandraColumnRepository extends AbstractColumnRepository implemen
     }
 
     @Override
+    public <T> List<T> cql(String query, Object... params) throws NullPointerException {
+        Objects.requireNonNull(query, "query is required");
+        CassandraPrepareStatment cassandraPrepareStatment = manager.get().nativeQueryPrepare(query);
+        List<ColumnEntity> entities = cassandraPrepareStatment.bind(params).executeQuery();
+        return entities.stream().map(converter::toEntity).map(e -> (T) e).collect(Collectors.toList());
+    }
+
+    @Override
     public <T> List<T> execute(Statement statement) throws NullPointerException {
         return manager.get().execute(statement).stream()
                 .map(c -> (T) converter.toEntity(c))
                 .collect(Collectors.toList());
     }
+
+
 }
