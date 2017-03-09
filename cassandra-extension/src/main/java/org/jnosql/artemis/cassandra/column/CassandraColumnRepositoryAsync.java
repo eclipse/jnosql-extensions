@@ -147,6 +147,17 @@ public interface CassandraColumnRepositoryAsync extends ColumnRepositoryAsync {
             throws ExecuteAsyncQueryException, NullPointerException;
 
     /**
+     * Executes CQL
+     *
+     * @param <T>    type
+     * @param query  the Cassandra query language
+     * @param params the params
+     * @return the result of this query
+     * @throws NullPointerException when query is null
+     */
+    <T> void cql(String query, Consumer<List<T>> consumer, Object... params) throws NullPointerException;
+
+    /**
      * Executes statement
      *
      * @param <T>       the type
@@ -157,4 +168,6 @@ public interface CassandraColumnRepositoryAsync extends ColumnRepositoryAsync {
      */
     <T> void execute(Statement statement, Consumer<List<T>> consumer)
             throws ExecuteAsyncQueryException, NullPointerException;
+
+
 }

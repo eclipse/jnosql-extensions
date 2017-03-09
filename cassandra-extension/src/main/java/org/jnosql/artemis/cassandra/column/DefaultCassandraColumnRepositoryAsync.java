@@ -168,6 +168,21 @@ class DefaultCassandraColumnRepositoryAsync extends AbstractColumnRepositoryAsyn
     }
 
     @Override
+    public <T> void cql(String query, Consumer<List<T>> callBack, Object... params) throws NullPointerException {
+        Objects.requireNonNull(query, "callBack is required");
+        Objects.requireNonNull(callBack, "callBack is required");
+        Objects.requireNonNull(params, "params is required");
+        Consumer<List<ColumnEntity>> dianaCallBack = d -> {
+            callBack.accept(
+                    d.stream()
+                            .map(getConverter()::toEntity)
+                            .map(o -> (T) o)
+                            .collect(toList()));
+        };
+        managerAsync.get().nativeQueryPrepare(query).bind(params).executeQueryAsync(dianaCallBack);
+    }
+
+    @Override
     public <T> void execute(Statement statement, Consumer<List<T>> callBack)
             throws ExecuteAsyncQueryException, NullPointerException {
         Objects.requireNonNull(callBack, "callBack is required");
