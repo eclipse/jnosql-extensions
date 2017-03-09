@@ -47,6 +47,16 @@ public interface CassandraColumnRepositoryAsync extends ColumnRepositoryAsync {
 
 
     /**
+     * Save the entity with ConsistencyLevel
+     *
+     * @param callBack the callBack
+     * @param <T>      the type
+     * @param entity   the entity
+     * @param level    {@link ConsistencyLevel}
+     */
+    <T> void save(T entity, ConsistencyLevel level, Consumer<T> callBack) throws ExecuteAsyncQueryException, UnsupportedOperationException, NullPointerException;
+
+    /**
      * Saves the entity with ConsistencyLevel
      *
      * @param <T>    the type
@@ -56,7 +66,20 @@ public interface CassandraColumnRepositoryAsync extends ColumnRepositoryAsync {
      * @throws ExecuteAsyncQueryException
      * @throws UnsupportedOperationException
      */
-    <T> void save(T entity, Duration ttl, ConsistencyLevel level) throws ExecuteAsyncQueryException, UnsupportedOperationException;
+    <T> void save(T entity, Duration ttl, ConsistencyLevel level) throws ExecuteAsyncQueryException, UnsupportedOperationException, NullPointerException;
+
+    /**
+     * Saves the entity with ConsistencyLevel
+     *
+     * @param <T>      the type
+     * @param callBack the callBack
+     * @param entity   the entity
+     * @param ttl      the ttl
+     * @param level    {@link ConsistencyLevel}
+     * @throws ExecuteAsyncQueryException
+     * @throws UnsupportedOperationException
+     */
+    <T> void save(T entity, Duration ttl, ConsistencyLevel level, Consumer<T> callBack) throws ExecuteAsyncQueryException, UnsupportedOperationException, NullPointerException;
 
 
     /**
@@ -89,7 +112,7 @@ public interface CassandraColumnRepositoryAsync extends ColumnRepositoryAsync {
      * @throws ExecuteAsyncQueryException a thread exception
      * @throws NullPointerException       when any arguments are null
      */
-    <T> void findAsync(ColumnQuery query, ConsistencyLevel level, Consumer<List<T>> consumer)
+    <T> void find(ColumnQuery query, ConsistencyLevel level, Consumer<List<T>> consumer)
             throws ExecuteAsyncQueryException, NullPointerException;
 
     /**

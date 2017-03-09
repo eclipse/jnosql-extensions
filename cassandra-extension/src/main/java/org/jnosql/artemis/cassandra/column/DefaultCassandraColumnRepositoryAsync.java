@@ -76,11 +76,30 @@ class DefaultCassandraColumnRepositoryAsync extends AbstractColumnRepositoryAsyn
     }
 
     @Override
+    public <T> void save(T entity, ConsistencyLevel level, Consumer<T> callBack) throws ExecuteAsyncQueryException, UnsupportedOperationException, NullPointerException {
+        Objects.requireNonNull(entity, "entity is required");
+        Objects.requireNonNull(level, "level is required");
+        Objects.requireNonNull(callBack, "callBack is required");
+        Consumer<ColumnEntity> dianaCallBack = c -> callBack.accept((T) getConverter().toEntity(entity.getClass(), c));
+        managerAsync.get().save(converter.toColumn(entity), level, dianaCallBack);
+    }
+
+    @Override
     public <T> void save(T entity, Duration ttl, ConsistencyLevel level) throws ExecuteAsyncQueryException, UnsupportedOperationException {
         Objects.requireNonNull(entity, "entity is required");
         Objects.requireNonNull(level, "level is required");
         Objects.requireNonNull(ttl, "ttl is required");
         managerAsync.get().save(converter.toColumn(entity), ttl, level);
+    }
+
+    @Override
+    public <T> void save(T entity, Duration ttl, ConsistencyLevel level, Consumer<T> callBack) throws ExecuteAsyncQueryException, UnsupportedOperationException, NullPointerException {
+        Objects.requireNonNull(entity, "entity is required");
+        Objects.requireNonNull(level, "level is required");
+        Objects.requireNonNull(ttl, "ttl is required");
+        Objects.requireNonNull(callBack, "callBack is required");
+        Consumer<ColumnEntity> dianaCallBack = c -> callBack.accept((T) getConverter().toEntity(entity.getClass(), c));
+        managerAsync.get().save(converter.toColumn(entity), ttl, level, dianaCallBack);
     }
 
     @Override
@@ -94,7 +113,7 @@ class DefaultCassandraColumnRepositoryAsync extends AbstractColumnRepositoryAsyn
     }
 
     @Override
-    public <T> void findAsync(ColumnQuery query, ConsistencyLevel level, Consumer<List<T>> callBack) throws ExecuteAsyncQueryException, NullPointerException {
+    public <T> void find(ColumnQuery query, ConsistencyLevel level, Consumer<List<T>> callBack) throws ExecuteAsyncQueryException, NullPointerException {
         Objects.requireNonNull(callBack, "callBack is required");
         Consumer<List<ColumnEntity>> dianaCallBack = d -> {
             callBack.accept(
