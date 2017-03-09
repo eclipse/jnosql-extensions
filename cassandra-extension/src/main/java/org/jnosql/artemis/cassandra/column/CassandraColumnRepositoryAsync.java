@@ -45,17 +45,6 @@ public interface CassandraColumnRepositoryAsync extends ColumnRepositoryAsync {
      */
     <T> void save(T entity, ConsistencyLevel level);
 
-
-    /**
-     * Save the entity with ConsistencyLevel
-     *
-     * @param callBack the callBack
-     * @param <T>      the type
-     * @param entity   the entity
-     * @param level    {@link ConsistencyLevel}
-     */
-    <T> void save(T entity, ConsistencyLevel level, Consumer<T> callBack) throws ExecuteAsyncQueryException, UnsupportedOperationException, NullPointerException;
-
     /**
      * Saves the entity with ConsistencyLevel
      *
@@ -67,6 +56,37 @@ public interface CassandraColumnRepositoryAsync extends ColumnRepositoryAsync {
      * @throws UnsupportedOperationException
      */
     <T> void save(T entity, Duration ttl, ConsistencyLevel level) throws ExecuteAsyncQueryException, UnsupportedOperationException, NullPointerException;
+
+    /**
+     * Save the entity with ConsistencyLevel
+     *
+     * @param <T>    the type
+     * @param entities the entities
+     * @param level  {@link ConsistencyLevel}
+     */
+    <T> void save(Iterable<T> entities, ConsistencyLevel level);
+
+    /**
+     * Saves the entity with ConsistencyLevel
+     *
+     * @param <T>    the type
+     * @param entities the entities
+     * @param ttl    the ttl
+     * @param level  {@link ConsistencyLevel}
+     * @throws ExecuteAsyncQueryException
+     * @throws UnsupportedOperationException
+     */
+    <T> void save(Iterable<T> entities, Duration ttl, ConsistencyLevel level) throws ExecuteAsyncQueryException, UnsupportedOperationException, NullPointerException;
+
+    /**
+     * Save the entity with ConsistencyLevel
+     *
+     * @param callBack the callBack
+     * @param <T>      the type
+     * @param entity   the entity
+     * @param level    {@link ConsistencyLevel}
+     */
+    <T> void save(T entity, ConsistencyLevel level, Consumer<T> callBack) throws ExecuteAsyncQueryException, UnsupportedOperationException, NullPointerException;
 
     /**
      * Saves the entity with ConsistencyLevel

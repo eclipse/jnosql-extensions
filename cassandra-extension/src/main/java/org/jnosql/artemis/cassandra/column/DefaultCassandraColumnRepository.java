@@ -38,6 +38,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 class DefaultCassandraColumnRepository extends AbstractColumnRepository implements CassandraColumnRepository {
 
@@ -81,6 +82,32 @@ class DefaultCassandraColumnRepository extends AbstractColumnRepository implemen
         Objects.requireNonNull(level, "level is required");
         UnaryOperator<ColumnEntity> save = e -> manager.get().save(e, level);
         return getFlow().flow(entity, save);
+    }
+
+    @Override
+    public <T> Iterable<T> save(Iterable<T> entities, Duration ttl, ConsistencyLevel level) throws NullPointerException {
+        Objects.requireNonNull(entities, "entities is required");
+        Objects.requireNonNull(ttl, "ttl is required");
+        Objects.requireNonNull(level, "level is required");
+
+        return StreamSupport.stream(entities.spliterator(), false)
+                .map(converter::toColumn)
+                .map(e -> manager.get().save(e, ttl, level))
+                .map(converter::toEntity)
+                .map(e -> (T) e)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public <T> Iterable<T> save(Iterable<T> entities, ConsistencyLevel level) throws NullPointerException {
+        Objects.requireNonNull(entities, "entities is required");
+        Objects.requireNonNull(level, "level is required");
+        return StreamSupport.stream(entities.spliterator(), false)
+                .map(converter::toColumn)
+                .map(e -> manager.get().save(e, level))
+                .map(converter::toEntity)
+                .map(e -> (T) e)
+                .collect(Collectors.toList());
     }
 
     @Override

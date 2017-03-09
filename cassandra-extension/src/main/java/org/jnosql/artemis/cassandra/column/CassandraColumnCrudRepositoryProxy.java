@@ -33,6 +33,8 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.time.Duration;
+import java.util.Optional;
+import java.util.stream.Stream;
 
 class CassandraColumnCrudRepositoryProxy<T> implements InvocationHandler {
 
@@ -77,7 +79,16 @@ class CassandraColumnCrudRepositoryProxy<T> implements InvocationHandler {
 
         if (methodName.startsWith(FIND_BY)) {
             ColumnQuery query = queryParser.parse(methodName, args, classRepresentation);
-            return ReturnTypeConverterUtil.returnObject(query, repository, typeClass, method);
+            Optional<ConsistencyLevel> consistencyLevel = Stream.of(args)
+                    .filter(a -> ConsistencyLevel.class.isInstance(a))
+                    .map(c -> ConsistencyLevel.class.cast(c))
+                    .findFirst();
+            if (consistencyLevel.isPresent()) {
+                return CassandraReturnTypeConverterUtil.returnObject(query, repository, typeClass, method,
+                        consistencyLevel.get());
+            } else {
+                return ReturnTypeConverterUtil.returnObject(query, repository, typeClass, method);
+            }
         }
 
         if (methodName.startsWith(DELETE_BY)) {
@@ -87,6 +98,8 @@ class CassandraColumnCrudRepositoryProxy<T> implements InvocationHandler {
         }
         return null;
     }
+
+
 
 
     class ColumnCrudRepository implements CassandraCrudRepository {

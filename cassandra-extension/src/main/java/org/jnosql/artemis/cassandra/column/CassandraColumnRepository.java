@@ -51,6 +51,31 @@ public interface CassandraColumnRepository extends ColumnRepository {
     /**
      * Saves an entity using {@link ConsistencyLevel}
      *
+     * @param <T>      type
+     * @param entities the entities
+     * @param ttl      the ttl
+     * @param level    the level
+     * @return the entity saved
+     * @throws NullPointerException when either entity or ttl or level are null
+     */
+    <T> Iterable<T> save(Iterable<T> entities, Duration ttl, ConsistencyLevel level) throws NullPointerException;
+
+    /**
+     * Saves a ColumnEntity with a defined ConsistencyLevel
+     *
+     * @param <T>      type
+     * @param entities the entities
+     * @param level    the {@link ConsistencyLevel}
+     * @return the entity saved
+     * @throws NullPointerException when both entity or level are null
+     */
+
+    <T> Iterable<T> save(Iterable<T> entities, ConsistencyLevel level) throws NullPointerException;
+
+
+    /**
+     * Saves an entity using {@link ConsistencyLevel}
+     *
      * @param <T>    type
      * @param entity the entity
      * @param ttl    the ttl

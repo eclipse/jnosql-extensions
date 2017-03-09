@@ -19,8 +19,10 @@
  */
 package org.jnosql.artemis.cassandra.column;
 
+import com.datastax.driver.core.ConsistencyLevel;
 import org.jnosql.artemis.CrudRepository;
 import org.jnosql.artemis.reflection.ClassRepresentations;
+import org.jnosql.diana.api.column.ColumnQuery;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -121,10 +123,20 @@ public class CassandraColumnCrudRepositoryProxyTest {
         assertThat(persons, containsInAnyOrder(person));
     }
 
+    @Test
+    public void shouldFindByName() {
+        ConsistencyLevel level = ConsistencyLevel.ANY;
+        when(repository.save(Mockito.any(Person.class), Mockito.eq(level))).thenReturn(new Person());
+        ArgumentCaptor<Person> captor =ArgumentCaptor.forClass(Person.class);
+        personRepository.findByName("Ada", level);
+        verify(repository).find(Mockito.any(ColumnQuery.class), Mockito.eq(level));
+
+    }
 
 
     interface PersonRepository extends CrudRepository<Person> {
 
+        Person findByName(String name, ConsistencyLevel level);
     }
 
 }
