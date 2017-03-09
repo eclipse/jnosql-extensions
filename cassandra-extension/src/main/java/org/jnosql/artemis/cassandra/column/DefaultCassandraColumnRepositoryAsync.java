@@ -43,7 +43,8 @@ import static java.util.stream.Collectors.toList;
 /**
  * The CassandraColumnRepositoryAsync default implementation
  */
-class DefaultCassandraColumnRepositoryAsync extends AbstractColumnRepositoryAsync implements CassandraColumnRepositoryAsync {
+class DefaultCassandraColumnRepositoryAsync extends AbstractColumnRepositoryAsync
+        implements CassandraColumnRepositoryAsync {
 
 
     private ColumnEntityConverter converter;
@@ -54,7 +55,8 @@ class DefaultCassandraColumnRepositoryAsync extends AbstractColumnRepositoryAsyn
     }
 
     @Inject
-    DefaultCassandraColumnRepositoryAsync(ColumnEntityConverter converter, Instance<CassandraColumnFamilyManagerAsync> managerAsync) {
+    DefaultCassandraColumnRepositoryAsync(ColumnEntityConverter converter,
+                                          Instance<CassandraColumnFamilyManagerAsync> managerAsync) {
         this.converter = converter;
         this.managerAsync = managerAsync;
     }
@@ -77,7 +79,8 @@ class DefaultCassandraColumnRepositoryAsync extends AbstractColumnRepositoryAsyn
     }
 
     @Override
-    public <T> void save(T entity, ConsistencyLevel level, Consumer<T> callBack) throws ExecuteAsyncQueryException, UnsupportedOperationException, NullPointerException {
+    public <T> void save(T entity, ConsistencyLevel level, Consumer<T> callBack)
+            throws ExecuteAsyncQueryException, UnsupportedOperationException, NullPointerException {
         Objects.requireNonNull(entity, "entity is required");
         Objects.requireNonNull(level, "level is required");
         Objects.requireNonNull(callBack, "callBack is required");
@@ -86,7 +89,8 @@ class DefaultCassandraColumnRepositoryAsync extends AbstractColumnRepositoryAsyn
     }
 
     @Override
-    public <T> void save(T entity, Duration ttl, ConsistencyLevel level) throws ExecuteAsyncQueryException, UnsupportedOperationException {
+    public <T> void save(T entity, Duration ttl, ConsistencyLevel level)
+            throws ExecuteAsyncQueryException, UnsupportedOperationException {
         Objects.requireNonNull(entity, "entity is required");
         Objects.requireNonNull(level, "level is required");
         Objects.requireNonNull(ttl, "ttl is required");
@@ -103,7 +107,8 @@ class DefaultCassandraColumnRepositoryAsync extends AbstractColumnRepositoryAsyn
     }
 
     @Override
-    public <T> void save(Iterable<T> entities, Duration ttl, ConsistencyLevel level) throws ExecuteAsyncQueryException, UnsupportedOperationException, NullPointerException {
+    public <T> void save(Iterable<T> entities, Duration ttl, ConsistencyLevel level)
+            throws ExecuteAsyncQueryException, UnsupportedOperationException, NullPointerException {
         Objects.requireNonNull(entities, "entities is required");
         Objects.requireNonNull(level, "level is required");
         Objects.requireNonNull(ttl, "ttl is required");
@@ -113,7 +118,8 @@ class DefaultCassandraColumnRepositoryAsync extends AbstractColumnRepositoryAsyn
     }
 
     @Override
-    public <T> void save(T entity, Duration ttl, ConsistencyLevel level, Consumer<T> callBack) throws ExecuteAsyncQueryException, UnsupportedOperationException, NullPointerException {
+    public <T> void save(T entity, Duration ttl, ConsistencyLevel level, Consumer<T> callBack)
+            throws ExecuteAsyncQueryException, UnsupportedOperationException, NullPointerException {
         Objects.requireNonNull(entity, "entity is required");
         Objects.requireNonNull(level, "level is required");
         Objects.requireNonNull(ttl, "ttl is required");
@@ -133,7 +139,8 @@ class DefaultCassandraColumnRepositoryAsync extends AbstractColumnRepositoryAsyn
     }
 
     @Override
-    public <T> void find(ColumnQuery query, ConsistencyLevel level, Consumer<List<T>> callBack) throws ExecuteAsyncQueryException, NullPointerException {
+    public <T> void find(ColumnQuery query, ConsistencyLevel level, Consumer<List<T>> callBack)
+            throws ExecuteAsyncQueryException, NullPointerException {
         Objects.requireNonNull(callBack, "callBack is required");
         Consumer<List<ColumnEntity>> dianaCallBack = d -> {
             callBack.accept(
@@ -147,7 +154,8 @@ class DefaultCassandraColumnRepositoryAsync extends AbstractColumnRepositoryAsyn
     }
 
     @Override
-    public <T> void cql(String query, Consumer<List<T>> callBack) throws ExecuteAsyncQueryException, NullPointerException {
+    public <T> void cql(String query, Consumer<List<T>> callBack)
+            throws ExecuteAsyncQueryException, NullPointerException {
         Objects.requireNonNull(callBack, "callBack is required");
         Consumer<List<ColumnEntity>> dianaCallBack = d -> {
             callBack.accept(
@@ -160,7 +168,8 @@ class DefaultCassandraColumnRepositoryAsync extends AbstractColumnRepositoryAsyn
     }
 
     @Override
-    public <T> void execute(Statement statement, Consumer<List<T>> callBack) throws ExecuteAsyncQueryException, NullPointerException {
+    public <T> void execute(Statement statement, Consumer<List<T>> callBack)
+            throws ExecuteAsyncQueryException, NullPointerException {
         Objects.requireNonNull(callBack, "callBack is required");
         Consumer<List<ColumnEntity>> dianaCallBack = d -> {
             callBack.accept(

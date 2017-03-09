@@ -26,11 +26,9 @@ import com.datastax.driver.core.Statement;
 import org.jnosql.artemis.column.ColumnRepository;
 import org.jnosql.diana.api.column.ColumnDeleteQuery;
 import org.jnosql.diana.api.column.ColumnQuery;
-import org.jnosql.diana.cassandra.column.CassandraColumnFamilyManager;
 
 import java.time.Duration;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * A Cassandra extension of {@link ColumnRepository}

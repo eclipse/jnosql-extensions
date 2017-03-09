@@ -28,7 +28,6 @@ import org.jnosql.artemis.reflection.ClassRepresentation;
 import org.jnosql.artemis.reflection.ClassRepresentations;
 import org.jnosql.diana.api.column.ColumnDeleteQuery;
 import org.jnosql.diana.api.column.ColumnQuery;
-import org.jnosql.diana.cassandra.column.CassandraColumnFamilyManager;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
