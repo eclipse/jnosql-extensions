@@ -45,6 +45,7 @@ import java.util.List;
 
 import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -94,6 +95,27 @@ public class DefaultCassandraColumnRepositoryTest {
     }
 
     @Test
+    public void shouldSaveConsntencyIterable() {
+        ColumnEntity entity = ColumnEntity.of("Person", asList(Column.of("name", "Name"), Column.of("age", 20)));
+
+        ArgumentCaptor<ColumnEntity> captor = ArgumentCaptor.forClass(ColumnEntity.class);
+
+        ConsistencyLevel level = ConsistencyLevel.THREE;
+
+        when(manager.
+                save(Mockito.any(ColumnEntity.class), Mockito.eq(level)))
+                .thenReturn(entity);
+
+        Person person = new Person();
+        person.setName("Name");
+        person.setAge(20);
+        assertThat(repository.save(Collections.singletonList(person), level), Matchers.contains(person));
+        Mockito.verify(manager).save(captor.capture(), Mockito.eq(level));
+        assertEquals(entity, captor.getValue());
+
+    }
+
+    @Test
     public void shouldSaveConsntencyDuration() {
         Duration duration = Duration.ofHours(2);
         ColumnEntity entity = ColumnEntity.of("Person", asList(Column.of("name", "Name"), Column.of("age", 20)));
@@ -111,6 +133,27 @@ public class DefaultCassandraColumnRepositoryTest {
         person.setAge(20);
         assertEquals(person, repository.save(person, duration, level));
 
+        Mockito.verify(manager).save(captor.capture(), Mockito.eq(duration), Mockito.eq(level));
+        assertEquals(entity, captor.getValue());
+    }
+
+    @Test
+    public void shouldSaveConsntencyDurationIterable() {
+        Duration duration = Duration.ofHours(2);
+        ColumnEntity entity = ColumnEntity.of("Person", asList(Column.of("name", "Name"), Column.of("age", 20)));
+
+        ArgumentCaptor<ColumnEntity> captor = ArgumentCaptor.forClass(ColumnEntity.class);
+
+        ConsistencyLevel level = ConsistencyLevel.THREE;
+        when(manager.
+                save(Mockito.any(ColumnEntity.class), Mockito.eq(duration),
+                        Mockito.eq(level)))
+                .thenReturn(entity);
+
+        Person person = new Person();
+        person.setName("Name");
+        person.setAge(20);
+        assertThat(repository.save(Collections.singletonList(person), duration, level), Matchers.contains(person));
         Mockito.verify(manager).save(captor.capture(), Mockito.eq(duration), Mockito.eq(level));
         assertEquals(entity, captor.getValue());
     }
@@ -152,7 +195,7 @@ public class DefaultCassandraColumnRepositoryTest {
         List<Person> people = repository.cql(cql);
         Assert.assertThat(people, Matchers.contains(person));
     }
-
+    
     @Test
     public void shouldFindStatment() {
         Statement statement = QueryBuilder.select().from("Person");
