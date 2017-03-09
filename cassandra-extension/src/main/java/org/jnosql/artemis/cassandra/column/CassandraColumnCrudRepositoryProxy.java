@@ -21,6 +21,8 @@ package org.jnosql.artemis.cassandra.column;
 
 
 import com.datastax.driver.core.ConsistencyLevel;
+import org.jnosql.artemis.column.ColumnRepository;
+import org.jnosql.artemis.column.query.AbstractColumnCrudRepository;
 import org.jnosql.artemis.column.query.ColumnQueryDeleteParser;
 import org.jnosql.artemis.column.query.ColumnQueryParser;
 import org.jnosql.artemis.column.query.ReturnTypeConverterUtil;
@@ -94,10 +96,7 @@ class CassandraColumnCrudRepositoryProxy<T> implements InvocationHandler {
 
         if (methodName.startsWith(FIND_BY)) {
             ColumnQuery query = queryParser.parse(methodName, args, classRepresentation);
-            Optional<ConsistencyLevel> consistencyLevel = Stream.of(args)
-                    .filter(a -> ConsistencyLevel.class.isInstance(a))
-                    .map(c -> ConsistencyLevel.class.cast(c))
-                    .findFirst();
+            Optional<ConsistencyLevel> consistencyLevel = getConsistencyLevel(args);
             if (consistencyLevel.isPresent()) {
                 return CassandraReturnTypeConverterUtil.returnObject(query, repository, typeClass, method,
                         consistencyLevel.get());
@@ -107,10 +106,7 @@ class CassandraColumnCrudRepositoryProxy<T> implements InvocationHandler {
         }
 
         if (methodName.startsWith(DELETE_BY)) {
-            Optional<ConsistencyLevel> consistencyLevel = Stream.of(args)
-                    .filter(a -> ConsistencyLevel.class.isInstance(a))
-                    .map(c -> ConsistencyLevel.class.cast(c))
-                    .findFirst();
+            Optional<ConsistencyLevel> consistencyLevel = getConsistencyLevel(args);
 
             ColumnDeleteQuery query = deleteQueryParser.parse(methodName, args, classRepresentation);
             if (consistencyLevel.isPresent()) {
@@ -123,8 +119,15 @@ class CassandraColumnCrudRepositoryProxy<T> implements InvocationHandler {
         return null;
     }
 
+    private Optional<ConsistencyLevel> getConsistencyLevel(Object[] args) {
+        return Stream.of(args)
+                        .filter(a -> ConsistencyLevel.class.isInstance(a))
+                        .map(c -> ConsistencyLevel.class.cast(c))
+                        .findFirst();
+    }
 
-    class ColumnCrudRepository implements CassandraCrudRepository {
+
+    class ColumnCrudRepository extends AbstractColumnCrudRepository implements CassandraCrudRepository {
 
         private final CassandraColumnRepository repository;
 
@@ -133,33 +136,8 @@ class CassandraColumnCrudRepositoryProxy<T> implements InvocationHandler {
         }
 
         @Override
-        public Object save(Object entity) throws NullPointerException {
-            return repository.save(entity);
-        }
-
-        @Override
-        public Object save(Object entity, Duration ttl) {
-            return repository.save(entity, ttl);
-        }
-
-        @Override
-        public Iterable save(Iterable entities) throws NullPointerException {
-            return repository.save(entities);
-        }
-
-        @Override
-        public Iterable save(Iterable entities, Duration ttl) throws NullPointerException {
-            return repository.save(entities, ttl);
-        }
-
-        @Override
-        public Object update(Object entity) {
-            return repository.update(entity);
-        }
-
-        @Override
-        public Iterable update(Iterable entities) throws NullPointerException {
-            return repository.update(entities);
+        protected ColumnRepository getColumnRepository() {
+            return repository;
         }
 
         @Override
