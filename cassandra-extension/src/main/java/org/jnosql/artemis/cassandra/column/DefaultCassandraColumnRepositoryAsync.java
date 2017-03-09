@@ -36,6 +36,7 @@ import java.time.Duration;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
+import java.util.stream.StreamSupport;
 
 import static java.util.stream.Collectors.toList;
 
@@ -90,6 +91,25 @@ class DefaultCassandraColumnRepositoryAsync extends AbstractColumnRepositoryAsyn
         Objects.requireNonNull(level, "level is required");
         Objects.requireNonNull(ttl, "ttl is required");
         managerAsync.get().save(converter.toColumn(entity), ttl, level);
+    }
+
+    @Override
+    public <T> void save(Iterable<T> entities, ConsistencyLevel level) {
+        Objects.requireNonNull(entities, "entities is required");
+        Objects.requireNonNull(level, "level is required");
+        StreamSupport.stream(entities.spliterator(), false)
+                .map(converter::toColumn)
+                .forEach(c -> managerAsync.get().save(c, level));
+    }
+
+    @Override
+    public <T> void save(Iterable<T> entities, Duration ttl, ConsistencyLevel level) throws ExecuteAsyncQueryException, UnsupportedOperationException, NullPointerException {
+        Objects.requireNonNull(entities, "entities is required");
+        Objects.requireNonNull(level, "level is required");
+        Objects.requireNonNull(ttl, "ttl is required");
+        StreamSupport.stream(entities.spliterator(), false)
+                .map(converter::toColumn)
+                .forEach(c -> managerAsync.get().save(c, ttl, level));
     }
 
     @Override
