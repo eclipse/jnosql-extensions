@@ -34,7 +34,7 @@ import java.util.function.Consumer;
 /**
  * A Cassandra extension of {@link org.jnosql.artemis.column.ColumnRepositoryAsync}
  */
-public interface CassandraRepositoryAsync extends ColumnRepositoryAsync {
+public interface CassandraColumnRepositoryAsync extends ColumnRepositoryAsync {
 
     /**
      * Save the entity with ConsistencyLevel
@@ -112,6 +112,6 @@ public interface CassandraRepositoryAsync extends ColumnRepositoryAsync {
      * @throws ExecuteAsyncQueryException a thread exception
      * @throws NullPointerException       when either statment and callback is null
      */
-    <T> void cql(Statement statement, Consumer<List<T>> consumer)
+    <T> void execute(Statement statement, Consumer<List<T>> consumer)
             throws ExecuteAsyncQueryException, NullPointerException;
 }
