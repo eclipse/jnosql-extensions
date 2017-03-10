@@ -182,7 +182,8 @@ class CassandraColumnCrudRepositoryAsyncProxy<T> implements InvocationHandler {
         }
 
         @Override
-        public void save(Object entity, Duration ttl, ConsistencyLevel level) throws ExecuteAsyncQueryException, UnsupportedOperationException, NullPointerException {
+        public void save(Object entity, Duration ttl, ConsistencyLevel level)
+                throws ExecuteAsyncQueryException, UnsupportedOperationException, NullPointerException {
             repository.save(entity, ttl, level);
         }
 
@@ -192,17 +193,20 @@ class CassandraColumnCrudRepositoryAsyncProxy<T> implements InvocationHandler {
         }
 
         @Override
-        public void save(Iterable entities, Duration ttl, ConsistencyLevel level) throws ExecuteAsyncQueryException, UnsupportedOperationException, NullPointerException {
+        public void save(Iterable entities, Duration ttl, ConsistencyLevel level)
+                throws ExecuteAsyncQueryException, UnsupportedOperationException, NullPointerException {
             repository.save(entities, ttl, level);
         }
 
         @Override
-        public void save(Object entity, ConsistencyLevel level, Consumer callBack) throws ExecuteAsyncQueryException, UnsupportedOperationException, NullPointerException {
+        public void save(Object entity, ConsistencyLevel level, Consumer callBack)
+                throws ExecuteAsyncQueryException, UnsupportedOperationException, NullPointerException {
             repository.save(entity, level, callBack);
         }
 
         @Override
-        public void save(Object entity, Duration ttl, ConsistencyLevel level, Consumer callBack) throws ExecuteAsyncQueryException, UnsupportedOperationException, NullPointerException {
+        public void save(Object entity, Duration ttl, ConsistencyLevel level, Consumer callBack)
+                throws ExecuteAsyncQueryException, UnsupportedOperationException, NullPointerException {
             repository.save(entity, ttl, level, callBack);
         }
     }
