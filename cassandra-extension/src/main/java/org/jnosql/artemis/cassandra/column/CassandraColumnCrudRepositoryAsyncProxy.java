@@ -35,7 +35,11 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.time.Duration;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 class CassandraColumnCrudRepositoryAsyncProxy<T> implements InvocationHandler {
 
@@ -43,6 +47,12 @@ class CassandraColumnCrudRepositoryAsyncProxy<T> implements InvocationHandler {
     private static final String UPDATE = "update";
     private static final String FIND_BY = "findBy";
     private static final String DELETE_BY = "deleteBy";
+
+    private static final Predicate<Object> IS_NOT_CONSISTENCY_LEVEL = c -> !ConsistencyLevel.class.isInstance(c);
+    private static final Predicate<Object> IS_NOT_CONSUMER = c -> !Consumer.class.isInstance(c);
+    private static final Predicate<Object> IS_VALID_PARAMETER = IS_NOT_CONSISTENCY_LEVEL.and(IS_NOT_CONSUMER);
+    private static final Consumer NOOP = t -> {
+    };
 
     private final Class<T> typeClass;
 
@@ -71,6 +81,25 @@ class CassandraColumnCrudRepositoryAsyncProxy<T> implements InvocationHandler {
     @Override
     public Object invoke(Object instance, Method method, Object[] args) throws Throwable {
 
+
+        CQL cql = method.getAnnotation(CQL.class);
+        if (Objects.nonNull(cql)) {
+            Consumer callBack = NOOP;
+            if (Consumer.class.isInstance(args[args.length - 1])) {
+                callBack = Consumer.class.cast(args[args.length - 1]);
+            }
+
+            if (args == null || args.length == 1) {
+                repository.cql(cql.value(), callBack);
+                return Void.class;
+            } else {
+                repository.cql(cql.value(), callBack, Stream.of(args)
+                        .filter(IS_VALID_PARAMETER)
+                        .toArray(Object[]::new));
+                return Void.class;
+            }
+        }
+
         String methodName = method.getName();
         switch (methodName) {
             case SAVE:
@@ -84,7 +113,13 @@ class CassandraColumnCrudRepositoryAsyncProxy<T> implements InvocationHandler {
             ColumnQuery query = queryParser.parse(methodName, args, classRepresentation);
             Object callBack = args[args.length - 1];
             if (Consumer.class.isInstance(callBack)) {
-                repository.find(query, Consumer.class.cast(callBack));
+
+                Optional<ConsistencyLevel> consistencyLevel = getConsistencyLevel(args);
+                if (consistencyLevel.isPresent()) {
+                    repository.find(query, consistencyLevel.get(), Consumer.class.cast(callBack));
+                } else {
+                    repository.find(query, Consumer.class.cast(callBack));
+                }
                 return null;
             }
 
@@ -95,16 +130,36 @@ class CassandraColumnCrudRepositoryAsyncProxy<T> implements InvocationHandler {
         if (methodName.startsWith(DELETE_BY)) {
             Object callBack = args[args.length - 1];
             ColumnDeleteQuery query = queryDeleteParser.parse(methodName, args, classRepresentation);
+            Optional<ConsistencyLevel> consistencyLevel = getConsistencyLevel(args);
             if (Consumer.class.isInstance(callBack)) {
-                repository.delete(query, Consumer.class.cast(callBack));
+
+                if (consistencyLevel.isPresent()) {
+                    repository.delete(query, consistencyLevel.get(), Consumer.class.cast(callBack));
+                } else {
+                    repository.delete(query, Consumer.class.cast(callBack));
+                }
+
                 return null;
             }
 
-            repository.delete(query);
+            if (consistencyLevel.isPresent()) {
+                repository.delete(query, consistencyLevel.get());
+            } else {
+                repository.delete(query);
+            }
+
             return null;
         }
 
         return null;
+    }
+
+
+    private Optional<ConsistencyLevel> getConsistencyLevel(Object[] args) {
+        return Stream.of(args)
+                .filter(a -> ConsistencyLevel.class.isInstance(a))
+                .map(c -> ConsistencyLevel.class.cast(c))
+                .findFirst();
     }
 
 
