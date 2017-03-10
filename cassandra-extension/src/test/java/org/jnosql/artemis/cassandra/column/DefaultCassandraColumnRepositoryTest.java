@@ -24,6 +24,7 @@ import com.datastax.driver.core.Statement;
 import com.datastax.driver.core.querybuilder.QueryBuilder;
 import org.hamcrest.Matchers;
 import org.jnosql.artemis.column.ColumnEntityConverter;
+import org.jnosql.artemis.column.ColumnEventPersistManager;
 import org.jnosql.artemis.column.ColumnWorkflow;
 import org.jnosql.diana.api.column.Column;
 import org.jnosql.diana.api.column.ColumnDeleteQuery;
@@ -59,6 +60,9 @@ public class DefaultCassandraColumnRepositoryTest {
     @Inject
     private ColumnWorkflow flow;
 
+    @Inject
+    private ColumnEventPersistManager persistManager;
+
     private CassandraColumnRepository repository;
 
     private CassandraColumnFamilyManager manager;
@@ -68,7 +72,7 @@ public class DefaultCassandraColumnRepositoryTest {
         this.manager = mock(CassandraColumnFamilyManager.class);
         Instance instance = mock(Instance.class);
         when(instance.get()).thenReturn(manager);
-        repository = new DefaultCassandraColumnRepository(instance, converter, flow);
+        repository = new DefaultCassandraColumnRepository(instance, converter, flow, persistManager);
     }
 
 

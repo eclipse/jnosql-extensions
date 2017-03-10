@@ -24,6 +24,7 @@ import com.datastax.driver.core.ConsistencyLevel;
 import com.datastax.driver.core.Statement;
 import org.jnosql.artemis.column.AbstractColumnRepository;
 import org.jnosql.artemis.column.ColumnEntityConverter;
+import org.jnosql.artemis.column.ColumnEventPersistManager;
 import org.jnosql.artemis.column.ColumnWorkflow;
 import org.jnosql.diana.api.column.ColumnDeleteQuery;
 import org.jnosql.diana.api.column.ColumnEntity;
@@ -49,13 +50,17 @@ class DefaultCassandraColumnRepository extends AbstractColumnRepository implemen
 
     private ColumnWorkflow flow;
 
+    private ColumnEventPersistManager persistManager;
+
     @Inject
     DefaultCassandraColumnRepository(Instance<CassandraColumnFamilyManager> manager,
                                      ColumnEntityConverter converter,
-                                     ColumnWorkflow flow) {
+                                     ColumnWorkflow flow,
+                                     ColumnEventPersistManager persistManager) {
         this.manager = manager;
         this.converter = converter;
         this.flow = flow;
+        this.persistManager = persistManager;
     }
 
     DefaultCassandraColumnRepository() {
@@ -75,6 +80,11 @@ class DefaultCassandraColumnRepository extends AbstractColumnRepository implemen
     @Override
     protected ColumnWorkflow getFlow() {
         return flow;
+    }
+
+    @Override
+    protected ColumnEventPersistManager getEventManager() {
+        return persistManager;
     }
 
     @Override
@@ -122,11 +132,18 @@ class DefaultCassandraColumnRepository extends AbstractColumnRepository implemen
 
     @Override
     public void delete(ColumnDeleteQuery query, ConsistencyLevel level) throws NullPointerException {
+        Objects.requireNonNull(query, "query is required");
+        Objects.requireNonNull(level, "level is required");
+        persistManager.firePreDeleteQuery(query);
         manager.get().delete(query, level);
     }
 
     @Override
     public <T> List<T> find(ColumnQuery query, ConsistencyLevel level) throws NullPointerException {
+        Objects.requireNonNull(query, "query is required");
+        Objects.requireNonNull(level, "level is required");
+        persistManager.firePreQuery(query);
+
         return manager.get().find(query, level).stream()
                 .map(c -> (T) converter.toEntity(c))
                 .collect(Collectors.toList());
