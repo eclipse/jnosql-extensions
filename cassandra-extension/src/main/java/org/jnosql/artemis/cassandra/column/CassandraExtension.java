@@ -20,17 +20,16 @@
 package org.jnosql.artemis.cassandra.column;
 
 
-import org.jnosql.artemis.document.query.CrudRepositoryAsyncDocumentBean;
-import org.jnosql.artemis.document.query.CrudRepositoryDocumentBean;
-
 import javax.enterprise.event.Observes;
 import javax.enterprise.inject.spi.AfterBeanDiscovery;
 import javax.enterprise.inject.spi.BeanManager;
 import javax.enterprise.inject.spi.Extension;
 import javax.enterprise.inject.spi.ProcessAnnotatedType;
+import java.lang.reflect.Modifier;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.logging.Logger;
+import java.util.stream.Stream;
 
 public class CassandraExtension implements Extension {
 
@@ -42,16 +41,29 @@ public class CassandraExtension implements Extension {
 
 
     <T extends CassandraCrudRepository> void onProcessAnnotatedType(@Observes final ProcessAnnotatedType<T> repo) {
-        LOGGER.info("Starting the onProcessAnnotatedType");
-        crudTypes.add(repo.getAnnotatedType().getJavaClass());
-        LOGGER.info("Finished the onProcessAnnotatedType");
+        Class<T> javaClass = repo.getAnnotatedType().getJavaClass();
+
+        if(CassandraCrudRepository.class.equals(javaClass)) {
+            return;
+        }
+
+        if (Stream.of(javaClass.getInterfaces()).anyMatch(c -> CassandraCrudRepository.class.equals(c))
+                && Modifier.isInterface(javaClass.getModifiers())) {
+            crudTypes.add(javaClass);
+        }
     }
 
     <T extends CassandraCrudRepositoryAsync> void onProcessAnnotatedTypeAsync(@Observes final ProcessAnnotatedType<T> repo) {
-        LOGGER.info("Starting the onProcessAnnotatedType");
         Class<T> javaClass = repo.getAnnotatedType().getJavaClass();
-        crudAsyncTypes.add(javaClass);
-        LOGGER.info("Finished the onProcessAnnotatedType");
+
+        if(CassandraCrudRepositoryAsync.class.equals(javaClass)) {
+            return;
+        }
+
+        if (Stream.of(javaClass.getInterfaces()).anyMatch(c -> CassandraCrudRepositoryAsync.class.equals(c))
+                && Modifier.isInterface(javaClass.getModifiers())) {
+            crudAsyncTypes.add(javaClass);
+        }
     }
 
 

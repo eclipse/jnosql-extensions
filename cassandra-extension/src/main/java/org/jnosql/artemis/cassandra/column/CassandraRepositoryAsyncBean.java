@@ -19,7 +19,6 @@
  */
 package org.jnosql.artemis.cassandra.column;
 
-import org.jnosql.artemis.CrudRepository;
 import org.jnosql.artemis.DatabaseQualifier;
 import org.jnosql.artemis.reflection.ClassRepresentations;
 
@@ -38,7 +37,7 @@ import java.util.Collections;
 import java.util.Set;
 
 
-class CassandraRepositoryAsyncBean implements Bean<CrudRepository>, PassivationCapable {
+class CassandraRepositoryAsyncBean implements Bean<CassandraCrudRepositoryAsync>, PassivationCapable {
 
     private final Class type;
 
@@ -71,12 +70,12 @@ class CassandraRepositoryAsyncBean implements Bean<CrudRepository>, PassivationC
     }
 
     @Override
-    public CrudRepository create(CreationalContext<CrudRepository> creationalContext) {
+    public CassandraCrudRepositoryAsync create(CreationalContext<CassandraCrudRepositoryAsync> creationalContext) {
         ClassRepresentations classRepresentations = getInstance(ClassRepresentations.class);
-        CassandraColumnRepository repository = getInstance(CassandraColumnRepository.class);
-        CassandraColumnCrudRepositoryProxy handler = new CassandraColumnCrudRepositoryProxy(repository,
+        CassandraColumnRepositoryAsync repository = getInstance(CassandraColumnRepositoryAsync.class);
+        CassandraColumnCrudRepositoryAsyncProxy handler = new CassandraColumnCrudRepositoryAsyncProxy(repository,
                 classRepresentations, type);
-        return (CrudRepository) Proxy.newProxyInstance(type.getClassLoader(),
+        return (CassandraCrudRepositoryAsync) Proxy.newProxyInstance(type.getClassLoader(),
                 new Class[]{type},
                 handler);
     }
@@ -96,7 +95,7 @@ class CassandraRepositoryAsyncBean implements Bean<CrudRepository>, PassivationC
 
 
     @Override
-    public void destroy(CrudRepository instance, CreationalContext<CrudRepository> creationalContext) {
+    public void destroy(CassandraCrudRepositoryAsync instance, CreationalContext<CassandraCrudRepositoryAsync> creationalContext) {
 
     }
 
@@ -132,7 +131,7 @@ class CassandraRepositoryAsyncBean implements Bean<CrudRepository>, PassivationC
 
     @Override
     public String getId() {
-        return type.getName() + '@' + "cassandra";
+        return type.getName() + "Async@cassandra";
     }
 
 }
