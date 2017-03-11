@@ -17,19 +17,30 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.jnosql.artemis.orientdb.document;
+package org.jnosql.artemis.couchbase.document;
 
+import org.jboss.weld.environment.se.Weld;
+import org.jboss.weld.environment.se.WeldContainer;
 
-import org.jnosql.artemis.document.DocumentRepositoryAsync;
+public class WeldContext {
 
-import java.util.List;
-import java.util.function.Consumer;
+    public static final WeldContext INSTANCE = new WeldContext();
 
-/**
- * A {@link DocumentRepositoryAsync} to orientdb
- */
-public interface OrientDBDocumentRepositoryAsync extends DocumentRepositoryAsync {
+    private final Weld weld;
+    private final WeldContainer container;
 
+    private WeldContext() {
+        this.weld = new Weld();
+        this.container = weld.initialize();
+        Runtime.getRuntime().addShutdownHook(new Thread() {
+            @Override
+            public void run() {
+                weld.shutdown();
+            }
+        });
+    }
 
-    <T> void find(String query, Consumer<List<T>> callBack, Object... params);
+    public <T> T getBean(Class<T> type) {
+        return container.instance().select(type).get();
+    }
 }

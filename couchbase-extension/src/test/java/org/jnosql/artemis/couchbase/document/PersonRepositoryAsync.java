@@ -17,19 +17,8 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.jnosql.artemis.orientdb.document;
+package org.jnosql.artemis.couchbase.document;
 
 
-import org.jnosql.artemis.document.DocumentRepositoryAsync;
-
-import java.util.List;
-import java.util.function.Consumer;
-
-/**
- * A {@link DocumentRepositoryAsync} to orientdb
- */
-public interface OrientDBDocumentRepositoryAsync extends DocumentRepositoryAsync {
-
-
-    <T> void find(String query, Consumer<List<T>> callBack, Object... params);
+public interface PersonRepositoryAsync extends CouchbaseCrudRepositoryAsync<Person> {
 }

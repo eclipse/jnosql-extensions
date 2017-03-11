@@ -17,19 +17,26 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.jnosql.artemis.orientdb.document;
+package org.jnosql.artemis.couchbase.document;
 
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
-import org.jnosql.artemis.document.DocumentRepositoryAsync;
+import javax.inject.Inject;
 
-import java.util.List;
-import java.util.function.Consumer;
+@RunWith(WeldJUnit4Runner.class)
+public class CouchbaseExtensionTest {
 
-/**
- * A {@link DocumentRepositoryAsync} to orientdb
- */
-public interface OrientDBDocumentRepositoryAsync extends DocumentRepositoryAsync {
+    @Inject
+    private PersonRepositoryAsync personRepositoryAsync;
 
+    @Inject
+    private PersonRepository personRepository;
 
-    <T> void find(String query, Consumer<List<T>> callBack, Object... params);
+    @Test
+    public void shouldSaveOrientDB() {
+        Person person = new Person("Ada", 10);
+        personRepository.save(person);
+        personRepositoryAsync.save(person);
+    }
 }

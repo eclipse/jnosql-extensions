@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.function.Consumer;
 
 /**
- * A {@link DocumentRepository} to elasticsearch
+ * A {@link DocumentRepository} to orientdb
  */
 public interface OrientDBDocumentRepository extends DocumentRepository {
 

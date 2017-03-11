@@ -17,19 +17,19 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.jnosql.artemis.orientdb.document;
+package org.jnosql.artemis.couchbase.document;
 
-
-import org.jnosql.artemis.document.DocumentRepositoryAsync;
-
-import java.util.List;
-import java.util.function.Consumer;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
- * A {@link DocumentRepositoryAsync} to orientdb
+ * To a dynamic query on CouchbaseCrudRepository and CouchbaseCrudRepositoryAsync interfaces.
  */
-public interface OrientDBDocumentRepositoryAsync extends DocumentRepositoryAsync {
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.METHOD)
+public @interface N1QL {
 
-
-    <T> void find(String query, Consumer<List<T>> callBack, Object... params);
+    String value();
 }

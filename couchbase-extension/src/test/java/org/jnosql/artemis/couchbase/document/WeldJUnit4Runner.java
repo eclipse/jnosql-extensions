@@ -17,19 +17,20 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.jnosql.artemis.orientdb.document;
+package org.jnosql.artemis.couchbase.document;
 
+import org.junit.runners.BlockJUnit4ClassRunner;
+import org.junit.runners.model.InitializationError;
 
-import org.jnosql.artemis.document.DocumentRepositoryAsync;
+public class WeldJUnit4Runner extends BlockJUnit4ClassRunner {
 
-import java.util.List;
-import java.util.function.Consumer;
+    public WeldJUnit4Runner(Class<Object> clazz) throws InitializationError {
+        super(clazz);
+    }
 
-/**
- * A {@link DocumentRepositoryAsync} to orientdb
- */
-public interface OrientDBDocumentRepositoryAsync extends DocumentRepositoryAsync {
-
-
-    <T> void find(String query, Consumer<List<T>> callBack, Object... params);
+    @Override
+    protected Object createTest() {
+        final Class<?> test = getTestClass().getJavaClass();
+        return WeldContext.INSTANCE.getBean(test);
+    }
 }
