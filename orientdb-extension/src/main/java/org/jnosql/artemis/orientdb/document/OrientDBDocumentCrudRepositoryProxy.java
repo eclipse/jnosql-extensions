@@ -67,13 +67,13 @@ class OrientDBDocumentCrudRepositoryProxy<T> implements InvocationHandler {
     @Override
     public Object invoke(Object o, Method method, Object[] args) throws Throwable {
 
-        SQL sqlAnnotation = method.getAnnotation(SQL.class);
-        if (Objects.nonNull(sqlAnnotation)) {
+        SQL sql = method.getAnnotation(SQL.class);
+        if (Objects.nonNull(sql)) {
             List<T> result = Collections.emptyList();
             if (args == null || args.length == 0) {
-                result = repository.find(sqlAnnotation.value());
+                result = repository.find(sql.value());
             } else {
-                result = repository.find(sqlAnnotation.value(), args);
+                result = repository.find(sql.value(), args);
             }
             return ReturnTypeConverterUtil.returnObject(result, typeClass, method);
         }
