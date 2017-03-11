@@ -20,6 +20,7 @@
 package org.jnosql.artemis.couchbase.document;
 
 import com.couchbase.client.java.document.json.JsonObject;
+import com.couchbase.client.java.query.Statement;
 import org.jnosql.artemis.document.DocumentEntityConverter;
 import org.jnosql.diana.api.document.Document;
 import org.jnosql.diana.api.document.DocumentEntity;
@@ -66,12 +67,40 @@ public class DefaultCouchbaseDocumentRepositoryAsyncTest {
         String query = "select * from Person where name = ?";
         Consumer<List<Person>> callBack = p -> {
         };
-
         JsonObject params = JsonObject.create().put("name", "Ada");
-
         repositoryAsync.n1qlQuery(query, params, callBack);
-
         Mockito.verify(managerAsync).n1qlQuery(Mockito.eq(query), Mockito.eq(params), Mockito.any(Consumer.class));
 
     }
+
+    @Test
+    public void shouldFindStatement() {
+        Statement query = Mockito.mock(Statement.class);
+        Consumer<List<Person>> callBack = p -> {
+        };
+        JsonObject params = JsonObject.create().put("name", "Ada");
+        repositoryAsync.n1qlQuery(query, params, callBack);
+        Mockito.verify(managerAsync).n1qlQuery(Mockito.eq(query), Mockito.eq(params), Mockito.any(Consumer.class));
+    }
+
+    @Test
+    public void shouldFind1() {
+        String query = "select * from Person where name = ?";
+        Consumer<List<Person>> callBack = p -> {
+        };
+        repositoryAsync.n1qlQuery(query, callBack);
+        Mockito.verify(managerAsync).n1qlQuery(Mockito.eq(query),  Mockito.any(Consumer.class));
+
+    }
+
+    @Test
+    public void shouldFindStatement1() {
+        Statement query = Mockito.mock(Statement.class);
+        Consumer<List<Person>> callBack = p -> {
+        };
+        repositoryAsync.n1qlQuery(query, callBack);
+        Mockito.verify(managerAsync).n1qlQuery(Mockito.eq(query),  Mockito.any(Consumer.class));
+    }
+
+
 }

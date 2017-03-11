@@ -19,6 +19,8 @@
  */
 package org.jnosql.artemis.couchbase.document;
 
+import com.couchbase.client.java.document.json.JsonObject;
+import com.couchbase.client.java.query.Statement;
 import org.jnosql.artemis.document.DocumentEntityConverter;
 import org.jnosql.artemis.document.DocumentEventPersistManager;
 import org.jnosql.artemis.document.DocumentWorkflow;
@@ -26,6 +28,7 @@ import org.jnosql.diana.api.document.Document;
 import org.jnosql.diana.api.document.DocumentEntity;
 import org.jnosql.diana.couchbase.document.CouchbaseDocumentCollectionManager;
 import org.junit.Before;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 
@@ -63,6 +66,35 @@ public class DefaultCouchbaseDocumentRepositoryTest {
         entity.add(Document.of("name", "Ada"));
         entity.add(Document.of("age", 10));
 
+    }
+
+    @Test
+    public void shouldFindN1ql() {
+        JsonObject params = JsonObject.create().put("name", "Ada");
+        repository.n1qlQuery("select * from Person where name = $name", params);
+        Mockito.verify(manager).n1qlQuery("select * from Person where name = $name", params);
+    }
+
+    @Test
+    public void shouldFindN1qlStatment() {
+        Statement statement = Mockito.mock(Statement.class);
+        JsonObject params = JsonObject.create().put("name", "Ada");
+        repository.n1qlQuery(statement, params);
+        Mockito.verify(manager).n1qlQuery(statement, params);
+    }
+
+
+    @Test
+    public void shouldFindN1ql2() {
+        repository.n1qlQuery("select * from Person where name = $name");
+        Mockito.verify(manager).n1qlQuery("select * from Person where name = $name");
+    }
+
+    @Test
+    public void shouldFindN1qlStatment2() {
+        Statement statement = Mockito.mock(Statement.class);
+        repository.n1qlQuery(statement);
+        Mockito.verify(manager).n1qlQuery(statement);
     }
 
 }

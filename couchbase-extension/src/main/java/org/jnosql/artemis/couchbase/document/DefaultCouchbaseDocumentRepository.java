@@ -86,7 +86,10 @@ class DefaultCouchbaseDocumentRepository extends AbstractDocumentRepository
     public <T> List<T> n1qlQuery(String n1qlQuery, JsonObject params) throws NullPointerException {
         Objects.requireNonNull(n1qlQuery, "n1qlQuery is required");
         Objects.requireNonNull(params, "params is required");
-        return null;
+        return manager.get().n1qlQuery(n1qlQuery, params).stream()
+                .map(converter::toEntity)
+                .map(d -> (T) d)
+                .collect(Collectors.toList());
     }
 
     @Override
