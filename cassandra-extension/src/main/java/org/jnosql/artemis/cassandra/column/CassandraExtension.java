@@ -31,7 +31,7 @@ import java.util.HashSet;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
 
-public class CassandraExtension implements Extension {
+class CassandraExtension implements Extension {
 
     private static final Logger LOGGER = Logger.getLogger(CassandraExtension.class.getName());
 
