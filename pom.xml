@@ -43,6 +43,7 @@
     <modules>
         <module>cassandra-extension</module>
 	<module>elasticsearch-extension</module>
+	<module>orientdb-extension</module>
     </modules>
 
     <dependencies>
