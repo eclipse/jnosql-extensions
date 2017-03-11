@@ -73,7 +73,7 @@ class CassandraRepositoryAsyncBean implements Bean<CassandraCrudRepositoryAsync>
     public CassandraCrudRepositoryAsync create(CreationalContext<CassandraCrudRepositoryAsync> creationalContext) {
         ClassRepresentations classRepresentations = getInstance(ClassRepresentations.class);
         CassandraColumnRepositoryAsync repository = getInstance(CassandraColumnRepositoryAsync.class);
-        CassandraColumnCrudRepositoryAsyncProxy handler = new CassandraColumnCrudRepositoryAsyncProxy(repository,
+        CassandraCrudRepositoryAsyncProxy handler = new CassandraCrudRepositoryAsyncProxy(repository,
                 classRepresentations, type);
         return (CassandraCrudRepositoryAsync) Proxy.newProxyInstance(type.getClassLoader(),
                 new Class[]{type},

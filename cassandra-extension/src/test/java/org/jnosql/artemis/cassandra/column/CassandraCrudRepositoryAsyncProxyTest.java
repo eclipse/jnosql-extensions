@@ -25,8 +25,6 @@ import org.jnosql.artemis.DynamicQueryException;
 import org.jnosql.artemis.reflection.ClassRepresentations;
 import org.jnosql.diana.api.column.ColumnDeleteQuery;
 import org.jnosql.diana.api.column.ColumnQuery;
-import org.jnosql.diana.api.document.DocumentQuery;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -37,7 +35,6 @@ import javax.inject.Inject;
 import java.lang.reflect.Proxy;
 import java.time.Duration;
 import java.util.List;
-import java.util.Objects;
 import java.util.function.Consumer;
 
 import static java.util.Collections.singletonList;
@@ -48,7 +45,7 @@ import static org.mockito.Mockito.verify;
 
 
 @RunWith(WeldJUnit4Runner.class)
-public class CassandraColumnCrudRepositoryAsyncProxyTest {
+public class CassandraCrudRepositoryAsyncProxyTest {
 
 
     private CassandraColumnRepositoryAsync repository;
@@ -63,7 +60,7 @@ public class CassandraColumnCrudRepositoryAsyncProxyTest {
     public void setUp() {
         this.repository = Mockito.mock(CassandraColumnRepositoryAsync.class);
 
-        CassandraColumnCrudRepositoryAsyncProxy handler = new CassandraColumnCrudRepositoryAsyncProxy(repository,
+        CassandraCrudRepositoryAsyncProxy handler = new CassandraCrudRepositoryAsyncProxy(repository,
                 classRepresentations, PersonAsyncRepository.class);
 
 

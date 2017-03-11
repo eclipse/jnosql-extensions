@@ -45,7 +45,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(WeldJUnit4Runner.class)
-public class CassandraColumnCrudRepositoryProxyTest {
+public class CassandraCrudRepositoryProxyTest {
 
 
     private CassandraColumnRepository repository;
@@ -60,7 +60,7 @@ public class CassandraColumnCrudRepositoryProxyTest {
     public void setUp() {
         this.repository = Mockito.mock(CassandraColumnRepository.class);
 
-        CassandraColumnCrudRepositoryProxy handler = new CassandraColumnCrudRepositoryProxy(repository,
+        CassandraCrudRepositoryProxy handler = new CassandraCrudRepositoryProxy(repository,
                 classRepresentations, PersonRepository.class);
 
         when(repository.save(any(Person.class))).thenReturn(new Person());

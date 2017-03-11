@@ -73,7 +73,7 @@ class CassandraRepositoryBean implements Bean<CassandraCrudRepository>, Passivat
     public CassandraCrudRepository create(CreationalContext<CassandraCrudRepository> creationalContext) {
         ClassRepresentations classRepresentations = getInstance(ClassRepresentations.class);
         CassandraColumnRepository repository = getInstance(CassandraColumnRepository.class);
-        CassandraColumnCrudRepositoryProxy handler = new CassandraColumnCrudRepositoryProxy(repository,
+        CassandraCrudRepositoryProxy handler = new CassandraCrudRepositoryProxy(repository,
                 classRepresentations, type);
         return (CassandraCrudRepository) Proxy.newProxyInstance(type.getClassLoader(),
                 new Class[]{type},
