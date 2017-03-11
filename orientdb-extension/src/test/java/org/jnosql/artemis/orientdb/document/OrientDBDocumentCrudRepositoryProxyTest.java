@@ -137,10 +137,10 @@ public class OrientDBDocumentCrudRepositoryProxyTest {
 
     interface PersonRepository extends CrudRepository<Person> {
 
-        @Query("select * from Person")
+        @SQL("select * from Person")
         List<Person> findAll();
 
-        @Query("select * from Person where name = ?")
+        @SQL("select * from Person where name = ?")
         List<Person> findByName(String name);
     }
 }
