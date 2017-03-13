@@ -50,7 +50,7 @@ import static org.mockito.Mockito.verify;
 public class DefaultCassandraColumnRepositoryAsyncTest {
 
     @Inject
-    private ColumnEntityConverter converter;
+    private CassandraColumnEntityConverter converter;
 
     private CassandraColumnFamilyManagerAsync managerAsync;
 

@@ -46,7 +46,7 @@ class DefaultCassandraColumnRepository extends AbstractColumnRepository implemen
 
     private Instance<CassandraColumnFamilyManager> manager;
 
-    private ColumnEntityConverter converter;
+    private CassandraColumnEntityConverter converter;
 
     private ColumnWorkflow flow;
 
@@ -54,7 +54,7 @@ class DefaultCassandraColumnRepository extends AbstractColumnRepository implemen
 
     @Inject
     DefaultCassandraColumnRepository(Instance<CassandraColumnFamilyManager> manager,
-                                     ColumnEntityConverter converter,
+                                     CassandraColumnEntityConverter converter,
                                      ColumnWorkflow flow,
                                      ColumnEventPersistManager persistManager) {
         this.manager = manager;

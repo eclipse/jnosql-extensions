@@ -47,7 +47,7 @@ class DefaultCassandraColumnRepositoryAsync extends AbstractColumnRepositoryAsyn
         implements CassandraColumnRepositoryAsync {
 
 
-    private ColumnEntityConverter converter;
+    private CassandraColumnEntityConverter converter;
 
     private Instance<CassandraColumnFamilyManagerAsync> managerAsync;
 
@@ -55,7 +55,7 @@ class DefaultCassandraColumnRepositoryAsync extends AbstractColumnRepositoryAsyn
     }
 
     @Inject
-    DefaultCassandraColumnRepositoryAsync(ColumnEntityConverter converter,
+    DefaultCassandraColumnRepositoryAsync(CassandraColumnEntityConverter converter,
                                           Instance<CassandraColumnFamilyManagerAsync> managerAsync) {
         this.converter = converter;
         this.managerAsync = managerAsync;

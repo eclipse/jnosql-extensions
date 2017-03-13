@@ -55,7 +55,7 @@ import static org.mockito.Mockito.when;
 public class DefaultCassandraColumnRepositoryTest {
 
     @Inject
-    private ColumnEntityConverter converter;
+    private CassandraColumnEntityConverter converter;
 
     @Inject
     private ColumnWorkflow flow;
