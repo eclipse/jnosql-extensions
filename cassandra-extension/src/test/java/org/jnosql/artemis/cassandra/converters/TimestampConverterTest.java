@@ -19,7 +19,6 @@
  */
 package org.jnosql.artemis.cassandra.converters;
 
-import com.datastax.driver.core.LocalDate;
 import org.jnosql.artemis.AttributeConverter;
 import org.junit.Before;
 import org.junit.Test;

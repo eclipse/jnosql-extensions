@@ -22,6 +22,8 @@ package org.jnosql.artemis.cassandra.column;
 import org.hamcrest.Matchers;
 import org.jnosql.artemis.cassandra.column.model.Actor;
 import org.jnosql.artemis.cassandra.column.model.Director;
+import org.jnosql.artemis.cassandra.column.model.History;
+import org.jnosql.artemis.cassandra.column.model.History2;
 import org.jnosql.artemis.cassandra.column.model.Job;
 import org.jnosql.artemis.cassandra.column.model.Money;
 import org.jnosql.artemis.cassandra.column.model.Movie;
@@ -31,17 +33,25 @@ import org.jnosql.diana.api.TypeReference;
 import org.jnosql.diana.api.Value;
 import org.jnosql.diana.api.column.Column;
 import org.jnosql.diana.api.column.ColumnEntity;
+import org.jnosql.diana.api.document.Document;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import sun.security.ssl.HandshakeInStream;
 
 import javax.inject.Inject;
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static java.util.Collections.singleton;
@@ -239,6 +249,47 @@ public class CassandraColumnEntityConverterTest {
         Assert.assertEquals(worker.getSalary(), worker1.getSalary());
         assertEquals(job.getCity(), worker1.getJob().getCity());
         assertEquals(job.getDescription(), worker1.getJob().getDescription());
+    }
+
+    @Test
+    public void shouldSupportLocalDateConverter() {
+        History history = new History();
+        history.setCalendar(Calendar.getInstance());
+        history.setLocalDate(LocalDate.now());
+        history.setLocalDateTime(LocalDateTime.now());
+        history.setZonedDateTime(ZonedDateTime.now());
+        history.setNumber(new java.util.Date().getTime());
+
+        ColumnEntity entity = converter.toColumn(history);
+        assertEquals("History", entity.getName());
+
+        Set<Object> collect = entity.getColumns().stream()
+                .map(Column::get).collect(Collectors.toSet());
+        assertThat(collect,
+                Matchers.containsInAnyOrder(com.datastax.driver.core.LocalDate
+                        .fromMillisSinceEpoch(new java.util.Date().getTime())));
+
+        History historyConverted = converter.toEntity(entity);
+        assertNotNull(historyConverted);
+
+
+    }
+
+
+    @Test
+    public void shouldSupportTimeStampConverter() {
+        History2 history = new History2();
+        history.setCalendar(Calendar.getInstance());
+        history.setLocalDate(LocalDate.now());
+        history.setLocalDateTime(LocalDateTime.now());
+        history.setZonedDateTime(ZonedDateTime.now());
+        history.setNumber(new java.util.Date().getTime());
+
+        ColumnEntity entity = converter.toColumn(history);
+        assertEquals("History2", entity.getName());
+        History2 historyConverted = converter.toEntity(entity);
+        assertNotNull(historyConverted);
+
     }
 
     private Object getValue(Optional<Column> document) {

@@ -80,6 +80,7 @@ public class LocalDateConverter implements AttributeConverter<Object, LocalDate>
 
     @Override
     public Object convertToEntityAttribute(LocalDate dbData) {
-        return dbData.getMillisSinceEpoch();
+        java.time.LocalDate localDate = java.time.LocalDate.of(dbData.getYear(), dbData.getMonth(), dbData.getDay());
+        return Date.from(localDate.atStartOfDay(ZONE_ID).toInstant()).getTime();
     }
 }

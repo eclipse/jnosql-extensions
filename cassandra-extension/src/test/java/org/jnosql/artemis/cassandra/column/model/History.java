@@ -17,11 +17,13 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.jnosql.artemis.cassandra.column;
+package org.jnosql.artemis.cassandra.column.model;
 
 
 import org.jnosql.artemis.Column;
+import org.jnosql.artemis.Convert;
 import org.jnosql.artemis.Entity;
+import org.jnosql.artemis.cassandra.converters.LocalDateConverter;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -31,31 +33,26 @@ import java.util.Calendar;
 @Entity
 public class History {
 
-    @Column
-    private String name;
 
     @Column
+    @Convert(value = LocalDateConverter.class)
     private Number number;
 
     @Column
+    @Convert(value = LocalDateConverter.class)
     private LocalDate localDate;
 
     @Column
+    @Convert(value = LocalDateConverter.class)
     private LocalDateTime localDateTime;
 
     @Column
+    @Convert(value = LocalDateConverter.class)
     private Calendar calendar;
 
     @Column
+    @Convert(value = LocalDateConverter.class)
     private ZonedDateTime zonedDateTime;
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public Number getNumber() {
         return number;
