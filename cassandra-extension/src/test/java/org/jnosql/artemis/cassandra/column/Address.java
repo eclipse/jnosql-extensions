@@ -21,74 +21,53 @@ package org.jnosql.artemis.cassandra.column;
 
 
 import org.jnosql.artemis.Column;
-import org.jnosql.artemis.Entity;
 
 import java.util.Objects;
 
-@Entity
-public class Person {
+public class Address {
 
     @Column
-    private String name;
+    private String city;
 
     @Column
-    private Integer age;
+    private String street;
 
-    @UDT("address")
-    @Column
-    private Address home;
 
-    public String getName() {
-        return name;
+    public String getCity() {
+        return city;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setCity(String city) {
+        this.city = city;
     }
 
-    public Integer getAge() {
-        return age;
+    public String getStreet() {
+        return street;
     }
 
-    public void setAge(Integer age) {
-        this.age = age;
-    }
-
-    public Address getHome() {
-        return home;
-    }
-
-    public void setHome(Address home) {
-        this.home = home;
-    }
-
-    public Person(String name, Integer age) {
-        this.name = name;
-        this.age = age;
-    }
-
-    public Person() {
+    public void setStreet(String street) {
+        this.street = street;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Person person = (Person) o;
-        return Objects.equals(name, person.name) &&
-                Objects.equals(age, person.age);
+        if (!(o instanceof Address)) return false;
+        Address address = (Address) o;
+        return Objects.equals(city, address.city) &&
+                Objects.equals(street, address.street);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, age);
+        return Objects.hash(city, street);
     }
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("Person{");
-        sb.append("name='").append(name).append('\'');
-        sb.append(", age=").append(age);
+        final StringBuilder sb = new StringBuilder("Address{");
+        sb.append("city='").append(city).append('\'');
+        sb.append(", street='").append(street).append('\'');
         sb.append('}');
         return sb.toString();
     }

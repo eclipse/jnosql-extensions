@@ -33,12 +33,11 @@ import org.jnosql.diana.api.TypeReference;
 import org.jnosql.diana.api.Value;
 import org.jnosql.diana.api.column.Column;
 import org.jnosql.diana.api.column.ColumnEntity;
-import org.jnosql.diana.api.document.Document;
+import org.jnosql.diana.cassandra.column.UDT;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import sun.security.ssl.HandshakeInStream;
 
 import javax.inject.Inject;
 import java.math.BigDecimal;
@@ -275,6 +274,49 @@ public class CassandraColumnEntityConverterTest {
 
     }
 
+    @Test
+    public void shouldSupportUDT() {
+        Address address = new Address();
+        address.setCity("California");
+        address.setStreet("Street");
+
+        Person person = new Person();
+        person.setAge(10);
+        person.setName("Ada");
+        person.setHome(address);
+
+        ColumnEntity entity = converter.toColumn(person);
+        assertEquals("Person", entity.getName());
+        Column column = entity.find("home").get();
+        org.jnosql.diana.cassandra.column.UDT udt = org.jnosql.diana.cassandra.column.UDT.class.cast(column);
+
+        assertEquals("address", udt.getUserType());
+        assertEquals("home", udt.getName());
+        assertThat(udt.getColumns(), Matchers.containsInAnyOrder(Column.of("city", "California"), Column.of("street", "Street")));
+
+    }
+
+
+    @Test
+    public void shouldSupportUDTToEntity() {
+        ColumnEntity entity = ColumnEntity.of("Person");
+        entity.add(Column.of("name", "Poliana"));
+        entity.add(Column.of("age", 20));
+        UDT udt = UDT.builder().withName("home")
+                .withTypeName("address")
+                .add(Column.of("city", "Salvador"))
+                .add(Column.of("street", "Jose Anasoh")).build();
+        entity.add(udt);
+
+        Person person = converter.toEntity(entity);
+        assertNotNull(person);
+        Address home = person.getHome();
+        assertEquals("Poliana", person.getName());
+        assertEquals(Integer.valueOf(20), person.getAge());
+        assertEquals("Salvador", home.getCity());
+        assertEquals("Jose Anasoh", home.getStreet());
+
+    }
 
     @Test
     public void shouldSupportTimeStampConverter() {
