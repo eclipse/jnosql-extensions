@@ -38,6 +38,7 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Alternative;
 import javax.inject.Inject;
 import javax.interceptor.Interceptor;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -146,8 +147,20 @@ class CassandraColumnEntityConverter implements ColumnEntityConverter {
     private <T> void setEmbeddedField(T instance, List<Column> columns, Optional<Column> column, FieldRepresentation field) {
         if (column.isPresent()) {
             Column subColumn = column.get();
-            reflections.setValue(instance, field.getField(), toEntity(field.getField().getType(), subColumn.get(new TypeReference<List<Column>>() {
-            })));
+            Object value = subColumn.get();
+            if (Map.class.isInstance(value)) {
+                Map map = Map.class.cast(value);
+                List<Column> embeddedColumns = new ArrayList<>();
+                for (Object key : map.keySet()) {
+                    embeddedColumns.add(Column.of(key.toString(), map.get(key)));
+                }
+                reflections.setValue(instance, field.getField(), toEntity(field.getField().getType(), embeddedColumns));
+            } else {
+                reflections.setValue(instance, field.getField(), toEntity(field.getField().getType(),
+                        subColumn.get(new TypeReference<List<Column>>() {
+                        })));
+            }
+
         } else {
             reflections.setValue(instance, field.getField(), toEntity(field.getField().getType(), columns));
         }
