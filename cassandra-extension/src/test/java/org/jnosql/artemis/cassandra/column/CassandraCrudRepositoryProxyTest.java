@@ -20,7 +20,6 @@
 package org.jnosql.artemis.cassandra.column;
 
 import com.datastax.driver.core.ConsistencyLevel;
-import org.jnosql.artemis.CrudRepository;
 import org.jnosql.artemis.reflection.ClassRepresentations;
 import org.jnosql.diana.api.column.ColumnDeleteQuery;
 import org.jnosql.diana.api.column.ColumnQuery;
@@ -155,7 +154,7 @@ public class CassandraCrudRepositoryProxyTest {
         verify(repository).cql(Mockito.eq("select * from Person where name = ?"), Mockito.any());
     }
 
-    interface PersonRepository extends CrudRepository<Person> {
+    interface PersonRepository extends CassandraCrudRepository<Person> {
 
         Person findByName(String name, ConsistencyLevel level);
 

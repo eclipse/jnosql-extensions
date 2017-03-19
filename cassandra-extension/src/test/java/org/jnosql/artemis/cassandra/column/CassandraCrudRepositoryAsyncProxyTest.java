@@ -20,7 +20,6 @@
 package org.jnosql.artemis.cassandra.column;
 
 import com.datastax.driver.core.ConsistencyLevel;
-import org.jnosql.artemis.CrudRepositoryAsync;
 import org.jnosql.artemis.DynamicQueryException;
 import org.jnosql.artemis.reflection.ClassRepresentations;
 import org.jnosql.diana.api.column.ColumnDeleteQuery;
@@ -176,7 +175,7 @@ public class CassandraCrudRepositoryAsyncProxyTest {
 
     }
 
-    interface PersonAsyncRepository extends CrudRepositoryAsync<Person> {
+    interface PersonAsyncRepository extends CassandraCrudRepositoryAsync<Person> {
 
         Person findByName(String name);
 
