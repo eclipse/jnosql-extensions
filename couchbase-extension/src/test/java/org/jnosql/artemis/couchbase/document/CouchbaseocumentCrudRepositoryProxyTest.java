@@ -137,7 +137,7 @@ public class CouchbaseocumentCrudRepositoryProxyTest {
         verify(repository).n1qlQuery(Mockito.eq("select * from Person where name = $name"), Mockito.any());
     }
 
-    interface PersonRepository extends CrudRepository<Person> {
+    interface PersonRepository extends CouchbaseCrudRepository<Person> {
 
         @N1QL("select * from Person")
         List<Person> findAll();

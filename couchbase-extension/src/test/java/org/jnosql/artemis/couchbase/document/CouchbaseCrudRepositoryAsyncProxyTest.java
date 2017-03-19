@@ -20,7 +20,6 @@
 package org.jnosql.artemis.couchbase.document;
 
 import com.couchbase.client.java.document.json.JsonObject;
-import org.jnosql.artemis.CrudRepositoryAsync;
 import org.jnosql.artemis.DynamicQueryException;
 import org.jnosql.artemis.reflection.ClassRepresentations;
 import org.jnosql.diana.api.column.ColumnQuery;
@@ -150,7 +149,7 @@ public class CouchbaseCrudRepositoryAsyncProxyTest {
         verify(repository).n1qlQuery(Mockito.eq("select * from Person where name= $name"), Mockito.eq(params), Mockito.eq(callBack));
     }
 
-    interface PersonAsyncRepository extends CrudRepositoryAsync<Person> {
+    interface PersonAsyncRepository extends CouchbaseCrudRepositoryAsync<Person> {
 
         Person findByName(String name);
 
