@@ -19,7 +19,6 @@
  */
 package org.jnosql.artemis.orientdb.document;
 
-import org.jnosql.artemis.CrudRepository;
 import org.jnosql.artemis.reflection.ClassRepresentations;
 import org.junit.Before;
 import org.junit.Test;
@@ -135,7 +134,7 @@ public class OrientDBDocumentCrudRepositoryProxyTest {
         verify(repository).find(Mockito.eq("select * from Person where name = ?"), Mockito.any());
     }
 
-    interface PersonRepository extends CrudRepository<Person> {
+    interface PersonRepository extends OrientDBCrudRepository<Person> {
 
         @SQL("select * from Person")
         List<Person> findAll();

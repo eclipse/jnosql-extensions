@@ -114,7 +114,7 @@ class CassandraColumnEntityConverter implements ColumnEntityConverter {
             if (EMBEDDED.equals(field.getType())) {
                 setEmbeddedField(instance, columns, column, field);
             } else if (Objects.nonNull(field.getField().getAnnotation(UDT.class))) {
-                setUDTField(instance, columns, column, field);
+                setUDTField(instance, column, field);
             } else {
                 setSingleField(instance, column, field);
             }
@@ -166,7 +166,7 @@ class CassandraColumnEntityConverter implements ColumnEntityConverter {
         }
     }
 
-    private <T> void setUDTField(T instance, List<Column> columns, Optional<Column> column, FieldRepresentation field) {
+    private <T> void setUDTField(T instance, Optional<Column> column, FieldRepresentation field) {
         if (column.isPresent() && org.jnosql.diana.cassandra.column.UDT.class.isInstance(column.get())) {
             org.jnosql.diana.cassandra.column.UDT udt = org.jnosql.diana.cassandra.column.UDT.class.cast(column.get());
             reflections.setValue(instance, field.getField(), toEntity(field.getField().getType(), udt.getColumns()));

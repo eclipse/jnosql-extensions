@@ -19,7 +19,6 @@
  */
 package org.jnosql.artemis.orientdb.document;
 
-import org.jnosql.artemis.CrudRepositoryAsync;
 import org.jnosql.artemis.DynamicQueryException;
 import org.jnosql.artemis.reflection.ClassRepresentations;
 import org.jnosql.diana.api.column.ColumnQuery;
@@ -150,7 +149,7 @@ public class OrientDBCrudRepositoryAsyncProxyTest {
 
     }
 
-    interface PersonAsyncRepository extends CrudRepositoryAsync<Person> {
+    interface PersonAsyncRepository extends OrientDBCrudRepositoryAsync<Person> {
 
         Person findByName(String name);
 
