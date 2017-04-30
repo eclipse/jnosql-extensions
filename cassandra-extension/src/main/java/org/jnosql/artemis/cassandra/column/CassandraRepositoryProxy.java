@@ -125,34 +125,34 @@ class CassandraRepositoryProxy<T> implements InvocationHandler {
 
     class ColumnRepository extends AbstractColumnRepository implements CassandraRepository {
 
-        private final CassandraTemplate repository;
+        private final CassandraTemplate template;
 
-        ColumnRepository(CassandraTemplate repository) {
-            this.repository = repository;
+        ColumnRepository(CassandraTemplate template) {
+            this.template = template;
         }
 
         @Override
         protected ColumnTemplate getTemplate() {
-            return repository;
+            return template;
         }
         @Override
         public Object save(Object entity, ConsistencyLevel level) throws NullPointerException {
-            return repository.save(entity, level);
+            return template.save(entity, level);
         }
 
         @Override
         public Object save(Object entity, Duration ttl, ConsistencyLevel level) throws NullPointerException {
-            return repository.save(entity, ttl, level);
+            return template.save(entity, ttl, level);
         }
 
         @Override
         public Iterable save(Iterable entities, ConsistencyLevel level) throws NullPointerException {
-            return repository.save(entities, level);
+            return template.save(entities, level);
         }
 
         @Override
         public Iterable save(Iterable entities, Duration ttl, ConsistencyLevel level) throws NullPointerException {
-            return repository.save(entities, ttl, level);
+            return template.save(entities, ttl, level);
         }
 
 

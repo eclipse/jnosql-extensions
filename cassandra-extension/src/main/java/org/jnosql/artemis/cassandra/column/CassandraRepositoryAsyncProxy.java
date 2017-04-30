@@ -161,49 +161,49 @@ class CassandraRepositoryAsyncProxy<T> implements InvocationHandler {
 
     class ColumnRepositoryAsync extends AbstractColumnRepositoryAsync implements CassandraRepositoryAsync {
 
-        private final CassandraTemplateAsync repository;
+        private final CassandraTemplateAsync template;
 
-        ColumnRepositoryAsync(CassandraTemplateAsync repository) {
-            this.repository = repository;
+        ColumnRepositoryAsync(CassandraTemplateAsync template) {
+            this.template = template;
         }
 
         @Override
         protected ColumnTemplateAsync getTemplate() {
-            return repository;
+            return template;
         }
 
         @Override
         public void save(Object entity, ConsistencyLevel level) {
-            repository.save(entity, level);
+            template.save(entity, level);
         }
 
         @Override
         public void save(Object entity, Duration ttl, ConsistencyLevel level)
                 throws ExecuteAsyncQueryException, UnsupportedOperationException, NullPointerException {
-            repository.save(entity, ttl, level);
+            template.save(entity, ttl, level);
         }
 
         @Override
         public void save(Iterable entities, ConsistencyLevel level) {
-            repository.save(entities, level);
+            template.save(entities, level);
         }
 
         @Override
         public void save(Iterable entities, Duration ttl, ConsistencyLevel level)
                 throws ExecuteAsyncQueryException, UnsupportedOperationException, NullPointerException {
-            repository.save(entities, ttl, level);
+            template.save(entities, ttl, level);
         }
 
         @Override
         public void save(Object entity, ConsistencyLevel level, Consumer callBack)
                 throws ExecuteAsyncQueryException, UnsupportedOperationException, NullPointerException {
-            repository.save(entity, level, callBack);
+            template.save(entity, level, callBack);
         }
 
         @Override
         public void save(Object entity, Duration ttl, ConsistencyLevel level, Consumer callBack)
                 throws ExecuteAsyncQueryException, UnsupportedOperationException, NullPointerException {
-            repository.save(entity, ttl, level, callBack);
+            template.save(entity, ttl, level, callBack);
         }
 
 
