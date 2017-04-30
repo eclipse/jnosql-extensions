@@ -16,18 +16,15 @@
 package org.jnosql.artemis.orientdb.document;
 
 
-import org.jnosql.artemis.DynamicQueryException;
 import org.jnosql.artemis.RepositoryAsync;
 import org.jnosql.artemis.document.DocumentTemplateAsync;
 import org.jnosql.artemis.document.query.AbstractDocumentRepositoryAsync;
+import org.jnosql.artemis.document.query.AbstractDocumentRepositoryAsyncProxy;
 import org.jnosql.artemis.document.query.DocumentQueryDeleteParser;
 import org.jnosql.artemis.document.query.DocumentQueryParser;
 import org.jnosql.artemis.reflection.ClassRepresentation;
 import org.jnosql.artemis.reflection.ClassRepresentations;
-import org.jnosql.diana.api.document.DocumentDeleteQuery;
-import org.jnosql.diana.api.document.DocumentQuery;
 
-import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.util.Objects;
@@ -35,7 +32,7 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
-class OrientDBCrudRepositoryAsyncProxy<T> implements InvocationHandler {
+class OrientDBRepositoryAsyncProxy<T> extends AbstractDocumentRepositoryAsyncProxy<T> {
 
     private static final Consumer NOOP = t -> {
     };
@@ -47,25 +44,50 @@ class OrientDBCrudRepositoryAsyncProxy<T> implements InvocationHandler {
     private final OrientDBDocumentTemplateAsync template;
 
 
-    private final DocumentCrudRepositoryAsync crudRepository;
+    private final DocumentRepositoryAsync repository;
 
     private final ClassRepresentation classRepresentation;
 
     private final DocumentQueryParser queryParser;
 
-    private final DocumentQueryDeleteParser queryDeleteParser;
+    private final DocumentQueryDeleteParser deleteParser;
 
 
-    OrientDBCrudRepositoryAsyncProxy(OrientDBDocumentTemplateAsync template, ClassRepresentations classRepresentations, Class<?> repositoryType) {
+    OrientDBRepositoryAsyncProxy(OrientDBDocumentTemplateAsync template, ClassRepresentations classRepresentations, Class<?> repositoryType) {
         this.template = template;
-        this.crudRepository = new DocumentCrudRepositoryAsync(template);
+        this.repository = new DocumentRepositoryAsync(template);
         this.typeClass = Class.class.cast(ParameterizedType.class.cast(repositoryType.getGenericInterfaces()[0])
                 .getActualTypeArguments()[0]);
         this.classRepresentation = classRepresentations.get(typeClass);
         this.queryParser = new DocumentQueryParser();
-        this.queryDeleteParser = new DocumentQueryDeleteParser();
+        this.deleteParser = new DocumentQueryDeleteParser();
     }
 
+
+    @Override
+    protected RepositoryAsync getRepository() {
+        return repository;
+    }
+
+    @Override
+    protected DocumentQueryParser getQueryParser() {
+        return queryParser;
+    }
+
+    @Override
+    protected DocumentTemplateAsync getTemplate() {
+        return null;
+    }
+
+    @Override
+    protected DocumentQueryDeleteParser getDeleteParser() {
+        return deleteParser;
+    }
+
+    @Override
+    protected ClassRepresentation getClassRepresentation() {
+        return classRepresentation;
+    }
 
     @Override
     public Object invoke(Object instance, Method method, Object[] args) throws Throwable {
@@ -87,42 +109,15 @@ class OrientDBCrudRepositoryAsyncProxy<T> implements InvocationHandler {
                 return Void.class;
             }
         }
-        String methodName = method.getName();
-        switch (methodName) {
-            case "save":
-            case "update":
-                return method.invoke(crudRepository, args);
-            default:
-
-        }
-        if (methodName.startsWith("findBy")) {
-            DocumentQuery query = queryParser.parse(methodName, args, classRepresentation);
-            Object callBack = args[args.length - 1];
-            if (Consumer.class.isInstance(callBack)) {
-                template.find(query, Consumer.class.cast(callBack));
-            } else {
-                throw new DynamicQueryException("On find async method you must put a java.util.function.Consumer" +
-                        " as end parameter as callback");
-            }
-        } else if (methodName.startsWith("deleteBy")) {
-            Object callBack = args[args.length - 1];
-            DocumentDeleteQuery query = queryDeleteParser.parse(methodName, args, classRepresentation);
-            if (Consumer.class.isInstance(callBack)) {
-                template.delete(query, Consumer.class.cast(callBack));
-            } else {
-                template.delete(query);
-            }
-            return null;
-        }
-        return null;
+        return super.invoke(instance, method, args);
     }
 
 
-    class DocumentCrudRepositoryAsync extends AbstractDocumentRepositoryAsync implements RepositoryAsync {
+    class DocumentRepositoryAsync extends AbstractDocumentRepositoryAsync implements RepositoryAsync {
 
         private final DocumentTemplateAsync template;
 
-        DocumentCrudRepositoryAsync(DocumentTemplateAsync template) {
+        DocumentRepositoryAsync(DocumentTemplateAsync template) {
             this.template = template;
         }
 

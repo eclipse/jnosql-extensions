@@ -37,7 +37,7 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.verify;
 
 @RunWith(WeldJUnit4Runner.class)
-public class OrientDBCrudRepositoryAsyncProxyTest {
+public class OrientDBRepositoryAsyncProxyTest {
 
 
     private OrientDBDocumentTemplateAsync repository;
@@ -52,7 +52,7 @@ public class OrientDBCrudRepositoryAsyncProxyTest {
     public void setUp() {
         this.repository = Mockito.mock(OrientDBDocumentTemplateAsync.class);
 
-        OrientDBCrudRepositoryAsyncProxy handler = new OrientDBCrudRepositoryAsyncProxy(repository,
+        OrientDBRepositoryAsyncProxy handler = new OrientDBRepositoryAsyncProxy(repository,
                 classRepresentations, PersonAsyncRepository.class);
 
 
