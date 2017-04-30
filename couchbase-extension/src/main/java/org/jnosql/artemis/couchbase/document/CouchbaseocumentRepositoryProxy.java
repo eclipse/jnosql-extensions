@@ -20,14 +20,12 @@ import com.couchbase.client.java.document.json.JsonObject;
 import org.jnosql.artemis.Repository;
 import org.jnosql.artemis.document.DocumentTemplate;
 import org.jnosql.artemis.document.query.AbstractDocumentRepository;
+import org.jnosql.artemis.document.query.AbstractDocumentRepositoryProxy;
 import org.jnosql.artemis.document.query.DocumentQueryDeleteParser;
 import org.jnosql.artemis.document.query.DocumentQueryParser;
 import org.jnosql.artemis.reflection.ClassRepresentation;
 import org.jnosql.artemis.reflection.ClassRepresentations;
-import org.jnosql.diana.api.document.DocumentDeleteQuery;
-import org.jnosql.diana.api.document.DocumentQuery;
 
-import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.util.Collections;
@@ -36,32 +34,57 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-class CouchbaseocumentCrudRepositoryProxy<T> implements InvocationHandler {
+class CouchbaseocumentRepositoryProxy<T> extends AbstractDocumentRepositoryProxy<T> {
 
     private final Class<T> typeClass;
 
     private final CouchbaseTemplate template;
 
 
-    private final DocumentCrudRepository crudRepository;
+    private final DocumentCrudRepository repository;
 
     private final ClassRepresentation classRepresentation;
 
     private final DocumentQueryParser queryParser;
 
-    private final DocumentQueryDeleteParser deleteQueryParser;
+    private final DocumentQueryDeleteParser deleteParser;
 
 
-    CouchbaseocumentCrudRepositoryProxy(CouchbaseTemplate template, ClassRepresentations classRepresentations, Class<?> repositoryType) {
+    CouchbaseocumentRepositoryProxy(CouchbaseTemplate template, ClassRepresentations classRepresentations, Class<?> repositoryType) {
         this.template = template;
-        this.crudRepository = new DocumentCrudRepository(template);
+        this.repository = new DocumentCrudRepository(template);
         this.typeClass = Class.class.cast(ParameterizedType.class.cast(repositoryType.getGenericInterfaces()[0])
                 .getActualTypeArguments()[0]);
         this.classRepresentation = classRepresentations.get(typeClass);
         this.queryParser = new DocumentQueryParser();
-        this.deleteQueryParser = new DocumentQueryDeleteParser();
+        this.deleteParser = new DocumentQueryDeleteParser();
     }
 
+
+    @Override
+    protected Repository getRepository() {
+        return repository;
+    }
+
+    @Override
+    protected DocumentQueryParser getQueryParser() {
+        return queryParser;
+    }
+
+    @Override
+    protected DocumentTemplate getTemplate() {
+        return template;
+    }
+
+    @Override
+    protected DocumentQueryDeleteParser getDeleteParser() {
+        return deleteParser;
+    }
+
+    @Override
+    protected ClassRepresentation getClassRepresentation() {
+        return classRepresentation;
+    }
 
     @Override
     public Object invoke(Object o, Method method, Object[] args) throws Throwable {
@@ -77,25 +100,7 @@ class CouchbaseocumentCrudRepositoryProxy<T> implements InvocationHandler {
             }
             return ReturnTypeConverterUtil.returnObject(result, typeClass, method);
         }
-
-
-        String methodName = method.getName();
-        switch (methodName) {
-            case "save":
-            case "update":
-                return method.invoke(crudRepository, args);
-            default:
-
-        }
-        if (methodName.startsWith("findBy")) {
-            DocumentQuery query = queryParser.parse(methodName, args, classRepresentation);
-            return ReturnTypeConverterUtil.returnObject(query, template, typeClass, method);
-        } else if (methodName.startsWith("deleteBy")) {
-            DocumentDeleteQuery query = deleteQueryParser.parse(methodName, args, classRepresentation);
-            template.delete(query);
-            return null;
-        }
-        return null;
+        return super.invoke(o, method, args);
     }
 
     private Optional<JsonObject> getParams(Object[] args) {

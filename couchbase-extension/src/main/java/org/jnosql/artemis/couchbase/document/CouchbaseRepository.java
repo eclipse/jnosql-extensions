@@ -22,5 +22,5 @@ import org.jnosql.artemis.Repository;
  * The couchbase {@link Repository}
  * @param <T>
  */
-public interface CouchbaseCrudRepository<T> extends Repository<T> {
+public interface CouchbaseRepository<T> extends Repository<T> {
 }

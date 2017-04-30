@@ -33,7 +33,7 @@ import java.util.Collections;
 import java.util.Set;
 
 
-class CouchbaseRepositoryBean implements Bean<CouchbaseCrudRepository>, PassivationCapable {
+class CouchbaseRepositoryBean implements Bean<CouchbaseRepository>, PassivationCapable {
 
     private final Class type;
 
@@ -66,12 +66,12 @@ class CouchbaseRepositoryBean implements Bean<CouchbaseCrudRepository>, Passivat
     }
 
     @Override
-    public CouchbaseCrudRepository create(CreationalContext<CouchbaseCrudRepository> creationalContext) {
+    public CouchbaseRepository create(CreationalContext<CouchbaseRepository> creationalContext) {
         ClassRepresentations classRepresentations = getInstance(ClassRepresentations.class);
         CouchbaseTemplate repository = getInstance(CouchbaseTemplate.class);
-        CouchbaseocumentCrudRepositoryProxy handler = new CouchbaseocumentCrudRepositoryProxy(repository,
+        CouchbaseocumentRepositoryProxy handler = new CouchbaseocumentRepositoryProxy(repository,
                 classRepresentations, type);
-        return (CouchbaseCrudRepository) Proxy.newProxyInstance(type.getClassLoader(),
+        return (CouchbaseRepository) Proxy.newProxyInstance(type.getClassLoader(),
                 new Class[]{type},
                 handler);
     }
@@ -91,7 +91,7 @@ class CouchbaseRepositoryBean implements Bean<CouchbaseCrudRepository>, Passivat
 
 
     @Override
-    public void destroy(CouchbaseCrudRepository instance, CreationalContext<CouchbaseCrudRepository> creationalContext) {
+    public void destroy(CouchbaseRepository instance, CreationalContext<CouchbaseRepository> creationalContext) {
 
     }
 

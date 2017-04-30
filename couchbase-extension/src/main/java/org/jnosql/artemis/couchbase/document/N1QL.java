@@ -21,7 +21,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * To a dynamic query on CouchbaseCrudRepository and CouchbaseCrudRepositoryAsync interfaces.
+ * To a dynamic query on CouchbaseRepository and CouchbaseRepositoryAsync interfaces.
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)

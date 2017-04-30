@@ -39,7 +39,7 @@ import static org.mockito.Mockito.when;
 
 
 @RunWith(WeldJUnit4Runner.class)
-public class CouchbaseocumentCrudRepositoryProxyTest {
+public class CouchbaseocumentRepositoryProxyTest {
 
     private CouchbaseTemplate repository;
 
@@ -53,7 +53,7 @@ public class CouchbaseocumentCrudRepositoryProxyTest {
     public void setUp() {
         this.repository = Mockito.mock(CouchbaseTemplate.class);
 
-        CouchbaseocumentCrudRepositoryProxy handler = new CouchbaseocumentCrudRepositoryProxy(repository,
+        CouchbaseocumentRepositoryProxy handler = new CouchbaseocumentRepositoryProxy(repository,
                 classRepresentations, PersonRepository.class);
 
         when(repository.save(any(Person.class))).thenReturn(new Person());
@@ -132,7 +132,7 @@ public class CouchbaseocumentCrudRepositoryProxyTest {
         verify(repository).n1qlQuery(Mockito.eq("select * from Person where name = $name"), Mockito.any());
     }
 
-    interface PersonRepository extends CouchbaseCrudRepository<Person> {
+    interface PersonRepository extends CouchbaseRepository<Person> {
 
         @N1QL("select * from Person")
         List<Person> findAll();

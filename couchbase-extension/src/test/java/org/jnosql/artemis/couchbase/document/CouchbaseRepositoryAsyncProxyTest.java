@@ -38,7 +38,7 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.verify;
 
 @RunWith(WeldJUnit4Runner.class)
-public class CouchbaseCrudRepositoryAsyncProxyTest {
+public class CouchbaseRepositoryAsyncProxyTest {
 
 
     private CouchbaseTemplateAsync repository;
@@ -53,7 +53,7 @@ public class CouchbaseCrudRepositoryAsyncProxyTest {
     public void setUp() {
         this.repository = Mockito.mock(CouchbaseTemplateAsync.class);
 
-        CouchbaseCrudRepositoryAsyncProxy handler = new CouchbaseCrudRepositoryAsyncProxy(repository,
+        CouchbaseRepositoryAsyncProxy handler = new CouchbaseRepositoryAsyncProxy(repository,
                 classRepresentations, PersonAsyncRepository.class);
 
 
@@ -145,7 +145,7 @@ public class CouchbaseCrudRepositoryAsyncProxyTest {
         verify(repository).n1qlQuery(Mockito.eq("select * from Person where name= $name"), Mockito.eq(params), Mockito.eq(callBack));
     }
 
-    interface PersonAsyncRepository extends CouchbaseCrudRepositoryAsync<Person> {
+    interface PersonAsyncRepository extends CouchbaseRepositoryAsync<Person> {
 
         Person findByName(String name);
 

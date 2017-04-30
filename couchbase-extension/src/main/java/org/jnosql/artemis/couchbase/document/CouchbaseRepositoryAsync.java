@@ -22,5 +22,5 @@ import org.jnosql.artemis.RepositoryAsync;
  * The couchbase {@link RepositoryAsync}
  * @param <T>
  */
-public interface CouchbaseCrudRepositoryAsync<T> extends RepositoryAsync<T> {
+public interface CouchbaseRepositoryAsync<T> extends RepositoryAsync<T> {
 }

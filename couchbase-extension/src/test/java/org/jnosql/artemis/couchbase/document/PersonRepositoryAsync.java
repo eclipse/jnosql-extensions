@@ -16,5 +16,5 @@
 package org.jnosql.artemis.couchbase.document;
 
 
-public interface PersonRepositoryAsync extends CouchbaseCrudRepositoryAsync<Person> {
+public interface PersonRepositoryAsync extends CouchbaseRepositoryAsync<Person> {
 }

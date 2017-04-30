@@ -35,27 +35,27 @@ class CouchbaseExtension implements Extension {
     private final Collection<Class<?>> crudAsyncTypes = new HashSet<>();
 
 
-    <T extends CouchbaseCrudRepository> void onProcessAnnotatedType(@Observes final ProcessAnnotatedType<T> repo) {
+    <T extends CouchbaseRepository> void onProcessAnnotatedType(@Observes final ProcessAnnotatedType<T> repo) {
         Class<T> javaClass = repo.getAnnotatedType().getJavaClass();
 
-        if(CouchbaseCrudRepository.class.equals(javaClass)) {
+        if(CouchbaseRepository.class.equals(javaClass)) {
             return;
         }
 
-        if (Stream.of(javaClass.getInterfaces()).anyMatch(c -> CouchbaseCrudRepository.class.equals(c))
+        if (Stream.of(javaClass.getInterfaces()).anyMatch(c -> CouchbaseRepository.class.equals(c))
                 && Modifier.isInterface(javaClass.getModifiers())) {
             crudTypes.add(javaClass);
         }
     }
 
-    <T extends CouchbaseCrudRepositoryAsync> void onProcessAnnotatedTypeAsync(@Observes final ProcessAnnotatedType<T> repo) {
+    <T extends CouchbaseRepositoryAsync> void onProcessAnnotatedTypeAsync(@Observes final ProcessAnnotatedType<T> repo) {
         Class<T> javaClass = repo.getAnnotatedType().getJavaClass();
 
-        if(CouchbaseCrudRepositoryAsync.class.equals(javaClass)) {
+        if(CouchbaseRepositoryAsync.class.equals(javaClass)) {
             return;
         }
 
-        if (Stream.of(javaClass.getInterfaces()).anyMatch(c -> CouchbaseCrudRepositoryAsync.class.equals(c))
+        if (Stream.of(javaClass.getInterfaces()).anyMatch(c -> CouchbaseRepositoryAsync.class.equals(c))
                 && Modifier.isInterface(javaClass.getModifiers())) {
             crudAsyncTypes.add(javaClass);
         }

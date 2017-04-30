@@ -33,7 +33,7 @@ import java.util.Collections;
 import java.util.Set;
 
 
-class CouchbaseRepositoryAsyncBean implements Bean<CouchbaseCrudRepositoryAsync>, PassivationCapable {
+class CouchbaseRepositoryAsyncBean implements Bean<CouchbaseRepositoryAsync>, PassivationCapable {
 
     private final Class type;
 
@@ -66,12 +66,12 @@ class CouchbaseRepositoryAsyncBean implements Bean<CouchbaseCrudRepositoryAsync>
     }
 
     @Override
-    public CouchbaseCrudRepositoryAsync create(CreationalContext<CouchbaseCrudRepositoryAsync> creationalContext) {
+    public CouchbaseRepositoryAsync create(CreationalContext<CouchbaseRepositoryAsync> creationalContext) {
         ClassRepresentations classRepresentations = getInstance(ClassRepresentations.class);
         CouchbaseTemplateAsync repository = getInstance(CouchbaseTemplateAsync.class);
-        CouchbaseCrudRepositoryAsyncProxy handler = new CouchbaseCrudRepositoryAsyncProxy(repository,
+        CouchbaseRepositoryAsyncProxy handler = new CouchbaseRepositoryAsyncProxy(repository,
                 classRepresentations, type);
-        return (CouchbaseCrudRepositoryAsync) Proxy.newProxyInstance(type.getClassLoader(),
+        return (CouchbaseRepositoryAsync) Proxy.newProxyInstance(type.getClassLoader(),
                 new Class[]{type},
                 handler);
     }
@@ -91,7 +91,7 @@ class CouchbaseRepositoryAsyncBean implements Bean<CouchbaseCrudRepositoryAsync>
 
 
     @Override
-    public void destroy(CouchbaseCrudRepositoryAsync instance, CreationalContext<CouchbaseCrudRepositoryAsync> creationalContext) {
+    public void destroy(CouchbaseRepositoryAsync instance, CreationalContext<CouchbaseRepositoryAsync> creationalContext) {
 
     }
 
