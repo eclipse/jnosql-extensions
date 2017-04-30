@@ -18,7 +18,7 @@ package org.jnosql.artemis.cassandra.column;
 
 import com.datastax.driver.core.ConsistencyLevel;
 import com.datastax.driver.core.Statement;
-import org.jnosql.artemis.column.ColumnRepositoryAsync;
+import org.jnosql.artemis.column.ColumnTemplateAsync;
 import org.jnosql.diana.api.ExecuteAsyncQueryException;
 import org.jnosql.diana.api.column.ColumnDeleteQuery;
 import org.jnosql.diana.api.column.ColumnQuery;
@@ -28,9 +28,9 @@ import java.util.List;
 import java.util.function.Consumer;
 
 /**
- * A Cassandra extension of {@link org.jnosql.artemis.column.ColumnRepositoryAsync}
+ * A Cassandra extension of {@link org.jnosql.artemis.column.ColumnTemplateAsync}
  */
-public interface CassandraColumnRepositoryAsync extends ColumnRepositoryAsync {
+public interface CassandraColumnRepositoryAsync extends ColumnTemplateAsync {
 
     /**
      * Save the entity with ConsistencyLevel

@@ -17,8 +17,8 @@ package org.jnosql.artemis.cassandra.column;
 
 
 import com.datastax.driver.core.ConsistencyLevel;
-import org.jnosql.artemis.column.ColumnRepository;
-import org.jnosql.artemis.column.query.AbstractColumnCrudRepository;
+import org.jnosql.artemis.column.ColumnTemplate;
+import org.jnosql.artemis.column.query.AbstractColumnRepository;
 import org.jnosql.artemis.column.query.ColumnQueryDeleteParser;
 import org.jnosql.artemis.column.query.ColumnQueryParser;
 import org.jnosql.artemis.column.query.ReturnTypeConverterUtil;
@@ -48,7 +48,7 @@ class CassandraCrudRepositoryProxy<T> implements InvocationHandler {
 
     private final CassandraColumnRepository repository;
 
-    private final ColumnCrudRepository crudRepository;
+    private final ColumnRepository crudRepository;
 
     private final ClassRepresentation classRepresentation;
 
@@ -59,7 +59,7 @@ class CassandraCrudRepositoryProxy<T> implements InvocationHandler {
 
     CassandraCrudRepositoryProxy(CassandraColumnRepository repository, ClassRepresentations classRepresentations, Class<?> repositoryType) {
         this.repository = repository;
-        this.crudRepository = new ColumnCrudRepository(repository);
+        this.crudRepository = new ColumnRepository(repository);
         this.typeClass = Class.class.cast(ParameterizedType.class.cast(repositoryType.getGenericInterfaces()[0])
                 .getActualTypeArguments()[0]);
         this.classRepresentation = classRepresentations.get(typeClass);
@@ -123,19 +123,18 @@ class CassandraCrudRepositoryProxy<T> implements InvocationHandler {
     }
 
 
-    class ColumnCrudRepository extends AbstractColumnCrudRepository implements CassandraCrudRepository {
+    class ColumnRepository extends AbstractColumnRepository implements CassandraCrudRepository {
 
         private final CassandraColumnRepository repository;
 
-        ColumnCrudRepository(CassandraColumnRepository repository) {
+        ColumnRepository(CassandraColumnRepository repository) {
             this.repository = repository;
         }
 
         @Override
-        protected ColumnRepository getColumnRepository() {
+        protected ColumnTemplate getTemplate() {
             return repository;
         }
-
         @Override
         public Object save(Object entity, ConsistencyLevel level) throws NullPointerException {
             return repository.save(entity, level);
@@ -155,5 +154,7 @@ class CassandraCrudRepositoryProxy<T> implements InvocationHandler {
         public Iterable save(Iterable entities, Duration ttl, ConsistencyLevel level) throws NullPointerException {
             return repository.save(entities, ttl, level);
         }
+
+
     }
 }

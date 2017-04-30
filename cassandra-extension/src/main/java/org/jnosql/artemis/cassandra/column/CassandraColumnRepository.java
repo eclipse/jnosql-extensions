@@ -19,7 +19,7 @@ package org.jnosql.artemis.cassandra.column;
 
 import com.datastax.driver.core.ConsistencyLevel;
 import com.datastax.driver.core.Statement;
-import org.jnosql.artemis.column.ColumnRepository;
+import org.jnosql.artemis.column.ColumnTemplate;
 import org.jnosql.diana.api.column.ColumnDeleteQuery;
 import org.jnosql.diana.api.column.ColumnQuery;
 
@@ -27,9 +27,9 @@ import java.time.Duration;
 import java.util.List;
 
 /**
- * A Cassandra extension of {@link ColumnRepository}
+ * A Cassandra extension of {@link org.jnosql.artemis.column.ColumnTemplate}
  */
-public interface CassandraColumnRepository extends ColumnRepository {
+public interface CassandraColumnRepository extends ColumnTemplate {
 
     /**
      * Saves a ColumnEntity with a defined ConsistencyLevel

@@ -17,11 +17,11 @@ package org.jnosql.artemis.cassandra.column;
 
 
 import com.datastax.driver.core.ConsistencyLevel;
-import org.jnosql.artemis.CrudRepository;
+import org.jnosql.artemis.Repository;
 
 import java.time.Duration;
 
-public interface CassandraCrudRepository<T> extends CrudRepository<T> {
+public interface CassandraCrudRepository<T> extends Repository<T> {
 
     /**
      * Saves a ColumnEntity with a defined ConsistencyLevel

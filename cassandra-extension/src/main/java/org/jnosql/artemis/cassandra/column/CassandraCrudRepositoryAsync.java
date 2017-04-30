@@ -17,16 +17,16 @@ package org.jnosql.artemis.cassandra.column;
 
 
 import com.datastax.driver.core.ConsistencyLevel;
-import org.jnosql.artemis.CrudRepositoryAsync;
+import org.jnosql.artemis.RepositoryAsync;
 import org.jnosql.diana.api.ExecuteAsyncQueryException;
 
 import java.time.Duration;
 import java.util.function.Consumer;
 
 /**
- * A Cassandra extension of {@link CrudRepositoryAsync}
+ * A Cassandra extension of {@link RepositoryAsync}
  */
-public interface CassandraCrudRepositoryAsync<T> extends CrudRepositoryAsync<T> {
+public interface CassandraCrudRepositoryAsync<T> extends RepositoryAsync<T> {
 
     /**
      * Save the entity with ConsistencyLevel

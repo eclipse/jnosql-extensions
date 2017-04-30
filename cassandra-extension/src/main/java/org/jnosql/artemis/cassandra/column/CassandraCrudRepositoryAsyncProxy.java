@@ -17,8 +17,8 @@ package org.jnosql.artemis.cassandra.column;
 
 import com.datastax.driver.core.ConsistencyLevel;
 import org.jnosql.artemis.DynamicQueryException;
-import org.jnosql.artemis.column.ColumnRepositoryAsync;
-import org.jnosql.artemis.column.query.AbstractColumnCrudRepositoryAsync;
+import org.jnosql.artemis.column.ColumnTemplateAsync;
+import org.jnosql.artemis.column.query.AbstractColumnRepositoryAsync;
 import org.jnosql.artemis.column.query.ColumnQueryDeleteParser;
 import org.jnosql.artemis.column.query.ColumnQueryParser;
 import org.jnosql.artemis.reflection.ClassRepresentation;
@@ -159,7 +159,7 @@ class CassandraCrudRepositoryAsyncProxy<T> implements InvocationHandler {
     }
 
 
-    class ColumnCrudRepositoryAsync extends AbstractColumnCrudRepositoryAsync implements CassandraCrudRepositoryAsync {
+    class ColumnCrudRepositoryAsync extends AbstractColumnRepositoryAsync implements CassandraCrudRepositoryAsync {
 
         private final CassandraColumnRepositoryAsync repository;
 
@@ -168,7 +168,7 @@ class CassandraCrudRepositoryAsyncProxy<T> implements InvocationHandler {
         }
 
         @Override
-        protected ColumnRepositoryAsync getColumnRepository() {
+        protected ColumnTemplateAsync getTemplate() {
             return repository;
         }
 
@@ -205,5 +205,7 @@ class CassandraCrudRepositoryAsyncProxy<T> implements InvocationHandler {
                 throws ExecuteAsyncQueryException, UnsupportedOperationException, NullPointerException {
             repository.save(entity, ttl, level, callBack);
         }
+
+
     }
 }

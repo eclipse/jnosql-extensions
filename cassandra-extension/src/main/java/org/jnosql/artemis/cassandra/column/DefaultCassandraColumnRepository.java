@@ -18,7 +18,7 @@ package org.jnosql.artemis.cassandra.column;
 
 import com.datastax.driver.core.ConsistencyLevel;
 import com.datastax.driver.core.Statement;
-import org.jnosql.artemis.column.AbstractColumnRepository;
+import org.jnosql.artemis.column.AbstractColumnTemplate;
 import org.jnosql.artemis.column.ColumnEntityConverter;
 import org.jnosql.artemis.column.ColumnEventPersistManager;
 import org.jnosql.artemis.column.ColumnWorkflow;
@@ -38,7 +38,7 @@ import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-class DefaultCassandraColumnRepository extends AbstractColumnRepository implements CassandraColumnRepository {
+class DefaultCassandraColumnRepository extends AbstractColumnTemplate implements CassandraColumnRepository {
 
     private Instance<CassandraColumnFamilyManager> manager;
 
