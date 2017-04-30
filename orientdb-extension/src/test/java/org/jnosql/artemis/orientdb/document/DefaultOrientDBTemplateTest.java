@@ -25,7 +25,6 @@ import org.jnosql.diana.orientdb.document.OrientDBDocumentCollectionManager;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 
 import javax.enterprise.inject.Instance;
@@ -41,7 +40,7 @@ import static org.mockito.Mockito.when;
 
 
 @RunWith(WeldJUnit4Runner.class)
-public class DefaultOrientDBDocumentRepositoryTest {
+public class DefaultOrientDBTemplateTest {
 
     @Inject
     private DocumentEntityConverter converter;
@@ -54,7 +53,7 @@ public class DefaultOrientDBDocumentRepositoryTest {
 
     private OrientDBDocumentCollectionManager manager;
 
-    private OrientDBDocumentRepository repository;
+    private OrientDBTemplate repository;
 
 
     @Before
@@ -62,7 +61,7 @@ public class DefaultOrientDBDocumentRepositoryTest {
         manager = Mockito.mock(OrientDBDocumentCollectionManager.class);
         Instance instance = Mockito.mock(Instance.class);
         when(instance.get()).thenReturn(manager);
-        repository = new DefaultOrientDBDocumentRepository(instance, converter, flow, persistManager);
+        repository = new DefaultOrientDBTemplate(instance, converter, flow, persistManager);
 
         DocumentEntity entity = DocumentEntity.of("Person");
         entity.add(Document.of("name", "Ada"));

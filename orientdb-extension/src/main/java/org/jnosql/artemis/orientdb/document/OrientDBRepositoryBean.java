@@ -68,8 +68,8 @@ class OrientDBRepositoryBean implements Bean<OrientDBCrudRepository>, Passivatio
     @Override
     public OrientDBCrudRepository create(CreationalContext<OrientDBCrudRepository> creationalContext) {
         ClassRepresentations classRepresentations = getInstance(ClassRepresentations.class);
-        OrientDBDocumentRepository repository = getInstance(OrientDBDocumentRepository.class);
-        OrientDBDocumentCrudRepositoryProxy handler = new OrientDBDocumentCrudRepositoryProxy(repository,
+        OrientDBTemplate repository = getInstance(OrientDBTemplate.class);
+        OrientDBDocumentRepositoryProxy handler = new OrientDBDocumentRepositoryProxy(repository,
                 classRepresentations, type);
         return (OrientDBCrudRepository) Proxy.newProxyInstance(type.getClassLoader(),
                 new Class[]{type},

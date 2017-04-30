@@ -32,14 +32,14 @@ import java.util.function.Consumer;
 import static org.mockito.Mockito.when;
 
 @RunWith(WeldJUnit4Runner.class)
-public class DefaultOrientDBDocumentRepositoryAsyncTest {
+public class DefaultOrientDBTemplateAsyncTest {
 
     @Inject
     private DocumentEntityConverter converter;
 
     private OrientDBDocumentCollectionManagerAsync managerAsync;
 
-    private OrientDBDocumentRepositoryAsync repositoryAsync;
+    private OrientDBDocumentTemplateAsync repositoryAsync;
 
 
     @Before
@@ -48,7 +48,7 @@ public class DefaultOrientDBDocumentRepositoryAsyncTest {
         Instance instance = Mockito.mock(Instance.class);
         when(instance.get()).thenReturn(managerAsync);
 
-        repositoryAsync = new DefaultOrientDBDocumentRepositoryAsync(converter, instance);
+        repositoryAsync = new DefaultOrientDBDocumentTemplateAsync(converter, instance);
 
         DocumentEntity entity = DocumentEntity.of("Person");
         entity.add(Document.of("name", "Ada"));

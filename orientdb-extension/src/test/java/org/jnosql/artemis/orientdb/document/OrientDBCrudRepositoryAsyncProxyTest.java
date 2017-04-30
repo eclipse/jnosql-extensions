@@ -40,7 +40,7 @@ import static org.mockito.Mockito.verify;
 public class OrientDBCrudRepositoryAsyncProxyTest {
 
 
-    private OrientDBDocumentRepositoryAsync repository;
+    private OrientDBDocumentTemplateAsync repository;
 
     @Inject
     private ClassRepresentations classRepresentations;
@@ -50,7 +50,7 @@ public class OrientDBCrudRepositoryAsyncProxyTest {
 
     @Before
     public void setUp() {
-        this.repository = Mockito.mock(OrientDBDocumentRepositoryAsync.class);
+        this.repository = Mockito.mock(OrientDBDocumentTemplateAsync.class);
 
         OrientDBCrudRepositoryAsyncProxy handler = new OrientDBCrudRepositoryAsyncProxy(repository,
                 classRepresentations, PersonAsyncRepository.class);

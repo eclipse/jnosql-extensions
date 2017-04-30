@@ -16,15 +16,15 @@
 package org.jnosql.artemis.orientdb.document;
 
 
-import org.jnosql.artemis.document.DocumentRepositoryAsync;
+import org.jnosql.artemis.document.DocumentTemplateAsync;
 
 import java.util.List;
 import java.util.function.Consumer;
 
 /**
- * A {@link DocumentRepositoryAsync} to orientdb
+ * A {@link DocumentTemplateAsync} to orientdb
  */
-public interface OrientDBDocumentRepositoryAsync extends DocumentRepositoryAsync {
+public interface OrientDBDocumentTemplateAsync extends DocumentTemplateAsync {
 
 
     <T> void find(String query, Consumer<List<T>> callBack, Object... params);

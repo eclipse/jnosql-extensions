@@ -68,7 +68,7 @@ class OrientDBRepositoryAsyncBean implements Bean<OrientDBCrudRepositoryAsync>, 
     @Override
     public OrientDBCrudRepositoryAsync create(CreationalContext<OrientDBCrudRepositoryAsync> creationalContext) {
         ClassRepresentations classRepresentations = getInstance(ClassRepresentations.class);
-        OrientDBDocumentRepositoryAsync repository = getInstance(OrientDBDocumentRepositoryAsync.class);
+        OrientDBDocumentTemplateAsync repository = getInstance(OrientDBDocumentTemplateAsync.class);
         OrientDBCrudRepositoryAsyncProxy handler = new OrientDBCrudRepositoryAsyncProxy(repository,
                 classRepresentations, type);
         return (OrientDBCrudRepositoryAsync) Proxy.newProxyInstance(type.getClassLoader(),

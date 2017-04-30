@@ -16,16 +16,16 @@
 package org.jnosql.artemis.orientdb.document;
 
 
-import org.jnosql.artemis.document.DocumentRepository;
+import org.jnosql.artemis.document.DocumentTemplate;
 import org.jnosql.diana.api.document.DocumentQuery;
 
 import java.util.List;
 import java.util.function.Consumer;
 
 /**
- * A {@link DocumentRepository} to orientdb
+ * A {@link DocumentTemplate} to orientdb
  */
-public interface OrientDBDocumentRepository extends DocumentRepository {
+public interface OrientDBTemplate extends DocumentTemplate {
 
     /**
      * Find using query

@@ -16,9 +16,9 @@
 package org.jnosql.artemis.orientdb.document;
 
 
-import org.jnosql.artemis.CrudRepository;
-import org.jnosql.artemis.document.DocumentRepository;
-import org.jnosql.artemis.document.query.AbstractDocumentCrudRepository;
+import org.jnosql.artemis.Repository;
+import org.jnosql.artemis.document.DocumentTemplate;
+import org.jnosql.artemis.document.query.AbstractDocumentRepository;
 import org.jnosql.artemis.document.query.DocumentQueryDeleteParser;
 import org.jnosql.artemis.document.query.DocumentQueryParser;
 import org.jnosql.artemis.reflection.ClassRepresentation;
@@ -33,11 +33,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-class OrientDBDocumentCrudRepositoryProxy<T> implements InvocationHandler {
+class OrientDBDocumentRepositoryProxy<T> implements InvocationHandler {
 
     private final Class<T> typeClass;
 
-    private final OrientDBDocumentRepository repository;
+    private final OrientDBTemplate template;
 
 
     private final DocumentCrudRepository crudRepository;
@@ -49,9 +49,9 @@ class OrientDBDocumentCrudRepositoryProxy<T> implements InvocationHandler {
     private final DocumentQueryDeleteParser deleteQueryParser;
 
 
-    OrientDBDocumentCrudRepositoryProxy(OrientDBDocumentRepository repository, ClassRepresentations classRepresentations, Class<?> repositoryType) {
-        this.repository = repository;
-        this.crudRepository = new DocumentCrudRepository(repository);
+    OrientDBDocumentRepositoryProxy(OrientDBTemplate template, ClassRepresentations classRepresentations, Class<?> repositoryType) {
+        this.template = template;
+        this.crudRepository = new DocumentCrudRepository(template);
         this.typeClass = Class.class.cast(ParameterizedType.class.cast(repositoryType.getGenericInterfaces()[0])
                 .getActualTypeArguments()[0]);
         this.classRepresentation = classRepresentations.get(typeClass);
@@ -67,9 +67,9 @@ class OrientDBDocumentCrudRepositoryProxy<T> implements InvocationHandler {
         if (Objects.nonNull(sql)) {
             List<T> result = Collections.emptyList();
             if (args == null || args.length == 0) {
-                result = repository.find(sql.value());
+                result = template.find(sql.value());
             } else {
-                result = repository.find(sql.value(), args);
+                result = template.find(sql.value(), args);
             }
             return ReturnTypeConverterUtil.returnObject(result, typeClass, method);
         }
@@ -85,27 +85,28 @@ class OrientDBDocumentCrudRepositoryProxy<T> implements InvocationHandler {
         }
         if (methodName.startsWith("findBy")) {
             DocumentQuery query = queryParser.parse(methodName, args, classRepresentation);
-            return ReturnTypeConverterUtil.returnObject(query, repository, typeClass, method);
+            return ReturnTypeConverterUtil.returnObject(query, template, typeClass, method);
         } else if (methodName.startsWith("deleteBy")) {
             DocumentDeleteQuery query = deleteQueryParser.parse(methodName, args, classRepresentation);
-            repository.delete(query);
+            template.delete(query);
             return null;
         }
         return null;
     }
 
 
-    class DocumentCrudRepository extends AbstractDocumentCrudRepository implements CrudRepository {
+    class DocumentCrudRepository extends AbstractDocumentRepository implements Repository {
 
-        private final DocumentRepository repository;
+        private final DocumentTemplate template;
 
-        DocumentCrudRepository(DocumentRepository repository) {
-            this.repository = repository;
+        DocumentCrudRepository(DocumentTemplate template) {
+            this.template = template;
         }
 
+
         @Override
-        protected DocumentRepository getDocumentRepository() {
-            return repository;
+        protected DocumentTemplate getTemplate() {
+            return template;
         }
     }
 }

@@ -16,10 +16,10 @@
 package org.jnosql.artemis.orientdb.document;
 
 
-import org.jnosql.artemis.CrudRepositoryAsync;
 import org.jnosql.artemis.DynamicQueryException;
-import org.jnosql.artemis.document.DocumentRepositoryAsync;
-import org.jnosql.artemis.document.query.AbstractDocumentCrudRepositoryAsync;
+import org.jnosql.artemis.RepositoryAsync;
+import org.jnosql.artemis.document.DocumentTemplateAsync;
+import org.jnosql.artemis.document.query.AbstractDocumentRepositoryAsync;
 import org.jnosql.artemis.document.query.DocumentQueryDeleteParser;
 import org.jnosql.artemis.document.query.DocumentQueryParser;
 import org.jnosql.artemis.reflection.ClassRepresentation;
@@ -44,7 +44,7 @@ class OrientDBCrudRepositoryAsyncProxy<T> implements InvocationHandler {
 
     private final Class<T> typeClass;
 
-    private final OrientDBDocumentRepositoryAsync repository;
+    private final OrientDBDocumentTemplateAsync template;
 
 
     private final DocumentCrudRepositoryAsync crudRepository;
@@ -56,9 +56,9 @@ class OrientDBCrudRepositoryAsyncProxy<T> implements InvocationHandler {
     private final DocumentQueryDeleteParser queryDeleteParser;
 
 
-    OrientDBCrudRepositoryAsyncProxy(OrientDBDocumentRepositoryAsync repository, ClassRepresentations classRepresentations, Class<?> repositoryType) {
-        this.repository = repository;
-        this.crudRepository = new DocumentCrudRepositoryAsync(repository);
+    OrientDBCrudRepositoryAsyncProxy(OrientDBDocumentTemplateAsync template, ClassRepresentations classRepresentations, Class<?> repositoryType) {
+        this.template = template;
+        this.crudRepository = new DocumentCrudRepositoryAsync(template);
         this.typeClass = Class.class.cast(ParameterizedType.class.cast(repositoryType.getGenericInterfaces()[0])
                 .getActualTypeArguments()[0]);
         this.classRepresentation = classRepresentations.get(typeClass);
@@ -78,10 +78,10 @@ class OrientDBCrudRepositoryAsyncProxy<T> implements InvocationHandler {
             }
 
             if (args == null || args.length == 1) {
-                repository.find(sql.value(), callBack);
+                template.find(sql.value(), callBack);
                 return Void.class;
             } else {
-                repository.find(sql.value(), callBack, Stream.of(args)
+                template.find(sql.value(), callBack, Stream.of(args)
                         .filter(IS_NOT_CONSUMER)
                         .toArray(Object[]::new));
                 return Void.class;
@@ -99,7 +99,7 @@ class OrientDBCrudRepositoryAsyncProxy<T> implements InvocationHandler {
             DocumentQuery query = queryParser.parse(methodName, args, classRepresentation);
             Object callBack = args[args.length - 1];
             if (Consumer.class.isInstance(callBack)) {
-                repository.find(query, Consumer.class.cast(callBack));
+                template.find(query, Consumer.class.cast(callBack));
             } else {
                 throw new DynamicQueryException("On find async method you must put a java.util.function.Consumer" +
                         " as end parameter as callback");
@@ -108,9 +108,9 @@ class OrientDBCrudRepositoryAsyncProxy<T> implements InvocationHandler {
             Object callBack = args[args.length - 1];
             DocumentDeleteQuery query = queryDeleteParser.parse(methodName, args, classRepresentation);
             if (Consumer.class.isInstance(callBack)) {
-                repository.delete(query, Consumer.class.cast(callBack));
+                template.delete(query, Consumer.class.cast(callBack));
             } else {
-                repository.delete(query);
+                template.delete(query);
             }
             return null;
         }
@@ -118,17 +118,17 @@ class OrientDBCrudRepositoryAsyncProxy<T> implements InvocationHandler {
     }
 
 
-    class DocumentCrudRepositoryAsync extends AbstractDocumentCrudRepositoryAsync implements CrudRepositoryAsync {
+    class DocumentCrudRepositoryAsync extends AbstractDocumentRepositoryAsync implements RepositoryAsync {
 
-        private final DocumentRepositoryAsync repository;
+        private final DocumentTemplateAsync template;
 
-        DocumentCrudRepositoryAsync(DocumentRepositoryAsync repository) {
-            this.repository = repository;
+        DocumentCrudRepositoryAsync(DocumentTemplateAsync template) {
+            this.template = template;
         }
 
         @Override
-        protected DocumentRepositoryAsync getDocumentRepository() {
-            return repository;
+        protected DocumentTemplateAsync getTemplate() {
+            return template;
         }
     }
 }

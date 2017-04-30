@@ -16,11 +16,11 @@
 package org.jnosql.artemis.orientdb.document;
 
 
-import org.jnosql.artemis.CrudRepositoryAsync;
+import org.jnosql.artemis.RepositoryAsync;
 
 /**
- * The OrientDB {@link CrudRepositoryAsync}
+ * The OrientDB {@link RepositoryAsync}
  * @param <T>
  */
-public interface OrientDBCrudRepositoryAsync<T> extends CrudRepositoryAsync<T> {
+public interface OrientDBCrudRepositoryAsync<T> extends RepositoryAsync<T> {
 }

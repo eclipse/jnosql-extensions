@@ -38,9 +38,9 @@ import static org.mockito.Mockito.when;
 
 
 @RunWith(WeldJUnit4Runner.class)
-public class OrientDBDocumentCrudRepositoryProxyTest {
+public class OrientDBDocumentRepositoryProxyTest {
 
-    private OrientDBDocumentRepository repository;
+    private OrientDBTemplate repository;
 
     @Inject
     private ClassRepresentations classRepresentations;
@@ -50,9 +50,9 @@ public class OrientDBDocumentCrudRepositoryProxyTest {
 
     @Before
     public void setUp() {
-        this.repository = Mockito.mock(OrientDBDocumentRepository.class);
+        this.repository = Mockito.mock(OrientDBTemplate.class);
 
-        OrientDBDocumentCrudRepositoryProxy handler = new OrientDBDocumentCrudRepositoryProxy(repository,
+        OrientDBDocumentRepositoryProxy handler = new OrientDBDocumentRepositoryProxy(repository,
                 classRepresentations, PersonRepository.class);
 
         when(repository.save(any(Person.class))).thenReturn(new Person());

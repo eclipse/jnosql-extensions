@@ -16,7 +16,7 @@
 package org.jnosql.artemis.orientdb.document;
 
 
-import org.jnosql.artemis.document.AbstractDocumentRepository;
+import org.jnosql.artemis.document.AbstractDocumentTemplate;
 import org.jnosql.artemis.document.DocumentEntityConverter;
 import org.jnosql.artemis.document.DocumentEventPersistManager;
 import org.jnosql.artemis.document.DocumentWorkflow;
@@ -34,10 +34,10 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
- * The Default implementation of {@link OrientDBDocumentRepository}
+ * The Default implementation of {@link OrientDBTemplate}
  */
-class DefaultOrientDBDocumentRepository extends AbstractDocumentRepository
-        implements OrientDBDocumentRepository {
+class DefaultOrientDBTemplate extends AbstractDocumentTemplate
+        implements OrientDBTemplate {
 
     private Instance<OrientDBDocumentCollectionManager> manager;
 
@@ -48,16 +48,16 @@ class DefaultOrientDBDocumentRepository extends AbstractDocumentRepository
     private DocumentEventPersistManager persistManager;
 
     @Inject
-    DefaultOrientDBDocumentRepository(Instance<OrientDBDocumentCollectionManager> manager,
-                                      DocumentEntityConverter converter, DocumentWorkflow flow,
-                                      DocumentEventPersistManager persistManager) {
+    DefaultOrientDBTemplate(Instance<OrientDBDocumentCollectionManager> manager,
+                            DocumentEntityConverter converter, DocumentWorkflow flow,
+                            DocumentEventPersistManager persistManager) {
         this.manager = manager;
         this.converter = converter;
         this.flow = flow;
         this.persistManager = persistManager;
     }
 
-    DefaultOrientDBDocumentRepository() {
+    DefaultOrientDBTemplate() {
     }
 
     @Override

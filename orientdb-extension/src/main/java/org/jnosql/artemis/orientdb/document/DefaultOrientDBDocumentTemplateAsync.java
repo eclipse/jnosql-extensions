@@ -16,7 +16,7 @@
 package org.jnosql.artemis.orientdb.document;
 
 
-import org.jnosql.artemis.document.AbstractDocumentRepositoryAsync;
+import org.jnosql.artemis.document.AbstractDocumentTemplateAsync;
 import org.jnosql.artemis.document.DocumentEntityConverter;
 import org.jnosql.diana.api.document.DocumentCollectionManagerAsync;
 import org.jnosql.diana.api.document.DocumentEntity;
@@ -31,23 +31,23 @@ import java.util.function.Consumer;
 import static java.util.stream.Collectors.toList;
 
 /**
- * The default implementation of {@link OrientDBDocumentRepositoryAsync}
+ * The default implementation of {@link OrientDBDocumentTemplateAsync}
  */
-class DefaultOrientDBDocumentRepositoryAsync extends AbstractDocumentRepositoryAsync implements
-        OrientDBDocumentRepositoryAsync {
+class DefaultOrientDBDocumentTemplateAsync extends AbstractDocumentTemplateAsync implements
+        OrientDBDocumentTemplateAsync {
 
     private DocumentEntityConverter converter;
 
     private Instance<OrientDBDocumentCollectionManagerAsync> manager;
 
     @Inject
-    DefaultOrientDBDocumentRepositoryAsync(DocumentEntityConverter converter,
-                                           Instance<OrientDBDocumentCollectionManagerAsync> manager) {
+    DefaultOrientDBDocumentTemplateAsync(DocumentEntityConverter converter,
+                                         Instance<OrientDBDocumentCollectionManagerAsync> manager) {
         this.converter = converter;
         this.manager = manager;
     }
 
-    DefaultOrientDBDocumentRepositoryAsync() {
+    DefaultOrientDBDocumentTemplateAsync() {
     }
 
     @Override
