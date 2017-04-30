@@ -68,7 +68,7 @@ class CouchbaseRepositoryBean implements Bean<CouchbaseCrudRepository>, Passivat
     @Override
     public CouchbaseCrudRepository create(CreationalContext<CouchbaseCrudRepository> creationalContext) {
         ClassRepresentations classRepresentations = getInstance(ClassRepresentations.class);
-        CouchbaseDocumentRepository repository = getInstance(CouchbaseDocumentRepository.class);
+        CouchbaseTemplate repository = getInstance(CouchbaseTemplate.class);
         CouchbaseocumentCrudRepositoryProxy handler = new CouchbaseocumentCrudRepositoryProxy(repository,
                 classRepresentations, type);
         return (CouchbaseCrudRepository) Proxy.newProxyInstance(type.getClassLoader(),

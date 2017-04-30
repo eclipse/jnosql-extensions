@@ -16,11 +16,11 @@
 package org.jnosql.artemis.couchbase.document;
 
 
-import org.jnosql.artemis.CrudRepository;
+import org.jnosql.artemis.Repository;
 
 /**
- * The couchbase {@link CrudRepository}
+ * The couchbase {@link Repository}
  * @param <T>
  */
-public interface CouchbaseCrudRepository<T> extends CrudRepository<T>{
+public interface CouchbaseCrudRepository<T> extends Repository<T> {
 }

@@ -34,14 +34,14 @@ import java.util.function.Consumer;
 import static org.mockito.Mockito.when;
 
 @RunWith(WeldJUnit4Runner.class)
-public class DefaultCouchbaseDocumentRepositoryAsyncTest {
+public class DefaultCouchbaseTemplateAsyncTest {
 
     @Inject
     private DocumentEntityConverter converter;
 
     private CouchbaseDocumentCollectionManagerAsync managerAsync;
 
-    private CouchbaseDocumentRepositoryAsync repositoryAsync;
+    private CouchbaseTemplateAsync repositoryAsync;
 
 
     @Before
@@ -50,7 +50,7 @@ public class DefaultCouchbaseDocumentRepositoryAsyncTest {
         Instance instance = Mockito.mock(Instance.class);
         when(instance.get()).thenReturn(managerAsync);
 
-        repositoryAsync = new DefaultCouchbaseDocumentRepositoryAsync(converter, instance);
+        repositoryAsync = new DefaultCouchbaseTemplateAsync(converter, instance);
 
         DocumentEntity entity = DocumentEntity.of("Person");
         entity.add(Document.of("name", "Ada"));

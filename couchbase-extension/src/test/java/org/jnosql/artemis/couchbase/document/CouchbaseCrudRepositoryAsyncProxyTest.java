@@ -41,7 +41,7 @@ import static org.mockito.Mockito.verify;
 public class CouchbaseCrudRepositoryAsyncProxyTest {
 
 
-    private CouchbaseDocumentRepositoryAsync repository;
+    private CouchbaseTemplateAsync repository;
 
     @Inject
     private ClassRepresentations classRepresentations;
@@ -51,7 +51,7 @@ public class CouchbaseCrudRepositoryAsyncProxyTest {
 
     @Before
     public void setUp() {
-        this.repository = Mockito.mock(CouchbaseDocumentRepositoryAsync.class);
+        this.repository = Mockito.mock(CouchbaseTemplateAsync.class);
 
         CouchbaseCrudRepositoryAsyncProxy handler = new CouchbaseCrudRepositoryAsyncProxy(repository,
                 classRepresentations, PersonAsyncRepository.class);

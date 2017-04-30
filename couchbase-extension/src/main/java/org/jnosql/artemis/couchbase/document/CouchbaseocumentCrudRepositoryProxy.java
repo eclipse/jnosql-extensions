@@ -17,9 +17,9 @@ package org.jnosql.artemis.couchbase.document;
 
 
 import com.couchbase.client.java.document.json.JsonObject;
-import org.jnosql.artemis.CrudRepository;
-import org.jnosql.artemis.document.DocumentRepository;
-import org.jnosql.artemis.document.query.AbstractDocumentCrudRepository;
+import org.jnosql.artemis.Repository;
+import org.jnosql.artemis.document.DocumentTemplate;
+import org.jnosql.artemis.document.query.AbstractDocumentRepository;
 import org.jnosql.artemis.document.query.DocumentQueryDeleteParser;
 import org.jnosql.artemis.document.query.DocumentQueryParser;
 import org.jnosql.artemis.reflection.ClassRepresentation;
@@ -40,7 +40,7 @@ class CouchbaseocumentCrudRepositoryProxy<T> implements InvocationHandler {
 
     private final Class<T> typeClass;
 
-    private final CouchbaseDocumentRepository repository;
+    private final CouchbaseTemplate template;
 
 
     private final DocumentCrudRepository crudRepository;
@@ -52,9 +52,9 @@ class CouchbaseocumentCrudRepositoryProxy<T> implements InvocationHandler {
     private final DocumentQueryDeleteParser deleteQueryParser;
 
 
-    CouchbaseocumentCrudRepositoryProxy(CouchbaseDocumentRepository repository, ClassRepresentations classRepresentations, Class<?> repositoryType) {
-        this.repository = repository;
-        this.crudRepository = new DocumentCrudRepository(repository);
+    CouchbaseocumentCrudRepositoryProxy(CouchbaseTemplate template, ClassRepresentations classRepresentations, Class<?> repositoryType) {
+        this.template = template;
+        this.crudRepository = new DocumentCrudRepository(template);
         this.typeClass = Class.class.cast(ParameterizedType.class.cast(repositoryType.getGenericInterfaces()[0])
                 .getActualTypeArguments()[0]);
         this.classRepresentation = classRepresentations.get(typeClass);
@@ -71,9 +71,9 @@ class CouchbaseocumentCrudRepositoryProxy<T> implements InvocationHandler {
             List<T> result = Collections.emptyList();
             Optional<JsonObject> params = getParams(args);
             if (params.isPresent()) {
-                result = repository.n1qlQuery(n1QL.value(), params.get());
+                result = template.n1qlQuery(n1QL.value(), params.get());
             } else {
-                result = repository.n1qlQuery(n1QL.value());
+                result = template.n1qlQuery(n1QL.value());
             }
             return ReturnTypeConverterUtil.returnObject(result, typeClass, method);
         }
@@ -89,10 +89,10 @@ class CouchbaseocumentCrudRepositoryProxy<T> implements InvocationHandler {
         }
         if (methodName.startsWith("findBy")) {
             DocumentQuery query = queryParser.parse(methodName, args, classRepresentation);
-            return ReturnTypeConverterUtil.returnObject(query, repository, typeClass, method);
+            return ReturnTypeConverterUtil.returnObject(query, template, typeClass, method);
         } else if (methodName.startsWith("deleteBy")) {
             DocumentDeleteQuery query = deleteQueryParser.parse(methodName, args, classRepresentation);
-            repository.delete(query);
+            template.delete(query);
             return null;
         }
         return null;
@@ -106,17 +106,18 @@ class CouchbaseocumentCrudRepositoryProxy<T> implements InvocationHandler {
     }
 
 
-    class DocumentCrudRepository extends AbstractDocumentCrudRepository implements CrudRepository {
+    class DocumentCrudRepository extends AbstractDocumentRepository implements Repository {
 
-        private final DocumentRepository repository;
+        private final DocumentTemplate template;
 
-        DocumentCrudRepository(DocumentRepository repository) {
-            this.repository = repository;
+        DocumentCrudRepository(DocumentTemplate template) {
+            this.template = template;
         }
 
+
         @Override
-        protected DocumentRepository getDocumentRepository() {
-            return repository;
+        protected DocumentTemplate getTemplate() {
+            return template;
         }
     }
 }

@@ -18,16 +18,16 @@ package org.jnosql.artemis.couchbase.document;
 
 import com.couchbase.client.java.document.json.JsonObject;
 import com.couchbase.client.java.query.Statement;
-import org.jnosql.artemis.document.DocumentRepositoryAsync;
+import org.jnosql.artemis.document.DocumentTemplateAsync;
 import org.jnosql.diana.api.ExecuteAsyncQueryException;
 
 import java.util.List;
 import java.util.function.Consumer;
 
 /**
- * A {@link DocumentRepositoryAsync} to couchbase
+ * A {@link DocumentTemplateAsync} to couchbase
  */
-public interface CouchbaseDocumentRepositoryAsync extends DocumentRepositoryAsync {
+public interface CouchbaseTemplateAsync extends DocumentTemplateAsync {
 
 
     /**

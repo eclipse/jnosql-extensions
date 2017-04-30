@@ -18,14 +18,14 @@ package org.jnosql.artemis.couchbase.document;
 
 import com.couchbase.client.java.document.json.JsonObject;
 import com.couchbase.client.java.query.Statement;
-import org.jnosql.artemis.document.DocumentRepository;
+import org.jnosql.artemis.document.DocumentTemplate;
 
 import java.util.List;
 
 /**
- * A {@link DocumentRepository} to couchbase
+ * A {@link DocumentTemplate} to couchbase
  */
-public interface CouchbaseDocumentRepository extends DocumentRepository {
+public interface CouchbaseTemplate extends DocumentTemplate {
 
 
     /**

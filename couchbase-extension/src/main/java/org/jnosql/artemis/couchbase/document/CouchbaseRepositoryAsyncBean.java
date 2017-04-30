@@ -68,7 +68,7 @@ class CouchbaseRepositoryAsyncBean implements Bean<CouchbaseCrudRepositoryAsync>
     @Override
     public CouchbaseCrudRepositoryAsync create(CreationalContext<CouchbaseCrudRepositoryAsync> creationalContext) {
         ClassRepresentations classRepresentations = getInstance(ClassRepresentations.class);
-        CouchbaseDocumentRepositoryAsync repository = getInstance(CouchbaseDocumentRepositoryAsync.class);
+        CouchbaseTemplateAsync repository = getInstance(CouchbaseTemplateAsync.class);
         CouchbaseCrudRepositoryAsyncProxy handler = new CouchbaseCrudRepositoryAsyncProxy(repository,
                 classRepresentations, type);
         return (CouchbaseCrudRepositoryAsync) Proxy.newProxyInstance(type.getClassLoader(),

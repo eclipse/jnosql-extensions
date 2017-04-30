@@ -18,7 +18,7 @@ package org.jnosql.artemis.couchbase.document;
 
 import com.couchbase.client.java.document.json.JsonObject;
 import com.couchbase.client.java.query.Statement;
-import org.jnosql.artemis.document.AbstractDocumentRepository;
+import org.jnosql.artemis.document.AbstractDocumentTemplate;
 import org.jnosql.artemis.document.DocumentEntityConverter;
 import org.jnosql.artemis.document.DocumentEventPersistManager;
 import org.jnosql.artemis.document.DocumentWorkflow;
@@ -32,10 +32,10 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
- * The Default implementation of {@link CouchbaseDocumentRepository}
+ * The Default implementation of {@link CouchbaseTemplate}
  */
-class DefaultCouchbaseDocumentRepository extends AbstractDocumentRepository
-        implements CouchbaseDocumentRepository {
+class DefaultCouchbaseTemplate extends AbstractDocumentTemplate
+        implements CouchbaseTemplate {
 
     private Instance<CouchbaseDocumentCollectionManager> manager;
 
@@ -46,16 +46,16 @@ class DefaultCouchbaseDocumentRepository extends AbstractDocumentRepository
     private DocumentEventPersistManager persistManager;
 
     @Inject
-    DefaultCouchbaseDocumentRepository(Instance<CouchbaseDocumentCollectionManager> manager,
-                                       DocumentEntityConverter converter, DocumentWorkflow flow,
-                                       DocumentEventPersistManager persistManager) {
+    DefaultCouchbaseTemplate(Instance<CouchbaseDocumentCollectionManager> manager,
+                             DocumentEntityConverter converter, DocumentWorkflow flow,
+                             DocumentEventPersistManager persistManager) {
         this.manager = manager;
         this.converter = converter;
         this.flow = flow;
         this.persistManager = persistManager;
     }
 
-    DefaultCouchbaseDocumentRepository() {
+    DefaultCouchbaseTemplate() {
     }
 
     @Override

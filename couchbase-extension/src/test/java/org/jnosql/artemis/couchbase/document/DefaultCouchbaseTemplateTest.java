@@ -35,7 +35,7 @@ import static org.mockito.Mockito.when;
 
 
 @RunWith(WeldJUnit4Runner.class)
-public class DefaultCouchbaseDocumentRepositoryTest {
+public class DefaultCouchbaseTemplateTest {
 
     @Inject
     private DocumentEntityConverter converter;
@@ -48,7 +48,7 @@ public class DefaultCouchbaseDocumentRepositoryTest {
 
     private CouchbaseDocumentCollectionManager manager;
 
-    private CouchbaseDocumentRepository repository;
+    private CouchbaseTemplate repository;
 
 
     @Before
@@ -56,7 +56,7 @@ public class DefaultCouchbaseDocumentRepositoryTest {
         manager = Mockito.mock(CouchbaseDocumentCollectionManager.class);
         Instance instance = Mockito.mock(Instance.class);
         when(instance.get()).thenReturn(manager);
-        repository = new DefaultCouchbaseDocumentRepository(instance, converter, flow, persistManager);
+        repository = new DefaultCouchbaseTemplate(instance, converter, flow, persistManager);
 
         DocumentEntity entity = DocumentEntity.of("Person");
         entity.add(Document.of("name", "Ada"));

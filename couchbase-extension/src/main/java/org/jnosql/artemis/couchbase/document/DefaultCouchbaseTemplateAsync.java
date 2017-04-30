@@ -18,7 +18,7 @@ package org.jnosql.artemis.couchbase.document;
 
 import com.couchbase.client.java.document.json.JsonObject;
 import com.couchbase.client.java.query.Statement;
-import org.jnosql.artemis.document.AbstractDocumentRepositoryAsync;
+import org.jnosql.artemis.document.AbstractDocumentTemplateAsync;
 import org.jnosql.artemis.document.DocumentEntityConverter;
 import org.jnosql.diana.api.ExecuteAsyncQueryException;
 import org.jnosql.diana.api.document.DocumentCollectionManagerAsync;
@@ -34,23 +34,23 @@ import java.util.function.Consumer;
 import static java.util.stream.Collectors.toList;
 
 /**
- * The default implementation of {@link CouchbaseDocumentRepositoryAsync}
+ * The default implementation of {@link CouchbaseTemplateAsync}
  */
-class DefaultCouchbaseDocumentRepositoryAsync extends AbstractDocumentRepositoryAsync implements
-        CouchbaseDocumentRepositoryAsync {
+class DefaultCouchbaseTemplateAsync extends AbstractDocumentTemplateAsync implements
+        CouchbaseTemplateAsync {
 
     private DocumentEntityConverter converter;
 
     private Instance<CouchbaseDocumentCollectionManagerAsync> manager;
 
     @Inject
-    DefaultCouchbaseDocumentRepositoryAsync(DocumentEntityConverter converter,
-                                            Instance<CouchbaseDocumentCollectionManagerAsync> manager) {
+    DefaultCouchbaseTemplateAsync(DocumentEntityConverter converter,
+                                  Instance<CouchbaseDocumentCollectionManagerAsync> manager) {
         this.converter = converter;
         this.manager = manager;
     }
 
-    DefaultCouchbaseDocumentRepositoryAsync() {
+    DefaultCouchbaseTemplateAsync() {
     }
 
     @Override

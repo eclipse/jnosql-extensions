@@ -61,11 +61,4 @@
         </dependency>
     </dependencies>
 
-    <distributionManagement>
-        <template>
-            <id>bintray-jnosql-maven</id>
-            <name>jnosql-maven</name>
-            <url>https://api.bintray.com/maven/jnosql/maven/org.jnosql.artemis:artemis-extension/;publish=1</url>
-        </template>
-    </distributionManagement>
 </project>
