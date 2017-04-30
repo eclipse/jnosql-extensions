@@ -30,7 +30,7 @@ import java.util.function.Consumer;
 /**
  * A Cassandra extension of {@link org.jnosql.artemis.column.ColumnTemplateAsync}
  */
-public interface CassandraColumnRepositoryAsync extends ColumnTemplateAsync {
+public interface CassandraTemplateAsync extends ColumnTemplateAsync {
 
     /**
      * Save the entity with ConsistencyLevel

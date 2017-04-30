@@ -21,7 +21,7 @@ import org.jnosql.artemis.Repository;
 
 import java.time.Duration;
 
-public interface CassandraCrudRepository<T> extends Repository<T> {
+public interface CassandraRepository<T> extends Repository<T> {
 
     /**
      * Saves a ColumnEntity with a defined ConsistencyLevel

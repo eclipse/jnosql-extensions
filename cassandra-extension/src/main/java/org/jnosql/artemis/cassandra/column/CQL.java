@@ -21,7 +21,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * To a dynamic query on CassandraCrudRepository and CassandraCrudRepositoryAsync interfaces.
+ * To a dynamic query on CassandraRepository and CassandraRepositoryAsync interfaces.
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)

@@ -61,7 +61,7 @@ class CassandraReturnTypeConverterUtil {
         return result;
     }
 
-    static Object returnObject(ColumnQuery query, CassandraColumnRepository repository, Class typeClass, Method method, ConsistencyLevel level) {
+    static Object returnObject(ColumnQuery query, CassandraTemplate repository, Class typeClass, Method method, ConsistencyLevel level) {
         Class<?> returnType = method.getReturnType();
 
         if (typeClass.equals(returnType)) {

@@ -36,27 +36,27 @@ class CassandraExtension implements Extension {
     private final Collection<Class<?>> crudAsyncTypes = new HashSet<>();
 
 
-    <T extends CassandraCrudRepository> void onProcessAnnotatedType(@Observes final ProcessAnnotatedType<T> repo) {
+    <T extends CassandraRepository> void onProcessAnnotatedType(@Observes final ProcessAnnotatedType<T> repo) {
         Class<T> javaClass = repo.getAnnotatedType().getJavaClass();
 
-        if(CassandraCrudRepository.class.equals(javaClass)) {
+        if(CassandraRepository.class.equals(javaClass)) {
             return;
         }
 
-        if (Stream.of(javaClass.getInterfaces()).anyMatch(c -> CassandraCrudRepository.class.equals(c))
+        if (Stream.of(javaClass.getInterfaces()).anyMatch(c -> CassandraRepository.class.equals(c))
                 && Modifier.isInterface(javaClass.getModifiers())) {
             crudTypes.add(javaClass);
         }
     }
 
-    <T extends CassandraCrudRepositoryAsync> void onProcessAnnotatedTypeAsync(@Observes final ProcessAnnotatedType<T> repo) {
+    <T extends CassandraRepositoryAsync> void onProcessAnnotatedTypeAsync(@Observes final ProcessAnnotatedType<T> repo) {
         Class<T> javaClass = repo.getAnnotatedType().getJavaClass();
 
-        if(CassandraCrudRepositoryAsync.class.equals(javaClass)) {
+        if(CassandraRepositoryAsync.class.equals(javaClass)) {
             return;
         }
 
-        if (Stream.of(javaClass.getInterfaces()).anyMatch(c -> CassandraCrudRepositoryAsync.class.equals(c))
+        if (Stream.of(javaClass.getInterfaces()).anyMatch(c -> CassandraRepositoryAsync.class.equals(c))
                 && Modifier.isInterface(javaClass.getModifiers())) {
             crudAsyncTypes.add(javaClass);
         }

@@ -16,5 +16,5 @@
 package org.jnosql.artemis.cassandra.column;
 
 
-public interface PersonRepositoryAsync extends CassandraCrudRepositoryAsync<Person> {
+public interface PersonRepositoryAsync extends CassandraRepositoryAsync<Person> {
 }

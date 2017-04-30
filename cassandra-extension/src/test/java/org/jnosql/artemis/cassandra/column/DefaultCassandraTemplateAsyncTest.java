@@ -18,7 +18,6 @@ package org.jnosql.artemis.cassandra.column;
 import com.datastax.driver.core.ConsistencyLevel;
 import com.datastax.driver.core.Statement;
 import com.datastax.driver.core.querybuilder.QueryBuilder;
-import org.jnosql.artemis.column.ColumnEntityConverter;
 import org.jnosql.diana.api.column.Column;
 import org.jnosql.diana.api.column.ColumnDeleteQuery;
 import org.jnosql.diana.api.column.ColumnEntity;
@@ -43,21 +42,21 @@ import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
 
 @RunWith(WeldJUnit4Runner.class)
-public class DefaultCassandraColumnRepositoryAsyncTest {
+public class DefaultCassandraTemplateAsyncTest {
 
     @Inject
     private CassandraColumnEntityConverter converter;
 
     private CassandraColumnFamilyManagerAsync managerAsync;
 
-    private CassandraColumnRepositoryAsync repository;
+    private CassandraTemplateAsync repository;
 
     @Before
     public void setUp() {
         managerAsync = Mockito.mock(CassandraColumnFamilyManagerAsync.class);
         Instance instance = Mockito.mock(Instance.class);
         Mockito.when(instance.get()).thenReturn(managerAsync);
-        repository = new DefaultCassandraColumnRepositoryAsync(converter, instance);
+        repository = new DefaultCassandraTemplateAsync(converter, instance);
     }
 
     @Test

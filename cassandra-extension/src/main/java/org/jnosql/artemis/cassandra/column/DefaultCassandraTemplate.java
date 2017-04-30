@@ -38,7 +38,7 @@ import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-class DefaultCassandraColumnRepository extends AbstractColumnTemplate implements CassandraColumnRepository {
+class DefaultCassandraTemplate extends AbstractColumnTemplate implements CassandraTemplate {
 
     private Instance<CassandraColumnFamilyManager> manager;
 
@@ -49,17 +49,17 @@ class DefaultCassandraColumnRepository extends AbstractColumnTemplate implements
     private ColumnEventPersistManager persistManager;
 
     @Inject
-    DefaultCassandraColumnRepository(Instance<CassandraColumnFamilyManager> manager,
-                                     CassandraColumnEntityConverter converter,
-                                     ColumnWorkflow flow,
-                                     ColumnEventPersistManager persistManager) {
+    DefaultCassandraTemplate(Instance<CassandraColumnFamilyManager> manager,
+                             CassandraColumnEntityConverter converter,
+                             ColumnWorkflow flow,
+                             ColumnEventPersistManager persistManager) {
         this.manager = manager;
         this.converter = converter;
         this.flow = flow;
         this.persistManager = persistManager;
     }
 
-    DefaultCassandraColumnRepository() {
+    DefaultCassandraTemplate() {
     }
 
 

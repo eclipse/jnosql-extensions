@@ -37,22 +37,22 @@ import java.util.stream.StreamSupport;
 import static java.util.stream.Collectors.toList;
 
 /**
- * The CassandraColumnRepositoryAsync default implementation
+ * The CassandraTemplateAsync default implementation
  */
-class DefaultCassandraColumnRepositoryAsync extends AbstractColumnTemplateAsync
-        implements CassandraColumnRepositoryAsync {
+class DefaultCassandraTemplateAsync extends AbstractColumnTemplateAsync
+        implements CassandraTemplateAsync {
 
 
     private CassandraColumnEntityConverter converter;
 
     private Instance<CassandraColumnFamilyManagerAsync> managerAsync;
 
-    DefaultCassandraColumnRepositoryAsync() {
+    DefaultCassandraTemplateAsync() {
     }
 
     @Inject
-    DefaultCassandraColumnRepositoryAsync(CassandraColumnEntityConverter converter,
-                                          Instance<CassandraColumnFamilyManagerAsync> managerAsync) {
+    DefaultCassandraTemplateAsync(CassandraColumnEntityConverter converter,
+                                  Instance<CassandraColumnFamilyManagerAsync> managerAsync) {
         this.converter = converter;
         this.managerAsync = managerAsync;
     }

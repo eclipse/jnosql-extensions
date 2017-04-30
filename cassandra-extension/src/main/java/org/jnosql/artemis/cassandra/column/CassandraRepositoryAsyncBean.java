@@ -33,7 +33,7 @@ import java.util.Collections;
 import java.util.Set;
 
 
-class CassandraRepositoryAsyncBean implements Bean<CassandraCrudRepositoryAsync>, PassivationCapable {
+class CassandraRepositoryAsyncBean implements Bean<CassandraRepositoryAsync>, PassivationCapable {
 
     private final Class type;
 
@@ -66,12 +66,12 @@ class CassandraRepositoryAsyncBean implements Bean<CassandraCrudRepositoryAsync>
     }
 
     @Override
-    public CassandraCrudRepositoryAsync create(CreationalContext<CassandraCrudRepositoryAsync> creationalContext) {
+    public CassandraRepositoryAsync create(CreationalContext<CassandraRepositoryAsync> creationalContext) {
         ClassRepresentations classRepresentations = getInstance(ClassRepresentations.class);
-        CassandraColumnRepositoryAsync repository = getInstance(CassandraColumnRepositoryAsync.class);
-        CassandraCrudRepositoryAsyncProxy handler = new CassandraCrudRepositoryAsyncProxy(repository,
+        CassandraTemplateAsync repository = getInstance(CassandraTemplateAsync.class);
+        CassandraRepositoryAsyncProxy handler = new CassandraRepositoryAsyncProxy(repository,
                 classRepresentations, type);
-        return (CassandraCrudRepositoryAsync) Proxy.newProxyInstance(type.getClassLoader(),
+        return (CassandraRepositoryAsync) Proxy.newProxyInstance(type.getClassLoader(),
                 new Class[]{type},
                 handler);
     }
@@ -91,7 +91,7 @@ class CassandraRepositoryAsyncBean implements Bean<CassandraCrudRepositoryAsync>
 
 
     @Override
-    public void destroy(CassandraCrudRepositoryAsync instance, CreationalContext<CassandraCrudRepositoryAsync> creationalContext) {
+    public void destroy(CassandraRepositoryAsync instance, CreationalContext<CassandraRepositoryAsync> creationalContext) {
 
     }
 

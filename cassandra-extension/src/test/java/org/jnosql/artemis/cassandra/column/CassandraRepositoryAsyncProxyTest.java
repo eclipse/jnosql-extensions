@@ -40,10 +40,10 @@ import static org.mockito.Mockito.verify;
 
 
 @RunWith(WeldJUnit4Runner.class)
-public class CassandraCrudRepositoryAsyncProxyTest {
+public class CassandraRepositoryAsyncProxyTest {
 
 
-    private CassandraColumnRepositoryAsync repository;
+    private CassandraTemplateAsync repository;
 
     @Inject
     private ClassRepresentations classRepresentations;
@@ -53,9 +53,9 @@ public class CassandraCrudRepositoryAsyncProxyTest {
 
     @Before
     public void setUp() {
-        this.repository = Mockito.mock(CassandraColumnRepositoryAsync.class);
+        this.repository = Mockito.mock(CassandraTemplateAsync.class);
 
-        CassandraCrudRepositoryAsyncProxy handler = new CassandraCrudRepositoryAsyncProxy(repository,
+        CassandraRepositoryAsyncProxy handler = new CassandraRepositoryAsyncProxy(repository,
                 classRepresentations, PersonAsyncRepository.class);
 
 
@@ -171,7 +171,7 @@ public class CassandraCrudRepositoryAsyncProxyTest {
 
     }
 
-    interface PersonAsyncRepository extends CassandraCrudRepositoryAsync<Person> {
+    interface PersonAsyncRepository extends CassandraRepositoryAsync<Person> {
 
         Person findByName(String name);
 

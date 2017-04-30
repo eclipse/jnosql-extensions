@@ -33,7 +33,7 @@ import java.util.Collections;
 import java.util.Set;
 
 
-class CassandraRepositoryBean implements Bean<CassandraCrudRepository>, PassivationCapable {
+class CassandraRepositoryBean implements Bean<CassandraRepository>, PassivationCapable {
 
     private final Class type;
 
@@ -66,12 +66,12 @@ class CassandraRepositoryBean implements Bean<CassandraCrudRepository>, Passivat
     }
 
     @Override
-    public CassandraCrudRepository create(CreationalContext<CassandraCrudRepository> creationalContext) {
+    public CassandraRepository create(CreationalContext<CassandraRepository> creationalContext) {
         ClassRepresentations classRepresentations = getInstance(ClassRepresentations.class);
-        CassandraColumnRepository repository = getInstance(CassandraColumnRepository.class);
-        CassandraCrudRepositoryProxy handler = new CassandraCrudRepositoryProxy(repository,
+        CassandraTemplate repository = getInstance(CassandraTemplate.class);
+        CassandraRepositoryProxy handler = new CassandraRepositoryProxy(repository,
                 classRepresentations, type);
-        return (CassandraCrudRepository) Proxy.newProxyInstance(type.getClassLoader(),
+        return (CassandraRepository) Proxy.newProxyInstance(type.getClassLoader(),
                 new Class[]{type},
                 handler);
     }
@@ -91,7 +91,7 @@ class CassandraRepositoryBean implements Bean<CassandraCrudRepository>, Passivat
 
 
     @Override
-    public void destroy(CassandraCrudRepository instance, CreationalContext<CassandraCrudRepository> creationalContext) {
+    public void destroy(CassandraRepository instance, CreationalContext<CassandraRepository> creationalContext) {
 
     }
 

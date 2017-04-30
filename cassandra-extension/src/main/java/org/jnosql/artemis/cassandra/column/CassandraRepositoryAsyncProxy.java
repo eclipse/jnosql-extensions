@@ -37,7 +37,7 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
-class CassandraCrudRepositoryAsyncProxy<T> implements InvocationHandler {
+class CassandraRepositoryAsyncProxy<T> implements InvocationHandler {
 
     private static final String SAVE = "save";
     private static final String UPDATE = "update";
@@ -52,9 +52,9 @@ class CassandraCrudRepositoryAsyncProxy<T> implements InvocationHandler {
 
     private final Class<T> typeClass;
 
-    private final CassandraColumnRepositoryAsync repository;
+    private final CassandraTemplateAsync repository;
 
-    private final ColumnCrudRepositoryAsync crudRepository;
+    private final ColumnRepositoryAsync crudRepository;
 
     private final ClassRepresentation classRepresentation;
 
@@ -63,9 +63,9 @@ class CassandraCrudRepositoryAsyncProxy<T> implements InvocationHandler {
     private final ColumnQueryDeleteParser queryDeleteParser;
 
 
-    CassandraCrudRepositoryAsyncProxy(CassandraColumnRepositoryAsync repository, ClassRepresentations classRepresentations, Class<?> repositoryType) {
+    CassandraRepositoryAsyncProxy(CassandraTemplateAsync repository, ClassRepresentations classRepresentations, Class<?> repositoryType) {
         this.repository = repository;
-        this.crudRepository = new ColumnCrudRepositoryAsync(repository);
+        this.crudRepository = new ColumnRepositoryAsync(repository);
         this.typeClass = Class.class.cast(ParameterizedType.class.cast(repositoryType.getGenericInterfaces()[0])
                 .getActualTypeArguments()[0]);
         this.classRepresentation = classRepresentations.get(typeClass);
@@ -159,11 +159,11 @@ class CassandraCrudRepositoryAsyncProxy<T> implements InvocationHandler {
     }
 
 
-    class ColumnCrudRepositoryAsync extends AbstractColumnRepositoryAsync implements CassandraCrudRepositoryAsync {
+    class ColumnRepositoryAsync extends AbstractColumnRepositoryAsync implements CassandraRepositoryAsync {
 
-        private final CassandraColumnRepositoryAsync repository;
+        private final CassandraTemplateAsync repository;
 
-        ColumnCrudRepositoryAsync(CassandraColumnRepositoryAsync repository) {
+        ColumnRepositoryAsync(CassandraTemplateAsync repository) {
             this.repository = repository;
         }
 

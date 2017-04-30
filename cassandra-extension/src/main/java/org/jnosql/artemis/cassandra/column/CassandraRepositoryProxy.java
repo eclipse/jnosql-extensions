@@ -37,7 +37,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-class CassandraCrudRepositoryProxy<T> implements InvocationHandler {
+class CassandraRepositoryProxy<T> implements InvocationHandler {
 
     private static final String SAVE = "save";
     private static final String UPDATE = "update";
@@ -46,7 +46,7 @@ class CassandraCrudRepositoryProxy<T> implements InvocationHandler {
 
     private final Class<T> typeClass;
 
-    private final CassandraColumnRepository repository;
+    private final CassandraTemplate repository;
 
     private final ColumnRepository crudRepository;
 
@@ -57,7 +57,7 @@ class CassandraCrudRepositoryProxy<T> implements InvocationHandler {
     private final ColumnQueryDeleteParser deleteQueryParser;
 
 
-    CassandraCrudRepositoryProxy(CassandraColumnRepository repository, ClassRepresentations classRepresentations, Class<?> repositoryType) {
+    CassandraRepositoryProxy(CassandraTemplate repository, ClassRepresentations classRepresentations, Class<?> repositoryType) {
         this.repository = repository;
         this.crudRepository = new ColumnRepository(repository);
         this.typeClass = Class.class.cast(ParameterizedType.class.cast(repositoryType.getGenericInterfaces()[0])
@@ -123,11 +123,11 @@ class CassandraCrudRepositoryProxy<T> implements InvocationHandler {
     }
 
 
-    class ColumnRepository extends AbstractColumnRepository implements CassandraCrudRepository {
+    class ColumnRepository extends AbstractColumnRepository implements CassandraRepository {
 
-        private final CassandraColumnRepository repository;
+        private final CassandraTemplate repository;
 
-        ColumnRepository(CassandraColumnRepository repository) {
+        ColumnRepository(CassandraTemplate repository) {
             this.repository = repository;
         }
 

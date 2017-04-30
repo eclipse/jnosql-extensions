@@ -29,7 +29,7 @@ import java.util.List;
 /**
  * A Cassandra extension of {@link org.jnosql.artemis.column.ColumnTemplate}
  */
-public interface CassandraColumnRepository extends ColumnTemplate {
+public interface CassandraTemplate extends ColumnTemplate {
 
     /**
      * Saves a ColumnEntity with a defined ConsistencyLevel

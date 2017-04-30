@@ -40,10 +40,10 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(WeldJUnit4Runner.class)
-public class CassandraCrudRepositoryProxyTest {
+public class CassandraRepositoryProxyTest {
 
 
-    private CassandraColumnRepository repository;
+    private CassandraTemplate repository;
 
     @Inject
     private ClassRepresentations classRepresentations;
@@ -53,9 +53,9 @@ public class CassandraCrudRepositoryProxyTest {
 
     @Before
     public void setUp() {
-        this.repository = Mockito.mock(CassandraColumnRepository.class);
+        this.repository = Mockito.mock(CassandraTemplate.class);
 
-        CassandraCrudRepositoryProxy handler = new CassandraCrudRepositoryProxy(repository,
+        CassandraRepositoryProxy handler = new CassandraRepositoryProxy(repository,
                 classRepresentations, PersonRepository.class);
 
         when(repository.save(any(Person.class))).thenReturn(new Person());
@@ -150,7 +150,7 @@ public class CassandraCrudRepositoryProxyTest {
         verify(repository).cql(Mockito.eq("select * from Person where name = ?"), Mockito.any());
     }
 
-    interface PersonRepository extends CassandraCrudRepository<Person> {
+    interface PersonRepository extends CassandraRepository<Person> {
 
         Person findByName(String name, ConsistencyLevel level);
 
