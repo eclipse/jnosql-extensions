@@ -35,14 +35,14 @@ import static org.elasticsearch.index.query.QueryBuilders.termQuery;
 import static org.mockito.Mockito.when;
 
 @RunWith(WeldJUnit4Runner.class)
-public class DefaultElasticsearchDocumentRepositoryAsyncTest {
+public class DefaultElasticsearchTemplateAsyncTest {
 
     @Inject
     private DocumentEntityConverter converter;
 
     private ElasticsearchDocumentCollectionManagerAsync managerAsync;
 
-    private ElasticsearchDocumentRepositoryAsync repositoryAsync;
+    private ElasticsearchTemplateAsync repositoryAsync;
 
 
     @Before
@@ -51,7 +51,7 @@ public class DefaultElasticsearchDocumentRepositoryAsyncTest {
         Instance instance = Mockito.mock(Instance.class);
         when(instance.get()).thenReturn(managerAsync);
 
-        repositoryAsync = new DefaultElasticsearchDocumentRepositoryAsync(converter, instance);
+        repositoryAsync = new DefaultElasticsearchTemplateAsync(converter, instance);
 
         DocumentEntity entity = DocumentEntity.of("Person");
         entity.add(Document.of("name", "Ada"));

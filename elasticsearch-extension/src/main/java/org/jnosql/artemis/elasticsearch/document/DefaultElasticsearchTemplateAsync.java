@@ -17,7 +17,7 @@ package org.jnosql.artemis.elasticsearch.document;
 
 
 import org.elasticsearch.index.query.QueryBuilder;
-import org.jnosql.artemis.document.AbstractDocumentRepositoryAsync;
+import org.jnosql.artemis.document.AbstractDocumentTemplateAsync;
 import org.jnosql.artemis.document.DocumentEntityConverter;
 import org.jnosql.diana.api.ExecuteAsyncQueryException;
 import org.jnosql.diana.api.document.DocumentCollectionManagerAsync;
@@ -33,23 +33,23 @@ import java.util.function.Consumer;
 import static java.util.stream.Collectors.toList;
 
 /**
- * The default implementation of {@link ElasticsearchDocumentRepositoryAsync}
+ * The default implementation of {@link ElasticsearchTemplateAsync}
  */
-class DefaultElasticsearchDocumentRepositoryAsync extends AbstractDocumentRepositoryAsync implements
-        ElasticsearchDocumentRepositoryAsync {
+class DefaultElasticsearchTemplateAsync extends AbstractDocumentTemplateAsync implements
+        ElasticsearchTemplateAsync {
 
     private DocumentEntityConverter converter;
 
     private Instance<ElasticsearchDocumentCollectionManagerAsync> manager;
 
     @Inject
-    DefaultElasticsearchDocumentRepositoryAsync(DocumentEntityConverter converter,
-                                                Instance<ElasticsearchDocumentCollectionManagerAsync> manager) {
+    DefaultElasticsearchTemplateAsync(DocumentEntityConverter converter,
+                                      Instance<ElasticsearchDocumentCollectionManagerAsync> manager) {
         this.converter = converter;
         this.manager = manager;
     }
 
-    DefaultElasticsearchDocumentRepositoryAsync() {
+    DefaultElasticsearchTemplateAsync() {
     }
 
     @Override

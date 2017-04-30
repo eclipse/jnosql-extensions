@@ -16,15 +16,12 @@
 package org.jnosql.artemis.elasticsearch.document;
 
 import org.elasticsearch.index.query.QueryBuilder;
-import org.elasticsearch.index.query.QueryBuilders;
-import org.hamcrest.Matchers;
 import org.jnosql.artemis.document.DocumentEntityConverter;
 import org.jnosql.artemis.document.DocumentEventPersistManager;
 import org.jnosql.artemis.document.DocumentWorkflow;
 import org.jnosql.diana.api.document.Document;
 import org.jnosql.diana.api.document.DocumentEntity;
 import org.jnosql.diana.elasticsearch.document.ElasticsearchDocumentCollectionManager;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -43,7 +40,7 @@ import static org.mockito.Mockito.when;
 
 
 @RunWith(WeldJUnit4Runner.class)
-public class DefaultElasticsearchDocumentRepositoryTest {
+public class DefaultElasticsearchTemplateTest {
 
     @Inject
     private DocumentEntityConverter converter;
@@ -56,7 +53,7 @@ public class DefaultElasticsearchDocumentRepositoryTest {
 
     private ElasticsearchDocumentCollectionManager manager;
 
-    private ElasticsearchDocumentRepository repository;
+    private ElasticsearchTemplate repository;
 
 
     @Before
@@ -64,7 +61,7 @@ public class DefaultElasticsearchDocumentRepositoryTest {
         manager = Mockito.mock(ElasticsearchDocumentCollectionManager.class);
         Instance instance = Mockito.mock(Instance.class);
         when(instance.get()).thenReturn(manager);
-        repository = new DefaultElasticsearchDocumentRepository(instance, converter, flow, persistManager);
+        repository = new DefaultElasticsearchTemplate(instance, converter, flow, persistManager);
 
         DocumentEntity entity = DocumentEntity.of("Person");
         entity.add(Document.of("name", "Ada"));

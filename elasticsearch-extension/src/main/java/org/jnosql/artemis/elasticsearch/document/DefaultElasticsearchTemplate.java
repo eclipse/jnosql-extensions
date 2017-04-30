@@ -17,7 +17,7 @@ package org.jnosql.artemis.elasticsearch.document;
 
 
 import org.elasticsearch.index.query.QueryBuilder;
-import org.jnosql.artemis.document.AbstractDocumentRepository;
+import org.jnosql.artemis.document.AbstractDocumentTemplate;
 import org.jnosql.artemis.document.DocumentEntityConverter;
 import org.jnosql.artemis.document.DocumentEventPersistManager;
 import org.jnosql.artemis.document.DocumentWorkflow;
@@ -32,10 +32,10 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
- * The Default implementation of {@link ElasticsearchDocumentRepository}
+ * The Default implementation of {@link ElasticsearchTemplate}
  */
-class DefaultElasticsearchDocumentRepository extends AbstractDocumentRepository
-        implements ElasticsearchDocumentRepository {
+class DefaultElasticsearchTemplate extends AbstractDocumentTemplate
+        implements ElasticsearchTemplate {
 
     private Instance<ElasticsearchDocumentCollectionManager> manager;
 
@@ -46,16 +46,16 @@ class DefaultElasticsearchDocumentRepository extends AbstractDocumentRepository
     private DocumentEventPersistManager persistManager;
 
     @Inject
-    DefaultElasticsearchDocumentRepository(Instance<ElasticsearchDocumentCollectionManager> manager,
-                                           DocumentEntityConverter converter, DocumentWorkflow flow,
-                                           DocumentEventPersistManager persistManager) {
+    DefaultElasticsearchTemplate(Instance<ElasticsearchDocumentCollectionManager> manager,
+                                 DocumentEntityConverter converter, DocumentWorkflow flow,
+                                 DocumentEventPersistManager persistManager) {
         this.manager = manager;
         this.converter = converter;
         this.flow = flow;
         this.persistManager = persistManager;
     }
 
-    DefaultElasticsearchDocumentRepository() {
+    DefaultElasticsearchTemplate() {
     }
 
     @Override

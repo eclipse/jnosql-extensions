@@ -17,14 +17,14 @@ package org.jnosql.artemis.elasticsearch.document;
 
 
 import org.elasticsearch.index.query.QueryBuilder;
-import org.jnosql.artemis.document.DocumentRepository;
+import org.jnosql.artemis.document.DocumentTemplate;
 
 import java.util.List;
 
 /**
- * A {@link DocumentRepository} to elasticsearch
+ * A {@link DocumentTemplate} to elasticsearch
  */
-public interface ElasticsearchDocumentRepository extends DocumentRepository {
+public interface ElasticsearchTemplate extends DocumentTemplate {
 
     /**
      * Find entities from {@link QueryBuilder}

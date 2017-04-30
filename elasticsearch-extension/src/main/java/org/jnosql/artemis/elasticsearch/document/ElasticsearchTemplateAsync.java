@@ -17,16 +17,16 @@ package org.jnosql.artemis.elasticsearch.document;
 
 
 import org.elasticsearch.index.query.QueryBuilder;
-import org.jnosql.artemis.document.DocumentRepositoryAsync;
+import org.jnosql.artemis.document.DocumentTemplateAsync;
 import org.jnosql.diana.api.ExecuteAsyncQueryException;
 
 import java.util.List;
 import java.util.function.Consumer;
 
 /**
- * A {@link DocumentRepositoryAsync} to elasticsearch
+ * A {@link DocumentTemplateAsync} to elasticsearch
  */
-public interface ElasticsearchDocumentRepositoryAsync extends DocumentRepositoryAsync {
+public interface ElasticsearchTemplateAsync extends DocumentTemplateAsync {
 
     /**
      * Find entities from {@link QueryBuilder}
