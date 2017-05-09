@@ -17,6 +17,7 @@ package org.jnosql.artemis.cassandra.column;
 
 import org.jnosql.artemis.DatabaseQualifier;
 import org.jnosql.artemis.reflection.ClassRepresentations;
+import org.jnosql.artemis.reflection.Reflections;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.spi.CreationalContext;
@@ -69,8 +70,10 @@ class CassandraRepositoryAsyncBean implements Bean<CassandraRepositoryAsync>, Pa
     public CassandraRepositoryAsync create(CreationalContext<CassandraRepositoryAsync> creationalContext) {
         ClassRepresentations classRepresentations = getInstance(ClassRepresentations.class);
         CassandraTemplateAsync repository = getInstance(CassandraTemplateAsync.class);
+        Reflections reflections = getInstance(Reflections.class);
+
         CassandraRepositoryAsyncProxy handler = new CassandraRepositoryAsyncProxy(repository,
-                classRepresentations, type);
+                classRepresentations, type, reflections);
         return (CassandraRepositoryAsync) Proxy.newProxyInstance(type.getClassLoader(),
                 new Class[]{type},
                 handler);

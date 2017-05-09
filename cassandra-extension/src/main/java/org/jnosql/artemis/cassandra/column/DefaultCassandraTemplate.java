@@ -140,7 +140,7 @@ class DefaultCassandraTemplate extends AbstractColumnTemplate implements Cassand
         Objects.requireNonNull(level, "level is required");
         persistManager.firePreQuery(query);
 
-        return manager.get().find(query, level).stream()
+        return manager.get().select(query, level).stream()
                 .map(c -> (T) converter.toEntity(c))
                 .collect(Collectors.toList());
     }

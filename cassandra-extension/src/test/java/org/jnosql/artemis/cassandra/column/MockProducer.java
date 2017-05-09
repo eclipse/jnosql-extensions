@@ -24,6 +24,8 @@ import org.mockito.Mockito;
 
 import javax.enterprise.inject.Produces;
 
+import static org.mockito.Mockito.when;
+
 public class MockProducer {
 
 
@@ -32,7 +34,7 @@ public class MockProducer {
         CassandraColumnFamilyManager manager = Mockito.mock(CassandraColumnFamilyManager.class);
         ColumnEntity entity = ColumnEntity.of("Person");
         entity.add(Column.of("name", "Ada"));
-        Mockito.when(manager.save(Mockito.any(ColumnEntity.class))).thenReturn(entity);
+        when(manager.insert(Mockito.any(ColumnEntity.class))).thenReturn(entity);
         return manager;
     }
 

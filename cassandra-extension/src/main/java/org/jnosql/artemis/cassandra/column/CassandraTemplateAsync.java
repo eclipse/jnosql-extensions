@@ -128,7 +128,7 @@ public interface CassandraTemplateAsync extends ColumnTemplateAsync {
      * @throws ExecuteAsyncQueryException a thread exception
      * @throws NullPointerException       when any arguments are null
      */
-    <T> void find(ColumnQuery query, ConsistencyLevel level, Consumer<List<T>> consumer)
+    <T> void select(ColumnQuery query, ConsistencyLevel level, Consumer<List<T>> consumer)
             throws ExecuteAsyncQueryException, NullPointerException;
 
     /**

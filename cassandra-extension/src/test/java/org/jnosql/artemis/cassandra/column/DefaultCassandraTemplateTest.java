@@ -175,7 +175,7 @@ public class DefaultCassandraTemplateTest {
         ColumnEntity entity = ColumnEntity.of("Person", asList(Column.of("name", "Name"), Column.of("age", 20)));
         ColumnQuery query = ColumnQuery.of("");
         ConsistencyLevel level = ConsistencyLevel.THREE;
-        when(manager.find(query, level)).thenReturn(Collections.singletonList(entity));
+        when(manager.select(query, level)).thenReturn(Collections.singletonList(entity));
 
         List<Person> people = repository.find(query, level);
         Assert.assertThat(people, Matchers.contains(person));

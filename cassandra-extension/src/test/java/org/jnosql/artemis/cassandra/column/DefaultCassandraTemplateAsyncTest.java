@@ -150,8 +150,8 @@ public class DefaultCassandraTemplateAsyncTest {
         ConsistencyLevel level = ConsistencyLevel.THREE;
         Consumer<List<Person>> callBack = people -> {
         };
-        repository.find(query, level, callBack);
-        verify(managerAsync).find(eq(query), eq(level), any());
+        repository.select(query, level, callBack);
+        verify(managerAsync).select(eq(query), eq(level), any());
     }
 
     @Test

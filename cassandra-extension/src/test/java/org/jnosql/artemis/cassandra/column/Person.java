@@ -18,13 +18,14 @@ package org.jnosql.artemis.cassandra.column;
 
 import org.jnosql.artemis.Column;
 import org.jnosql.artemis.Entity;
+import org.jnosql.artemis.Id;
 
 import java.util.Objects;
 
 @Entity
 public class Person {
 
-    @Column
+    @Id
     private String name;
 
     @Column

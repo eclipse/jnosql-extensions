@@ -24,6 +24,7 @@ import org.jnosql.artemis.column.query.ColumnQueryParser;
 import org.jnosql.artemis.column.query.ReturnTypeConverterUtil;
 import org.jnosql.artemis.reflection.ClassRepresentation;
 import org.jnosql.artemis.reflection.ClassRepresentations;
+import org.jnosql.artemis.reflection.Reflections;
 import org.jnosql.diana.api.column.ColumnDeleteQuery;
 import org.jnosql.diana.api.column.ColumnQuery;
 
@@ -57,12 +58,14 @@ class CassandraRepositoryProxy<T> implements InvocationHandler {
     private final ColumnQueryDeleteParser deleteQueryParser;
 
 
-    CassandraRepositoryProxy(CassandraTemplate repository, ClassRepresentations classRepresentations, Class<?> repositoryType) {
+    CassandraRepositoryProxy(CassandraTemplate repository, ClassRepresentations classRepresentations, Class<?> repositoryType,
+                             Reflections reflections) {
+
         this.repository = repository;
-        this.crudRepository = new ColumnRepository(repository);
         this.typeClass = Class.class.cast(ParameterizedType.class.cast(repositoryType.getGenericInterfaces()[0])
                 .getActualTypeArguments()[0]);
         this.classRepresentation = classRepresentations.get(typeClass);
+        this.crudRepository = new ColumnRepository(repository, classRepresentation, reflections);
         this.queryParser = new ColumnQueryParser();
         this.deleteQueryParser = new ColumnQueryDeleteParser();
     }
@@ -127,14 +130,31 @@ class CassandraRepositoryProxy<T> implements InvocationHandler {
 
         private final CassandraTemplate template;
 
-        ColumnRepository(CassandraTemplate template) {
+        private final ClassRepresentation classRepresentation;
+
+        private final Reflections reflections;
+
+        ColumnRepository(CassandraTemplate template, ClassRepresentation classRepresentation, Reflections reflections) {
             this.template = template;
+            this.classRepresentation = classRepresentation;
+            this.reflections = reflections;
         }
 
         @Override
         protected ColumnTemplate getTemplate() {
             return template;
         }
+
+        @Override
+        protected ClassRepresentation getClassRepresentation() {
+            return classRepresentation;
+        }
+
+        @Override
+        protected Reflections getReflections() {
+            return reflections;
+        }
+
         @Override
         public Object save(Object entity, ConsistencyLevel level) throws NullPointerException {
             return template.save(entity, level);

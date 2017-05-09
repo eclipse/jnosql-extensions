@@ -26,7 +26,7 @@ import java.util.function.Consumer;
 /**
  * A Cassandra extension of {@link RepositoryAsync}
  */
-public interface CassandraRepositoryAsync<T> extends RepositoryAsync<T> {
+public interface CassandraRepositoryAsync<T, ID> extends RepositoryAsync<T, ID> {
 
     /**
      * Save the entity with ConsistencyLevel

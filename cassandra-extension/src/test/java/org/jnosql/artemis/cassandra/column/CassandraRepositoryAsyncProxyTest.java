@@ -18,6 +18,7 @@ package org.jnosql.artemis.cassandra.column;
 import com.datastax.driver.core.ConsistencyLevel;
 import org.jnosql.artemis.DynamicQueryException;
 import org.jnosql.artemis.reflection.ClassRepresentations;
+import org.jnosql.artemis.reflection.Reflections;
 import org.jnosql.diana.api.column.ColumnDeleteQuery;
 import org.jnosql.diana.api.column.ColumnQuery;
 import org.junit.Before;
@@ -43,20 +44,23 @@ import static org.mockito.Mockito.verify;
 public class CassandraRepositoryAsyncProxyTest {
 
 
-    private CassandraTemplateAsync repository;
+    private CassandraTemplateAsync template;
 
     @Inject
     private ClassRepresentations classRepresentations;
+
+    @Inject
+    private Reflections reflections;
 
     private PersonAsyncRepository personRepository;
 
 
     @Before
     public void setUp() {
-        this.repository = Mockito.mock(CassandraTemplateAsync.class);
+        this.template = Mockito.mock(CassandraTemplateAsync.class);
 
-        CassandraRepositoryAsyncProxy handler = new CassandraRepositoryAsyncProxy(repository,
-                classRepresentations, PersonAsyncRepository.class);
+        CassandraRepositoryAsyncProxy handler = new CassandraRepositoryAsyncProxy(template,
+                classRepresentations, PersonAsyncRepository.class, reflections);
 
 
         personRepository = (PersonAsyncRepository) Proxy.newProxyInstance(PersonAsyncRepository.class.getClassLoader(),
@@ -69,8 +73,8 @@ public class CassandraRepositoryAsyncProxyTest {
     public void shouldSave() {
         ArgumentCaptor<Person> captor = ArgumentCaptor.forClass(Person.class);
         Person person = new Person("Ada", 12);
-        repository.save(person);
-        verify(repository).save(captor.capture());
+        template.insert(person);
+        verify(personRepository).save(captor.capture());
         Person value = captor.getValue();
         assertEquals(person, value);
     }
@@ -80,9 +84,9 @@ public class CassandraRepositoryAsyncProxyTest {
     public void shouldSaveWithTTl() {
         ArgumentCaptor<Person> captor = ArgumentCaptor.forClass(Person.class);
         Person person = new Person("Ada", 12);
-        ;
-        repository.save(person, Duration.ofHours(2));
-        verify(repository).save(captor.capture(), Mockito.eq(Duration.ofHours(2)));
+
+        template.insert(person, Duration.ofHours(2));
+        verify(template).insert(captor.capture(), Mockito.eq(Duration.ofHours(2)));
         Person value = captor.getValue();
         assertEquals(person, value);
     }
@@ -92,9 +96,9 @@ public class CassandraRepositoryAsyncProxyTest {
     public void shouldUpdate() {
         ArgumentCaptor<Person> captor = ArgumentCaptor.forClass(Person.class);
         Person person = new Person("Ada", 12);
-        ;
-        repository.update(person);
-        verify(repository).update(captor.capture());
+
+        template.update(person);
+        verify(template).update(captor.capture());
         Person value = captor.getValue();
         assertEquals(person, value);
     }
@@ -104,9 +108,9 @@ public class CassandraRepositoryAsyncProxyTest {
     public void shouldSaveItarable() {
         ArgumentCaptor<Iterable> captor = ArgumentCaptor.forClass(Iterable.class);
         Person person = new Person("Ada", 12);
-        ;
+
         personRepository.save(singletonList(person));
-        verify(repository).save(captor.capture());
+        verify(template).insert(captor.capture());
         Iterable<Person> persons = captor.getValue();
         assertThat(persons, containsInAnyOrder(person));
     }
@@ -115,8 +119,8 @@ public class CassandraRepositoryAsyncProxyTest {
     public void shouldUpdateItarable() {
         ArgumentCaptor<Iterable> captor = ArgumentCaptor.forClass(Iterable.class);
         Person person = new Person("Ada", 12);
-        personRepository.update(singletonList(person));
-        verify(repository).update(captor.capture());
+        personRepository.save(singletonList(person));
+        verify(template).update(captor.capture());
         Iterable<Person> persons = captor.getValue();
         assertThat(persons, containsInAnyOrder(person));
     }
@@ -134,7 +138,7 @@ public class CassandraRepositoryAsyncProxyTest {
         };
         personRepository.findByName("Ada", ConsistencyLevel.ANY, callBack);
 
-        verify(repository).find(captor.capture(), Mockito.eq(ConsistencyLevel.ANY), Mockito.eq(callBack));
+        verify(template).select(captor.capture(), Mockito.eq(ConsistencyLevel.ANY), Mockito.eq(callBack));
         ColumnQuery query = captor.getValue();
         assertEquals("Person", query.getColumnFamily());
 
@@ -147,7 +151,7 @@ public class CassandraRepositoryAsyncProxyTest {
         };
         personRepository.deleteByName("Ada", ConsistencyLevel.ANY, callBack);
 
-        verify(repository).delete(captor.capture(), Mockito.eq(ConsistencyLevel.ANY), Mockito.eq(callBack));
+        verify(template).delete(captor.capture(), Mockito.eq(ConsistencyLevel.ANY), Mockito.eq(callBack));
         ColumnDeleteQuery query = captor.getValue();
         assertEquals("Person", query.getColumnFamily());
     }
@@ -165,13 +169,13 @@ public class CassandraRepositoryAsyncProxyTest {
         };
         personRepository.queryName("Ada", callBack);
 
-        verify(repository).cql(Mockito.eq("select * from Person where name= ?"), Mockito.eq(callBack), captor.capture());
+        verify(template).cql(Mockito.eq("select * from Person where name= ?"), Mockito.eq(callBack), captor.capture());
         Object value = captor.getValue();
         assertEquals("Ada", value);
 
     }
 
-    interface PersonAsyncRepository extends CassandraRepositoryAsync<Person> {
+    interface PersonAsyncRepository extends CassandraRepositoryAsync<Person, String> {
 
         Person findByName(String name);
 

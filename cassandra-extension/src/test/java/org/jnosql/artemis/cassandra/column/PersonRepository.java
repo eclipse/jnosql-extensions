@@ -16,5 +16,5 @@
 package org.jnosql.artemis.cassandra.column;
 
 
-public interface PersonRepository extends CassandraRepository<Person> {
+public interface PersonRepository extends CassandraRepository<Person, String> {
 }

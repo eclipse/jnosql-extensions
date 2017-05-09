@@ -23,6 +23,7 @@ import org.jnosql.artemis.column.query.ColumnQueryDeleteParser;
 import org.jnosql.artemis.column.query.ColumnQueryParser;
 import org.jnosql.artemis.reflection.ClassRepresentation;
 import org.jnosql.artemis.reflection.ClassRepresentations;
+import org.jnosql.artemis.reflection.Reflections;
 import org.jnosql.diana.api.ExecuteAsyncQueryException;
 import org.jnosql.diana.api.column.ColumnDeleteQuery;
 import org.jnosql.diana.api.column.ColumnQuery;
@@ -63,12 +64,13 @@ class CassandraRepositoryAsyncProxy<T> implements InvocationHandler {
     private final ColumnQueryDeleteParser queryDeleteParser;
 
 
-    CassandraRepositoryAsyncProxy(CassandraTemplateAsync repository, ClassRepresentations classRepresentations, Class<?> repositoryType) {
+    CassandraRepositoryAsyncProxy(CassandraTemplateAsync repository, ClassRepresentations classRepresentations,
+                                  Class<?> repositoryType, Reflections reflections) {
         this.repository = repository;
-        this.crudRepository = new ColumnRepositoryAsync(repository);
         this.typeClass = Class.class.cast(ParameterizedType.class.cast(repositoryType.getGenericInterfaces()[0])
                 .getActualTypeArguments()[0]);
         this.classRepresentation = classRepresentations.get(typeClass);
+        this.crudRepository = new ColumnRepositoryAsync(repository, classRepresentation, reflections);
         this.queryParser = new ColumnQueryParser();
         this.queryDeleteParser = new ColumnQueryDeleteParser();
     }
@@ -112,14 +114,14 @@ class CassandraRepositoryAsyncProxy<T> implements InvocationHandler {
 
                 Optional<ConsistencyLevel> consistencyLevel = getConsistencyLevel(args);
                 if (consistencyLevel.isPresent()) {
-                    repository.find(query, consistencyLevel.get(), Consumer.class.cast(callBack));
+                    repository.select(query, consistencyLevel.get(), Consumer.class.cast(callBack));
                 } else {
-                    repository.find(query, Consumer.class.cast(callBack));
+                    repository.select(query, Consumer.class.cast(callBack));
                 }
                 return null;
             }
 
-            throw new DynamicQueryException("On find async method you must put a java.util.function.Consumer" +
+            throw new DynamicQueryException("On select async method you must put a java.util.function.Consumer" +
                     " as end parameter as callback");
         }
 
@@ -163,13 +165,29 @@ class CassandraRepositoryAsyncProxy<T> implements InvocationHandler {
 
         private final CassandraTemplateAsync template;
 
-        ColumnRepositoryAsync(CassandraTemplateAsync template) {
+        private final Reflections reflections;
+
+        private final ClassRepresentation classRepresentation;
+
+        ColumnRepositoryAsync(CassandraTemplateAsync template, ClassRepresentation classRepresentation, Reflections reflections) {
             this.template = template;
+            this.classRepresentation = classRepresentation;
+            this.reflections = reflections;
         }
 
         @Override
         protected ColumnTemplateAsync getTemplate() {
             return template;
+        }
+
+        @Override
+        protected Reflections getReflections() {
+            return reflections;
+        }
+
+        @Override
+        protected ClassRepresentation getClassRepresentation() {
+            return classRepresentation;
         }
 
         @Override

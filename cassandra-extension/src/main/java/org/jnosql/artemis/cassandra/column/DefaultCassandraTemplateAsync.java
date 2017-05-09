@@ -135,7 +135,7 @@ class DefaultCassandraTemplateAsync extends AbstractColumnTemplateAsync
     }
 
     @Override
-    public <T> void find(ColumnQuery query, ConsistencyLevel level, Consumer<List<T>> callBack)
+    public <T> void select(ColumnQuery query, ConsistencyLevel level, Consumer<List<T>> callBack)
             throws ExecuteAsyncQueryException, NullPointerException {
         Objects.requireNonNull(callBack, "callBack is required");
         Consumer<List<ColumnEntity>> dianaCallBack = d -> {
@@ -146,7 +146,7 @@ class DefaultCassandraTemplateAsync extends AbstractColumnTemplateAsync
                             .collect(toList()));
         };
 
-        managerAsync.get().find(query, level, dianaCallBack);
+        managerAsync.get().select(query, level, dianaCallBack);
     }
 
     @Override
