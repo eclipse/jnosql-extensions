@@ -66,7 +66,7 @@ public class DefaultElasticsearchTemplateTest {
         DocumentEntity entity = DocumentEntity.of("Person");
         entity.add(Document.of("name", "Ada"));
         entity.add(Document.of("age", 10));
-        when(manager.find(Mockito.any(QueryBuilder.class), Mockito.any(String[].class)))
+        when(manager.select(Mockito.any(QueryBuilder.class), Mockito.any(String[].class)))
                 .thenReturn(Collections.singletonList(entity));
     }
 
@@ -76,7 +76,7 @@ public class DefaultElasticsearchTemplateTest {
         List<Person> people = repository.find(queryBuilder, "Person");
 
         assertThat(people, contains(new Person("Ada", 10)));
-        Mockito.verify(manager).find(Mockito.eq(queryBuilder), Mockito.eq("Person"));
+        Mockito.verify(manager).select(Mockito.eq(queryBuilder), Mockito.eq("Person"));
 
     }
 }

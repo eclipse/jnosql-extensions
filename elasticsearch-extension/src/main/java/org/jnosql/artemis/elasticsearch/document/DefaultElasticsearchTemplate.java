@@ -81,7 +81,7 @@ class DefaultElasticsearchTemplate extends AbstractDocumentTemplate
     @Override
     public <T> List<T> find(QueryBuilder query, String... types) {
         Objects.requireNonNull(query, "query is required");
-        List<DocumentEntity> entities = manager.get().find(query, types);
+        List<DocumentEntity> entities = manager.get().select(query, types);
         return entities.stream().map(converter::toEntity).map(e -> (T) e)
                 .collect(Collectors.toList());
     }
