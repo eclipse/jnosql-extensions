@@ -17,6 +17,7 @@ package org.jnosql.artemis.orientdb.document;
 
 import org.jnosql.artemis.DynamicQueryException;
 import org.jnosql.artemis.reflection.ClassRepresentations;
+import org.jnosql.artemis.reflection.Reflections;
 import org.jnosql.diana.api.column.ColumnQuery;
 import org.junit.Before;
 import org.junit.Test;
@@ -45,6 +46,9 @@ public class OrientDBRepositoryAsyncProxyTest {
     @Inject
     private ClassRepresentations classRepresentations;
 
+    @Inject
+    private Reflections reflections;
+
     private PersonAsyncRepository personRepository;
 
 
@@ -53,7 +57,7 @@ public class OrientDBRepositoryAsyncProxyTest {
         this.repository = Mockito.mock(OrientDBDocumentTemplateAsync.class);
 
         OrientDBRepositoryAsyncProxy handler = new OrientDBRepositoryAsyncProxy(repository,
-                classRepresentations, PersonAsyncRepository.class);
+                classRepresentations, PersonAsyncRepository.class, reflections);
 
 
         personRepository = (PersonAsyncRepository) Proxy.newProxyInstance(PersonAsyncRepository.class.getClassLoader(),
@@ -61,62 +65,6 @@ public class OrientDBRepositoryAsyncProxyTest {
                 handler);
     }
 
-
-    @Test
-    public void shouldSave() {
-        ArgumentCaptor<Person> captor = ArgumentCaptor.forClass(Person.class);
-        Person person = new Person("Ada", 12);
-        repository.save(person);
-        verify(repository).save(captor.capture());
-        Person value = captor.getValue();
-        assertEquals(person, value);
-    }
-
-
-    @Test
-    public void shouldSaveWithTTl() {
-        ArgumentCaptor<Person> captor = ArgumentCaptor.forClass(Person.class);
-        Person person = new Person("Ada", 12);
-        ;
-        repository.save(person, Duration.ofHours(2));
-        verify(repository).save(captor.capture(), Mockito.eq(Duration.ofHours(2)));
-        Person value = captor.getValue();
-        assertEquals(person, value);
-    }
-
-
-    @Test
-    public void shouldUpdate() {
-        ArgumentCaptor<Person> captor = ArgumentCaptor.forClass(Person.class);
-        Person person = new Person("Ada", 12);
-        ;
-        repository.update(person);
-        verify(repository).update(captor.capture());
-        Person value = captor.getValue();
-        assertEquals(person, value);
-    }
-
-
-    @Test
-    public void shouldSaveItarable() {
-        ArgumentCaptor<Iterable> captor = ArgumentCaptor.forClass(Iterable.class);
-        Person person = new Person("Ada", 12);
-        ;
-        personRepository.save(singletonList(person));
-        verify(repository).save(captor.capture());
-        Iterable<Person> persons = captor.getValue();
-        assertThat(persons, containsInAnyOrder(person));
-    }
-
-    @Test
-    public void shouldUpdateItarable() {
-        ArgumentCaptor<Iterable> captor = ArgumentCaptor.forClass(Iterable.class);
-        Person person = new Person("Ada", 12);
-        personRepository.update(singletonList(person));
-        verify(repository).update(captor.capture());
-        Iterable<Person> persons = captor.getValue();
-        assertThat(persons, containsInAnyOrder(person));
-    }
 
 
     @Test(expected = DynamicQueryException.class)
@@ -145,7 +93,7 @@ public class OrientDBRepositoryAsyncProxyTest {
 
     }
 
-    interface PersonAsyncRepository extends OrientDBCrudRepositoryAsync<Person> {
+    interface PersonAsyncRepository extends OrientDBCrudRepositoryAsync<Person, String> {
 
         Person findByName(String name);
 

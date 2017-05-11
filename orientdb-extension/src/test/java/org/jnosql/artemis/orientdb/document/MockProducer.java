@@ -32,7 +32,7 @@ public class MockProducer {
         OrientDBDocumentCollectionManager manager = Mockito.mock(OrientDBDocumentCollectionManager.class);
         DocumentEntity entity = DocumentEntity.of("Person");
         entity.add(Document.of("name", "Ada"));
-        Mockito.when(manager.save(Mockito.any(DocumentEntity.class))).thenReturn(entity);
+        Mockito.when(manager.update(Mockito.any(DocumentEntity.class))).thenReturn(entity);
         return manager;
     }
 

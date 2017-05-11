@@ -66,16 +66,16 @@ public class DefaultOrientDBTemplateTest {
         DocumentEntity entity = DocumentEntity.of("Person");
         entity.add(Document.of("name", "Ada"));
         entity.add(Document.of("age", 10));
-        when(manager.find(Mockito.anyString(), Mockito.any(String[].class)))
+        when(manager.select(Mockito.anyString(), Mockito.any(String[].class)))
                 .thenReturn(Collections.singletonList(entity));
     }
 
     @Test
     public void shouldFindQuery() {
-        List<Person> people = repository.find("select * from Person where name = ?", "Ada");
+        List<Person> people = repository.select("select * from Person where name = ?", "Ada");
 
         assertThat(people, contains(new Person("Ada", 10)));
-        verify(manager).find(Mockito.eq("select * from Person where name = ?"), Mockito.eq("Ada"));
+        verify(manager).select(Mockito.eq("select * from Person where name = ?"), Mockito.eq("Ada"));
     }
 
     @Test

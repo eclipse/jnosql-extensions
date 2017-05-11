@@ -17,6 +17,7 @@ package org.jnosql.artemis.orientdb.document;
 
 import org.jnosql.artemis.DatabaseQualifier;
 import org.jnosql.artemis.reflection.ClassRepresentations;
+import org.jnosql.artemis.reflection.Reflections;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.spi.CreationalContext;
@@ -69,8 +70,10 @@ class OrientDBRepositoryBean implements Bean<OrientDBCrudRepository>, Passivatio
     public OrientDBCrudRepository create(CreationalContext<OrientDBCrudRepository> creationalContext) {
         ClassRepresentations classRepresentations = getInstance(ClassRepresentations.class);
         OrientDBTemplate repository = getInstance(OrientDBTemplate.class);
+        Reflections reflections = getInstance(Reflections.class);
+
         OrientDBDocumentRepositoryProxy handler = new OrientDBDocumentRepositoryProxy(repository,
-                classRepresentations, type);
+                classRepresentations, type, reflections);
         return (OrientDBCrudRepository) Proxy.newProxyInstance(type.getClassLoader(),
                 new Class[]{type},
                 handler);

@@ -24,6 +24,7 @@ import org.jnosql.artemis.document.query.DocumentQueryDeleteParser;
 import org.jnosql.artemis.document.query.DocumentQueryParser;
 import org.jnosql.artemis.reflection.ClassRepresentation;
 import org.jnosql.artemis.reflection.ClassRepresentations;
+import org.jnosql.artemis.reflection.Reflections;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
@@ -53,12 +54,13 @@ class OrientDBRepositoryAsyncProxy<T> extends AbstractDocumentRepositoryAsyncPro
     private final DocumentQueryDeleteParser deleteParser;
 
 
-    OrientDBRepositoryAsyncProxy(OrientDBDocumentTemplateAsync template, ClassRepresentations classRepresentations, Class<?> repositoryType) {
+    OrientDBRepositoryAsyncProxy(OrientDBDocumentTemplateAsync template, ClassRepresentations classRepresentations,
+                                 Class<?> repositoryType, Reflections reflections) {
         this.template = template;
-        this.repository = new DocumentRepositoryAsync(template);
         this.typeClass = Class.class.cast(ParameterizedType.class.cast(repositoryType.getGenericInterfaces()[0])
                 .getActualTypeArguments()[0]);
         this.classRepresentation = classRepresentations.get(typeClass);
+        this.repository = new DocumentRepositoryAsync(template, classRepresentation, reflections);
         this.queryParser = new DocumentQueryParser();
         this.deleteParser = new DocumentQueryDeleteParser();
     }
@@ -116,14 +118,28 @@ class OrientDBRepositoryAsyncProxy<T> extends AbstractDocumentRepositoryAsyncPro
     class DocumentRepositoryAsync extends AbstractDocumentRepositoryAsync implements RepositoryAsync {
 
         private final DocumentTemplateAsync template;
+        private final ClassRepresentation classRepresentation;
+        private final Reflections reflections;
 
-        DocumentRepositoryAsync(DocumentTemplateAsync template) {
+        DocumentRepositoryAsync(DocumentTemplateAsync template, ClassRepresentation classRepresentation, Reflections reflections ) {
             this.template = template;
+            this.classRepresentation = classRepresentation;
+            this.reflections = reflections;
         }
 
         @Override
         protected DocumentTemplateAsync getTemplate() {
             return template;
+        }
+
+        @Override
+        protected Reflections getReflections() {
+            return reflections;
+        }
+
+        @Override
+        protected ClassRepresentation getClassRepresentation() {
+            return classRepresentation;
         }
     }
 }

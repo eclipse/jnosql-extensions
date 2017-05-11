@@ -20,7 +20,9 @@ import org.jnosql.artemis.RepositoryAsync;
 
 /**
  * The OrientDB {@link RepositoryAsync}
- * @param <T>
+ *
+ * @param <T>  the type
+ * @param <ID> the id type
  */
-public interface OrientDBCrudRepositoryAsync<T> extends RepositoryAsync<T> {
+public interface OrientDBCrudRepositoryAsync<T, ID> extends RepositoryAsync<T, ID> {
 }

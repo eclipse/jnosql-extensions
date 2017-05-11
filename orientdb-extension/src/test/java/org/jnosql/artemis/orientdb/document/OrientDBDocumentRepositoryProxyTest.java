@@ -16,6 +16,7 @@
 package org.jnosql.artemis.orientdb.document;
 
 import org.jnosql.artemis.reflection.ClassRepresentations;
+import org.jnosql.artemis.reflection.Reflections;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -40,97 +41,47 @@ import static org.mockito.Mockito.when;
 @RunWith(WeldJUnit4Runner.class)
 public class OrientDBDocumentRepositoryProxyTest {
 
-    private OrientDBTemplate repository;
+    private OrientDBTemplate template;
 
     @Inject
     private ClassRepresentations classRepresentations;
+
+    @Inject
+    private Reflections reflections;
 
     private PersonRepository personRepository;
 
 
     @Before
     public void setUp() {
-        this.repository = Mockito.mock(OrientDBTemplate.class);
+        this.template = Mockito.mock(OrientDBTemplate.class);
 
-        OrientDBDocumentRepositoryProxy handler = new OrientDBDocumentRepositoryProxy(repository,
-                classRepresentations, PersonRepository.class);
+        OrientDBDocumentRepositoryProxy handler = new OrientDBDocumentRepositoryProxy(template,
+                classRepresentations, PersonRepository.class, reflections);
 
-        when(repository.save(any(Person.class))).thenReturn(new Person());
-        when(repository.save(any(Person.class), any(Duration.class))).thenReturn(new Person());
-        when(repository.update(any(Person.class))).thenReturn(new Person());
+        when(template.insert(any(Person.class))).thenReturn(new Person());
+        when(template.insert(any(Person.class), any(Duration.class))).thenReturn(new Person());
+        when(template.update(any(Person.class))).thenReturn(new Person());
         personRepository = (PersonRepository) Proxy.newProxyInstance(PersonRepository.class.getClassLoader(),
                 new Class[]{PersonRepository.class},
                 handler);
     }
 
 
-    @Test
-    public void shouldSave() {
-        ArgumentCaptor<Person> captor = ArgumentCaptor.forClass(Person.class);
-        Person person = new Person("Ada", 20);
-        assertNotNull(personRepository.save(person));
-        verify(repository).save(captor.capture());
-        Person value = captor.getValue();
-        assertEquals(person, value);
-    }
-
-
-    @Test
-    public void shouldSaveWithTTl() {
-        ArgumentCaptor<Person> captor = ArgumentCaptor.forClass(Person.class);
-        Person person = new Person("Ada", 20);
-        assertNotNull(personRepository.save(person, Duration.ofHours(2)));
-        verify(repository).save(captor.capture(), Mockito.eq(Duration.ofHours(2)));
-        Person value = captor.getValue();
-        assertEquals(person, value);
-    }
-
-
-    @Test
-    public void shouldUpdate() {
-        ArgumentCaptor<Person> captor = ArgumentCaptor.forClass(Person.class);
-        Person person = new Person("Ada", 20);
-        assertNotNull(personRepository.update(person));
-        verify(repository).update(captor.capture());
-        Person value = captor.getValue();
-        assertEquals(person, value);
-    }
-
-
-    @Test
-    public void shouldSaveItarable() {
-        ArgumentCaptor<Iterable> captor = ArgumentCaptor.forClass(Iterable.class);
-        Person person = new Person("Ada", 20);
-        personRepository.save(singletonList(person));
-        verify(repository).save(captor.capture());
-        Iterable<Person> persons = captor.getValue();
-        assertThat(persons, containsInAnyOrder(person));
-    }
-
-    @Test
-    public void shouldUpdateItarable() {
-        ArgumentCaptor<Iterable> captor = ArgumentCaptor.forClass(Iterable.class);
-        Person person = new Person("Ada", 20);
-        personRepository.update(singletonList(person));
-        verify(repository).update(captor.capture());
-        Iterable<Person> persons = captor.getValue();
-        assertThat(persons, containsInAnyOrder(person));
-    }
-
 
     @Test
     public void shouldFindAll() {
         personRepository.findAll();
-        verify(repository).find("select * from Person");
+        verify(template).select("select * from Person");
     }
 
     @Test
     public void shouldFindByNameCQL() {
         personRepository.findByName("Ada");
-        verify(repository).find(Mockito.eq("select * from Person where name = ?"), Mockito.any());
+        verify(template).select(Mockito.eq("select * from Person where name = ?"), Mockito.any());
     }
 
-    interface PersonRepository extends OrientDBCrudRepository<Person> {
+    interface PersonRepository extends OrientDBCrudRepository<Person, String> {
 
         @SQL("select * from Person")
         List<Person> findAll();

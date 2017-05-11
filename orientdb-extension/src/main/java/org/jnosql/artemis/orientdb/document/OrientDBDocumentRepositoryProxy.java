@@ -24,6 +24,7 @@ import org.jnosql.artemis.document.query.DocumentQueryDeleteParser;
 import org.jnosql.artemis.document.query.DocumentQueryParser;
 import org.jnosql.artemis.reflection.ClassRepresentation;
 import org.jnosql.artemis.reflection.ClassRepresentations;
+import org.jnosql.artemis.reflection.Reflections;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
@@ -46,12 +47,13 @@ class OrientDBDocumentRepositoryProxy<T> extends AbstractDocumentRepositoryProxy
     private final DocumentQueryDeleteParser deleteParser;
 
 
-    OrientDBDocumentRepositoryProxy(OrientDBTemplate template, ClassRepresentations classRepresentations, Class<?> repositoryType) {
+    OrientDBDocumentRepositoryProxy(OrientDBTemplate template, ClassRepresentations classRepresentations,
+                                    Class<?> repositoryType, Reflections reflections) {
         this.template = template;
-        this.repository = new DocumentRepository(template);
         this.typeClass = Class.class.cast(ParameterizedType.class.cast(repositoryType.getGenericInterfaces()[0])
                 .getActualTypeArguments()[0]);
         this.classRepresentation = classRepresentations.get(typeClass);
+        this.repository = new DocumentRepository(template, classRepresentation, reflections);
         this.queryParser = new DocumentQueryParser();
         this.deleteParser = new DocumentQueryDeleteParser();
     }
@@ -89,9 +91,9 @@ class OrientDBDocumentRepositoryProxy<T> extends AbstractDocumentRepositoryProxy
         if (Objects.nonNull(sql)) {
             List<T> result = Collections.emptyList();
             if (args == null || args.length == 0) {
-                result = template.find(sql.value());
+                result = template.select(sql.value());
             } else {
-                result = template.find(sql.value(), args);
+                result = template.select(sql.value(), args);
             }
             return ReturnTypeConverterUtil.returnObject(result, typeClass, method);
         }
@@ -102,15 +104,29 @@ class OrientDBDocumentRepositoryProxy<T> extends AbstractDocumentRepositoryProxy
     class DocumentRepository extends AbstractDocumentRepository implements Repository {
 
         private final DocumentTemplate template;
+        private final ClassRepresentation classRepresentation;
+        private final Reflections reflections;
 
-        DocumentRepository(DocumentTemplate template) {
+        DocumentRepository(DocumentTemplate template, ClassRepresentation classRepresentation, Reflections reflections) {
             this.template = template;
+            this.classRepresentation = classRepresentation;
+            this.reflections = reflections;
         }
 
 
         @Override
         protected DocumentTemplate getTemplate() {
             return template;
+        }
+
+        @Override
+        protected ClassRepresentation getClassRepresentation() {
+            return classRepresentation;
+        }
+
+        @Override
+        protected Reflections getReflections() {
+            return reflections;
         }
     }
 }

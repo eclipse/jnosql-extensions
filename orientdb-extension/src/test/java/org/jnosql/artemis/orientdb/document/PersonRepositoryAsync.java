@@ -16,5 +16,5 @@
 package org.jnosql.artemis.orientdb.document;
 
 
-public interface PersonRepositoryAsync extends OrientDBCrudRepositoryAsync<Person> {
+public interface PersonRepositoryAsync extends OrientDBCrudRepositoryAsync<Person, String> {
 }

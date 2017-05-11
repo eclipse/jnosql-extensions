@@ -35,7 +35,7 @@ public interface OrientDBTemplate extends DocumentTemplate {
      * @return the query result
      * @throws NullPointerException when either query or params are null
      */
-    <T> List<T> find(String query, Object... params) throws NullPointerException;
+    <T> List<T> select(String query, Object... params) throws NullPointerException;
     /**
      * Execute live query
      *

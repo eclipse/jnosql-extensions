@@ -16,5 +16,5 @@
 package org.jnosql.artemis.orientdb.document;
 
 
-public interface PersonRepository extends OrientDBCrudRepository<Person> {
+public interface PersonRepository extends OrientDBCrudRepository<Person, String> {
 }
