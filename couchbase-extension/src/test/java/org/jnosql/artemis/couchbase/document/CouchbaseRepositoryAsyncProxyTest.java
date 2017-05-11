@@ -18,6 +18,7 @@ package org.jnosql.artemis.couchbase.document;
 import com.couchbase.client.java.document.json.JsonObject;
 import org.jnosql.artemis.DynamicQueryException;
 import org.jnosql.artemis.reflection.ClassRepresentations;
+import org.jnosql.artemis.reflection.Reflections;
 import org.jnosql.diana.api.column.ColumnQuery;
 import org.junit.Before;
 import org.junit.Test;
@@ -41,20 +42,23 @@ import static org.mockito.Mockito.verify;
 public class CouchbaseRepositoryAsyncProxyTest {
 
 
-    private CouchbaseTemplateAsync repository;
+    private CouchbaseTemplateAsync template;
 
     @Inject
     private ClassRepresentations classRepresentations;
+
+    @Inject
+    private Reflections reflections;
 
     private PersonAsyncRepository personRepository;
 
 
     @Before
     public void setUp() {
-        this.repository = Mockito.mock(CouchbaseTemplateAsync.class);
+        this.template = Mockito.mock(CouchbaseTemplateAsync.class);
 
-        CouchbaseRepositoryAsyncProxy handler = new CouchbaseRepositoryAsyncProxy(repository,
-                classRepresentations, PersonAsyncRepository.class);
+        CouchbaseRepositoryAsyncProxy handler = new CouchbaseRepositoryAsyncProxy(template,
+                classRepresentations, PersonAsyncRepository.class, reflections);
 
 
         personRepository = (PersonAsyncRepository) Proxy.newProxyInstance(PersonAsyncRepository.class.getClassLoader(),
@@ -67,8 +71,8 @@ public class CouchbaseRepositoryAsyncProxyTest {
     public void shouldSave() {
         ArgumentCaptor<Person> captor = ArgumentCaptor.forClass(Person.class);
         Person person = new Person("Ada", 12);
-        repository.save(person);
-        verify(repository).save(captor.capture());
+        template.insert(person);
+        verify(template).save(captor.capture());
         Person value = captor.getValue();
         assertEquals(person, value);
     }
@@ -78,9 +82,9 @@ public class CouchbaseRepositoryAsyncProxyTest {
     public void shouldSaveWithTTl() {
         ArgumentCaptor<Person> captor = ArgumentCaptor.forClass(Person.class);
         Person person = new Person("Ada", 12);
-        ;
-        repository.save(person, Duration.ofHours(2));
-        verify(repository).save(captor.capture(), Mockito.eq(Duration.ofHours(2)));
+
+        template.save(person, Duration.ofHours(2));
+        verify(template).save(captor.capture(), Mockito.eq(Duration.ofHours(2)));
         Person value = captor.getValue();
         assertEquals(person, value);
     }
@@ -91,8 +95,8 @@ public class CouchbaseRepositoryAsyncProxyTest {
         ArgumentCaptor<Person> captor = ArgumentCaptor.forClass(Person.class);
         Person person = new Person("Ada", 12);
         ;
-        repository.update(person);
-        verify(repository).update(captor.capture());
+        template.update(person);
+        verify(template).update(captor.capture());
         Person value = captor.getValue();
         assertEquals(person, value);
     }
@@ -104,7 +108,7 @@ public class CouchbaseRepositoryAsyncProxyTest {
         Person person = new Person("Ada", 12);
         ;
         personRepository.save(singletonList(person));
-        verify(repository).save(captor.capture());
+        verify(template).save(captor.capture());
         Iterable<Person> persons = captor.getValue();
         assertThat(persons, containsInAnyOrder(person));
     }
@@ -114,7 +118,7 @@ public class CouchbaseRepositoryAsyncProxyTest {
         ArgumentCaptor<Iterable> captor = ArgumentCaptor.forClass(Iterable.class);
         Person person = new Person("Ada", 12);
         personRepository.update(singletonList(person));
-        verify(repository).update(captor.capture());
+        verify(template).update(captor.capture());
         Iterable<Person> persons = captor.getValue();
         assertThat(persons, containsInAnyOrder(person));
     }
@@ -142,10 +146,10 @@ public class CouchbaseRepositoryAsyncProxyTest {
         JsonObject params = JsonObject.create().put("name", "Ada");
         personRepository.queryName(params, callBack);
 
-        verify(repository).n1qlQuery(Mockito.eq("select * from Person where name= $name"), Mockito.eq(params), Mockito.eq(callBack));
+        verify(template).n1qlQuery(Mockito.eq("select * from Person where name= $name"), Mockito.eq(params), Mockito.eq(callBack));
     }
 
-    interface PersonAsyncRepository extends CouchbaseRepositoryAsync<Person> {
+    interface PersonAsyncRepository extends CouchbaseRepositoryAsync<Person, String> {
 
         Person findByName(String name);
 

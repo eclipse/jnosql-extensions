@@ -16,5 +16,5 @@
 package org.jnosql.artemis.couchbase.document;
 
 
-public interface PersonRepository extends CouchbaseRepository<Person> {
+public interface PersonRepository extends CouchbaseRepository<Person, String> {
 }

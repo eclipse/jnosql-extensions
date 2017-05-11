@@ -25,6 +25,7 @@ import org.jnosql.artemis.document.query.DocumentQueryDeleteParser;
 import org.jnosql.artemis.document.query.DocumentQueryParser;
 import org.jnosql.artemis.reflection.ClassRepresentation;
 import org.jnosql.artemis.reflection.ClassRepresentations;
+import org.jnosql.artemis.reflection.Reflections;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
@@ -50,12 +51,13 @@ class CouchbaseocumentRepositoryProxy<T> extends AbstractDocumentRepositoryProxy
     private final DocumentQueryDeleteParser deleteParser;
 
 
-    CouchbaseocumentRepositoryProxy(CouchbaseTemplate template, ClassRepresentations classRepresentations, Class<?> repositoryType) {
+    CouchbaseocumentRepositoryProxy(CouchbaseTemplate template, ClassRepresentations classRepresentations,
+                                    Class<?> repositoryType, Reflections reflections) {
         this.template = template;
-        this.repository = new DocumentCrudRepository(template);
         this.typeClass = Class.class.cast(ParameterizedType.class.cast(repositoryType.getGenericInterfaces()[0])
                 .getActualTypeArguments()[0]);
         this.classRepresentation = classRepresentations.get(typeClass);
+        this.repository = new DocumentCrudRepository(template, classRepresentation, reflections);
         this.queryParser = new DocumentQueryParser();
         this.deleteParser = new DocumentQueryDeleteParser();
     }
@@ -114,15 +116,29 @@ class CouchbaseocumentRepositoryProxy<T> extends AbstractDocumentRepositoryProxy
     class DocumentCrudRepository extends AbstractDocumentRepository implements Repository {
 
         private final DocumentTemplate template;
+        private final ClassRepresentation getClassRepresentation;
+        private final Reflections getReflections;
 
-        DocumentCrudRepository(DocumentTemplate template) {
+        DocumentCrudRepository(DocumentTemplate template, ClassRepresentation getClassRepresentation, Reflections getReflections) {
             this.template = template;
+            this.getClassRepresentation = getClassRepresentation;
+            this.getReflections = getReflections;
         }
 
 
         @Override
         protected DocumentTemplate getTemplate() {
             return template;
+        }
+
+        @Override
+        protected ClassRepresentation getClassRepresentation() {
+            return null;
+        }
+
+        @Override
+        protected Reflections getReflections() {
+            return null;
         }
     }
 }
