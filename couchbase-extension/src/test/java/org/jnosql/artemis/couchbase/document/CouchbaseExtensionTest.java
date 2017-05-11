@@ -32,7 +32,7 @@ public class CouchbaseExtensionTest {
     @Test
     public void shouldSaveOrientDB() {
         Person person = new Person("Ada", 10);
-        personRepository.save(person);
-        personRepositoryAsync.save(person);
+        personRepository.delete(person);
+        personRepositoryAsync.delete(person);
     }
 }

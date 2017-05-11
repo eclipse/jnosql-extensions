@@ -21,7 +21,6 @@ import org.jnosql.artemis.reflection.Reflections;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
 import javax.inject.Inject;
@@ -29,11 +28,6 @@ import java.lang.reflect.Proxy;
 import java.time.Duration;
 import java.util.List;
 
-import static java.util.Collections.singletonList;
-import static org.hamcrest.Matchers.containsInAnyOrder;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -66,60 +60,6 @@ public class CouchbaseocumentRepositoryProxyTest {
         personRepository = (PersonRepository) Proxy.newProxyInstance(PersonRepository.class.getClassLoader(),
                 new Class[]{PersonRepository.class},
                 handler);
-    }
-
-
-    @Test
-    public void shouldSave() {
-        ArgumentCaptor<Person> captor = ArgumentCaptor.forClass(Person.class);
-        Person person = new Person("Ada", 20);
-        assertNotNull(personRepository.save(person));
-        verify(template).insert(captor.capture());
-        Person value = captor.getValue();
-        assertEquals(person, value);
-    }
-
-
-    @Test
-    public void shouldSaveWithTTl() {
-        ArgumentCaptor<Person> captor = ArgumentCaptor.forClass(Person.class);
-        Person person = new Person("Ada", 20);
-        assertNotNull(personRepository.save(person, Duration.ofHours(2)));
-        verify(template).insert(captor.capture(), Mockito.eq(Duration.ofHours(2)));
-        Person value = captor.getValue();
-        assertEquals(person, value);
-    }
-
-
-    @Test
-    public void shouldUpdate() {
-        ArgumentCaptor<Person> captor = ArgumentCaptor.forClass(Person.class);
-        Person person = new Person("Ada", 20);
-        assertNotNull(personRepository.insert(person));
-        verify(template).update(captor.capture());
-        Person value = captor.getValue();
-        assertEquals(person, value);
-    }
-
-
-    @Test
-    public void shouldSaveItarable() {
-        ArgumentCaptor<Iterable> captor = ArgumentCaptor.forClass(Iterable.class);
-        Person person = new Person("Ada", 20);
-        personRepository.save(singletonList(person));
-        verify(template).insert(captor.capture());
-        Iterable<Person> persons = captor.getValue();
-        assertThat(persons, containsInAnyOrder(person));
-    }
-
-    @Test
-    public void shouldUpdateItarable() {
-        ArgumentCaptor<Iterable> captor = ArgumentCaptor.forClass(Iterable.class);
-        Person person = new Person("Ada", 20);
-        personRepository.save(singletonList(person));
-        verify(template).update(captor.capture());
-        Iterable<Person> persons = captor.getValue();
-        assertThat(persons, containsInAnyOrder(person));
     }
 
 

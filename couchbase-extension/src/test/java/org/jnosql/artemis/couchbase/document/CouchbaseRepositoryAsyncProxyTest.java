@@ -67,28 +67,6 @@ public class CouchbaseRepositoryAsyncProxyTest {
     }
 
 
-    @Test
-    public void shouldSave() {
-        ArgumentCaptor<Person> captor = ArgumentCaptor.forClass(Person.class);
-        Person person = new Person("Ada", 12);
-        template.insert(person);
-        verify(template).save(captor.capture());
-        Person value = captor.getValue();
-        assertEquals(person, value);
-    }
-
-
-    @Test
-    public void shouldSaveWithTTl() {
-        ArgumentCaptor<Person> captor = ArgumentCaptor.forClass(Person.class);
-        Person person = new Person("Ada", 12);
-
-        template.save(person, Duration.ofHours(2));
-        verify(template).save(captor.capture(), Mockito.eq(Duration.ofHours(2)));
-        Person value = captor.getValue();
-        assertEquals(person, value);
-    }
-
 
     @Test
     public void shouldUpdate() {
@@ -99,28 +77,6 @@ public class CouchbaseRepositoryAsyncProxyTest {
         verify(template).update(captor.capture());
         Person value = captor.getValue();
         assertEquals(person, value);
-    }
-
-
-    @Test
-    public void shouldSaveItarable() {
-        ArgumentCaptor<Iterable> captor = ArgumentCaptor.forClass(Iterable.class);
-        Person person = new Person("Ada", 12);
-        ;
-        personRepository.save(singletonList(person));
-        verify(template).save(captor.capture());
-        Iterable<Person> persons = captor.getValue();
-        assertThat(persons, containsInAnyOrder(person));
-    }
-
-    @Test
-    public void shouldUpdateItarable() {
-        ArgumentCaptor<Iterable> captor = ArgumentCaptor.forClass(Iterable.class);
-        Person person = new Person("Ada", 12);
-        personRepository.update(singletonList(person));
-        verify(template).update(captor.capture());
-        Iterable<Person> persons = captor.getValue();
-        assertThat(persons, containsInAnyOrder(person));
     }
 
 

@@ -32,7 +32,7 @@ public class MockProducer {
         CouchbaseDocumentCollectionManager manager = Mockito.mock(CouchbaseDocumentCollectionManager.class);
         DocumentEntity entity = DocumentEntity.of("Person");
         entity.add(Document.of("name", "Ada"));
-        Mockito.when(manager.save(Mockito.any(DocumentEntity.class))).thenReturn(entity);
+        Mockito.when(manager.insert(Mockito.any(DocumentEntity.class))).thenReturn(entity);
         return manager;
     }
 

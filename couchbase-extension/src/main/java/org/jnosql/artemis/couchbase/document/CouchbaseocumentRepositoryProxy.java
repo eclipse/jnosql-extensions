@@ -116,13 +116,13 @@ class CouchbaseocumentRepositoryProxy<T> extends AbstractDocumentRepositoryProxy
     class DocumentCrudRepository extends AbstractDocumentRepository implements Repository {
 
         private final DocumentTemplate template;
-        private final ClassRepresentation getClassRepresentation;
-        private final Reflections getReflections;
+        private final ClassRepresentation classRepresentation;
+        private final Reflections reflections;
 
-        DocumentCrudRepository(DocumentTemplate template, ClassRepresentation getClassRepresentation, Reflections getReflections) {
+        DocumentCrudRepository(DocumentTemplate template, ClassRepresentation classRepresentation, Reflections reflections) {
             this.template = template;
-            this.getClassRepresentation = getClassRepresentation;
-            this.getReflections = getReflections;
+            this.classRepresentation = classRepresentation;
+            this.reflections = reflections;
         }
 
 
@@ -133,12 +133,12 @@ class CouchbaseocumentRepositoryProxy<T> extends AbstractDocumentRepositoryProxy
 
         @Override
         protected ClassRepresentation getClassRepresentation() {
-            return null;
+            return classRepresentation;
         }
 
         @Override
         protected Reflections getReflections() {
-            return null;
+            return reflections;
         }
     }
 }
