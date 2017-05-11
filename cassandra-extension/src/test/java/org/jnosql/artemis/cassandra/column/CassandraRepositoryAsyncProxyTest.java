@@ -69,16 +69,6 @@ public class CassandraRepositoryAsyncProxyTest {
     }
 
 
-    @Test
-    public void shouldSave() {
-        ArgumentCaptor<Person> captor = ArgumentCaptor.forClass(Person.class);
-        Person person = new Person("Ada", 12);
-        template.insert(person);
-        verify(personRepository).save(captor.capture());
-        Person value = captor.getValue();
-        assertEquals(person, value);
-    }
-
 
     @Test
     public void shouldSaveWithTTl() {
@@ -101,28 +91,6 @@ public class CassandraRepositoryAsyncProxyTest {
         verify(template).update(captor.capture());
         Person value = captor.getValue();
         assertEquals(person, value);
-    }
-
-
-    @Test
-    public void shouldSaveItarable() {
-        ArgumentCaptor<Iterable> captor = ArgumentCaptor.forClass(Iterable.class);
-        Person person = new Person("Ada", 12);
-
-        personRepository.save(singletonList(person));
-        verify(template).insert(captor.capture());
-        Iterable<Person> persons = captor.getValue();
-        assertThat(persons, containsInAnyOrder(person));
-    }
-
-    @Test
-    public void shouldUpdateItarable() {
-        ArgumentCaptor<Iterable> captor = ArgumentCaptor.forClass(Iterable.class);
-        Person person = new Person("Ada", 12);
-        personRepository.save(singletonList(person));
-        verify(template).update(captor.capture());
-        Iterable<Person> persons = captor.getValue();
-        assertThat(persons, containsInAnyOrder(person));
     }
 
 

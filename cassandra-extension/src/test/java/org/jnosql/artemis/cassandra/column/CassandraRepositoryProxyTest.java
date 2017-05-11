@@ -72,59 +72,6 @@ public class CassandraRepositoryProxyTest {
 
 
     @Test
-    public void shouldSave() {
-        ArgumentCaptor<Person> captor = ArgumentCaptor.forClass(Person.class);
-        Person person = new Person("Ada", 20);
-        assertNotNull(personRepository.save(person));
-        verify(template).insert(captor.capture());
-        Person value = captor.getValue();
-        assertEquals(person, value);
-    }
-
-
-    @Test
-    public void shouldSaveWithTTl() {
-        ArgumentCaptor<Person> captor = ArgumentCaptor.forClass(Person.class);
-        Person person = new Person("Ada", 20);
-        assertNotNull(personRepository.save(person, Duration.ofHours(2)));
-        verify(template).insert(captor.capture(), Mockito.eq(Duration.ofHours(2)));
-        Person value = captor.getValue();
-        assertEquals(person, value);
-    }
-
-
-    @Test
-    public void shouldUpdate() {
-        ArgumentCaptor<Person> captor = ArgumentCaptor.forClass(Person.class);
-        Person person = new Person("Ada", 20);
-        assertNotNull(personRepository.save(person));
-        verify(template).update(captor.capture());
-        Person value = captor.getValue();
-        assertEquals(person, value);
-    }
-
-
-    @Test
-    public void shouldSaveItarable() {
-        ArgumentCaptor<Iterable> captor = ArgumentCaptor.forClass(Iterable.class);
-        Person person = new Person("Ada", 20);
-        personRepository.save(singletonList(person));
-        verify(template).insert(captor.capture());
-        Iterable<Person> persons = captor.getValue();
-        assertThat(persons, containsInAnyOrder(person));
-    }
-
-    @Test
-    public void shouldUpdateItarable() {
-        ArgumentCaptor<Iterable> captor = ArgumentCaptor.forClass(Iterable.class);
-        Person person = new Person("Ada", 20);
-        personRepository.save(singletonList(person));
-        verify(template).update(captor.capture());
-        Iterable<Person> persons = captor.getValue();
-        assertThat(persons, containsInAnyOrder(person));
-    }
-
-    @Test
     public void shouldFindByName() {
         ConsistencyLevel level = ConsistencyLevel.ANY;
         when(template.save(Mockito.any(Person.class), Mockito.eq(level))).thenReturn(new Person());
