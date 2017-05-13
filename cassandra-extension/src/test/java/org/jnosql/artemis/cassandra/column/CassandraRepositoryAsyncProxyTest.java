@@ -33,10 +33,7 @@ import java.time.Duration;
 import java.util.List;
 import java.util.function.Consumer;
 
-import static java.util.Collections.singletonList;
-import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.verify;
 
 

@@ -19,7 +19,6 @@ package org.jnosql.artemis.cassandra.column.model;
 import org.jnosql.artemis.Column;
 import org.jnosql.artemis.Convert;
 import org.jnosql.artemis.Entity;
-import org.jnosql.artemis.cassandra.converters.LocalDateConverter;
 import org.jnosql.artemis.cassandra.converters.TimestampConverter;
 
 import java.time.LocalDate;
