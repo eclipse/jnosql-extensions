@@ -37,9 +37,9 @@
 
     <modules>
         <module>cassandra-extension</module>
-	<module>elasticsearch-extension</module>
-	<module>orientdb-extension</module>
-	<module>couchbase-extension</module>
+        <module>elasticsearch-extension</module>
+        <module>orientdb-extension</module>
+        <module>couchbase-extension</module>
     </modules>
 
     <dependencies>
