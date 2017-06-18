@@ -16,10 +16,12 @@ package org.jnosql.artemis.cassandra.column.model;
 
 import org.jnosql.artemis.Column;
 import org.jnosql.artemis.Entity;
+import org.jnosql.artemis.MappedSuperclass;
 
 import java.util.List;
 
 @Entity
+@MappedSuperclass
 public class Human {
 
     @Column
