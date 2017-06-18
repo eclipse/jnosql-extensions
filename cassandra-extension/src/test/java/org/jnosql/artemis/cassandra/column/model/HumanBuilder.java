@@ -16,45 +16,45 @@ package org.jnosql.artemis.cassandra.column.model;
 
 import java.util.List;
 
-public class PersonBuilder {
+public class HumanBuilder {
     private long id;
     private String name;
     private int age;
     private List<String> phones;
     private String ignore;
 
-    public PersonBuilder withId(long id) {
+    public HumanBuilder withId(long id) {
         this.id = id;
         return this;
     }
 
-    public PersonBuilder withName(String name) {
+    public HumanBuilder withName(String name) {
         this.name = name;
         return this;
     }
 
-    public PersonBuilder withAge() {
+    public HumanBuilder withAge() {
         this.age = 10;
         return this;
     }
 
-    public PersonBuilder withAge(int age) {
+    public HumanBuilder withAge(int age) {
         this.age = age;
         return this;
     }
 
 
-    public PersonBuilder withPhones(List<String> phones) {
+    public HumanBuilder withPhones(List<String> phones) {
         this.phones = phones;
         return this;
     }
 
-    public PersonBuilder withIgnore() {
+    public HumanBuilder withIgnore() {
         this.ignore = "Just Ignore";
         return this;
     }
 
-    public Person build() {
-        return new Person(id, name, age, phones, ignore);
+    public Human build() {
+        return new Human(id, name, age, phones, ignore);
     }
 }
