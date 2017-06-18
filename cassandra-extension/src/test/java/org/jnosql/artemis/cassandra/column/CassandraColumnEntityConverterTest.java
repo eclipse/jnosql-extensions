@@ -323,7 +323,7 @@ public class CassandraColumnEntityConverterTest {
 
     @Test
     public void shouldSupportUDTToEntity() {
-        ColumnEntity entity = ColumnEntity.of("Human");
+        ColumnEntity entity = ColumnEntity.of("Person");
         entity.add(Column.of("name", "Poliana"));
         entity.add(Column.of("age", 20));
         UDT udt = UDT.builder().withName("home")
