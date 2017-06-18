@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 @Entity
-public class Actor extends Human {
+public class Actor extends Artist {
 
     @Column
     private Map<String, String> movieCharacter;

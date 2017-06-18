@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-public class Director extends Human {
+public class Director extends Artist {
 
     @Column
     private Movie movie;

@@ -23,7 +23,7 @@ import java.util.List;
 
 @Entity
 @MappedSuperclass
-public class Human {
+public class Artist {
 
     @Id
     private long id;
@@ -37,10 +37,10 @@ public class Human {
     @Column
     private String ignore;
 
-    Human() {
+    Artist() {
     }
 
-    Human(long id, String name, int age, List<String> phones, String ignore) {
+    Artist(long id, String name, int age, List<String> phones, String ignore) {
         this.id = id;
         this.name = name;
         this.age = age;
@@ -49,8 +49,8 @@ public class Human {
     }
 
 
-    public static HumanBuilder builder() {
-        return new HumanBuilder();
+    public static ArtistBuilder builder() {
+        return new ArtistBuilder();
     }
 
     public long getId() {

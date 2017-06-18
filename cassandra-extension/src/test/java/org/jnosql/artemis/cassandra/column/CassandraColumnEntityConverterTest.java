@@ -19,7 +19,7 @@ import org.jnosql.artemis.cassandra.column.model.Actor;
 import org.jnosql.artemis.cassandra.column.model.Director;
 import org.jnosql.artemis.cassandra.column.model.History;
 import org.jnosql.artemis.cassandra.column.model.History2;
-import org.jnosql.artemis.cassandra.column.model.Human;
+import org.jnosql.artemis.cassandra.column.model.Artist;
 import org.jnosql.artemis.cassandra.column.model.Job;
 import org.jnosql.artemis.cassandra.column.model.Money;
 import org.jnosql.artemis.cassandra.column.model.Movie;
@@ -90,13 +90,13 @@ public class CassandraColumnEntityConverterTest {
     @Test
     public void shouldConvertPersonToDocument() {
 
-        Human human = Human.builder().withAge()
+        Artist artist = Artist.builder().withAge()
                 .withId(12)
                 .withName("Otavio")
                 .withPhones(Arrays.asList("234", "2342")).build();
 
-        ColumnEntity entity = converter.toColumn(human);
-        assertEquals("Human", entity.getName());
+        ColumnEntity entity = converter.toColumn(artist);
+        assertEquals("Artist", entity.getName());
         assertEquals(4, entity.size());
         /*Assert.assertThat(entity.getColumns(), containsInAnyOrder(Document.of("_id", 12L),
                 Document.of("age", 10), Document.of("name", "Otavio"), Document.of("phones", Arrays.asList("234", "2342"))));*/
