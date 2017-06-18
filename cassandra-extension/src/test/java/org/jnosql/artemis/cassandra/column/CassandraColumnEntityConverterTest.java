@@ -310,7 +310,7 @@ public class CassandraColumnEntityConverterTest {
         person.setHome(address);
 
         ColumnEntity entity = converter.toColumn(person);
-        assertEquals("Human", entity.getName());
+        assertEquals("Person", entity.getName());
         Column column = entity.find("home").get();
         org.jnosql.diana.cassandra.column.UDT udt = org.jnosql.diana.cassandra.column.UDT.class.cast(column);
 

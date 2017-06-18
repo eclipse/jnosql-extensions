@@ -16,6 +16,7 @@ package org.jnosql.artemis.cassandra.column.model;
 
 import org.jnosql.artemis.Column;
 import org.jnosql.artemis.Entity;
+import org.jnosql.artemis.Id;
 import org.jnosql.artemis.MappedSuperclass;
 
 import java.util.List;
@@ -24,7 +25,7 @@ import java.util.List;
 @MappedSuperclass
 public class Human {
 
-    @Column
+    @Id
     private long id;
 
     @Column
