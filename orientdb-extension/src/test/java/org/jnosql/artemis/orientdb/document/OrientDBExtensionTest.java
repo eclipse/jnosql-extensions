@@ -31,7 +31,7 @@ public class OrientDBExtensionTest {
     @Test
     public void shouldSaveOrientDB() {
         Person person = new Person("Ada", 10);
-        personRepository.delete(person);
-        personRepositoryAsync.delete(person);
+        personRepository.deleteById(person.getName());
+        personRepositoryAsync.deleteById(person.getName());
     }
 }
