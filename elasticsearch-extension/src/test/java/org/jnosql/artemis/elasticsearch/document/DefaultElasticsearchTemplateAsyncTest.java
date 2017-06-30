@@ -65,7 +65,7 @@ public class DefaultElasticsearchTemplateAsyncTest {
 
         repositoryAsync.search(queryBuilder, callBack, "Person");
 
-        Mockito.verify(managerAsync).find(Mockito.eq(queryBuilder), Mockito.any(Consumer.class),
+        Mockito.verify(managerAsync).search(Mockito.eq(queryBuilder), Mockito.any(Consumer.class),
                 Mockito.eq("Person"));
 
     }
