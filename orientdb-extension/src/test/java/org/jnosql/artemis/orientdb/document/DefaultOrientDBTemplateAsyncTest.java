@@ -62,7 +62,7 @@ public class DefaultOrientDBTemplateAsyncTest {
 
         repositoryAsync.find(query, callBack, "Person");
 
-        Mockito.verify(managerAsync).find(Mockito.eq(query), Mockito.any(Consumer.class),
+        Mockito.verify(managerAsync).sql(Mockito.eq(query), Mockito.any(Consumer.class),
                 Mockito.eq("Person"));
 
     }

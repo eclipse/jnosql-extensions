@@ -65,7 +65,7 @@ public class DefaultOrientDBTemplateTest {
         DocumentEntity entity = DocumentEntity.of("Person");
         entity.add(Document.of("name", "Ada"));
         entity.add(Document.of("age", 10));
-        when(manager.select(Mockito.anyString(), Mockito.any(String[].class)))
+        when(manager.sql(Mockito.anyString(), Mockito.any(String[].class)))
                 .thenReturn(Collections.singletonList(entity));
     }
 
@@ -74,7 +74,7 @@ public class DefaultOrientDBTemplateTest {
         List<Person> people = repository.select("select * from Person where name = ?", "Ada");
 
         assertThat(people, contains(new Person("Ada", 10)));
-        verify(manager).select(Mockito.eq("select * from Person where name = ?"), Mockito.eq("Ada"));
+        verify(manager).sql(Mockito.eq("select * from Person where name = ?"), Mockito.eq("Ada"));
     }
 
     @Test

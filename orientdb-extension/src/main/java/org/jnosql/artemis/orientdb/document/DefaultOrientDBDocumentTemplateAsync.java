@@ -72,7 +72,7 @@ class DefaultOrientDBDocumentTemplateAsync extends AbstractDocumentTemplateAsync
                             .collect(toList()));
         };
 
-        manager.get().find(query, dianaCallBack, params);
+        manager.get().sql(query, dianaCallBack, params);
 
     }
 }
