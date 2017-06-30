@@ -33,5 +33,5 @@ public interface ElasticsearchTemplate extends DocumentTemplate {
      * @return the objects from query
      * @throws NullPointerException when query is null
      */
-    <T> List<T> find(QueryBuilder query, String... types);
+    <T> List<T> search(QueryBuilder query, String... types);
 }

@@ -72,7 +72,7 @@ public class DefaultElasticsearchTemplateTest {
     @Test
     public void shouldFindQuery() {
         QueryBuilder queryBuilder = boolQuery().filter(termQuery("name", "Ada"));
-        List<Person> people = repository.find(queryBuilder, "Person");
+        List<Person> people = repository.search(queryBuilder, "Person");
 
         assertThat(people, contains(new Person("Ada", 10)));
         Mockito.verify(manager).select(Mockito.eq(queryBuilder), Mockito.eq("Person"));

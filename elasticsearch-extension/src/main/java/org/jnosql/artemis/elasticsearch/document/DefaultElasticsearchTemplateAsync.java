@@ -62,7 +62,7 @@ class DefaultElasticsearchTemplateAsync extends AbstractDocumentTemplateAsync im
     }
 
     @Override
-    public <T> void find(QueryBuilder query, Consumer<List<T>> callBack, String... types) throws NullPointerException, ExecuteAsyncQueryException {
+    public <T> void search(QueryBuilder query, Consumer<List<T>> callBack, String... types) throws NullPointerException, ExecuteAsyncQueryException {
         Objects.requireNonNull(query, "query is required");
         Objects.requireNonNull(callBack, "callBack is required");
 
@@ -73,6 +73,6 @@ class DefaultElasticsearchTemplateAsync extends AbstractDocumentTemplateAsync im
                             .map(o -> (T) o)
                             .collect(toList()));
         };
-        manager.get().find(query, dianaCallBack, types);
+        manager.get().search(query, dianaCallBack, types);
     }
 }

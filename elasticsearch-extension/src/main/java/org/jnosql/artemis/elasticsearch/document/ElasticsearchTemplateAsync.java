@@ -35,6 +35,6 @@ public interface ElasticsearchTemplateAsync extends DocumentTemplateAsync {
      * @param callBack the callback
      * @throws NullPointerException when query is null
      */
-    <T> void find(QueryBuilder query, Consumer<List<T>> callBack, String... types)
+    <T> void search(QueryBuilder query, Consumer<List<T>> callBack, String... types)
             throws NullPointerException, ExecuteAsyncQueryException;
 }
