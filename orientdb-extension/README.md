@@ -1,6 +1,6 @@
-# Couchbase-extension
+# OriendtDB-extension
 
-![Couchbase Project](https://github.com/JNOSQL/jnosql-site/blob/master/assets/img/logos/couchbase.png)
+![OriendtDB Project](https://github.com/JNOSQL/jnosql-site/blob/master/assets/img/logos/orientdb.png)
 
 
 Couchbase extension has implementations to use specific behavior that is beyond the API such as N1QL.
