@@ -3,83 +3,40 @@
 ![Couchbase Project](https://github.com/JNOSQL/jnosql-site/blob/master/assets/img/logos/couchbase.png)
 
 
-Cassandra extension has implementations to use specific behavior that is beyond the API such as Cassandra Query Language, consistency level.
+Couchbase extension has implementations to use specific behavior that is beyond the API such as N1QL.
 
-## CassandraRepository
+## CouchbaseRepository
 
-CassandraRepository is an extension of Repository that allows using CQL annotation that executes Cassandra Query Language and also Consistency Level.
+CouchbaseRepository is an extension of Repository that allows using N1QL annotation that executes N1QL.
 
 
 ```java
-    interface PersonRepository extends CassandraRepository<Person, String> {
+    interface PersonRepository extends CouchbaseRepository<Person, String> {
 
-        Person findByName(String name, ConsistencyLevel level);
-
-        void deleteByName(String name, ConsistencyLevel level);
-
-        @CQL("select * from Person")
+        @N1QL("select * from Person")
         List<Person> findAll();
 
-        @CQL("select * from Person where name = ?")
-        List<Person> findByName(String name);
-    }
-```
-
-## CassandraRepositoryAsync
-
-CassandraRepositoryAsync is an extension of RepositoryAsync that allows using CQL annotation that executes Cassandra Query Language and also Consistency Level.
-
-
-```java
-    interface PersonAsyncRepository extends CassandraRepositoryAsync<Person, String> {
-
-        Person findByName(String name);
-
-        Person findByName(String name, ConsistencyLevel level, Consumer<List<Person>> callBack);
-
-        void deleteByName(String name, ConsistencyLevel level, Consumer<Void> callBack);
-
-        @CQL("select * from Person where name= ?")
-        void queryName(String name);
-
-        @CQL("select * from Person where name= ?")
-        void queryName(String name, Consumer<List<Person>> callBack);
+        @N1QL("select * from Person where name = $name")
+        List<Person> findByName(JsonObject params);
     }
 ```
 
-## @UDT
+## CouchbaseRepositoryAsync
 
-The UDT annotations is a mapping annotation that allows defining a field to be stored as User defined type in Cassandra.
+CouchbaseRepositoryAsync is an extension of RepositoryAsync that allows using N1QL annotation that executes N1QL.
 
-```java
-@Entity
-public class Person {
-
-    @Id("name")
-    private String name;
-
-    @Column
-    private Integer age;
-
-    @UDT("address")
-    @Column
-    private Address home;
-    }
-```
-
-## Converts
-
-* TimestampConverter: That converts to/from java.util.Date
-* LocalDateConverter: That converts to/from com.datastax.driver.core.LocalDate
 
 ```java
+    interface PersonAsyncRepository extends CouchbaseRepositoryAsync<Person, String> {
 
-    @Column
-    @Convert(value = TimestampConverter.class)
-    private LocalDateTime localDateTime;
-   
-    @Column
-    @Convert(value = LocalDateConverter.class)
-    private Calendar calendar;
+        Person findByName(String name);
 
+
+        @N1QL("select * from Person where name= $name")
+        void queryName(JsonObject params);
+
+        @N1QL("select * from Person where name= $name")
+        void queryName(JsonObject params, Consumer<List<Person>> callBack);
+    }
 ```
+
