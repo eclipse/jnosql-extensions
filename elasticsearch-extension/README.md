@@ -11,14 +11,12 @@ Elasticsearch extension has implementations to use specific behavior that is bey
 ElasticsearchTemplate and ElasticsearchTemplateAsync are a specialization of Document Template that allows using search engine on both synchronous and asynchronous.
 
 ```java
-        template.sql("select * from Person where name = ?", "Ada");
-          Consumer<Person> callBack = p -> {
-        };
-        template.live("select from Person where name = ?", callBack, "Ada");
+        QueryBuilder queryBuilder = boolQuery().filter(termQuery("name", "Ada"));
+        List<Person> people = template.search(queryBuilder, "Person");
         
-         String query = "select * from Person where name = ?";
+        QueryBuilder queryBuilder = boolQuery().filter(termQuery("name", "Ada"));
         Consumer<List<Person>> callBack = p -> {};
 
-        templateAsync.sql(query, callBack, "Person");
+        templateAsync.search(queryBuilder, callBack, "Person");
 
 ```
