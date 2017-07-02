@@ -41,17 +41,19 @@ OrientDBCrudRepositoryAsync is an extension of RepositoryAsync that allows using
 ```
 
 
-## CouchbaseTemplate and CouchbaseTemplateAsync
+## OrientDBTemplate and OrientDBTemplateAsync
 
-CouchbaseTemplate is a specialization of Document Template that allows using N1QL both synchronous and asynchronous.
+OrientDBTemplate and OrientDBTemplateAsync are a specialization of Document Template that allows using SQL query and live query on both synchronous and asynchronous.
 
 ```java
-        template.n1qlQuery("select * from Person where name = $name", params);
-
-        String query = "select * from Person where name = ?";
-        Consumer<List<Person>> callBack = p -> {
+        template.select("select * from Person where name = ?", "Ada");
+          Consumer<Person> callBack = p -> {
         };
-        JsonObject params = JsonObject.create().put("name", "Ada");
-        templateAsync.n1qlQuery(query, params, callBack);
+        template.live("select from Person where name = ?", callBack, "Ada");
+        
+         String query = "select * from Person where name = ?";
+        Consumer<List<Person>> callBack = p -> {};
+
+        templateAsync.find(query, callBack, "Person");
 
 ```
