@@ -52,7 +52,7 @@ public class DefaultOrientDBTemplateTest {
 
     private OrientDBDocumentCollectionManager manager;
 
-    private OrientDBTemplate repository;
+    private OrientDBTemplate template;
 
 
     @Before
@@ -60,7 +60,7 @@ public class DefaultOrientDBTemplateTest {
         manager = Mockito.mock(OrientDBDocumentCollectionManager.class);
         Instance instance = Mockito.mock(Instance.class);
         when(instance.get()).thenReturn(manager);
-        repository = new DefaultOrientDBTemplate(instance, converter, flow, persistManager);
+        template = new DefaultOrientDBTemplate(instance, converter, flow, persistManager);
 
         DocumentEntity entity = DocumentEntity.of("Person");
         entity.add(Document.of("name", "Ada"));
@@ -71,7 +71,7 @@ public class DefaultOrientDBTemplateTest {
 
     @Test
     public void shouldFindQuery() {
-        List<Person> people = repository.select("select * from Person where name = ?", "Ada");
+        List<Person> people = template.select("select * from Person where name = ?", "Ada");
 
         assertThat(people, contains(new Person("Ada", 10)));
         verify(manager).sql(Mockito.eq("select * from Person where name = ?"), Mockito.eq("Ada"));
@@ -82,7 +82,7 @@ public class DefaultOrientDBTemplateTest {
         DocumentQuery query = DocumentQuery.of("Person");
         Consumer<Person> callBack = p -> {
         };
-        repository.live(query, callBack);
+        template.live(query, callBack);
         verify(manager).live(Mockito.eq(query), Mockito.any(Consumer.class));
     }
 
@@ -90,7 +90,7 @@ public class DefaultOrientDBTemplateTest {
     public void shouldLiveQuery() {
         Consumer<Person> callBack = p -> {
         };
-        repository.live("select from Person where name = ?", callBack, "Ada");
+        template.live("select from Person where name = ?", callBack, "Ada");
         verify(manager).live(Mockito.eq("select from Person where name = ?"),
                 Mockito.any(Consumer.class), Mockito.eq("Ada"));
     }

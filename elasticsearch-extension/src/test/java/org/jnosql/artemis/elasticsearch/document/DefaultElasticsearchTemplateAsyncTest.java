@@ -41,7 +41,7 @@ public class DefaultElasticsearchTemplateAsyncTest {
 
     private ElasticsearchDocumentCollectionManagerAsync managerAsync;
 
-    private ElasticsearchTemplateAsync repositoryAsync;
+    private ElasticsearchTemplateAsync templateAsync;
 
 
     @Before
@@ -50,7 +50,7 @@ public class DefaultElasticsearchTemplateAsyncTest {
         Instance instance = Mockito.mock(Instance.class);
         when(instance.get()).thenReturn(managerAsync);
 
-        repositoryAsync = new DefaultElasticsearchTemplateAsync(converter, instance);
+        templateAsync = new DefaultElasticsearchTemplateAsync(converter, instance);
 
         DocumentEntity entity = DocumentEntity.of("Person");
         entity.add(Document.of("name", "Ada"));
@@ -63,7 +63,7 @@ public class DefaultElasticsearchTemplateAsyncTest {
         QueryBuilder queryBuilder = boolQuery().filter(termQuery("name", "Ada"));
         Consumer<List<Person>> callBack = p -> {};
 
-        repositoryAsync.search(queryBuilder, callBack, "Person");
+        templateAsync.search(queryBuilder, callBack, "Person");
 
         Mockito.verify(managerAsync).search(Mockito.eq(queryBuilder), Mockito.any(Consumer.class),
                 Mockito.eq("Person"));
