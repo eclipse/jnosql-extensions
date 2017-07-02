@@ -24,3 +24,25 @@ CassandraRepository is an extension of Repository that allows using CQL annotati
         List<Person> findByName(String name);
     }
 ```
+
+## CassandraRepositoryAsync
+
+CassandraRepositoryAsync is an extension of RepositoryAsync that allows using CQL annotation that executes Cassandra Query Language and also Consistency Level.
+
+
+```java
+    interface PersonAsyncRepository extends CassandraRepositoryAsync<Person, String> {
+
+        Person findByName(String name);
+
+        Person findByName(String name, ConsistencyLevel level, Consumer<List<Person>> callBack);
+
+        void deleteByName(String name, ConsistencyLevel level, Consumer<Void> callBack);
+
+        @CQL("select * from Person where name= ?")
+        void queryName(String name);
+
+        @CQL("select * from Person where name= ?")
+        void queryName(String name, Consumer<List<Person>> callBack);
+    }
+```
