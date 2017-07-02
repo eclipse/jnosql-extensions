@@ -46,7 +46,7 @@ OrientDBCrudRepositoryAsync is an extension of RepositoryAsync that allows using
 OrientDBTemplate and OrientDBTemplateAsync are a specialization of Document Template that allows using SQL query and live query on both synchronous and asynchronous.
 
 ```java
-        template.select("select * from Person where name = ?", "Ada");
+        template.sql("select * from Person where name = ?", "Ada");
           Consumer<Person> callBack = p -> {
         };
         template.live("select from Person where name = ?", callBack, "Ada");
@@ -54,6 +54,6 @@ OrientDBTemplate and OrientDBTemplateAsync are a specialization of Document Temp
          String query = "select * from Person where name = ?";
         Consumer<List<Person>> callBack = p -> {};
 
-        templateAsync.find(query, callBack, "Person");
+        templateAsync.sql(query, callBack, "Person");
 
 ```
