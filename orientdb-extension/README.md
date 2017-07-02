@@ -3,40 +3,40 @@
 ![OriendtDB Project](https://github.com/JNOSQL/jnosql-site/blob/master/assets/img/logos/orientdb.png)
 
 
-Couchbase extension has implementations to use specific behavior that is beyond the API such as N1QL.
+OrientDB extension has implementations to use specific behavior that is beyond the API such as SQL.
 
-## CouchbaseRepository
+## OrientDBCrudRepository
 
-CouchbaseRepository is an extension of Repository that allows using N1QL annotation that executes N1QL.
+OrientDBCrudRepository is an extension of Repository that allows using SQL annotation that executes SQL Query.
 
 
 ```java
-    interface PersonRepository extends CouchbaseRepository<Person, String> {
+    interface PersonRepository extends OrientDBCrudRepository<Person, String> {
 
-        @N1QL("select * from Person")
+        @SQL("select * from Person")
         List<Person> findAll();
 
-        @N1QL("select * from Person where name = $name")
-        List<Person> findByName(JsonObject params);
+        @SQL("select * from Person where name = ?")
+        List<Person> findByName(String name);
     }
 ```
 
-## CouchbaseRepositoryAsync
+## OrientDBCrudRepositoryAsync
 
-CouchbaseRepositoryAsync is an extension of RepositoryAsync that allows using N1QL annotation that executes N1QL.
+OrientDBCrudRepositoryAsync is an extension of RepositoryAsync that allows using N1QL annotation that executes SQL Query.
 
 
 ```java
-    interface PersonAsyncRepository extends CouchbaseRepositoryAsync<Person, String> {
+    interface PersonAsyncRepository extends OrientDBCrudRepositoryAsync<Person, String> {
 
         Person findByName(String name);
 
 
-        @N1QL("select * from Person where name= $name")
-        void queryName(JsonObject params);
+        @SQL("select * from Person where name= ?")
+        void queryName(String name);
 
-        @N1QL("select * from Person where name= $name")
-        void queryName(JsonObject params, Consumer<List<Person>> callBack);
+        @SQL("select * from Person where name= ?")
+        void queryName(String name, Consumer<List<Person>> callBack);
     }
 ```
 
