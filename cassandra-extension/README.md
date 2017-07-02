@@ -50,3 +50,19 @@ CassandraRepositoryAsync is an extension of RepositoryAsync that allows using CQ
 ## @UDT
 
 The UDT annotations is a mapping annotation that allows defining a field to be stored as User defined type in Cassandra.
+
+```java
+@Entity
+public class Person {
+
+    @Id("name")
+    private String name;
+
+    @Column
+    private Integer age;
+
+    @UDT("address")
+    @Column
+    private Address home;
+    }
+```
