@@ -90,9 +90,9 @@ class OrientDBDocumentRepositoryProxy<T> extends AbstractDocumentRepositoryProxy
         if (Objects.nonNull(sql)) {
             List<T> result = Collections.emptyList();
             if (args == null || args.length == 0) {
-                result = template.select(sql.value());
+                result = template.sql(sql.value());
             } else {
-                result = template.select(sql.value(), args);
+                result = template.sql(sql.value(), args);
             }
             return ReturnTypeConverterUtil.returnObject(result, typeClass, method);
         }

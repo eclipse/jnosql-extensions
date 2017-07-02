@@ -71,10 +71,10 @@ public class DefaultOrientDBTemplateTest {
 
     @Test
     public void shouldFindQuery() {
-        List<Person> people = template.select("select * from Person where name = ?", "Ada");
+        List<Person> people = template.sql("sql * from Person where name = ?", "Ada");
 
         assertThat(people, contains(new Person("Ada", 10)));
-        verify(manager).sql(Mockito.eq("select * from Person where name = ?"), Mockito.eq("Ada"));
+        verify(manager).sql(Mockito.eq("sql * from Person where name = ?"), Mockito.eq("Ada"));
     }
 
     @Test
@@ -90,8 +90,8 @@ public class DefaultOrientDBTemplateTest {
     public void shouldLiveQuery() {
         Consumer<Person> callBack = p -> {
         };
-        template.live("select from Person where name = ?", callBack, "Ada");
-        verify(manager).live(Mockito.eq("select from Person where name = ?"),
+        template.live("sql from Person where name = ?", callBack, "Ada");
+        verify(manager).live(Mockito.eq("sql from Person where name = ?"),
                 Mockito.any(Consumer.class), Mockito.eq("Ada"));
     }
 }

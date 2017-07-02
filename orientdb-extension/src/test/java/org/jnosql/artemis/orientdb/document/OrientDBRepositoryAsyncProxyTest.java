@@ -36,7 +36,7 @@ import static org.mockito.Mockito.verify;
 public class OrientDBRepositoryAsyncProxyTest {
 
 
-    private OrientDBDocumentTemplateAsync repository;
+    private OrientDBTemplateAsync repository;
 
     @Inject
     private ClassRepresentations classRepresentations;
@@ -49,7 +49,7 @@ public class OrientDBRepositoryAsyncProxyTest {
 
     @Before
     public void setUp() {
-        this.repository = Mockito.mock(OrientDBDocumentTemplateAsync.class);
+        this.repository = Mockito.mock(OrientDBTemplateAsync.class);
 
         OrientDBRepositoryAsyncProxy handler = new OrientDBRepositoryAsyncProxy(repository,
                 classRepresentations, PersonAsyncRepository.class, reflections);
@@ -82,7 +82,7 @@ public class OrientDBRepositoryAsyncProxyTest {
         };
         personRepository.queryName("Ada", callBack);
 
-        verify(repository).find(Mockito.eq("select * from Person where name= ?"), Mockito.eq(callBack), captor.capture());
+        verify(repository).select(Mockito.eq("sql * from Person where name= ?"), Mockito.eq(callBack), captor.capture());
         Object value = captor.getValue();
         assertEquals("Ada", value);
 
@@ -93,10 +93,10 @@ public class OrientDBRepositoryAsyncProxyTest {
         Person findByName(String name);
 
 
-        @SQL("select * from Person where name= ?")
+        @SQL("sql * from Person where name= ?")
         void queryName(String name);
 
-        @SQL("select * from Person where name= ?")
+        @SQL("sql * from Person where name= ?")
         void queryName(String name, Consumer<List<Person>> callBack);
     }
 }

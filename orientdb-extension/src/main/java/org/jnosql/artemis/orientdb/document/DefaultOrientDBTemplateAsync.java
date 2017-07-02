@@ -30,23 +30,23 @@ import java.util.function.Consumer;
 import static java.util.stream.Collectors.toList;
 
 /**
- * The default implementation of {@link OrientDBDocumentTemplateAsync}
+ * The default implementation of {@link OrientDBTemplateAsync}
  */
-class DefaultOrientDBDocumentTemplateAsync extends AbstractDocumentTemplateAsync implements
-        OrientDBDocumentTemplateAsync {
+class DefaultOrientDBTemplateAsync extends AbstractDocumentTemplateAsync implements
+        OrientDBTemplateAsync {
 
     private DocumentEntityConverter converter;
 
     private Instance<OrientDBDocumentCollectionManagerAsync> manager;
 
     @Inject
-    DefaultOrientDBDocumentTemplateAsync(DocumentEntityConverter converter,
-                                         Instance<OrientDBDocumentCollectionManagerAsync> manager) {
+    DefaultOrientDBTemplateAsync(DocumentEntityConverter converter,
+                                 Instance<OrientDBDocumentCollectionManagerAsync> manager) {
         this.converter = converter;
         this.manager = manager;
     }
 
-    DefaultOrientDBDocumentTemplateAsync() {
+    DefaultOrientDBTemplateAsync() {
     }
 
     @Override
@@ -60,7 +60,7 @@ class DefaultOrientDBDocumentTemplateAsync extends AbstractDocumentTemplateAsync
     }
 
     @Override
-    public <T> void find(String query, Consumer<List<T>> callBack, Object... params) {
+    public <T> void select(String query, Consumer<List<T>> callBack, Object... params) {
         Objects.requireNonNull(query, "query is required");
         Objects.requireNonNull(callBack, "callBack is required");
 

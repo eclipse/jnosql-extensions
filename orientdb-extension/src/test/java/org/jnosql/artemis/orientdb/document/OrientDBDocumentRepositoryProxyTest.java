@@ -65,21 +65,21 @@ public class OrientDBDocumentRepositoryProxyTest {
     @Test
     public void shouldFindAll() {
         personRepository.findAll();
-        verify(template).select("select * from Person");
+        verify(template).sql("sql * from Person");
     }
 
     @Test
     public void shouldFindByNameCQL() {
         personRepository.findByName("Ada");
-        verify(template).select(Mockito.eq("select * from Person where name = ?"), Mockito.any());
+        verify(template).sql(Mockito.eq("sql * from Person where name = ?"), Mockito.any());
     }
 
     interface PersonRepository extends OrientDBCrudRepository<Person, String> {
 
-        @SQL("select * from Person")
+        @SQL("sql * from Person")
         List<Person> findAll();
 
-        @SQL("select * from Person where name = ?")
+        @SQL("sql * from Person where name = ?")
         List<Person> findByName(String name);
     }
 }

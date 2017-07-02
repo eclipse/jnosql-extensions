@@ -41,7 +41,7 @@ class OrientDBRepositoryAsyncProxy<T> extends AbstractDocumentRepositoryAsyncPro
 
     private final Class<T> typeClass;
 
-    private final OrientDBDocumentTemplateAsync template;
+    private final OrientDBTemplateAsync template;
 
 
     private final DocumentRepositoryAsync repository;
@@ -53,7 +53,7 @@ class OrientDBRepositoryAsyncProxy<T> extends AbstractDocumentRepositoryAsyncPro
     private final DocumentQueryDeleteParser deleteParser;
 
 
-    OrientDBRepositoryAsyncProxy(OrientDBDocumentTemplateAsync template, ClassRepresentations classRepresentations,
+    OrientDBRepositoryAsyncProxy(OrientDBTemplateAsync template, ClassRepresentations classRepresentations,
                                  Class<?> repositoryType, Reflections reflections) {
         this.template = template;
         this.typeClass = Class.class.cast(ParameterizedType.class.cast(repositoryType.getGenericInterfaces()[0])
@@ -101,10 +101,10 @@ class OrientDBRepositoryAsyncProxy<T> extends AbstractDocumentRepositoryAsyncPro
             }
 
             if (args == null || args.length == 1) {
-                template.find(sql.value(), callBack);
+                template.select(sql.value(), callBack);
                 return Void.class;
             } else {
-                template.find(sql.value(), callBack, Stream.of(args)
+                template.select(sql.value(), callBack, Stream.of(args)
                         .filter(IS_NOT_CONSUMER)
                         .toArray(Object[]::new));
                 return Void.class;

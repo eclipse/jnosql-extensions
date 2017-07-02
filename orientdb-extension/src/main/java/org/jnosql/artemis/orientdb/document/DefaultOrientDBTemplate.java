@@ -80,7 +80,7 @@ class DefaultOrientDBTemplate extends AbstractDocumentTemplate
     }
 
     @Override
-    public <T> List<T> select(String query, Object... params) throws NullPointerException {
+    public <T> List<T> sql(String query, Object... params) throws NullPointerException {
         return manager.get().sql(query, params).stream().map(converter::toEntity)
                 .map(e -> (T) e)
                 .collect(Collectors.toList());

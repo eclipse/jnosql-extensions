@@ -23,8 +23,8 @@ import java.util.function.Consumer;
 /**
  * A {@link DocumentTemplateAsync} to orientdb
  */
-public interface OrientDBDocumentTemplateAsync extends DocumentTemplateAsync {
+public interface OrientDBTemplateAsync extends DocumentTemplateAsync {
 
 
-    <T> void find(String query, Consumer<List<T>> callBack, Object... params);
+    <T> void select(String query, Consumer<List<T>> callBack, Object... params);
 }

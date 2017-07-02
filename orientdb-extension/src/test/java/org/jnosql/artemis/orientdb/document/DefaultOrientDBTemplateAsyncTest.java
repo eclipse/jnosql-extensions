@@ -38,7 +38,7 @@ public class DefaultOrientDBTemplateAsyncTest {
 
     private OrientDBDocumentCollectionManagerAsync managerAsync;
 
-    private OrientDBDocumentTemplateAsync templateAsync;
+    private OrientDBTemplateAsync templateAsync;
 
 
     @Before
@@ -47,7 +47,7 @@ public class DefaultOrientDBTemplateAsyncTest {
         Instance instance = Mockito.mock(Instance.class);
         when(instance.get()).thenReturn(managerAsync);
 
-        templateAsync = new DefaultOrientDBDocumentTemplateAsync(converter, instance);
+        templateAsync = new DefaultOrientDBTemplateAsync(converter, instance);
 
         DocumentEntity entity = DocumentEntity.of("Person");
         entity.add(Document.of("name", "Ada"));
@@ -57,10 +57,10 @@ public class DefaultOrientDBTemplateAsyncTest {
 
     @Test
     public void shouldFind() {
-        String query = "select * from Person where name = ?";
+        String query = "sql * from Person where name = ?";
         Consumer<List<Person>> callBack = p -> {};
 
-        templateAsync.find(query, callBack, "Person");
+        templateAsync.select(query, callBack, "Person");
 
         Mockito.verify(managerAsync).sql(Mockito.eq(query), Mockito.any(Consumer.class),
                 Mockito.eq("Person"));
