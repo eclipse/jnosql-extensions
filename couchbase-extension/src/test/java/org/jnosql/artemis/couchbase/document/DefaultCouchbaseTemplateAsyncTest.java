@@ -40,7 +40,7 @@ public class DefaultCouchbaseTemplateAsyncTest {
 
     private CouchbaseDocumentCollectionManagerAsync managerAsync;
 
-    private CouchbaseTemplateAsync repositoryAsync;
+    private CouchbaseTemplateAsync templateAsync;
 
 
     @Before
@@ -49,7 +49,7 @@ public class DefaultCouchbaseTemplateAsyncTest {
         Instance instance = Mockito.mock(Instance.class);
         when(instance.get()).thenReturn(managerAsync);
 
-        repositoryAsync = new DefaultCouchbaseTemplateAsync(converter, instance);
+        templateAsync = new DefaultCouchbaseTemplateAsync(converter, instance);
 
         DocumentEntity entity = DocumentEntity.of("Person");
         entity.add(Document.of("name", "Ada"));
@@ -63,7 +63,7 @@ public class DefaultCouchbaseTemplateAsyncTest {
         Consumer<List<Person>> callBack = p -> {
         };
         JsonObject params = JsonObject.create().put("name", "Ada");
-        repositoryAsync.n1qlQuery(query, params, callBack);
+        templateAsync.n1qlQuery(query, params, callBack);
         Mockito.verify(managerAsync).n1qlQuery(Mockito.eq(query), Mockito.eq(params), Mockito.any(Consumer.class));
 
     }
@@ -74,7 +74,7 @@ public class DefaultCouchbaseTemplateAsyncTest {
         Consumer<List<Person>> callBack = p -> {
         };
         JsonObject params = JsonObject.create().put("name", "Ada");
-        repositoryAsync.n1qlQuery(query, params, callBack);
+        templateAsync.n1qlQuery(query, params, callBack);
         Mockito.verify(managerAsync).n1qlQuery(Mockito.eq(query), Mockito.eq(params), Mockito.any(Consumer.class));
     }
 
@@ -83,7 +83,7 @@ public class DefaultCouchbaseTemplateAsyncTest {
         String query = "select * from Person where name = ?";
         Consumer<List<Person>> callBack = p -> {
         };
-        repositoryAsync.n1qlQuery(query, callBack);
+        templateAsync.n1qlQuery(query, callBack);
         Mockito.verify(managerAsync).n1qlQuery(Mockito.eq(query),  Mockito.any(Consumer.class));
 
     }
@@ -93,7 +93,7 @@ public class DefaultCouchbaseTemplateAsyncTest {
         Statement query = Mockito.mock(Statement.class);
         Consumer<List<Person>> callBack = p -> {
         };
-        repositoryAsync.n1qlQuery(query, callBack);
+        templateAsync.n1qlQuery(query, callBack);
         Mockito.verify(managerAsync).n1qlQuery(Mockito.eq(query),  Mockito.any(Consumer.class));
     }
 

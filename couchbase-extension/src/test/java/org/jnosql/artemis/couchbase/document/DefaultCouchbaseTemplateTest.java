@@ -47,7 +47,7 @@ public class DefaultCouchbaseTemplateTest {
 
     private CouchbaseDocumentCollectionManager manager;
 
-    private CouchbaseTemplate repository;
+    private CouchbaseTemplate template;
 
 
     @Before
@@ -55,7 +55,7 @@ public class DefaultCouchbaseTemplateTest {
         manager = Mockito.mock(CouchbaseDocumentCollectionManager.class);
         Instance instance = Mockito.mock(Instance.class);
         when(instance.get()).thenReturn(manager);
-        repository = new DefaultCouchbaseTemplate(instance, converter, flow, persistManager);
+        template = new DefaultCouchbaseTemplate(instance, converter, flow, persistManager);
 
         DocumentEntity entity = DocumentEntity.of("Person");
         entity.add(Document.of("name", "Ada"));
@@ -66,7 +66,7 @@ public class DefaultCouchbaseTemplateTest {
     @Test
     public void shouldFindN1ql() {
         JsonObject params = JsonObject.create().put("name", "Ada");
-        repository.n1qlQuery("select * from Person where name = $name", params);
+        template.n1qlQuery("select * from Person where name = $name", params);
         Mockito.verify(manager).n1qlQuery("select * from Person where name = $name", params);
     }
 
@@ -74,21 +74,21 @@ public class DefaultCouchbaseTemplateTest {
     public void shouldFindN1qlStatment() {
         Statement statement = Mockito.mock(Statement.class);
         JsonObject params = JsonObject.create().put("name", "Ada");
-        repository.n1qlQuery(statement, params);
+        template.n1qlQuery(statement, params);
         Mockito.verify(manager).n1qlQuery(statement, params);
     }
 
 
     @Test
     public void shouldFindN1ql2() {
-        repository.n1qlQuery("select * from Person where name = $name");
+        template.n1qlQuery("select * from Person where name = $name");
         Mockito.verify(manager).n1qlQuery("select * from Person where name = $name");
     }
 
     @Test
     public void shouldFindN1qlStatment2() {
         Statement statement = Mockito.mock(Statement.class);
-        repository.n1qlQuery(statement);
+        template.n1qlQuery(statement);
         Mockito.verify(manager).n1qlQuery(statement);
     }
 
