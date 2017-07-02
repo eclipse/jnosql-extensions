@@ -5,6 +5,10 @@
 
 Cassandra extension has implementations to use specific behavior that is beyond the API such as Cassandra Query Language, consistency level.
 
+## CassandraRepository
+
+CassandraRepository is an extension of Repository that allows using CQL annotation that executes Cassandra Query Language and also Consistency Level.
+
 
 ```java
     interface PersonRepository extends CassandraRepository<Person, String> {
