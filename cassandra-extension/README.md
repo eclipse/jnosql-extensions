@@ -46,3 +46,7 @@ CassandraRepositoryAsync is an extension of RepositoryAsync that allows using CQ
         void queryName(String name, Consumer<List<Person>> callBack);
     }
 ```
+
+## @UDT
+
+The UDT annotations is a mapping annotation that allows defining a field to be stored as User defined type in Cassandra.
