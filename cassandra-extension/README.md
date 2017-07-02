@@ -66,3 +66,20 @@ public class Person {
     private Address home;
     }
 ```
+
+## Converts
+
+* TimestampConverter: That converts to/from java.util.Date
+* LocalDateConverter: That converts to/from com.datastax.driver.core.LocalDate
+
+```java
+
+    @Column
+    @Convert(value = TimestampConverter.class)
+    private LocalDateTime localDateTime;
+   
+    @Column
+    @Convert(value = LocalDateConverter.class)
+    private Calendar calendar;
+
+```
