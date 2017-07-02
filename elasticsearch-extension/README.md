@@ -3,12 +3,12 @@
 ![Elasticsearch Project](https://github.com/JNOSQL/jnosql-site/blob/master/assets/img/logos/elastic.png)
 
 
-OrientDB extension has implementations to use specific behavior that is beyond the API such as SQL.
+Elasticsearch extension has implementations to use specific behavior that is beyond the API such as search Engine.
 
 
-## OrientDBTemplate and OrientDBTemplateAsync
+## ElasticsearchTemplate and ElasticsearchTemplateAsync
 
-OrientDBTemplate and OrientDBTemplateAsync are a specialization of Document Template that allows using SQL query and live query on both synchronous and asynchronous.
+ElasticsearchTemplate and ElasticsearchTemplateAsync are a specialization of Document Template that allows using search engine on both synchronous and asynchronous.
 
 ```java
         template.sql("select * from Person where name = ?", "Ada");
