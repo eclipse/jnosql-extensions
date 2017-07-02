@@ -1,6 +1,6 @@
 # Elasticsearch-extension
 
-![Elasticsearch Project](https://github.com/JNOSQL/jnosql-site/blob/master/assets/img/logos/elasticsearch.png)
+![Elasticsearch Project](https://github.com/JNOSQL/jnosql-site/blob/master/assets/img/logos/elastic.png)
 
 
 OrientDB extension has implementations to use specific behavior that is beyond the API such as SQL.
