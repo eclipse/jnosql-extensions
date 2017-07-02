@@ -83,3 +83,16 @@ public class Person {
     private Calendar calendar;
 
 ```
+
+## CassandraTemplate and CassandraTemplateAsync
+
+CassandraTemplate and CassandraTemplateAsync are a specializations of Column Template that allows using CQL from both synchronous and asynchronous.
+
+```java
+    template.save(person, level);
+    templateAsync.save(person, level);
+    
+    template.save("select * from Person");
+
+```
+
