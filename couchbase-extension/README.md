@@ -40,3 +40,18 @@ CouchbaseRepositoryAsync is an extension of RepositoryAsync that allows using N1
     }
 ```
 
+
+## CouchbaseTemplate and CouchbaseTemplateAsync
+
+CouchbaseTemplate is a specialization of Document Template that allows using N1QL both synchronous and asynchronous.
+
+```java
+        template.n1qlQuery("select * from Person where name = $name", params);
+
+        String query = "select * from Person where name = ?";
+        Consumer<List<Person>> callBack = p -> {
+        };
+        JsonObject params = JsonObject.create().put("name", "Ada");
+        templateAsync.n1qlQuery(query, params, callBack);
+
+```
