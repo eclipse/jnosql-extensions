@@ -57,7 +57,7 @@ public class DefaultCassandraTemplateTest {
     @Inject
     private ColumnEventPersistManager persistManager;
 
-    private CassandraTemplate repository;
+    private CassandraTemplate template;
 
     private CassandraColumnFamilyManager manager;
 
@@ -66,7 +66,7 @@ public class DefaultCassandraTemplateTest {
         this.manager = mock(CassandraColumnFamilyManager.class);
         Instance instance = mock(Instance.class);
         when(instance.get()).thenReturn(manager);
-        repository = new DefaultCassandraTemplate(instance, converter, flow, persistManager);
+        template = new DefaultCassandraTemplate(instance, converter, flow, persistManager);
     }
 
 
@@ -85,7 +85,7 @@ public class DefaultCassandraTemplateTest {
         Person person = new Person();
         person.setName("Name");
         person.setAge(20);
-        assertEquals(person, repository.save(person, level));
+        assertEquals(person, template.save(person, level));
 
         Mockito.verify(manager).save(captor.capture(), Mockito.eq(level));
         assertEquals(entity, captor.getValue());
@@ -107,7 +107,7 @@ public class DefaultCassandraTemplateTest {
         Person person = new Person();
         person.setName("Name");
         person.setAge(20);
-        assertThat(repository.save(Collections.singletonList(person), level), Matchers.contains(person));
+        assertThat(template.save(Collections.singletonList(person), level), Matchers.contains(person));
         Mockito.verify(manager).save(captor.capture(), Mockito.eq(level));
         assertEquals(entity, captor.getValue());
 
@@ -129,7 +129,7 @@ public class DefaultCassandraTemplateTest {
         Person person = new Person();
         person.setName("Name");
         person.setAge(20);
-        assertEquals(person, repository.save(person, duration, level));
+        assertEquals(person, template.save(person, duration, level));
 
         Mockito.verify(manager).save(captor.capture(), Mockito.eq(duration), Mockito.eq(level));
         assertEquals(entity, captor.getValue());
@@ -151,7 +151,7 @@ public class DefaultCassandraTemplateTest {
         Person person = new Person();
         person.setName("Name");
         person.setAge(20);
-        assertThat(repository.save(Collections.singletonList(person), duration, level), Matchers.contains(person));
+        assertThat(template.save(Collections.singletonList(person), duration, level), Matchers.contains(person));
         Mockito.verify(manager).save(captor.capture(), Mockito.eq(duration), Mockito.eq(level));
         assertEquals(entity, captor.getValue());
     }
@@ -160,7 +160,7 @@ public class DefaultCassandraTemplateTest {
     public void shouldDelete() {
         ColumnDeleteQuery query = ColumnDeleteQuery.of("");
         ConsistencyLevel level = ConsistencyLevel.THREE;
-        repository.delete(query, level);
+        template.delete(query, level);
         verify(manager).delete(query, level);
     }
 
@@ -176,7 +176,7 @@ public class DefaultCassandraTemplateTest {
         ConsistencyLevel level = ConsistencyLevel.THREE;
         when(manager.select(query, level)).thenReturn(Collections.singletonList(entity));
 
-        List<Person> people = repository.find(query, level);
+        List<Person> people = template.find(query, level);
         Assert.assertThat(people, Matchers.contains(person));
     }
 
@@ -190,7 +190,7 @@ public class DefaultCassandraTemplateTest {
 
         when(manager.cql(cql)).thenReturn(Collections.singletonList(entity));
 
-        List<Person> people = repository.cql(cql);
+        List<Person> people = template.cql(cql);
         Assert.assertThat(people, Matchers.contains(person));
     }
     
@@ -204,7 +204,7 @@ public class DefaultCassandraTemplateTest {
 
         when(manager.execute(statement)).thenReturn(Collections.singletonList(entity));
 
-        List<Person> people = repository.execute(statement);
+        List<Person> people = template.execute(statement);
         Assert.assertThat(people, Matchers.contains(person));
     }
 

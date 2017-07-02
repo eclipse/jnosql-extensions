@@ -48,14 +48,14 @@ public class DefaultCassandraTemplateAsyncTest {
 
     private CassandraColumnFamilyManagerAsync managerAsync;
 
-    private CassandraTemplateAsync repository;
+    private CassandraTemplateAsync templateAsync;
 
     @Before
     public void setUp() {
         managerAsync = Mockito.mock(CassandraColumnFamilyManagerAsync.class);
         Instance instance = Mockito.mock(Instance.class);
         Mockito.when(instance.get()).thenReturn(managerAsync);
-        repository = new DefaultCassandraTemplateAsync(converter, instance);
+        templateAsync = new DefaultCassandraTemplateAsync(converter, instance);
     }
 
     @Test
@@ -68,7 +68,7 @@ public class DefaultCassandraTemplateAsyncTest {
         Person person = new Person();
         person.setName("Name");
         person.setAge(20);
-        repository.save(person, level);
+        templateAsync.save(person, level);
         verify(managerAsync).save(captor.capture(), eq(level));
         assertEquals(entity, captor.getValue());
     }
@@ -85,7 +85,7 @@ public class DefaultCassandraTemplateAsyncTest {
         Person person = new Person();
         person.setName("Name");
         person.setAge(20);
-        repository.save(person, level, callBack);
+        templateAsync.save(person, level, callBack);
         verify(managerAsync).save(captor.capture(), eq(level), any());
         assertEquals(entity, captor.getValue());
     }
@@ -101,7 +101,7 @@ public class DefaultCassandraTemplateAsyncTest {
         Person person = new Person();
         person.setName("Name");
         person.setAge(20);
-        repository.save(person, duration, level);
+        templateAsync.save(person, duration, level);
         verify(managerAsync).save(captor.capture(), eq(duration), eq(level));
         assertEquals(entity, captor.getValue());
     }
@@ -118,7 +118,7 @@ public class DefaultCassandraTemplateAsyncTest {
         Person person = new Person();
         person.setName("Name");
         person.setAge(20);
-        repository.save(person, duration, level, callBack);
+        templateAsync.save(person, duration, level, callBack);
         verify(managerAsync).save(captor.capture(), eq(duration), eq(level), any());
         assertEquals(entity, captor.getValue());
     }
@@ -128,7 +128,7 @@ public class DefaultCassandraTemplateAsyncTest {
         ColumnDeleteQuery query = ColumnDeleteQuery.of("");
         ConsistencyLevel level = ConsistencyLevel.THREE;
 
-        repository.delete(query, level);
+        templateAsync.delete(query, level);
         verify(managerAsync).delete(query, level);
     }
 
@@ -139,7 +139,7 @@ public class DefaultCassandraTemplateAsyncTest {
         Consumer<Void> callBack = person -> {
         };
 
-        repository.delete(query, level, callBack);
+        templateAsync.delete(query, level, callBack);
         verify(managerAsync).delete(query, level, callBack);
     }
 
@@ -149,7 +149,7 @@ public class DefaultCassandraTemplateAsyncTest {
         ConsistencyLevel level = ConsistencyLevel.THREE;
         Consumer<List<Person>> callBack = people -> {
         };
-        repository.select(query, level, callBack);
+        templateAsync.select(query, level, callBack);
         verify(managerAsync).select(eq(query), eq(level), any());
     }
 
@@ -158,7 +158,7 @@ public class DefaultCassandraTemplateAsyncTest {
         String cql = "select * from Person ";
         Consumer<List<Person>> callBack = people -> {
         };
-        repository.cql(cql, callBack);
+        templateAsync.cql(cql, callBack);
         verify(managerAsync).cql(eq(cql), any());
     }
 
@@ -167,7 +167,7 @@ public class DefaultCassandraTemplateAsyncTest {
         Statement statement = QueryBuilder.select().from("Person");
         Consumer<List<Person>> callBack = people -> {
         };
-        repository.execute(statement, callBack);
+        templateAsync.execute(statement, callBack);
         verify(managerAsync).execute(eq(statement), any());
     }
 }
