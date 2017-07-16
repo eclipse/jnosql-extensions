@@ -20,6 +20,7 @@ import org.jnosql.artemis.document.DocumentWorkflow;
 import org.jnosql.diana.api.document.Document;
 import org.jnosql.diana.api.document.DocumentEntity;
 import org.jnosql.diana.api.document.DocumentQuery;
+import org.jnosql.diana.api.document.query.DocumentQueryBuilder;
 import org.jnosql.diana.orientdb.document.OrientDBDocumentCollectionManager;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,6 +34,7 @@ import java.util.List;
 import java.util.function.Consumer;
 
 import static org.hamcrest.Matchers.contains;
+import static org.jnosql.diana.api.document.query.DocumentQueryBuilder.select;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -79,7 +81,9 @@ public class DefaultOrientDBTemplateTest {
 
     @Test
     public void shouldLive() {
-        DocumentQuery query = DocumentQuery.of("Person");
+
+        DocumentQuery query = select().from("Person").build();
+        
         Consumer<Person> callBack = p -> {
         };
         template.live(query, callBack);

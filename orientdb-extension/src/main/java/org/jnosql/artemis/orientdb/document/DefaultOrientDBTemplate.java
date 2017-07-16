@@ -25,6 +25,7 @@ import org.jnosql.diana.api.document.DocumentQuery;
 import org.jnosql.diana.orientdb.document.OrientDBDocumentCollectionManager;
 
 import javax.enterprise.inject.Instance;
+import javax.enterprise.inject.Typed;
 import javax.inject.Inject;
 import java.util.List;
 import java.util.Objects;
@@ -35,6 +36,7 @@ import java.util.stream.Collectors;
 /**
  * The Default implementation of {@link OrientDBTemplate}
  */
+@Typed(OrientDBTemplate.class)
 class DefaultOrientDBTemplate extends AbstractDocumentTemplate
         implements OrientDBTemplate {
 
