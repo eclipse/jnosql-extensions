@@ -24,6 +24,7 @@ import org.jnosql.diana.api.document.DocumentEntity;
 import org.jnosql.diana.elasticsearch.document.ElasticsearchDocumentCollectionManagerAsync;
 
 import javax.enterprise.inject.Instance;
+import javax.enterprise.inject.Typed;
 import javax.inject.Inject;
 import java.util.List;
 import java.util.Objects;
@@ -34,6 +35,7 @@ import static java.util.stream.Collectors.toList;
 /**
  * The default implementation of {@link ElasticsearchTemplateAsync}
  */
+@Typed(ElasticsearchTemplateAsync.class)
 class DefaultElasticsearchTemplateAsync extends AbstractDocumentTemplateAsync implements
         ElasticsearchTemplateAsync {
 
