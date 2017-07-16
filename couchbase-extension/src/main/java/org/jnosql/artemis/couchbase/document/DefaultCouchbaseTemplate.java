@@ -25,6 +25,7 @@ import org.jnosql.diana.api.document.DocumentCollectionManager;
 import org.jnosql.diana.couchbase.document.CouchbaseDocumentCollectionManager;
 
 import javax.enterprise.inject.Instance;
+import javax.enterprise.inject.Typed;
 import javax.inject.Inject;
 import java.util.List;
 import java.util.Objects;
@@ -33,6 +34,7 @@ import java.util.stream.Collectors;
 /**
  * The Default implementation of {@link CouchbaseTemplate}
  */
+@Typed(CouchbaseTemplate.class)
 class DefaultCouchbaseTemplate extends AbstractDocumentTemplate
         implements CouchbaseTemplate {
 
