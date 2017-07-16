@@ -29,6 +29,7 @@ import org.jnosql.diana.cassandra.column.CassandraColumnFamilyManager;
 import org.jnosql.diana.cassandra.column.CassandraPrepareStatment;
 
 import javax.enterprise.inject.Instance;
+import javax.enterprise.inject.Typed;
 import javax.inject.Inject;
 import java.time.Duration;
 import java.util.List;
@@ -37,6 +38,7 @@ import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+@Typed(CassandraTemplate.class)
 class DefaultCassandraTemplate extends AbstractColumnTemplate implements CassandraTemplate {
 
     private Instance<CassandraColumnFamilyManager> manager;

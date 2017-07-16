@@ -26,6 +26,7 @@ import org.jnosql.diana.api.column.ColumnQuery;
 import org.jnosql.diana.cassandra.column.CassandraColumnFamilyManagerAsync;
 
 import javax.enterprise.inject.Instance;
+import javax.enterprise.inject.Typed;
 import javax.inject.Inject;
 import java.time.Duration;
 import java.util.List;
@@ -38,6 +39,7 @@ import static java.util.stream.Collectors.toList;
 /**
  * The CassandraTemplateAsync default implementation
  */
+@Typed(CassandraTemplateAsync.class)
 class DefaultCassandraTemplateAsync extends AbstractColumnTemplateAsync
         implements CassandraTemplateAsync {
 

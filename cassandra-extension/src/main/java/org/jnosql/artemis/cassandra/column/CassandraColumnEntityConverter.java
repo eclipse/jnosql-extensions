@@ -28,11 +28,9 @@ import org.jnosql.diana.api.Value;
 import org.jnosql.diana.api.column.Column;
 import org.jnosql.diana.api.column.ColumnEntity;
 
-import javax.annotation.Priority;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.Alternative;
+import javax.enterprise.inject.Typed;
 import javax.inject.Inject;
-import javax.interceptor.Interceptor;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -46,8 +44,7 @@ import java.util.stream.Collectors;
 import static org.jnosql.artemis.reflection.FieldType.EMBEDDED;
 
 @ApplicationScoped
-@Alternative
-@Priority(Interceptor.Priority.LIBRARY_BEFORE)
+@Typed(CassandraColumnEntityConverter.class)
 class CassandraColumnEntityConverter implements ColumnEntityConverter {
 
     @Inject
