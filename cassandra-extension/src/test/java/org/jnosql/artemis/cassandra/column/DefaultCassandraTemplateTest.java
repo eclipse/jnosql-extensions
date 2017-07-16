@@ -39,6 +39,8 @@ import java.util.Collections;
 import java.util.List;
 
 import static java.util.Arrays.asList;
+import static org.jnosql.diana.api.column.query.ColumnQueryBuilder.delete;
+import static org.jnosql.diana.api.column.query.ColumnQueryBuilder.select;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
@@ -158,7 +160,9 @@ public class DefaultCassandraTemplateTest {
 
     @Test
     public void shouldDelete() {
-        ColumnDeleteQuery query = ColumnDeleteQuery.of("");
+
+
+        ColumnDeleteQuery query = delete().from("columnFamily").build();
         ConsistencyLevel level = ConsistencyLevel.THREE;
         template.delete(query, level);
         verify(manager).delete(query, level);
@@ -172,7 +176,7 @@ public class DefaultCassandraTemplateTest {
         person.setAge(20);
 
         ColumnEntity entity = ColumnEntity.of("Person", asList(Column.of("name", "Name"), Column.of("age", 20)));
-        ColumnQuery query = ColumnQuery.of("");
+        ColumnQuery query = select().from("columnFamily").build();
         ConsistencyLevel level = ConsistencyLevel.THREE;
         when(manager.select(query, level)).thenReturn(Collections.singletonList(entity));
 

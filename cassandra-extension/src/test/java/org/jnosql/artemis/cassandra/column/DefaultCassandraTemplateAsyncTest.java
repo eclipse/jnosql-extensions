@@ -35,6 +35,8 @@ import java.util.List;
 import java.util.function.Consumer;
 
 import static java.util.Arrays.asList;
+import static org.jnosql.diana.api.column.query.ColumnQueryBuilder.delete;
+import static org.jnosql.diana.api.column.query.ColumnQueryBuilder.select;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
@@ -125,7 +127,8 @@ public class DefaultCassandraTemplateAsyncTest {
 
     @Test
     public void shouldDelete() {
-        ColumnDeleteQuery query = ColumnDeleteQuery.of("");
+
+        ColumnDeleteQuery query = delete().from("columnFamily").build();
         ConsistencyLevel level = ConsistencyLevel.THREE;
 
         templateAsync.delete(query, level);
@@ -134,7 +137,7 @@ public class DefaultCassandraTemplateAsyncTest {
 
     @Test
     public void shouldDeleteCallback() {
-        ColumnDeleteQuery query = ColumnDeleteQuery.of("");
+        ColumnDeleteQuery query = delete().from("columnFamily").build();
         ConsistencyLevel level = ConsistencyLevel.THREE;
         Consumer<Void> callBack = person -> {
         };
@@ -145,7 +148,8 @@ public class DefaultCassandraTemplateAsyncTest {
 
     @Test
     public void shouldFind() {
-        ColumnQuery query = ColumnQuery.of("");
+
+        ColumnQuery query = select().from("columnFamily").build();
         ConsistencyLevel level = ConsistencyLevel.THREE;
         Consumer<List<Person>> callBack = people -> {
         };
