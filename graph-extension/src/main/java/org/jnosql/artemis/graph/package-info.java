@@ -26,4 +26,4 @@
  * which allows fast traversal (with O(1) complexity) of one-to-many relationships and fast addition/removal
  * of new links. OrientDB is the second most popular graph database according to the DB-Engines graph database ranking.
  */
-package org.jnosql.artemis.orientdb.document;
+package org.jnosql.artemis.graph;
