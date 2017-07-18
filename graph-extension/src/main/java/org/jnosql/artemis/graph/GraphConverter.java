@@ -17,38 +17,38 @@ package org.jnosql.artemis.graph;
 
 
 /**
- * This interface represents the converter between an entity and the {@link ArtemisGraph}
+ * This interface represents the converter between an entity and the {@link ArtemisVertex}
  */
 public interface GraphConverter {
 
     /**
-     * Converts the instance entity to {@link ArtemisGraph}
+     * Converts the instance entity to {@link ArtemisVertex}
      *
      * @param entityInstance the instnace
-     * @return a {@link ArtemisGraph} instance
+     * @return a {@link ArtemisVertex} instance
      * @throws NullPointerException when entityInstance is null
      */
-    ArtemisGraph toGraph(Object entityInstance) throws NullPointerException;
+    ArtemisVertex toGraph(Object entityInstance) throws NullPointerException;
 
     /**
-     * Converts a {@link ArtemisGraph} to entity
+     * Converts a {@link ArtemisVertex} to entity
      *
      * @param entityClass the entity class
-     * @param entity      the {@link ArtemisGraph} to be converted
+     * @param entity      the {@link ArtemisVertex} to be converted
      * @param <T>         the entity type
-     * @return the instance from {@link ArtemisGraph}
+     * @return the instance from {@link ArtemisVertex}
      * @throws NullPointerException when either entityClass or entity are null
      */
-    <T> T toEntity(Class<T> entityClass, ArtemisGraph entity) throws NullPointerException;
+    <T> T toEntity(Class<T> entityClass, ArtemisVertex entity) throws NullPointerException;
 
     /**
-     * Similar to {@link GraphConverter#toEntity(Class, ArtemisGraph)}, but
-     * search the instance type from {@link ArtemisGraph#getLabel()}
+     * Similar to {@link GraphConverter#toEntity(Class, ArtemisVertex)}, but
+     * search the instance type from {@link ArtemisVertex#getLabel()}
      *
-     * @param entity the {@link ArtemisGraph} to be converted
+     * @param entity the {@link ArtemisVertex} to be converted
      * @param <T>    the entity type
-     * @return the instance from {@link ArtemisGraph}
+     * @return the instance from {@link ArtemisVertex}
      * @throws NullPointerException when entity is null
      */
-    <T> T toEntity(ArtemisGraph entity) throws NullPointerException;
+    <T> T toEntity(ArtemisVertex entity) throws NullPointerException;
 }
