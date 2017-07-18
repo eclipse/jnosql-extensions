@@ -14,15 +14,12 @@
  */
 package org.jnosql.artemis.graph;
 
-import org.jnosql.diana.api.TypeReference;
 import org.jnosql.diana.api.TypeSupplier;
 import org.jnosql.diana.api.Value;
 
-import java.util.List;
-
 import static java.util.Objects.requireNonNull;
 
-public interface ArtemisElement {
+interface ArtemisElement {
 
     String getKey();
 
