@@ -19,6 +19,7 @@ import org.jnosql.diana.api.Value;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -69,6 +70,11 @@ class DefaultArtemisVertex implements ArtemisVertex {
     }
 
     @Override
+    public void add(ArtemisElement artemisElement) throws NullPointerException {
+        requireNonNull(artemisElement, "element is required");
+    }
+
+    @Override
     public Set<String> getKeys() {
         return unmodifiableSet(properties.keySet());
     }
@@ -87,6 +93,34 @@ class DefaultArtemisVertex implements ArtemisVertex {
     @Override
     public String getLabel() {
         return label;
+    }
+
+    @Override
+    public List<ArtemisElement> getProperties() {
+        return properties.entrySet().stream()
+                .map(e -> ArtemisElement.of(e.getKey(), e.getValue()))
+                .collect(collectingAndThen(toList(), Collections::unmodifiableList));
+    }
+
+    @Override
+    public int size() {
+        return properties.size();
+    }
+
+    @Override
+    public Optional<ArtemisElement> find(String key) throws NullPointerException {
+        requireNonNull(key, "key is required");
+        Object value = properties.get(key);
+        if (value == null) {
+            return Optional.empty();
+        }
+        return Optional.of(ArtemisElement.of(key, value));
+    }
+
+    @Override
+    public void remove(String key) throws NullPointerException {
+        requireNonNull(key, "key is required");
+        properties.remove(key);
     }
 
 

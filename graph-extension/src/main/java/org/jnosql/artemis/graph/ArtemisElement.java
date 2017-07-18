@@ -14,7 +14,12 @@
  */
 package org.jnosql.artemis.graph;
 
+import org.jnosql.diana.api.TypeReference;
 import org.jnosql.diana.api.Value;
+
+import java.util.List;
+
+import static java.util.Objects.requireNonNull;
 
 public interface ArtemisElement {
 
@@ -22,4 +27,17 @@ public interface ArtemisElement {
 
     Value getValue();
 
+
+    static ArtemisElement of(String key, Object value) throws NullPointerException {
+        return new DefaultArtemisElement(key, value);
+    }
+
+    static ArtemisElement of(String key, Value value) throws NullPointerException {
+        requireNonNull(value, "value is required");
+        return new DefaultArtemisElement(key, value.get());
+    }
+
+    List<ArtemisElement> get(TypeReference<List<ArtemisElement>> typeReference);
+
+    Object get();
 }
