@@ -74,7 +74,7 @@ class DefaultArtemisVertex implements ArtemisVertex {
     }
 
     @Override
-    public Collection<Value> getValue() {
+    public Collection<Value> getValues() {
         return properties
                 .values()
                 .stream()
