@@ -64,7 +64,7 @@ interface ArtemisVertex {
      *
      * @return the values
      */
-    Collection<Value> getValue();
+    Collection<Value> getValues();
 
     /**
      * Returns a Set view of the keys contained in this instance
@@ -73,4 +73,14 @@ interface ArtemisVertex {
      */
     String getLabel();
 
+    /**
+     * creates a new Vertex
+     *
+     * @param label the label to the vertex
+     * @return a new Vertex instance
+     * @throws NullPointerException when label is null
+     */
+    static ArtemisVertex of(String label) throws NullPointerException {
+        return new DefaultArtemisVertex(label);
+    }
 }
