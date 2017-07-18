@@ -15,6 +15,7 @@
 package org.jnosql.artemis.graph;
 
 import org.jnosql.diana.api.TypeReference;
+import org.jnosql.diana.api.TypeSupplier;
 import org.jnosql.diana.api.Value;
 
 import java.util.List;
@@ -37,7 +38,22 @@ public interface ArtemisElement {
         return new DefaultArtemisElement(key, value.get());
     }
 
-    List<ArtemisElement> get(TypeReference<List<ArtemisElement>> typeReference);
+    /**
+     * Alias to {@link org.jnosql.diana.api.Value#get(TypeSupplier)}
+     *
+     * @param typeSupplier {@link org.jnosql.diana.api.Value#get(TypeSupplier)}
+     * @param <T>          {@link org.jnosql.diana.api.Value#get(TypeSupplier)}
+     * @return {@link org.jnosql.diana.api.Value#get(TypeSupplier)}
+     * @throws NullPointerException          {@link org.jnosql.diana.api.Value#get(TypeSupplier)}
+     * @throws UnsupportedOperationException {@link org.jnosql.diana.api.Value#get(TypeSupplier)}
+     */
+    <T> T get(TypeSupplier<T> typeSupplier) throws NullPointerException, UnsupportedOperationException;
 
+
+    /**
+     * Alias to {@link org.jnosql.diana.api.Value#get()}
+     *
+     * @return {@link org.jnosql.diana.api.Value#get()}
+     */
     Object get();
 }

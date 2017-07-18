@@ -15,13 +15,14 @@
 package org.jnosql.artemis.graph;
 
 
+import org.jnosql.diana.api.TypeSupplier;
 import org.jnosql.diana.api.Value;
 
 import java.util.Objects;
 
 import static java.util.Objects.requireNonNull;
 
-class DefaultArtemisElement implements ArtemisElement{
+class DefaultArtemisElement implements ArtemisElement {
 
     private final String key;
 
@@ -40,6 +41,17 @@ class DefaultArtemisElement implements ArtemisElement{
     @Override
     public Value getValue() {
         return Value.of(value);
+    }
+
+    @Override
+    public <T> T get(TypeSupplier<T> typeSupplier) throws NullPointerException, UnsupportedOperationException {
+        requireNonNull(typeSupplier, "typeSupplier is required");
+        return Value.of(value).get(typeSupplier);
+    }
+
+    @Override
+    public Object get() {
+        return Value.of(value).get();
     }
 
     @Override

@@ -17,6 +17,7 @@ package org.jnosql.artemis.graph;
 import org.jnosql.diana.api.Value;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -52,6 +53,8 @@ interface ArtemisVertex {
      */
     void add(String key, Value value) throws NullPointerException;
 
+    void add(ArtemisElement artemisElement) throws NullPointerException;
+
     /**
      * Returns a Set view of the keys contained in this instance
      *
@@ -73,6 +76,14 @@ interface ArtemisVertex {
      */
     String getLabel();
 
+
+    /**
+     * Returns the properties of this vertex
+     *
+     * @return the properties
+     */
+    List<ArtemisElement> getProperties();
+
     /**
      * creates a new Vertex
      *
@@ -83,4 +94,29 @@ interface ArtemisVertex {
     static ArtemisVertex of(String label) throws NullPointerException {
         return new DefaultArtemisVertex(label);
     }
+
+    /**
+     * Returns the element size
+     *
+     * @return the size
+     */
+    int size();
+
+
+    /**
+     * Returns the value to which the specified key is mapped, or {link {@link Optional#empty()}} if this map contains no mapping for the key.
+     *
+     * @param key the key
+     * @return the value
+     * @throws NullPointerException when the key is null
+     */
+    Optional<ArtemisElement> find(String key) throws NullPointerException;
+
+    /**
+     * Removes the mapping for a key from this map if it is present (optional operation).
+     *
+     * @param key the key
+     * @throws NullPointerException when key is null
+     */
+    void remove(String key) throws NullPointerException;
 }
