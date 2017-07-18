@@ -15,12 +15,11 @@
 package org.jnosql.artemis.graph;
 
 import org.jnosql.artemis.document.DocumentEntityConverter;
-import org.jnosql.diana.api.TypeReference;
 import org.jnosql.diana.api.document.Document;
 import org.jnosql.diana.api.document.DocumentEntity;
 
 import javax.inject.Inject;
-import java.util.List;
+import java.util.stream.StreamSupport;
 
 import static java.util.Objects.requireNonNull;
 
@@ -34,7 +33,7 @@ class DefaultVertexConverter implements VertexConverter {
     private DocumentEntityConverter converter;
 
     @Override
-    public ArtemisVertex toGraph(Object entityInstance) throws NullPointerException {
+    public ArtemisVertex toVertex(Object entityInstance) throws NullPointerException {
 
         DocumentEntity entity = converter.toDocument(entityInstance);
         ArtemisVertex vertex = ArtemisVertex.of(entity.getName());
@@ -70,12 +69,18 @@ class DefaultVertexConverter implements VertexConverter {
         Object value = document.get();
         if (Document.class.isInstance(value)) {
             Document subDocument = Document.class.cast(value);
-            List<Document> documents = subDocument.get(new TypeReference<List<Document>>() {
-            });
-            documents.forEach(d -> this.toProperty(vertex, d));
+            toProperty(vertex, subDocument);
+        } else if (isSudDocument(value)) {
+            StreamSupport.stream(Iterable.class.cast(value).spliterator(), false)
+                    .forEach(d -> toProperty(vertex, Document.class.cast(d)));
         } else {
             vertex.add(document.getName(), document.getValue());
         }
+    }
+
+    private boolean isSudDocument(Object value) {
+        return value instanceof Iterable && StreamSupport.stream(Iterable.class.cast(value).spliterator(), false).
+                allMatch(d -> org.jnosql.diana.api.document.Document.class.isInstance(d));
     }
 
 }

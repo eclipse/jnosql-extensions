@@ -27,7 +27,7 @@ public class Movie {
     @Column
     private String title;
 
-    @Column
+    @Column("movie_year")
     private long year;
 
     @Column

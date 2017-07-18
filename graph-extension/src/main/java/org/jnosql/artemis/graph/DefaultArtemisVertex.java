@@ -70,8 +70,9 @@ class DefaultArtemisVertex implements ArtemisVertex {
     }
 
     @Override
-    public void add(ArtemisElement artemisElement) throws NullPointerException {
-        requireNonNull(artemisElement, "element is required");
+    public void add(ArtemisElement element) throws NullPointerException {
+        requireNonNull(element, "element is required");
+        properties.put(element.getKey(), element.get());
     }
 
     @Override

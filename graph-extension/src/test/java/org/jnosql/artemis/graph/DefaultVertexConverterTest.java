@@ -14,7 +14,6 @@
  */
 package org.jnosql.artemis.graph;
 
-import org.hamcrest.Matchers;
 import org.jnosql.artemis.graph.model.Actor;
 import org.jnosql.artemis.graph.model.Director;
 import org.jnosql.artemis.graph.model.Job;
@@ -22,7 +21,6 @@ import org.jnosql.artemis.graph.model.Money;
 import org.jnosql.artemis.graph.model.Movie;
 import org.jnosql.artemis.graph.model.Person;
 import org.jnosql.artemis.graph.model.Worker;
-import org.jnosql.diana.api.TypeReference;
 import org.jnosql.diana.api.Value;
 import org.junit.Assert;
 import org.junit.Before;
@@ -33,9 +31,6 @@ import javax.inject.Inject;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -78,7 +73,7 @@ public class DefaultVertexConverterTest {
                 .withName("Otavio")
                 .withPhones(Arrays.asList("234", "2342")).build();
 
-        ArtemisVertex entity = converter.toGraph(person);
+        ArtemisVertex entity = converter.toVertex(person);
         assertEquals("Person", entity.getLabel());
         assertEquals(4, entity.size());
         assertThat(entity.getProperties(), containsInAnyOrder(ArtemisElement.of("_id", 12L),
@@ -90,7 +85,7 @@ public class DefaultVertexConverterTest {
     public void shouldConvertActorToVertex() {
 
 
-        ArtemisVertex entity = converter.toGraph(actor);
+        ArtemisVertex entity = converter.toVertex(actor);
         assertEquals("Actor", entity.getLabel());
         assertEquals(6, entity.size());
 
@@ -135,24 +130,17 @@ public class DefaultVertexConverterTest {
                 .withName("Otavio")
                 .withPhones(Arrays.asList("234", "2342")).withMovie(movie).build();
 
-        ArtemisVertex entity = converter.toGraph(director);
-        assertEquals(5, entity.size());
+        ArtemisVertex entity = converter.toVertex(director);
+        assertEquals(7, entity.size());
 
         assertEquals(getValue(entity.find("name")), director.getName());
         assertEquals(getValue(entity.find("age")), director.getAge());
         assertEquals(getValue(entity.find("_id")), director.getId());
         assertEquals(getValue(entity.find("phones")), director.getPhones());
 
-        ArtemisElement subElement = entity.find("movie").get();
-        List<ArtemisElement> elements = subElement.get(new TypeReference<List<ArtemisElement>>() {
-        });
-        assertEquals(3, elements.size());
-        assertEquals("movie", subElement.getKey());
-
-        assertEquals(movie.getTitle(), getValue(elements.stream().filter(d -> "title".equals(d.getKey())).findFirst()));
-        assertEquals(movie.getYear(), getValue(elements.stream().filter(d -> "year".equals(d.getKey())).findFirst()));
-        assertEquals(movie.getActors(), getValue(elements.stream().filter(d -> "actors".equals(d.getKey())).findFirst()));
-
+        assertEquals(movie.getTitle(), getValue(entity.find("title")));
+        assertEquals(movie.getYear(), getValue(entity.find("movie_year")));
+        assertEquals(movie.getActors(), getValue(entity.find("actors")));
 
     }
 
@@ -165,7 +153,7 @@ public class DefaultVertexConverterTest {
                 .withName("Otavio")
                 .withPhones(Arrays.asList("234", "2342")).withMovie(movie).build();
 
-        ArtemisVertex entity = converter.toGraph(director);
+        ArtemisVertex entity = converter.toVertex(director);
         Director director1 = converter.toEntity(entity);
 
         assertEquals(movie, director1.getMovie());
@@ -183,7 +171,7 @@ public class DefaultVertexConverterTest {
                 .withName("Otavio")
                 .withPhones(Arrays.asList("234", "2342")).withMovie(movie).build();
 
-        ArtemisVertex entity = converter.toGraph(director);
+        ArtemisVertex entity = converter.toVertex(director);
         entity.remove("movie");
         entity.add(ArtemisElement.of("title", "Matrix"));
         entity.add(ArtemisElement.of("year", 2012));
@@ -205,15 +193,13 @@ public class DefaultVertexConverterTest {
                 .withName("Otavio")
                 .withPhones(Arrays.asList("234", "2342")).withMovie(movie).build();
 
-        ArtemisVertex entity = converter.toGraph(director);
+        ArtemisVertex entity = converter.toVertex(director);
         entity.remove("movie");
 
-        Map<String, Object> map = new HashMap<>();
-        map.put("title", "Matrix");
-        map.put("year", 2012);
-        map.put("actors", singleton("Actor"));
+        entity.add("title", "Matrix");
+        entity.add("movie_year", 2012);
+        entity.add("actors", singleton("Actor"));
 
-        entity.add(ArtemisElement.of("movie", map));
         Director director1 = converter.toEntity(entity);
 
         assertEquals(movie, director1.getMovie());
@@ -231,13 +217,13 @@ public class DefaultVertexConverterTest {
         worker.setName("Bob");
         worker.setSalary(new Money("BRL", BigDecimal.TEN));
         worker.setJob(job);
-        ArtemisVertex entity = converter.toGraph(worker);
+        ArtemisVertex entity = converter.toVertex(worker);
         assertEquals("Worker", entity.getLabel());
         assertEquals("Bob", entity.find("name").get().get());
-        ArtemisElement subElement = entity.find("job").get();
-        List<ArtemisElement> elements = subElement.get(new TypeReference<List<ArtemisElement>>() {
-        });
-        assertThat(elements, Matchers.containsInAnyOrder(ArtemisElement.of("city", "Sao Paulo"), ArtemisElement.of("description", "Java Developer")));
+
+        assertEquals("Sao Paulo", entity.find("city").get().get());
+        assertEquals("Java Developer", entity.find("description").get().get());
+
         assertEquals("BRL 10", entity.find("money").get().get());
     }
 
@@ -250,7 +236,7 @@ public class DefaultVertexConverterTest {
         worker.setName("Bob");
         worker.setSalary(new Money("BRL", BigDecimal.TEN));
         worker.setJob(job);
-        ArtemisVertex entity = converter.toGraph(worker);
+        ArtemisVertex entity = converter.toVertex(worker);
         Worker worker1 = converter.toEntity(entity);
         Assert.assertEquals(worker.getSalary(), worker1.getSalary());
         assertEquals(job.getCity(), worker1.getJob().getCity());

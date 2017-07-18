@@ -28,7 +28,7 @@ public interface VertexConverter {
      * @return a {@link ArtemisVertex} instance
      * @throws NullPointerException when entityInstance is null
      */
-    ArtemisVertex toGraph(Object entityInstance) throws NullPointerException;
+    ArtemisVertex toVertex(Object entityInstance) throws NullPointerException;
 
     /**
      * Converts a {@link ArtemisVertex} to entity
