@@ -14,14 +14,28 @@
  */
 package org.jnosql.artemis.graph;
 
+import org.jnosql.artemis.AttributeConverter;
+import org.jnosql.artemis.Converters;
 import org.jnosql.artemis.document.DocumentEntityConverter;
+import org.jnosql.artemis.reflection.ClassRepresentation;
+import org.jnosql.artemis.reflection.ClassRepresentations;
+import org.jnosql.artemis.reflection.FieldRepresentation;
+import org.jnosql.artemis.reflection.Reflections;
+import org.jnosql.diana.api.Value;
 import org.jnosql.diana.api.document.Document;
 import org.jnosql.diana.api.document.DocumentEntity;
 
 import javax.inject.Inject;
-import java.util.stream.StreamSupport;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 import static java.util.Objects.requireNonNull;
+import static java.util.stream.Collectors.toList;
+import static org.jnosql.artemis.reflection.FieldType.EMBEDDED;
 
 /**
  * The default implementation {@link VertexConverter}
@@ -29,16 +43,38 @@ import static java.util.Objects.requireNonNull;
  */
 class DefaultVertexConverter implements VertexConverter {
 
+
     @Inject
-    private DocumentEntityConverter converter;
+    private ClassRepresentations classRepresentations;
+
+    @Inject
+    private Reflections reflections;
+
+    @Inject
+    private Converters converters;
 
     @Override
     public ArtemisVertex toVertex(Object entityInstance) throws NullPointerException {
 
-        DocumentEntity entity = converter.toDocument(entityInstance);
-        ArtemisVertex vertex = ArtemisVertex.of(entity.getName());
+        ClassRepresentation representation = classRepresentations.get(entityInstance.getClass());
+        String label = representation.getName();
 
-        entity.getDocuments().forEach(d -> this.toProperty(vertex, d));
+        List<FieldGraph> fields = representation.getFields().stream()
+                .map(f -> to(f, entityInstance))
+                .filter(FieldGraph::isNotEmpty).collect(toList());
+
+        Optional<FieldGraph> id = fields.stream().filter(FieldGraph::isId).findFirst();
+
+        ArtemisVertex vertex = id.map(f -> f.toElement(this, converters))
+                .map(ArtemisElement::get)
+                .map(v -> ArtemisVertex.of(label, v))
+                .orElse(ArtemisVertex.of(label));
+
+        fields.stream().filter(FieldGraph::isNotId)
+                .flatMap(f -> f.toElements(this, converters).stream())
+                .forEach(vertex::add);
+
+
         return vertex;
     }
 
@@ -46,15 +82,76 @@ class DefaultVertexConverter implements VertexConverter {
     public <T> T toEntity(Class<T> entityClass, ArtemisVertex entity) throws NullPointerException {
         requireNonNull(entityClass, "entityClass is required");
         requireNonNull(entity, "entity is required");
-        DocumentEntity documentEntity = toDocumentEntity(entity);
-        return converter.toEntity(entityClass, documentEntity);
+        return toEntity(entityClass, entity.getProperties());
     }
 
     @Override
     public <T> T toEntity(ArtemisVertex entity) throws NullPointerException {
         requireNonNull(entity, "entity is required");
-        return converter.toEntity(toDocumentEntity(entity));
+        ClassRepresentation representation = classRepresentations.findByName(entity.getLabel());
+        T instance = reflections.newInstance(representation.getConstructor());
+
+        return convertEntity(entity.getProperties(), representation, instance);
     }
+
+    private <T> T convertEntity(List<ArtemisElement> elements, ClassRepresentation representation, T instance) {
+
+        Map<String, FieldRepresentation> fieldsGroupByName = representation.getFieldsGroupByName();
+        List<String> names = elements.stream()
+                .map(ArtemisElement::getKey)
+                .sorted()
+                .collect(toList());
+        Predicate<String> existField = k -> Collections.binarySearch(names, k) >= 0;
+
+        fieldsGroupByName.keySet().stream()
+                .filter(existField.or(k -> EMBEDDED.equals(fieldsGroupByName.get(k).getType())))
+                .forEach(feedObject(instance, elements, fieldsGroupByName));
+
+        return instance;
+    }
+
+    private <T> Consumer<String> feedObject(T instance, List<ArtemisElement> elements,
+                                            Map<String, FieldRepresentation> fieldsGroupByName) {
+        return k -> {
+            Optional<ArtemisElement> element = elements
+                    .stream()
+                    .filter(c -> c.getKey().equals(k))
+                    .findFirst();
+
+            FieldRepresentation field = fieldsGroupByName.get(k);
+            if (EMBEDDED.equals(field.getType())) {
+                setEmbeddedField(instance, elements, field);
+            } else {
+                setSingleField(instance, element, field);
+            }
+        };
+    }
+
+
+    private <T> void setSingleField(T instance, Optional<ArtemisElement> element, FieldRepresentation field) {
+        Value value = element.get().getValue();
+        Optional<Class<? extends AttributeConverter>> converter = field.getConverter();
+        if (converter.isPresent()) {
+            AttributeConverter attributeConverter = converters.get(converter.get());
+            Object attributeConverted = attributeConverter.convertToEntityAttribute(value.get());
+            reflections.setValue(instance, field.getField(), field.getValue(Value.of(attributeConverted)));
+        } else {
+            reflections.setValue(instance, field.getField(), field.getValue(value));
+        }
+    }
+
+    private <T> void setEmbeddedField(T instance, List<ArtemisElement> elements,
+                                      FieldRepresentation field) {
+        reflections.setValue(instance, field.getField(), toEntity(field.getField().getType(),elements));
+    }
+
+    private <T> T toEntity(Class<T> entityClass, List<ArtemisElement> elements) {
+        ClassRepresentation representation = classRepresentations.get(entityClass);
+        T instance = reflections.newInstance(representation.getConstructor());
+        return convertEntity(elements, representation, instance);
+    }
+
+
 
     private DocumentEntity toDocumentEntity(ArtemisVertex entity) {
         DocumentEntity documentEntity = DocumentEntity.of(entity.getLabel());
@@ -65,22 +162,10 @@ class DefaultVertexConverter implements VertexConverter {
         return documentEntity;
     }
 
-    private void toProperty(ArtemisVertex vertex, Document document) {
-        Object value = document.get();
-        if (Document.class.isInstance(value)) {
-            Document subDocument = Document.class.cast(value);
-            toProperty(vertex, subDocument);
-        } else if (isSudDocument(value)) {
-            StreamSupport.stream(Iterable.class.cast(value).spliterator(), false)
-                    .forEach(d -> toProperty(vertex, Document.class.cast(d)));
-        } else {
-            vertex.add(document.getName(), document.getValue());
-        }
-    }
 
-    private boolean isSudDocument(Object value) {
-        return value instanceof Iterable && StreamSupport.stream(Iterable.class.cast(value).spliterator(), false).
-                allMatch(d -> org.jnosql.diana.api.document.Document.class.isInstance(d));
+    private FieldGraph to(FieldRepresentation field, Object entityInstance) {
+        Object value = reflections.getValue(entityInstance, field.getField());
+        return FieldGraph.of(value, field);
     }
 
 }
