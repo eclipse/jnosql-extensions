@@ -17,10 +17,7 @@ package org.jnosql.artemis.graph;
 import org.jnosql.artemis.AttributeConverter;
 import org.jnosql.artemis.Converters;
 import org.jnosql.artemis.reflection.FieldRepresentation;
-import org.jnosql.artemis.reflection.FieldType;
-import org.jnosql.diana.api.document.Document;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;

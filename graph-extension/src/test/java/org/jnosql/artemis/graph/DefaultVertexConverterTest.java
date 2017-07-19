@@ -34,7 +34,9 @@ import java.util.Collections;
 import java.util.Optional;
 import java.util.stream.Stream;
 
+import static java.util.Arrays.asList;
 import static java.util.Collections.singleton;
+import static java.util.Collections.singletonMap;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -51,18 +53,20 @@ public class DefaultVertexConverterTest {
     private Actor actor = Actor.actorBuilder().withAge()
             .withId()
             .withName()
-            .withPhones(Arrays.asList("234", "2342"))
-            .withMovieCharacter(Collections.singletonMap("JavaZone", "Jedi"))
-            .withMovierRating(Collections.singletonMap("JavaZone", 10))
+            .withPhones(asList("234", "2342"))
+            .withMovieCharacter(singletonMap("JavaZone", "Jedi"))
+            .withMovierRating(singletonMap("JavaZone", 10))
             .build();
 
     @Before
     public void init() {
 
-        elements = new ArtemisElement[]{ArtemisElement.of("_id", 12L),
-                ArtemisElement.of("age", 10), ArtemisElement.of("name", "Otavio"), ArtemisElement.of("phones", Arrays.asList("234", "2342"))
-                , ArtemisElement.of("movieCharacter", Collections.singletonMap("JavaZone", "Jedi"))
-                , ArtemisElement.of("movieRating", Collections.singletonMap("JavaZone", 10))};
+        elements = new ArtemisElement[]{
+                ArtemisElement.of("age", 10),
+                ArtemisElement.of("name", "Otavio"),
+                ArtemisElement.of("phones", asList("234", "2342"))
+                , ArtemisElement.of("movieCharacter", singletonMap("JavaZone", "Jedi"))
+                , ArtemisElement.of("movieRating", singletonMap("JavaZone", 10))};
     }
 
     @Test
@@ -71,13 +75,13 @@ public class DefaultVertexConverterTest {
         Person person = Person.builder().withAge()
                 .withId(12)
                 .withName("Otavio")
-                .withPhones(Arrays.asList("234", "2342")).build();
+                .withPhones(asList("234", "2342")).build();
 
         ArtemisVertex entity = converter.toVertex(person);
         assertEquals("Person", entity.getLabel());
-        assertEquals(4, entity.size());
-        assertThat(entity.getProperties(), containsInAnyOrder(ArtemisElement.of("_id", 12L),
-                ArtemisElement.of("age", 10), ArtemisElement.of("name", "Otavio"), ArtemisElement.of("phones", Arrays.asList("234", "2342"))));
+        assertEquals(3, entity.size());
+        assertThat(entity.getProperties(), containsInAnyOrder(
+                ArtemisElement.of("age", 10), ArtemisElement.of("name", "Otavio"), ArtemisElement.of("phones", asList("234", "2342"))));
 
     }
 
@@ -87,24 +91,24 @@ public class DefaultVertexConverterTest {
 
         ArtemisVertex entity = converter.toVertex(actor);
         assertEquals("Actor", entity.getLabel());
-        assertEquals(6, entity.size());
-
+        assertEquals(5, entity.size());
+        assertEquals(12L, entity.getId().get().get());
 
         assertThat(entity.getProperties(), containsInAnyOrder(elements));
     }
 
     @Test
     public void shouldConvertVertexToActor() {
-        ArtemisVertex entity = ArtemisVertex.of("Actor");
+        ArtemisVertex entity = ArtemisVertex.of("Actor", 12L);
         Stream.of(elements).forEach(entity::add);
 
         Actor actor = converter.toEntity(Actor.class, entity);
         assertNotNull(actor);
         assertEquals(10, actor.getAge());
         assertEquals(12L, actor.getId());
-        assertEquals(Arrays.asList("234", "2342"), actor.getPhones());
-        assertEquals(Collections.singletonMap("JavaZone", "Jedi"), actor.getMovieCharacter());
-        assertEquals(Collections.singletonMap("JavaZone", 10), actor.getMovieRating());
+        assertEquals(asList("234", "2342"), actor.getPhones());
+        assertEquals(singletonMap("JavaZone", "Jedi"), actor.getMovieCharacter());
+        assertEquals(singletonMap("JavaZone", 10), actor.getMovieRating());
     }
 
     @Test
@@ -116,9 +120,9 @@ public class DefaultVertexConverterTest {
         assertNotNull(actor);
         assertEquals(10, actor.getAge());
         assertEquals(12L, actor.getId());
-        assertEquals(Arrays.asList("234", "2342"), actor.getPhones());
-        assertEquals(Collections.singletonMap("JavaZone", "Jedi"), actor.getMovieCharacter());
-        assertEquals(Collections.singletonMap("JavaZone", 10), actor.getMovieRating());
+        assertEquals(asList("234", "2342"), actor.getPhones());
+        assertEquals(singletonMap("JavaZone", "Jedi"), actor.getMovieCharacter());
+        assertEquals(singletonMap("JavaZone", 10), actor.getMovieRating());
     }
 
     @Test
@@ -128,7 +132,7 @@ public class DefaultVertexConverterTest {
         Director director = Director.builderDiretor().withAge(12)
                 .withId(12)
                 .withName("Otavio")
-                .withPhones(Arrays.asList("234", "2342")).withMovie(movie).build();
+                .withPhones(asList("234", "2342")).withMovie(movie).build();
 
         ArtemisVertex entity = converter.toVertex(director);
         assertEquals(7, entity.size());
@@ -151,15 +155,15 @@ public class DefaultVertexConverterTest {
         Director director = Director.builderDiretor().withAge(12)
                 .withId(12)
                 .withName("Otavio")
-                .withPhones(Arrays.asList("234", "2342")).withMovie(movie).build();
+                .withPhones(asList("234", "2342")).withMovie(movie).build();
 
         ArtemisVertex entity = converter.toVertex(director);
-        Director director1 = converter.toEntity(entity);
+        Director directorConverted = converter.toEntity(entity);
 
-        assertEquals(movie, director1.getMovie());
-        assertEquals(director.getName(), director1.getName());
-        assertEquals(director.getAge(), director1.getAge());
-        assertEquals(director.getId(), director1.getId());
+        assertEquals(movie, directorConverted.getMovie());
+        assertEquals(director.getName(), directorConverted.getName());
+        assertEquals(director.getAge(), directorConverted.getAge());
+        assertEquals(director.getId(), directorConverted.getId());
     }
 
 
@@ -169,7 +173,7 @@ public class DefaultVertexConverterTest {
         Director director = Director.builderDiretor().withAge(12)
                 .withId(12)
                 .withName("Otavio")
-                .withPhones(Arrays.asList("234", "2342")).withMovie(movie).build();
+                .withPhones(asList("234", "2342")).withMovie(movie).build();
 
         ArtemisVertex entity = converter.toVertex(director);
         entity.remove("movie");
@@ -191,7 +195,7 @@ public class DefaultVertexConverterTest {
         Director director = Director.builderDiretor().withAge(12)
                 .withId(12)
                 .withName("Otavio")
-                .withPhones(Arrays.asList("234", "2342")).withMovie(movie).build();
+                .withPhones(asList("234", "2342")).withMovie(movie).build();
 
         ArtemisVertex entity = converter.toVertex(director);
         entity.remove("movie");

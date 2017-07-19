@@ -16,7 +16,6 @@ package org.jnosql.artemis.graph;
 
 import org.jnosql.artemis.AttributeConverter;
 import org.jnosql.artemis.Converters;
-import org.jnosql.artemis.document.DocumentEntityConverter;
 import org.jnosql.artemis.reflection.ClassRepresentation;
 import org.jnosql.artemis.reflection.ClassRepresentations;
 import org.jnosql.artemis.reflection.FieldRepresentation;
@@ -26,6 +25,7 @@ import org.jnosql.diana.api.document.Document;
 import org.jnosql.diana.api.document.DocumentEntity;
 
 import javax.inject.Inject;
+import java.lang.reflect.Field;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -39,7 +39,6 @@ import static org.jnosql.artemis.reflection.FieldType.EMBEDDED;
 
 /**
  * The default implementation {@link VertexConverter}
- * This Default implementation uses {@link DocumentEntityConverter} and then converts to Graph
  */
 class DefaultVertexConverter implements VertexConverter {
 
@@ -79,20 +78,39 @@ class DefaultVertexConverter implements VertexConverter {
     }
 
     @Override
-    public <T> T toEntity(Class<T> entityClass, ArtemisVertex entity) throws NullPointerException {
+    public <T> T toEntity(Class<T> entityClass, ArtemisVertex vertex) throws NullPointerException {
         requireNonNull(entityClass, "entityClass is required");
-        requireNonNull(entity, "entity is required");
-        return toEntity(entityClass, entity.getProperties());
+        requireNonNull(vertex, "vertex is required");
+        T entity = toEntity(entityClass, vertex.getProperties());
+
+        feedId(vertex, entity);
+        return entity;
     }
+
 
     @Override
-    public <T> T toEntity(ArtemisVertex entity) throws NullPointerException {
-        requireNonNull(entity, "entity is required");
-        ClassRepresentation representation = classRepresentations.findByName(entity.getLabel());
-        T instance = reflections.newInstance(representation.getConstructor());
-
-        return convertEntity(entity.getProperties(), representation, instance);
+    public <T> T toEntity(ArtemisVertex vertex) throws NullPointerException {
+        requireNonNull(vertex, "vertex is required");
+        ClassRepresentation representation = classRepresentations.findByName(vertex.getLabel());
+        Class<T> entityClass = (Class<T>) representation.getClassInstance();
+        T entity = toEntity(entityClass, vertex.getProperties());
+        feedId(vertex, entity);
+        return entity;
     }
+
+
+    private <T> void feedId(ArtemisVertex vertex, T entity) {
+        ClassRepresentation representation = classRepresentations.findByName(vertex.getLabel());
+        Optional<FieldRepresentation> id = representation.getId();
+
+
+        Optional<Value> vertexId = vertex.getId();
+        if (vertexId.isPresent() && id.isPresent()) {
+            Field fieldId = id.get().getField();
+            reflections.setValue(entity, fieldId, id.get().getValue(vertexId.get()));
+        }
+    }
+
 
     private <T> T convertEntity(List<ArtemisElement> elements, ClassRepresentation representation, T instance) {
 
@@ -142,7 +160,7 @@ class DefaultVertexConverter implements VertexConverter {
 
     private <T> void setEmbeddedField(T instance, List<ArtemisElement> elements,
                                       FieldRepresentation field) {
-        reflections.setValue(instance, field.getField(), toEntity(field.getField().getType(),elements));
+        reflections.setValue(instance, field.getField(), toEntity(field.getField().getType(), elements));
     }
 
     private <T> T toEntity(Class<T> entityClass, List<ArtemisElement> elements) {
@@ -150,7 +168,6 @@ class DefaultVertexConverter implements VertexConverter {
         T instance = reflections.newInstance(representation.getConstructor());
         return convertEntity(elements, representation, instance);
     }
-
 
 
     private DocumentEntity toDocumentEntity(ArtemisVertex entity) {

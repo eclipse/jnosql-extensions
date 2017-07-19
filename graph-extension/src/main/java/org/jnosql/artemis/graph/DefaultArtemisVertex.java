@@ -163,6 +163,8 @@ class DefaultArtemisVertex implements ArtemisVertex {
     public String toString() {
         final StringBuilder sb = new StringBuilder("DefaultArtemisVertex{");
         sb.append("properties=").append(properties);
+        sb.append(", id=").append(id);
+        sb.append(", label='").append(label).append('\'');
         sb.append('}');
         return sb.toString();
     }
