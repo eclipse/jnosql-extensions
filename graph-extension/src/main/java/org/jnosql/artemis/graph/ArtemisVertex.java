@@ -76,6 +76,12 @@ interface ArtemisVertex {
      */
     String getLabel();
 
+    /**
+     * Returns the id
+     *
+     * @return the id otherwise {@link Optional#empty()}
+     */
+    Optional<Object> getId();
 
     /**
      * Returns the properties of this vertex
