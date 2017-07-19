@@ -38,11 +38,19 @@ class DefaultArtemisVertex implements ArtemisVertex {
 
     private final Map<String, Object> properties = new HashMap<>();
 
+    private final Object id;
+
     private final String label;
 
     DefaultArtemisVertex(String label) {
         requireNonNull(label, "label is required");
         this.label = label;
+        this.id = null;
+    }
+
+    DefaultArtemisVertex(String label, Object id) {
+        this.label = requireNonNull(label, "label is required");
+        this.id = requireNonNull(id, "id is required");
     }
 
     @Override
@@ -94,6 +102,15 @@ class DefaultArtemisVertex implements ArtemisVertex {
     @Override
     public String getLabel() {
         return label;
+    }
+
+    @Override
+    public Optional<Value> getId() {
+
+        if (id == null) {
+            return Optional.empty();
+        }
+        return Optional.of(Value.of(id));
     }
 
     @Override

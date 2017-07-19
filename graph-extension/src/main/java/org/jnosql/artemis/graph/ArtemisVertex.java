@@ -81,7 +81,7 @@ interface ArtemisVertex {
      *
      * @return the id otherwise {@link Optional#empty()}
      */
-    Optional<Object> getId();
+    Optional<Value> getId();
 
     /**
      * Returns the properties of this vertex
@@ -99,6 +99,18 @@ interface ArtemisVertex {
      */
     static ArtemisVertex of(String label) throws NullPointerException {
         return new DefaultArtemisVertex(label);
+    }
+
+    /**
+     * creates a new Vertex
+     *
+     * @param label the label to the vertex
+     * @param id    the id of the vertex
+     * @return a new Vertex instance
+     * @throws NullPointerException when either label or id are null
+     */
+    static ArtemisVertex of(String label, Object id) throws NullPointerException {
+        return new DefaultArtemisVertex(label, id);
     }
 
     /**
