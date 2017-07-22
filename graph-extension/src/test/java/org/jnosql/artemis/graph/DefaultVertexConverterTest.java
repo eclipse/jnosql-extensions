@@ -113,7 +113,7 @@ public class DefaultVertexConverterTest {
 
     @Test
     public void shouldConvertVertexToActorFromEntity() {
-        ArtemisVertex entity = ArtemisVertex.of("Actor");
+        ArtemisVertex entity = ArtemisVertex.of("Actor", 12L);
         Stream.of(elements).forEach(entity::add);
 
         Actor actor = converter.toEntity(entity);
@@ -135,11 +135,11 @@ public class DefaultVertexConverterTest {
                 .withPhones(asList("234", "2342")).withMovie(movie).build();
 
         ArtemisVertex entity = converter.toVertex(director);
-        assertEquals(7, entity.size());
+        assertEquals(6, entity.size());
 
         assertEquals(getValue(entity.find("name")), director.getName());
         assertEquals(getValue(entity.find("age")), director.getAge());
-        assertEquals(getValue(entity.find("_id")), director.getId());
+        assertEquals(entity.getId().get().get(Long.class), Long.valueOf(director.getId()));
         assertEquals(getValue(entity.find("phones")), director.getPhones());
 
         assertEquals(movie.getTitle(), getValue(entity.find("title")));
