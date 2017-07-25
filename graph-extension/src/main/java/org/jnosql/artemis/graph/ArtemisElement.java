@@ -41,8 +41,8 @@ interface ArtemisElement {
      * @param typeSupplier {@link org.jnosql.diana.api.Value#get(TypeSupplier)}
      * @param <T>          {@link org.jnosql.diana.api.Value#get(TypeSupplier)}
      * @return {@link org.jnosql.diana.api.Value#get(TypeSupplier)}
-     * @throws NullPointerException          {@link org.jnosql.diana.api.Value#get(TypeSupplier)}
-     * @throws UnsupportedOperationException {@link org.jnosql.diana.api.Value#get(TypeSupplier)}
+     * @throws NullPointerException when type is null
+     * @throws UnsupportedOperationException when {@link org.jnosql.diana.api.Value#get(TypeSupplier)} has not support
      */
     <T> T get(TypeSupplier<T> typeSupplier) throws NullPointerException, UnsupportedOperationException;
 
