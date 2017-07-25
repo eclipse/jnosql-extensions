@@ -14,18 +14,22 @@
  */
 package org.jnosql.artemis.graph;
 
-import org.junit.runners.BlockJUnit4ClassRunner;
-import org.junit.runners.model.InitializationError;
+import org.jboss.weld.environment.se.Weld;
+import org.jboss.weld.environment.se.WeldContainer;
 
-public class CDIJUnit4Runner extends BlockJUnit4ClassRunner {
+public class WeldContext {
 
-    public CDIJUnit4Runner(Class<Object> clazz) throws InitializationError {
-        super(clazz);
+    public static final WeldContext INSTANCE = new WeldContext();
+
+    private final WeldContainer container;
+
+    private WeldContext() {
+        Weld weld = new Weld();
+        this.container = weld.initialize();
+        Runtime.getRuntime().addShutdownHook(new Thread(weld::shutdown));
     }
 
-    @Override
-    protected Object createTest() {
-        final Class<?> test = getTestClass().getJavaClass();
-        return CDISEContext.INSTANCE.getBean(test);
+    public <T> T getBean(Class<T> type) {
+        return container.instance().select(type).get();
     }
 }

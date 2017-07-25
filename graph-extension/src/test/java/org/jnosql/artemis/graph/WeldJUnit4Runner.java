@@ -14,23 +14,18 @@
  */
 package org.jnosql.artemis.graph;
 
-import javax.enterprise.inject.se.SeContainer;
-import javax.enterprise.inject.se.SeContainerInitializer;
+import org.junit.runners.BlockJUnit4ClassRunner;
+import org.junit.runners.model.InitializationError;
 
-public class CDISEContext {
+public class WeldJUnit4Runner extends BlockJUnit4ClassRunner {
 
-
-    public static final CDISEContext INSTANCE = new CDISEContext();
-
-    private final SeContainer container;
-
-    private CDISEContext() {
-
-        this.container = SeContainerInitializer.newInstance().initialize();
-        Runtime.getRuntime().addShutdownHook(new Thread(container::close));
+    public WeldJUnit4Runner(Class<Object> clazz) throws InitializationError {
+        super(clazz);
     }
 
-    public <T> T getBean(Class<T> type) {
-        return container.select(type).get();
+    @Override
+    protected Object createTest() {
+        final Class<?> test = getTestClass().getJavaClass();
+        return WeldContext.INSTANCE.getBean(test);
     }
 }
