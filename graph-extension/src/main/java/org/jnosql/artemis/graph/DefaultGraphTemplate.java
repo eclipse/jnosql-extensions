@@ -76,6 +76,15 @@ class DefaultGraphTemplate implements GraphTemplate {
         return entity;
     }
 
+    @Override
+    public <T> void delete(String label, T idValue) throws NullPointerException {
+        requireNonNull(label, "label is required");
+        requireNonNull(idValue, "id is required");
+
+        graph.get().traversal().V().hasLabel(label).has(id, idValue).remove();
+        
+    }
+
     private <T> void checkId(T entity) {
         ClassRepresentation classRepresentation = classRepresentations.get(entity.getClass());
         classRepresentation.getId().orElseThrow(() -> IdNotFoundException.newInstance(entity.getClass()));
