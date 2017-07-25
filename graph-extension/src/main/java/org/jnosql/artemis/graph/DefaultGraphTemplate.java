@@ -82,7 +82,7 @@ class DefaultGraphTemplate implements GraphTemplate {
         requireNonNull(idValue, "id is required");
 
         graph.get().traversal().V().hasLabel(label).has(id, idValue).remove();
-        
+
     }
 
     private <T> void checkId(T entity) {
