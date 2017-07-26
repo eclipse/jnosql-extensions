@@ -12,7 +12,7 @@
  *
  *   Otavio Santana
  */
-package org.jnosql.artemis.graph;
+package org.jnosql.artemis.graph.cdi;
 
 import org.jboss.weld.environment.se.Weld;
 import org.jboss.weld.environment.se.WeldContainer;

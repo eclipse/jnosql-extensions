@@ -14,6 +14,7 @@
  */
 package org.jnosql.artemis.graph;
 
+import org.jnosql.artemis.graph.cdi.WeldJUnit4Runner;
 import org.jnosql.artemis.graph.model.Actor;
 import org.jnosql.artemis.graph.model.Director;
 import org.jnosql.artemis.graph.model.Job;

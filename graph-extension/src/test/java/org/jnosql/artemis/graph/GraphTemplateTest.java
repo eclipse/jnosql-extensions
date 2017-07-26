@@ -14,8 +14,24 @@
  */
 package org.jnosql.artemis.graph;
 
-import static org.junit.Assert.*;
+import org.jnosql.artemis.IdNotFoundException;
+import org.jnosql.artemis.graph.cdi.WeldJUnit4Runner;
+import org.jnosql.artemis.graph.model.Animal;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
+import javax.inject.Inject;
+
+@RunWith(WeldJUnit4Runner.class)
 public class GraphTemplateTest {
 
+    @Inject
+    private GraphTemplate graphTemplate;
+
+
+    @Test(expected = IdNotFoundException.class)
+    public void shouldReturnErrorWhenThereIsNotId() {
+        Animal lion = new Animal("lion");
+        graphTemplate.insert(lion);
+    }
 }

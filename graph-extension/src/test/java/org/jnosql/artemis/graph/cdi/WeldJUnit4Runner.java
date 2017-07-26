@@ -12,7 +12,7 @@
  *
  *   Otavio Santana
  */
-package org.jnosql.artemis.graph;
+package org.jnosql.artemis.graph.cdi;
 
 import org.junit.runners.BlockJUnit4ClassRunner;
 import org.junit.runners.model.InitializationError;
