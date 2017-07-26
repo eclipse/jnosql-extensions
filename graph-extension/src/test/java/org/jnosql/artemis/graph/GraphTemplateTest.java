@@ -17,10 +17,16 @@ package org.jnosql.artemis.graph;
 import org.jnosql.artemis.IdNotFoundException;
 import org.jnosql.artemis.graph.cdi.WeldJUnit4Runner;
 import org.jnosql.artemis.graph.model.Animal;
+import org.jnosql.artemis.graph.model.Person;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import javax.inject.Inject;
+
+import static org.jnosql.artemis.graph.model.Person.builder;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 @RunWith(WeldJUnit4Runner.class)
 public class GraphTemplateTest {
@@ -33,5 +39,43 @@ public class GraphTemplateTest {
     public void shouldReturnErrorWhenThereIsNotId() {
         Animal lion = new Animal("lion");
         graphTemplate.insert(lion);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void shouldReturnErrorWhenEntityIsNull() {
+        graphTemplate.insert(null);
+    }
+
+
+    @Test
+    public void shouldInsertAnEntity() {
+        Person person = builder().withAge()
+                .withName("Otavio").build();
+        Person updated = graphTemplate.insert(person);
+
+        assertNotNull(updated.getId());
+    }
+
+
+    @Test(expected = NullPointerException.class)
+    public void shouldGetErrorWhenIdIsNullWhenUpdate() {
+        Person person = builder().withAge()
+                .withName("Otavio").build();
+        graphTemplate.update(person);
+    }
+
+    @Test
+    public void shouldUpdate() {
+        Person person = builder().withAge()
+                .withName("Otavio").build();
+        Person updated = graphTemplate.insert(person);
+        Person newPerson = builder()
+                .withAge()
+                .withId(updated.getId())
+                .withName("Otavio Updated").build();
+
+        Person update = graphTemplate.update(newPerson);
+
+        assertEquals(newPerson, update);
     }
 }

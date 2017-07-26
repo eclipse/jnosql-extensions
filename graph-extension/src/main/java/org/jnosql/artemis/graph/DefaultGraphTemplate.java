@@ -54,9 +54,14 @@ class DefaultGraphTemplate implements GraphTemplate {
 
         artemisVertex.getProperties().stream().forEach(e -> vertex.property(e.getKey(), e.get()));
 
-        ArtemisVertex vertexUpdated = ArtemisVertex.of(artemisVertex.getLabel(), artemisVertex.getId());
 
-        vertex.keys().stream().map(k -> ArtemisElement.of(k, vertex.value(k))).forEach(vertexUpdated::add);
+        ArtemisVertex vertexUpdated = ArtemisVertex.of(vertex.label(), vertex.id());
+
+        for (String key : vertex.keys()) {
+            Object value = vertex.value(key);
+            ArtemisElement element = ArtemisElement.of(key, value);
+            vertexUpdated.add(element);
+        }
         return converter.toEntity(vertexUpdated);
     }
 

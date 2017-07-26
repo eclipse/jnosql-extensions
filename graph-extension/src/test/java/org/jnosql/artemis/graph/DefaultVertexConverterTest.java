@@ -72,7 +72,7 @@ public class DefaultVertexConverterTest {
     public void shouldConvertPersonToVertex() {
 
         Person person = Person.builder().withAge()
-                .withId(12)
+                .withId(12L)
                 .withName("Otavio")
                 .withPhones(asList("234", "2342")).build();
 
@@ -104,7 +104,7 @@ public class DefaultVertexConverterTest {
         Actor actor = converter.toEntity(Actor.class, entity);
         assertNotNull(actor);
         assertEquals(10, actor.getAge());
-        assertEquals(12L, actor.getId());
+        assertEquals(Long.valueOf(12L), actor.getId());
         assertEquals(asList("234", "2342"), actor.getPhones());
         assertEquals(singletonMap("JavaZone", "Jedi"), actor.getMovieCharacter());
         assertEquals(singletonMap("JavaZone", 10), actor.getMovieRating());
@@ -118,7 +118,7 @@ public class DefaultVertexConverterTest {
         Actor actor = converter.toEntity(entity);
         assertNotNull(actor);
         assertEquals(10, actor.getAge());
-        assertEquals(12L, actor.getId());
+        assertEquals(Long.valueOf(12L), actor.getId());
         assertEquals(asList("234", "2342"), actor.getPhones());
         assertEquals(singletonMap("JavaZone", "Jedi"), actor.getMovieCharacter());
         assertEquals(singletonMap("JavaZone", 10), actor.getMovieRating());

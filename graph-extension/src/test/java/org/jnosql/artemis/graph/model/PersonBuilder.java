@@ -17,13 +17,13 @@ package org.jnosql.artemis.graph.model;
 import java.util.List;
 
 public class PersonBuilder {
-    private long id;
+    private Long id;
     private String name;
     private int age;
     private List<String> phones;
     private String ignore;
 
-    public PersonBuilder withId(long id) {
+    public PersonBuilder withId(Long id) {
         this.id = id;
         return this;
     }
