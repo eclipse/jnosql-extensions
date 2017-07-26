@@ -76,6 +76,7 @@
         <module>elasticsearch-extension</module>
         <module>orientdb-extension</module>
         <module>couchbase-extension</module>
+	<module>graph-extension</module>
     </modules>
 
     <dependencies>
