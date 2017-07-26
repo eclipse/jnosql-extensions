@@ -65,6 +65,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compile.targetLevel>1.8</maven.compile.targetLevel>
         <maven.compile.sourceLevel>1.8</maven.compile.sourceLevel>
+        <titan.version>1.0.0</titan.version>
     </properties>
     <dependencies>
         <dependency>
@@ -101,6 +102,12 @@
             <artifactId>weld-se-core</artifactId>
             <version>2.3.5.Final</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.thinkaurelius.titan</groupId>
+            <artifactId>titan-berkeleyje</artifactId>
+            <scope>test</scope>
+            <version>${titan.version}</version>
         </dependency>
 
     </dependencies>
