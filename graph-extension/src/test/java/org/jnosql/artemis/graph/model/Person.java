@@ -90,19 +90,16 @@ public class Person {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof Person)) {
             return false;
         }
         Person person = (Person) o;
-        return id == person.id &&
-                age == person.age &&
-                Objects.equals(name, person.name) &&
-                Objects.equals(phones, person.phones);
+        return Objects.equals(id, person.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, age, phones, ignore);
+        return Objects.hashCode(id);
     }
 
     public static PersonBuilder builder() {
