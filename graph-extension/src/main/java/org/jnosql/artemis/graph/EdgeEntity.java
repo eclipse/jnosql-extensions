@@ -16,7 +16,7 @@ package org.jnosql.artemis.graph;
 
 import org.jnosql.diana.api.Value;
 
-import java.util.Map;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -36,19 +36,67 @@ public interface EdgeEntity<IN, OUT> {
      */
     Optional<Value> getId();
 
+    /**
+     * Returns the label of the vertex
+     *
+     * @return the label
+     */
     String getLabel();
 
+    /**
+     * Gets the IN entity
+     *
+     * @return the IN entity
+     */
     IN getIn();
 
+    /**
+     * Gets the Out entity
+     *
+     * @return the Out entity
+     */
     OUT getOut();
 
-    Map<String, Value> getProperties();
+    /**
+     * Returns the properties of this vertex
+     *
+     * @return the properties
+     */
+    List<ArtemisElement> getProperties();
 
+
+    /**
+     * Add a new element in the Vertex
+     *
+     * @param key   the key
+     * @param value the information
+     * @throws NullPointerException when either key or value are null
+     */
     void add(String key, Object value) throws NullPointerException;
 
+    /**
+     * Add a new element in the Vertex
+     *
+     * @param key   the key
+     * @param value the information
+     * @throws NullPointerException when either key or value are null
+     */
     void add(String key, Value value) throws NullPointerException;
 
+    /**
+     * Removes an property
+     *
+     * @param key the key
+     * @throws NullPointerException whe key is null
+     */
     void remove(String key) throws NullPointerException;
 
+    /**
+     * Returns the property from the key
+     *
+     * @param key the key to find the property
+     * @return the property to the respective key otherwise {@link Optional#empty()}
+     * @throws NullPointerException when key is null
+     */
     Optional<Value> get(String key) throws NullPointerException;
 }
