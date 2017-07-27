@@ -32,9 +32,9 @@ public interface EdgeEntity<IN, OUT> {
     /**
      * Returns the id
      *
-     * @return the id otherwise {@link Optional#empty()}
+     * @return the id
      */
-    Optional<Value> getId();
+    Value getId();
 
     /**
      * Returns the label of the vertex
