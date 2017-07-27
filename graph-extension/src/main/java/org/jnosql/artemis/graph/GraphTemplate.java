@@ -65,10 +65,11 @@ public interface GraphTemplate {
      *
      * @param label the label to be used in the query {@link org.apache.tinkerpop.gremlin.structure.T#label}
      * @param id    the id to be used in the query {@link org.apache.tinkerpop.gremlin.structure.T#id}
-     * @param <T>   the id type
+     * @param <T>   the entity type
+     * @param <ID>  the id type
      * @return the entity found otherwise {@link Optional#empty()}
      * @throws NullPointerException when either label and id are null
      */
-    <T> Optional<T> find(String label, T id) throws NullPointerException;
+    <T, ID> Optional<T> find(String label, ID id) throws NullPointerException;
 
 }
