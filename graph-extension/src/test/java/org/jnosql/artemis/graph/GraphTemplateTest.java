@@ -22,11 +22,11 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import javax.inject.Inject;
-
 import java.util.Optional;
 
 import static org.jnosql.artemis.graph.model.Person.builder;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -100,5 +100,13 @@ public class GraphTemplateTest {
 
         assertTrue(personFound.isPresent());
         assertEquals(updated, personFound.get());
+    }
+
+
+
+    @Test
+    public void shouldNotFindAnEntity() {
+        Optional<Person> personFound = graphTemplate.find("Person", 0L);
+        assertFalse(personFound.isPresent());
     }
 }
