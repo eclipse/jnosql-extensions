@@ -23,8 +23,8 @@ import java.util.Optional;
  * The representation of {@link org.apache.tinkerpop.gremlin.structure.Edge} that links two Entity.
  * Along with its Property objects, an Edge has both a Direction and a label.
  *
- * @param <IN>  the in Entity
- * @param <OUT> the out entity
+ * @param <IN>  the inbound Entity
+ * @param <OUT> the outbound entity
  *              <pre>outVertex ---label---> inVertex.</pre>
  */
 public interface EdgeEntity<IN, OUT> {
@@ -44,18 +44,18 @@ public interface EdgeEntity<IN, OUT> {
     String getLabel();
 
     /**
-     * Gets the IN entity
+     * Gets the inbound entity
      *
-     * @return the IN entity
+     * @return the inbound entity
      */
-    IN getIn();
+    IN getInbound();
 
     /**
-     * Gets the Out entity
+     * Gets the outbound entity
      *
-     * @return the Out entity
+     * @return the outbound entity
      */
-    OUT getOut();
+    OUT getOutbound();
 
     /**
      * Returns the properties of this vertex
