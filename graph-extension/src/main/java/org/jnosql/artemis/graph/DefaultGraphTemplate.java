@@ -24,6 +24,9 @@ import org.jnosql.diana.api.Value;
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 
+import java.util.List;
+import java.util.Optional;
+
 import static java.util.Objects.requireNonNull;
 import static org.apache.tinkerpop.gremlin.structure.T.id;
 import static org.apache.tinkerpop.gremlin.structure.T.label;
@@ -55,13 +58,8 @@ class DefaultGraphTemplate implements GraphTemplate {
         artemisVertex.getProperties().stream().forEach(e -> vertex.property(e.getKey(), e.get()));
 
 
-        ArtemisVertex vertexUpdated = ArtemisVertex.of(vertex.label(), vertex.id());
+        ArtemisVertex vertexUpdated = getArtemisVertex(vertex);
 
-        for (String key : vertex.keys()) {
-            Object value = vertex.value(key);
-            ArtemisElement element = ArtemisElement.of(key, value);
-            vertexUpdated.add(element);
-        }
         return converter.toEntity(vertexUpdated);
     }
 
@@ -90,9 +88,26 @@ class DefaultGraphTemplate implements GraphTemplate {
 
     }
 
+    @Override
+    public <T> Optional<T> find(String label, T idValue) throws NullPointerException {
+        requireNonNull(label, "label is required");
+        requireNonNull(idValue, "id is required");
+        List<Vertex> vertices = graph.get().traversal().V().hasLabel(label).has(id, idValue).toList();
+        if(vertices.isEmpty()) {
+            return Optional.empty();
+        }
+        return Optional.of(converter.toEntity(getArtemisVertex(vertices.get(0))));
+    }
+
     private <T> void checkId(T entity) {
         ClassRepresentation classRepresentation = classRepresentations.get(entity.getClass());
         classRepresentation.getId().orElseThrow(() -> IdNotFoundException.newInstance(entity.getClass()));
+    }
+
+    private ArtemisVertex getArtemisVertex(Vertex vertex) {
+        ArtemisVertex vertexUpdated = ArtemisVertex.of(vertex.label(), vertex.id());
+        vertex.keys().stream().forEach(k -> vertexUpdated.add(k, Value.of(vertex.value(k))));
+        return vertexUpdated;
     }
 
 }
