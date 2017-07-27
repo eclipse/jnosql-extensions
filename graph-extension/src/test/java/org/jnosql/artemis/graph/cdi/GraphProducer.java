@@ -26,7 +26,7 @@ import static java.util.UUID.randomUUID;
 @ApplicationScoped
 public class GraphProducer {
 
-    private static final String DATA_DIR = "./" + randomUUID().toString();
+    private static final String DATA_DIR = "./target/jnosql-graph";
 
     private Graph graph = TitanFactory.open("berkeleyje:" + DATA_DIR);
 
