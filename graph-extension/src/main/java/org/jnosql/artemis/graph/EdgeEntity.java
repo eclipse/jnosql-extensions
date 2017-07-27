@@ -23,14 +23,18 @@ import java.util.Optional;
  * The representation of {@link org.apache.tinkerpop.gremlin.structure.Edge} that links two Entity.
  * Along with its Property objects, an Edge has both a Direction and a label.
  *
- * @param <ID>  the Edge id
  * @param <IN>  the in Entity
  * @param <OUT> the out entity
  *              <pre>outVertex ---label---> inVertex.</pre>
  */
-public interface EdgeEntity<ID, IN, OUT> {
+public interface EdgeEntity<IN, OUT> {
 
-    Optional<ID> getId();
+    /**
+     * Returns the id
+     *
+     * @return the id otherwise {@link Optional#empty()}
+     */
+    Optional<Value> getId();
 
     String getLabel();
 

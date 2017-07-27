@@ -76,9 +76,9 @@ interface ArtemisVertex {
     Collection<Value> getValues();
 
     /**
-     * Returns a Set view of the keys contained in this instance
+     * Returns the label of the vertex
      *
-     * @return the keys
+     * @return the label
      */
     String getLabel();
 
