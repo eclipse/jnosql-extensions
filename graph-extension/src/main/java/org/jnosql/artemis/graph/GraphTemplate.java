@@ -16,6 +16,8 @@ package org.jnosql.artemis.graph;
 
 import org.jnosql.artemis.IdNotFoundException;
 
+import java.util.Optional;
+
 /**
  * This interface that represents the common operation between an entity
  * and {@link org.apache.tinkerpop.gremlin.structure.Vertex}
@@ -55,5 +57,18 @@ public interface GraphTemplate {
      * @throws NullPointerException when either label and id are null
      */
     <T> void delete(String label, T id) throws NullPointerException;
+
+
+    /**
+     * Find an entity given {@link org.apache.tinkerpop.gremlin.structure.T#label} and
+     * {@link org.apache.tinkerpop.gremlin.structure.T#id}
+     *
+     * @param label the label to be used in the query {@link org.apache.tinkerpop.gremlin.structure.T#label}
+     * @param id    the id to be used in the query {@link org.apache.tinkerpop.gremlin.structure.T#id}
+     * @param <T>   the id type
+     * @return the entity found otherwise {@link Optional#empty()}
+     * @throws NullPointerException when either label and id are null
+     */
+    <T> Optional<T> find(String label, T id) throws NullPointerException;
 
 }
