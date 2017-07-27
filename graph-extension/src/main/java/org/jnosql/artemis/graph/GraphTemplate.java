@@ -77,15 +77,15 @@ public interface GraphTemplate {
      * {@link org.apache.tinkerpop.gremlin.structure.Edge}
      * <pre>entityOUT ---label---> entityIN.</pre>
      *
-     * @param entityIN  the ingoing
-     * @param label     the Edge label
-     * @param entityOUT the outgoing entity
-     * @param <IN>      the ingoing type
-     * @param <OUT>     the outgoing type
+     * @param inbound  the inbound entity
+     * @param label    the Edge label
+     * @param outbound the outbound entity
+     * @param <IN>     the ingoing type
+     * @param <OUT>    the outgoing type
      * @return the {@link EdgeEntity} of these two entities
      * @throws NullPointerException Either when any elements are null or the entity is null
      * @throws IdNotFoundException  when {@link org.jnosql.artemis.Id} annotation is missing in the entities
      */
-    <IN, OUT> EdgeEntity<IN, OUT> edge(IN entityIN, String label, OUT entityOUT) throws NullPointerException, IdNotFoundException;
+    <IN, OUT> EdgeEntity<IN, OUT> edge(IN inbound, String label, OUT outbound) throws NullPointerException, IdNotFoundException;
 
 }
