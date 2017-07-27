@@ -23,9 +23,12 @@ import org.junit.runner.RunWith;
 
 import javax.inject.Inject;
 
+import java.util.Optional;
+
 import static org.jnosql.artemis.graph.model.Person.builder;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(WeldJUnit4Runner.class)
 public class GraphTemplateTest {
@@ -76,5 +79,26 @@ public class GraphTemplateTest {
         Person update = graphTemplate.update(newPerson);
 
         assertEquals(newPerson, update);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void shouldReturnErrorInFindWhenLabelIsNull() {
+        graphTemplate.find(null, 10L);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void shouldReturnErrorInFindWhenIdIsNull() {
+        graphTemplate.find("Person", null);
+    }
+
+    @Test
+    public void shouldFindAnEntity() {
+        Person person = builder().withAge()
+                .withName("Otavio").build();
+        Person updated = graphTemplate.insert(person);
+        Optional<Person> personFound = graphTemplate.find("Person", updated.getId());
+
+        assertTrue(personFound.isPresent());
+        assertEquals(updated, personFound.get());
     }
 }
