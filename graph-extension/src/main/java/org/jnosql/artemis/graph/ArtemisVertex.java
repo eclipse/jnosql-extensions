@@ -53,6 +53,12 @@ interface ArtemisVertex {
      */
     void add(String key, Value value) throws NullPointerException;
 
+    /**
+     * Add a new element in the Vertex
+     *
+     * @param artemisElement the element
+     * @throws NullPointerException when either key or value are null
+     */
     void add(ArtemisElement artemisElement) throws NullPointerException;
 
     /**
