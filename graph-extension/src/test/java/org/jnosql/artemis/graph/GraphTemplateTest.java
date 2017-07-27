@@ -18,6 +18,7 @@ import org.jnosql.artemis.IdNotFoundException;
 import org.jnosql.artemis.graph.cdi.WeldJUnit4Runner;
 import org.jnosql.artemis.graph.model.Animal;
 import org.jnosql.artemis.graph.model.Person;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -102,11 +103,22 @@ public class GraphTemplateTest {
         assertEquals(updated, personFound.get());
     }
 
-
-
     @Test
     public void shouldNotFindAnEntity() {
         Optional<Person> personFound = graphTemplate.find("Person", 0L);
         assertFalse(personFound.isPresent());
     }
+
+    @Test
+    public void shouldDeleteAnEntity() {
+
+        Person person = graphTemplate.insert(builder().withAge()
+                .withName("Otavio").build());
+
+        assertTrue(graphTemplate.find("Person", person.getId()).isPresent());
+        graphTemplate.delete("Person", person.getId());
+        assertFalse(graphTemplate.find("Person", person.getId()).isPresent());
+
+    }
+
 }

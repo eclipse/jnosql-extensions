@@ -83,8 +83,8 @@ class DefaultGraphTemplate implements GraphTemplate {
     public <T> void delete(String label, T idValue) throws NullPointerException {
         requireNonNull(label, "label is required");
         requireNonNull(idValue, "id is required");
-
-        graph.get().traversal().V().hasLabel(label).has(id, idValue).remove();
+        List<Vertex> vertices = graph.get().traversal().V().hasLabel(label).has(id, idValue).toList();
+        vertices.stream().forEach(Vertex::remove);
 
     }
 
