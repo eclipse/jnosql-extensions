@@ -89,11 +89,11 @@ class DefaultGraphTemplate implements GraphTemplate {
     }
 
     @Override
-    public <T> Optional<T> find(String label, T idValue) throws NullPointerException {
+    public <T, ID> Optional<T> find(String label, ID idValue) throws NullPointerException {
         requireNonNull(label, "label is required");
         requireNonNull(idValue, "id is required");
         List<Vertex> vertices = graph.get().traversal().V().hasLabel(label).has(id, idValue).toList();
-        if(vertices.isEmpty()) {
+        if (vertices.isEmpty()) {
             return Optional.empty();
         }
         return Optional.of(converter.toEntity(getArtemisVertex(vertices.get(0))));
