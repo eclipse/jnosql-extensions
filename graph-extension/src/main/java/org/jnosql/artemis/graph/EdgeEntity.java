@@ -19,6 +19,15 @@ import org.jnosql.diana.api.Value;
 import java.util.Map;
 import java.util.Optional;
 
+/**
+ * The representation of {@link org.apache.tinkerpop.gremlin.structure.Edge} that links two Entity.
+ * Along with its Property objects, an Edge has both a Direction and a label.
+ *
+ * @param <ID>  the Edge id
+ * @param <IN>  the in Entity
+ * @param <OUT> the out entity
+ *              <pre>outVertex ---label---> inVertex.</pre>
+ */
 public interface EdgeEntity<ID, IN, OUT> {
 
     Optional<ID> getId();
@@ -29,7 +38,7 @@ public interface EdgeEntity<ID, IN, OUT> {
 
     OUT getOut();
 
-    Map<String, Object> getProperties();
+    Map<String, Value> getProperties();
 
     void add(String key, Object value) throws NullPointerException;
 
