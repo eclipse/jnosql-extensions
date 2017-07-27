@@ -14,16 +14,15 @@
  */
 
 /**
- * OrientDB is an open source NoSQL database management system written in Java. It is a multi-model database,
- * supporting graph, document, key/value, and object models, but the relationships are managed as in graph databases
- * with direct connections between records. It supports schema-less, schema-full and schema-mixed modes.
- * It has a strong security profiling system based on users and roles and supports querying with Gremlin
- * along with SQL extended for graph traversal. OrientDB uses several indexing mechanisms based
- * on B-tree and Extendible hashing, the last one is known as "hash index", there are plans to implement
- * LSM-tree and Fractal tree index based indexes. Each record has Surrogate key which indicates position
- * of record inside of Array list , links between records are stored either as single value of record's
- * position stored inside of referrer or as B-tree of record positions (so-called record IDs or RIDs)
- * which allows fast traversal (with O(1) complexity) of one-to-many relationships and fast addition/removal
- * of new links. OrientDB is the second most popular graph database according to the DB-Engines graph database ranking.
+ * In computing, a graph database is a database that uses graph structures for semantic queries with nodes,
+ * edges and properties to represent and store data. A key concept of the system is the graph
+ * (or edge or relationship), which directly relates data items in the store. The relationships allow data in
+ * the store to be linked together directly, and in many cases retrieved with one operation.
+ * This contrasts with conventional relational databases, where links between data are stored in the data,
+ * and queries search for this data within the store and use the join concept to collect the related data.
+ * Graph databases, by design, allow simple and fast retrieval of complex hierarchical structures that are difficult
+ * to model in relational systems. Graph databases are similar to 1970s network model databases in that both represent
+ * general graphs, but network-model databases operate at a lower level of abstraction and lack easy traversal over
+ * a chain of edges.
  */
 package org.jnosql.artemis.graph;
