@@ -14,8 +14,10 @@
  */
 package org.jnosql.artemis.graph;
 
+import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
+import org.jnosql.artemis.EntityNotFoundException;
 import org.jnosql.artemis.IdNotFoundException;
 import org.jnosql.artemis.reflection.ClassRepresentation;
 import org.jnosql.artemis.reflection.ClassRepresentations;
@@ -23,10 +25,10 @@ import org.jnosql.diana.api.Value;
 
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
-
 import java.util.List;
 import java.util.Optional;
 
+import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static org.apache.tinkerpop.gremlin.structure.T.id;
 import static org.apache.tinkerpop.gremlin.structure.T.label;
@@ -73,7 +75,12 @@ class DefaultGraphTemplate implements GraphTemplate {
                 .map(Value::get)
                 .orElseThrow(() -> new NullPointerException("Id field is required"));
 
-        Vertex vertex = graph.get().traversal().V().hasLabel(artemisVertex.getLabel()).has(id, idValue).next();
+        Vertex vertex = graph.get().traversal().V()
+                .hasLabel(artemisVertex.getLabel())
+                .has(id, idValue).tryNext()
+                .orElseThrow(() -> new EntityNotFoundException(format("The entity %s with id %s is not found to update",
+                        entity.getClass().getName(), idValue.toString())));
+
         artemisVertex.getProperties().stream().forEach(e -> vertex.property(e.getKey(), e.get()));
 
         return entity;
@@ -98,6 +105,40 @@ class DefaultGraphTemplate implements GraphTemplate {
         }
         return Optional.of(converter.toEntity(getArtemisVertex(vertices.get(0))));
     }
+
+    @Override
+    public <IN, OUT> EdgeEntity<IN, OUT> edge(IN inbound, String label, OUT outbound) throws NullPointerException,
+            IdNotFoundException {
+
+        requireNonNull(inbound, "inbound is required");
+        requireNonNull(label, "label is required");
+        requireNonNull(outbound, "outbound is required");
+
+        ArtemisVertex inboundVertex = converter.toVertex(inbound);
+
+        Object inboundId = inboundVertex.getId()
+                .map(Value::get)
+                .orElseThrow(() -> new NullPointerException("inbound Id field is required"));
+
+        ArtemisVertex outboundVertex = converter.toVertex(inbound);
+        Object outboundId = inboundVertex.getId()
+                .map(Value::get)
+                .orElseThrow(() -> new NullPointerException("outbound Id field is required"));
+
+        List<Edge> edges = graph.get()
+                .traversal().V()
+                .has(id, outboundId).out(label)
+                .has(id, inboundId).inE(label).toList();
+
+        if (edges.isEmpty()) {
+
+        } else {
+            return new DefaultEdgeEntity<>(edges.get(0), inbound, outbound);
+        }
+
+        return null;
+    }
+
 
     private <T> void checkId(T entity) {
         ClassRepresentation classRepresentation = classRepresentations.get(entity.getClass());
