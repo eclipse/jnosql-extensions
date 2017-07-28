@@ -14,6 +14,7 @@
  */
 package org.jnosql.artemis.graph;
 
+import org.jnosql.artemis.EntityNotFoundException;
 import org.jnosql.artemis.IdNotFoundException;
 
 import java.util.Optional;
@@ -83,9 +84,11 @@ public interface GraphTemplate {
      * @param <IN>     the ingoing type
      * @param <OUT>    the outgoing type
      * @return the {@link EdgeEntity} of these two entities
-     * @throws NullPointerException Either when any elements are null or the entity is null
-     * @throws IdNotFoundException  when {@link org.jnosql.artemis.Id} annotation is missing in the entities
+     * @throws NullPointerException    Either when any elements are null or the entity is null
+     * @throws IdNotFoundException     when {@link org.jnosql.artemis.Id} annotation is missing in the entities
+     * @throws EntityNotFoundException when neither outbound or inbound is found
      */
-    <IN, OUT> EdgeEntity<IN, OUT> edge(IN inbound, String label, OUT outbound) throws NullPointerException, IdNotFoundException;
+    <IN, OUT> EdgeEntity<IN, OUT> edge(OUT outbound, String label, IN inbound) throws NullPointerException,
+            IdNotFoundException, EntityNotFoundException;
 
 }
