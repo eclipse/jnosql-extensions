@@ -99,11 +99,11 @@ class DefaultGraphTemplate implements GraphTemplate {
     public <T, ID> Optional<T> find(String label, ID idValue) throws NullPointerException {
         requireNonNull(label, "label is required");
         requireNonNull(idValue, "id is required");
-        List<Vertex> vertices = graph.get().traversal().V().hasLabel(label).has(id, idValue).toList();
-        if (vertices.isEmpty()) {
+        Optional<Vertex> vertex = graph.get().traversal().V().hasLabel(label).has(id, idValue).tryNext();
+        if (vertex.isPresent()) {
             return Optional.empty();
         }
-        return Optional.of(converter.toEntity(getArtemisVertex(vertices.get(0))));
+        return Optional.of(converter.toEntity(getArtemisVertex(vertex.get())));
     }
 
     @Override
@@ -125,18 +125,19 @@ class DefaultGraphTemplate implements GraphTemplate {
                 .map(Value::get)
                 .orElseThrow(() -> new NullPointerException("outbound Id field is required"));
 
-        List<Edge> edges = graph.get()
+        Optional<Edge> edge = graph.get()
                 .traversal().V()
                 .has(id, outboundId).out(label)
-                .has(id, inboundId).inE(label).toList();
+                .has(id, inboundId).inE(label).tryNext();
 
-        if (edges.isEmpty()) {
+        if (edge.isPresent()) {
 
+            return null;
         } else {
-            return new DefaultEdgeEntity<>(edges.get(0), inbound, outbound);
+            return new DefaultEdgeEntity<>(edge.get(), inbound, outbound);
         }
 
-        return null;
+
     }
 
 
