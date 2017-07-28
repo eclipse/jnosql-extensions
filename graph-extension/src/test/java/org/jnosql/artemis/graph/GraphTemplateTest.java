@@ -19,7 +19,6 @@ import org.jnosql.artemis.IdNotFoundException;
 import org.jnosql.artemis.graph.cdi.WeldJUnit4Runner;
 import org.jnosql.artemis.graph.model.Animal;
 import org.jnosql.artemis.graph.model.Person;
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
