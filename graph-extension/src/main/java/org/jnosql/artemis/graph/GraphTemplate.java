@@ -88,4 +88,6 @@ public interface GraphTemplate {
     <IN, OUT> EdgeEntity<IN, OUT> edge(OUT outbound, String label, IN inbound) throws NullPointerException,
             IdNotFoundException, EntityNotFoundException;
 
+
+
 }

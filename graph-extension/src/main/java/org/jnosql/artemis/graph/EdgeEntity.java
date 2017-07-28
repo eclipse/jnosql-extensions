@@ -104,7 +104,21 @@ public interface EdgeEntity<IN, OUT> {
 
     /**
      * Returns true if this Edge contains no elements.
+     *
      * @return true if this collection contains no elements
      */
     boolean isEmpty();
+
+    /**
+     * Returns the number of property in Edge
+     *
+     * @return the number of elements in this Edge
+     */
+    int size();
+
+    /**
+     * Deletes the Edge from the database, after this operation, any write operation
+     * such as add a property will an illegal state.
+     */
+    void delete();
 }

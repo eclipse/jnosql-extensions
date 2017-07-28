@@ -14,18 +14,25 @@
  */
 package org.jnosql.artemis.graph;
 
+import org.hamcrest.Matchers;
 import org.jnosql.artemis.EntityNotFoundException;
 import org.jnosql.artemis.graph.cdi.WeldJUnit4Runner;
 import org.jnosql.artemis.graph.model.Book;
 import org.jnosql.artemis.graph.model.Person;
+import org.jnosql.diana.api.Value;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import javax.inject.Inject;
 
+import java.util.Optional;
+
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(WeldJUnit4Runner.class)
@@ -108,6 +115,83 @@ public class EdgeEntityTest {
         EdgeEntity<Book, Person> sameEdge = graphTemplate.edge(person, "reads", book);
 
         assertEquals(edge.getId(), sameEdge.getId());
+        assertEquals(edge, sameEdge);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void shouldReturnErrorWhenAddKeyIsNull() {
+        Person person = graphTemplate.insert(Person.builder().withName("Poliana").withAge().build());
+        Book book = graphTemplate.insert(Book.builder().withAge(2007).withName("The Shack").build());
+        EdgeEntity<Book, Person> edge = graphTemplate.edge(person, "reads", book);
+        edge.add(null, "Brazil");
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void shouldReturnErrorWhenAddValueIsNull() {
+        Person person = graphTemplate.insert(Person.builder().withName("Poliana").withAge().build());
+        Book book = graphTemplate.insert(Book.builder().withAge(2007).withName("The Shack").build());
+        EdgeEntity<Book, Person> edge = graphTemplate.edge(person, "reads", book);
+        edge.add("where", null);
+    }
+
+    @Test
+    public void shouldAddProperty() {
+        Person person = graphTemplate.insert(Person.builder().withName("Poliana").withAge().build());
+        Book book = graphTemplate.insert(Book.builder().withAge(2007).withName("The Shack").build());
+        EdgeEntity<Book, Person> edge = graphTemplate.edge(person, "reads", book);
+        edge.add("where", "Brazil");
+
+        assertFalse(edge.isEmpty());
+        assertEquals(1, edge.size());
+        assertThat(edge.getProperties(), Matchers.contains(ArtemisProperty.of("where", "Brazil")));
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void shouldReturnErrorWhenRemoveNullKeyProperty() {
+        Person person = graphTemplate.insert(Person.builder().withName("Poliana").withAge().build());
+        Book book = graphTemplate.insert(Book.builder().withAge(2007).withName("The Shack").build());
+        EdgeEntity<Book, Person> edge = graphTemplate.edge(person, "reads", book);
+        edge.add("where", "Brazil");
+
+        assertFalse(edge.isEmpty());
+        edge.remove(null);
+    }
+
+    @Test
+    public void shouldRemoveProperty() {
+        Person person = graphTemplate.insert(Person.builder().withName("Poliana").withAge().build());
+        Book book = graphTemplate.insert(Book.builder().withAge(2007).withName("The Shack").build());
+        EdgeEntity<Book, Person> edge = graphTemplate.edge(person, "reads", book);
+        edge.add("where", "Brazil");
+        assertEquals(1, edge.size());
+        assertFalse(edge.isEmpty());
+        edge.remove("where");
+        assertTrue(edge.isEmpty());
+        assertEquals(0, edge.size());
+    }
+
+
+    @Test
+    public void shouldFindProperty() {
+        Person person = graphTemplate.insert(Person.builder().withName("Poliana").withAge().build());
+        Book book = graphTemplate.insert(Book.builder().withAge(2007).withName("The Shack").build());
+        EdgeEntity<Book, Person> edge = graphTemplate.edge(person, "reads", book);
+        edge.add("where", "Brazil");
+
+        Optional<Value> where = edge.get("where");
+        assertTrue(where.isPresent());
+        assertEquals("Brazil", where.get().get());
+    }
+
+    @Test
+    public void shouldDeleteAnEdge() {
+        Person person = graphTemplate.insert(Person.builder().withName("Poliana").withAge().build());
+        Book book = graphTemplate.insert(Book.builder().withAge(2007).withName("The Shack").build());
+        EdgeEntity<Book, Person> edge = graphTemplate.edge(person, "reads", book);
+        edge.delete();
+
+        EdgeEntity<Book, Person> newEdge = graphTemplate.edge(person, "reads", book);
+        assertNotEquals(edge.getId(), newEdge.getId());
     }
 
 }

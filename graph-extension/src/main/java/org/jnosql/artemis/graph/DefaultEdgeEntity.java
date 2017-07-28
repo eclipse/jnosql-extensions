@@ -107,6 +107,16 @@ class DefaultEdgeEntity<IN, OUT> implements EdgeEntity<IN, OUT> {
     }
 
     @Override
+    public int size() {
+        return edge.keys().size();
+    }
+
+    @Override
+    public void delete() {
+        edge.remove();
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -133,4 +143,5 @@ class DefaultEdgeEntity<IN, OUT> implements EdgeEntity<IN, OUT> {
         sb.append(" --->").append(inbound);
         return sb.toString();
     }
+
 }
