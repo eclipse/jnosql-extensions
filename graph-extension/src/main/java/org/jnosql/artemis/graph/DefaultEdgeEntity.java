@@ -102,6 +102,11 @@ class DefaultEdgeEntity<IN, OUT> implements EdgeEntity<IN, OUT> {
     }
 
     @Override
+    public boolean isEmpty() {
+        return edge.keys().isEmpty();
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -122,11 +127,10 @@ class DefaultEdgeEntity<IN, OUT> implements EdgeEntity<IN, OUT> {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("DefaultEdgeEntity{");
-        sb.append("outbound=").append(outbound);
-        sb.append(", edge=").append(edge);
-        sb.append(", inbound=").append(inbound);
-        sb.append('}');
+        final StringBuilder sb = new StringBuilder();
+        sb.append(outbound);
+        sb.append("---").append(edge.label());
+        sb.append(" --->").append(inbound);
         return sb.toString();
     }
 }
