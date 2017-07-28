@@ -99,4 +99,15 @@ public class EdgeEntityTest {
         assertNotNull(edge.getId());
     }
 
+    @Test
+    public void shouldUseAnEdge() {
+        Person person = graphTemplate.insert(Person.builder().withName("Poliana").withAge().build());
+        Book book = graphTemplate.insert(Book.builder().withAge(2007).withName("The Shack").build());
+        EdgeEntity<Book, Person> edge = graphTemplate.edge(person, "reads", book);
+
+        EdgeEntity<Book, Person> sameEdge = graphTemplate.edge(person, "reads", book);
+
+        assertEquals(edge.getId(), sameEdge.getId());
+    }
+
 }
