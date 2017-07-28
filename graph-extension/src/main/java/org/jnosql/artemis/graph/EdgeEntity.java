@@ -22,6 +22,8 @@ import java.util.Optional;
 /**
  * The representation of {@link org.apache.tinkerpop.gremlin.structure.Edge} that links two Entity.
  * Along with its Property objects, an Edge has both a Direction and a label.
+ * Any Change at the Edge is automatically continued in the database. However, any, change in the Entity will be ignored.
+ * {@link GraphTemplate#update(Object)}
  *
  * @param <IN>  the inbound Entity
  * @param <OUT> the outbound entity
