@@ -101,4 +101,10 @@ public interface EdgeEntity<IN, OUT> {
      * @throws NullPointerException when key is null
      */
     Optional<Value> get(String key) throws NullPointerException;
+
+    /**
+     * Returns true if this Edge contains no elements.
+     * @return true if this collection contains no elements
+     */
+    boolean isEmpty();
 }
