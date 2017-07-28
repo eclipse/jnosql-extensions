@@ -60,7 +60,7 @@ class DefaultGraphTemplate implements GraphTemplate {
         artemisVertex.getProperties().stream().forEach(e -> vertex.property(e.getKey(), e.get()));
 
 
-        ArtemisVertex vertexUpdated = getArtemisVertex(vertex);
+        ArtemisVertex vertexUpdated = toArtemisVertex(vertex);
 
         return converter.toEntity(vertexUpdated);
     }
@@ -101,9 +101,9 @@ class DefaultGraphTemplate implements GraphTemplate {
         requireNonNull(idValue, "id is required");
         Optional<Vertex> vertex = graph.get().traversal().V().hasLabel(label).has(id, idValue).tryNext();
         if (vertex.isPresent()) {
-            return Optional.empty();
+            return Optional.of(converter.toEntity(toArtemisVertex(vertex.get())));
         }
-        return Optional.of(converter.toEntity(getArtemisVertex(vertex.get())));
+        return Optional.empty();
     }
 
     @Override
@@ -131,10 +131,22 @@ class DefaultGraphTemplate implements GraphTemplate {
                 .has(id, inboundId).inE(label).tryNext();
 
         if (edge.isPresent()) {
-
-            return null;
-        } else {
             return new DefaultEdgeEntity<>(edge.get(), inbound, outbound);
+        } else {
+            
+            Vertex inVertex = graph.get()
+                    .traversal()
+                    .V(inboundId)
+                    .tryNext()
+                    .orElseThrow(() -> new EntityNotFoundException("inbound entity not found"));
+
+            Vertex outVertex = graph.get()
+                    .traversal()
+                    .V(outboundId)
+                    .tryNext()
+                    .orElseThrow(() -> new EntityNotFoundException("inbound entity not found"));
+
+            return new DefaultEdgeEntity<>(outVertex.addEdge(label, inVertex), inbound, outbound);
         }
 
 
@@ -146,7 +158,7 @@ class DefaultGraphTemplate implements GraphTemplate {
         classRepresentation.getId().orElseThrow(() -> IdNotFoundException.newInstance(entity.getClass()));
     }
 
-    private ArtemisVertex getArtemisVertex(Vertex vertex) {
+    private ArtemisVertex toArtemisVertex(Vertex vertex) {
         ArtemisVertex vertexUpdated = ArtemisVertex.of(vertex.label(), vertex.id());
         vertex.keys().stream().forEach(k -> vertexUpdated.add(k, Value.of(vertex.value(k))));
         return vertexUpdated;
