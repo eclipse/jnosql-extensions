@@ -62,10 +62,10 @@ class DefaultEdgeEntity<IN, OUT> implements EdgeEntity<IN, OUT> {
     }
 
     @Override
-    public List<ArtemisElement> getProperties() {
+    public List<ArtemisProperty> getProperties() {
         return edge.keys()
                 .stream()
-                .map(k -> ArtemisElement.of(k, Value.of(edge.value(k))))
+                .map(k -> ArtemisProperty.of(k, Value.of(edge.value(k))))
                 .collect(collectingAndThen(toList(), Collections::unmodifiableList));
     }
 

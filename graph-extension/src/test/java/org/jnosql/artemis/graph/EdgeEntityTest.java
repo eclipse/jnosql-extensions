@@ -25,6 +25,7 @@ import org.junit.runner.RunWith;
 import javax.inject.Inject;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(WeldJUnit4Runner.class)
@@ -95,6 +96,7 @@ public class EdgeEntityTest {
         assertEquals(person, edge.getOutbound());
         assertEquals(book, edge.getInbound());
         assertTrue(edge.isEmpty());
+        assertNotNull(edge.getId());
     }
 
 }

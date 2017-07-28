@@ -78,7 +78,7 @@ class DefaultArtemisVertex implements ArtemisVertex {
     }
 
     @Override
-    public void add(ArtemisElement element) throws NullPointerException {
+    public void add(ArtemisProperty element) throws NullPointerException {
         requireNonNull(element, "element is required");
         properties.put(element.getKey(), element.get());
     }
@@ -114,9 +114,9 @@ class DefaultArtemisVertex implements ArtemisVertex {
     }
 
     @Override
-    public List<ArtemisElement> getProperties() {
+    public List<ArtemisProperty> getProperties() {
         return properties.entrySet().stream()
-                .map(e -> ArtemisElement.of(e.getKey(), e.getValue()))
+                .map(e -> ArtemisProperty.of(e.getKey(), e.getValue()))
                 .collect(collectingAndThen(toList(), Collections::unmodifiableList));
     }
 
@@ -126,13 +126,13 @@ class DefaultArtemisVertex implements ArtemisVertex {
     }
 
     @Override
-    public Optional<ArtemisElement> find(String key) throws NullPointerException {
+    public Optional<ArtemisProperty> find(String key) throws NullPointerException {
         requireNonNull(key, "key is required");
         Object value = properties.get(key);
         if (value == null) {
             return Optional.empty();
         }
-        return Optional.of(ArtemisElement.of(key, value));
+        return Optional.of(ArtemisProperty.of(key, value));
     }
 
     @Override

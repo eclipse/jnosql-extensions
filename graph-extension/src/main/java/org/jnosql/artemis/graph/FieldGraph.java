@@ -93,25 +93,25 @@ class FieldGraph {
         return new FieldGraph(value, field);
     }
 
-    public List<ArtemisElement> toElements(VertexConverter converter, Converters converters) {
+    public List<ArtemisProperty> toElements(VertexConverter converter, Converters converters) {
         if (EMBEDDED.equals(field.getType())) {
             return converter.toVertex(value).getProperties();
         }
         Optional<Class<? extends AttributeConverter>> optionalConverter = field.getConverter();
         if (optionalConverter.isPresent()) {
             AttributeConverter attributeConverter = converters.get(optionalConverter.get());
-            return singletonList(ArtemisElement.of(field.getName(), attributeConverter.convertToDatabaseColumn(value)));
+            return singletonList(ArtemisProperty.of(field.getName(), attributeConverter.convertToDatabaseColumn(value)));
         }
-        return singletonList(ArtemisElement.of(field.getName(), value));
+        return singletonList(ArtemisProperty.of(field.getName(), value));
     }
 
-    public ArtemisElement toElement(VertexConverter converter, Converters converters) {
+    public ArtemisProperty toElement(VertexConverter converter, Converters converters) {
         Optional<Class<? extends AttributeConverter>> optionalConverter = field.getConverter();
         if (optionalConverter.isPresent()) {
             AttributeConverter attributeConverter = converters.get(optionalConverter.get());
-            return ArtemisElement.of(field.getName(), attributeConverter.convertToDatabaseColumn(value));
+            return ArtemisProperty.of(field.getName(), attributeConverter.convertToDatabaseColumn(value));
         }
-        return ArtemisElement.of(field.getName(), value);
+        return ArtemisProperty.of(field.getName(), value);
     }
 
 }

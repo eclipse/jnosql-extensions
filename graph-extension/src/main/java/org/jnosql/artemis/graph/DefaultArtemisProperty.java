@@ -22,13 +22,13 @@ import java.util.Objects;
 
 import static java.util.Objects.requireNonNull;
 
-class DefaultArtemisElement implements ArtemisElement {
+class DefaultArtemisProperty implements ArtemisProperty {
 
     private final String key;
 
     private final Object value;
 
-    DefaultArtemisElement(String key, Object value) {
+    DefaultArtemisProperty(String key, Object value) {
         this.key = requireNonNull(key, "key is required");
         this.value = requireNonNull(value, "value is required");
     }
@@ -59,10 +59,10 @@ class DefaultArtemisElement implements ArtemisElement {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof DefaultArtemisElement)) {
+        if (!(o instanceof DefaultArtemisProperty)) {
             return false;
         }
-        DefaultArtemisElement that = (DefaultArtemisElement) o;
+        DefaultArtemisProperty that = (DefaultArtemisProperty) o;
         return Objects.equals(key, that.key) &&
                 Objects.equals(value, that.value);
     }
@@ -74,7 +74,7 @@ class DefaultArtemisElement implements ArtemisElement {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("DefaultArtemisElement{");
+        final StringBuilder sb = new StringBuilder("DefaultArtemisProperty{");
         sb.append("key='").append(key).append('\'');
         sb.append(", value=").append(value);
         sb.append('}');

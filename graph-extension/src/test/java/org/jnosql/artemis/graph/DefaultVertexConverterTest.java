@@ -47,7 +47,7 @@ public class DefaultVertexConverterTest {
     @Inject
     private VertexConverter converter;
 
-    private ArtemisElement[] elements;
+    private ArtemisProperty[] elements;
 
     private Actor actor = Actor.actorBuilder().withAge()
             .withId()
@@ -60,12 +60,12 @@ public class DefaultVertexConverterTest {
     @Before
     public void init() {
 
-        elements = new ArtemisElement[]{
-                ArtemisElement.of("age", 10),
-                ArtemisElement.of("name", "Otavio"),
-                ArtemisElement.of("phones", asList("234", "2342"))
-                , ArtemisElement.of("movieCharacter", singletonMap("JavaZone", "Jedi"))
-                , ArtemisElement.of("movieRating", singletonMap("JavaZone", 10))};
+        elements = new ArtemisProperty[]{
+                ArtemisProperty.of("age", 10),
+                ArtemisProperty.of("name", "Otavio"),
+                ArtemisProperty.of("phones", asList("234", "2342"))
+                , ArtemisProperty.of("movieCharacter", singletonMap("JavaZone", "Jedi"))
+                , ArtemisProperty.of("movieRating", singletonMap("JavaZone", 10))};
     }
 
     @Test
@@ -80,7 +80,7 @@ public class DefaultVertexConverterTest {
         assertEquals("Person", entity.getLabel());
         assertEquals(3, entity.size());
         assertThat(entity.getProperties(), containsInAnyOrder(
-                ArtemisElement.of("age", 10), ArtemisElement.of("name", "Otavio"), ArtemisElement.of("phones", asList("234", "2342"))));
+                ArtemisProperty.of("age", 10), ArtemisProperty.of("name", "Otavio"), ArtemisProperty.of("phones", asList("234", "2342"))));
 
     }
 
@@ -176,9 +176,9 @@ public class DefaultVertexConverterTest {
 
         ArtemisVertex entity = converter.toVertex(director);
         entity.remove("movie");
-        entity.add(ArtemisElement.of("title", "Matrix"));
-        entity.add(ArtemisElement.of("year", 2012));
-        entity.add(ArtemisElement.of("actors", singleton("Actor")));
+        entity.add(ArtemisProperty.of("title", "Matrix"));
+        entity.add(ArtemisProperty.of("year", 2012));
+        entity.add(ArtemisProperty.of("actors", singleton("Actor")));
         Director director1 = converter.toEntity(entity);
 
         assertEquals(movie, director1.getMovie());
@@ -246,8 +246,8 @@ public class DefaultVertexConverterTest {
         assertEquals(job.getDescription(), worker1.getJob().getDescription());
     }
 
-    private Object getValue(Optional<ArtemisElement> element) {
-        return element.map(ArtemisElement::getValue).map(Value::get).orElse(null);
+    private Object getValue(Optional<ArtemisProperty> element) {
+        return element.map(ArtemisProperty::getValue).map(Value::get).orElse(null);
     }
 
 }

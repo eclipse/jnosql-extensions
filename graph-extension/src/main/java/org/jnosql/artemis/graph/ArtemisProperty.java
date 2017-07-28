@@ -19,20 +19,20 @@ import org.jnosql.diana.api.Value;
 
 import static java.util.Objects.requireNonNull;
 
-interface ArtemisElement {
+interface ArtemisProperty {
 
     String getKey();
 
     Value getValue();
 
 
-    static ArtemisElement of(String key, Object value) throws NullPointerException {
-        return new DefaultArtemisElement(key, value);
+    static ArtemisProperty of(String key, Object value) throws NullPointerException {
+        return new DefaultArtemisProperty(key, value);
     }
 
-    static ArtemisElement of(String key, Value value) throws NullPointerException {
+    static ArtemisProperty of(String key, Value value) throws NullPointerException {
         requireNonNull(value, "value is required");
-        return new DefaultArtemisElement(key, value.get());
+        return new DefaultArtemisProperty(key, value.get());
     }
 
     /**
