@@ -75,9 +75,10 @@ class DefaultGraphTemplate implements GraphTemplate {
                 .map(Value::get)
                 .orElseThrow(() -> new NullPointerException("Id field is required"));
 
-        Vertex vertex = graph.get().traversal().V()
-                .hasLabel(artemisVertex.getLabel())
-                .has(id, idValue).tryNext()
+        Vertex vertex = graph.get()
+                .traversal()
+                .V(idValue)
+                .tryNext()
                 .orElseThrow(() -> new EntityNotFoundException(format("The entity %s with id %s is not found to update",
                         entity.getClass().getName(), idValue.toString())));
 
@@ -107,8 +108,8 @@ class DefaultGraphTemplate implements GraphTemplate {
     }
 
     @Override
-    public <IN, OUT> EdgeEntity<IN, OUT> edge(IN inbound, String label, OUT outbound) throws NullPointerException,
-            IdNotFoundException {
+    public <IN, OUT> EdgeEntity<IN, OUT> edge(OUT outbound, String label, IN inbound) throws NullPointerException,
+            IdNotFoundException, EntityNotFoundException {
 
         requireNonNull(inbound, "inbound is required");
         requireNonNull(label, "label is required");
@@ -133,7 +134,7 @@ class DefaultGraphTemplate implements GraphTemplate {
         if (edge.isPresent()) {
             return new DefaultEdgeEntity<>(edge.get(), inbound, outbound);
         } else {
-            
+
             Vertex inVertex = graph.get()
                     .traversal()
                     .V(inboundId)
@@ -144,7 +145,7 @@ class DefaultGraphTemplate implements GraphTemplate {
                     .traversal()
                     .V(outboundId)
                     .tryNext()
-                    .orElseThrow(() -> new EntityNotFoundException("inbound entity not found"));
+                    .orElseThrow(() -> new EntityNotFoundException("outbound entity not found"));
 
             return new DefaultEdgeEntity<>(outVertex.addEdge(label, inVertex), inbound, outbound);
         }
