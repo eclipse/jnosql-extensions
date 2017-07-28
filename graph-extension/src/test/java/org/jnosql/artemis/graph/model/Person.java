@@ -77,12 +77,14 @@ public class Person {
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this, ToStringStyle.JSON_STYLE)
-                .append("id", id)
-                .append("name", name)
-                .append("age", age)
-                .append("phones", phones)
-                .toString();
+        final StringBuilder sb = new StringBuilder("Person{");
+        sb.append("id=").append(id);
+        sb.append(", name='").append(name).append('\'');
+        sb.append(", age=").append(age);
+        sb.append(", phones=").append(phones);
+        sb.append(", ignore='").append(ignore).append('\'');
+        sb.append('}');
+        return sb.toString();
     }
 
     @Override

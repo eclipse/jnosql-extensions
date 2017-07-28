@@ -18,10 +18,14 @@ import org.jnosql.artemis.EntityNotFoundException;
 import org.jnosql.artemis.graph.cdi.WeldJUnit4Runner;
 import org.jnosql.artemis.graph.model.Book;
 import org.jnosql.artemis.graph.model.Person;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import javax.inject.Inject;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(WeldJUnit4Runner.class)
 public class EdgeEntityTest {
@@ -79,6 +83,18 @@ public class EdgeEntityTest {
         Person person = graphTemplate.insert(Person.builder().withName("Poliana").withAge().build());
         Book book = Book.builder().withId("10").withAge(2007).withName("The Shack").build();
         graphTemplate.edge(person, "reads", book);
+    }
+
+    @Test
+    public void shouldCreateAnEdge() {
+        Person person = graphTemplate.insert(Person.builder().withName("Poliana").withAge().build());
+        Book book = graphTemplate.insert(Book.builder().withAge(2007).withName("The Shack").build());
+        EdgeEntity<Book, Person> edge = graphTemplate.edge(person, "reads", book);
+
+        assertEquals("reads", edge.getLabel());
+        assertEquals(person, edge.getOutbound());
+        assertEquals(book, edge.getInbound());
+        assertTrue(edge.isEmpty());
     }
 
 }
