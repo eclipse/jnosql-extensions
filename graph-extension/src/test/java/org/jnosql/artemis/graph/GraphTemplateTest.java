@@ -14,6 +14,7 @@
  */
 package org.jnosql.artemis.graph;
 
+import org.jnosql.artemis.EntityNotFoundException;
 import org.jnosql.artemis.IdNotFoundException;
 import org.jnosql.artemis.graph.cdi.WeldJUnit4Runner;
 import org.jnosql.artemis.graph.model.Animal;
@@ -64,6 +65,15 @@ public class GraphTemplateTest {
     public void shouldGetErrorWhenIdIsNullWhenUpdate() {
         Person person = builder().withAge()
                 .withName("Otavio").build();
+        graphTemplate.update(person);
+    }
+
+    @Test(expected = EntityNotFoundException.class)
+    public void shouldGetErrorWhenEntityIsNotSavedYet() {
+        Person person = builder().withAge()
+                .withId(10L)
+                .withName("Otavio").build();
+
         graphTemplate.update(person);
     }
 
