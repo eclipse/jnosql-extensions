@@ -49,29 +49,26 @@ public interface GraphTemplate {
 
 
     /**
-     * Deletes a graph given {@link org.apache.tinkerpop.gremlin.structure.T#label} and
-     * {@link org.apache.tinkerpop.gremlin.structure.T#id}
+     * Deletes a either {@link org.apache.tinkerpop.gremlin.structure.Vertex}
      *
-     * @param label the label to be used in the query {@link org.apache.tinkerpop.gremlin.structure.T#label}
-     * @param id    the id to be used in the query {@link org.apache.tinkerpop.gremlin.structure.T#id}
-     * @param <T>   the id type
+     * @param id  the id to be used in the query {@link org.apache.tinkerpop.gremlin.structure.T#id}
+     * @param <T> the id type
      * @throws NullPointerException when either label and id are null
      */
-    <T> void delete(String label, T id) throws NullPointerException;
+    <T> void delete(T id) throws NullPointerException;
 
 
     /**
      * Find an entity given {@link org.apache.tinkerpop.gremlin.structure.T#label} and
      * {@link org.apache.tinkerpop.gremlin.structure.T#id}
      *
-     * @param label the label to be used in the query {@link org.apache.tinkerpop.gremlin.structure.T#label}
-     * @param id    the id to be used in the query {@link org.apache.tinkerpop.gremlin.structure.T#id}
-     * @param <T>   the entity type
-     * @param <ID>  the id type
+     * @param id   the id to be used in the query {@link org.apache.tinkerpop.gremlin.structure.T#id}
+     * @param <T>  the entity type
+     * @param <ID> the id type
      * @return the entity found otherwise {@link Optional#empty()}
      * @throws NullPointerException when either label and id are null
      */
-    <T, ID> Optional<T> find(String label, ID id) throws NullPointerException;
+    <T, ID> Optional<T> find(ID id) throws NullPointerException;
 
     /**
      * Either find or create an Edge between this two entities.

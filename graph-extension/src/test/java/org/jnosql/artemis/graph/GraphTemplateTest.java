@@ -91,14 +91,10 @@ public class GraphTemplateTest {
         assertEquals(newPerson, update);
     }
 
-    @Test(expected = NullPointerException.class)
-    public void shouldReturnErrorInFindWhenLabelIsNull() {
-        graphTemplate.find(null, 10L);
-    }
 
     @Test(expected = NullPointerException.class)
     public void shouldReturnErrorInFindWhenIdIsNull() {
-        graphTemplate.find("Person", null);
+        graphTemplate.find(null);
     }
 
     @Test
@@ -106,7 +102,7 @@ public class GraphTemplateTest {
         Person person = builder().withAge()
                 .withName("Otavio").build();
         Person updated = graphTemplate.insert(person);
-        Optional<Person> personFound = graphTemplate.find("Person", updated.getId());
+        Optional<Person> personFound = graphTemplate.find(updated.getId());
 
         assertTrue(personFound.isPresent());
         assertEquals(updated, personFound.get());
@@ -114,7 +110,7 @@ public class GraphTemplateTest {
 
     @Test
     public void shouldNotFindAnEntity() {
-        Optional<Person> personFound = graphTemplate.find("Person", 0L);
+        Optional<Person> personFound = graphTemplate.find(0L);
         assertFalse(personFound.isPresent());
     }
 
@@ -124,9 +120,9 @@ public class GraphTemplateTest {
         Person person = graphTemplate.insert(builder().withAge()
                 .withName("Otavio").build());
 
-        assertTrue(graphTemplate.find("Person", person.getId()).isPresent());
-        graphTemplate.delete("Person", person.getId());
-        assertFalse(graphTemplate.find("Person", person.getId()).isPresent());
+        assertTrue(graphTemplate.find(person.getId()).isPresent());
+        graphTemplate.delete(person.getId());
+        assertFalse(graphTemplate.find(person.getId()).isPresent());
 
     }
 

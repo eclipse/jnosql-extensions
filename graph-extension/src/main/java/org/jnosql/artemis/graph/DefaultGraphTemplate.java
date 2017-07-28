@@ -88,19 +88,19 @@ class DefaultGraphTemplate implements GraphTemplate {
     }
 
     @Override
-    public <T> void delete(String label, T idValue) throws NullPointerException {
+    public <T> void delete(T idValue) throws NullPointerException {
         requireNonNull(label, "label is required");
         requireNonNull(idValue, "id is required");
-        List<Vertex> vertices = graph.get().traversal().V().hasLabel(label).has(id, idValue).toList();
+        List<Vertex> vertices = graph.get().traversal().V(idValue).toList();
         vertices.stream().forEach(Vertex::remove);
 
     }
 
     @Override
-    public <T, ID> Optional<T> find(String label, ID idValue) throws NullPointerException {
+    public <T, ID> Optional<T> find(ID idValue) throws NullPointerException {
         requireNonNull(label, "label is required");
         requireNonNull(idValue, "id is required");
-        Optional<Vertex> vertex = graph.get().traversal().V().hasLabel(label).has(id, idValue).tryNext();
+        Optional<Vertex> vertex = graph.get().traversal().V(idValue).tryNext();
         if (vertex.isPresent()) {
             return Optional.of(converter.toEntity(toArtemisVertex(vertex.get())));
         }
