@@ -130,4 +130,9 @@ public class GraphTemplateTest {
 
     }
 
+    @Test
+    public void shouldCreateEdge() {
+
+    }
+
 }

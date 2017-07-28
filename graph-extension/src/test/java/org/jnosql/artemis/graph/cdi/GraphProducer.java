@@ -21,8 +21,6 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Disposes;
 import javax.enterprise.inject.Produces;
 
-import static java.util.UUID.randomUUID;
-
 @ApplicationScoped
 public class GraphProducer {
 

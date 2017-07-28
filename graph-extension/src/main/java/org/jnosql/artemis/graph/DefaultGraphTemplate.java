@@ -116,15 +116,15 @@ class DefaultGraphTemplate implements GraphTemplate {
         requireNonNull(outbound, "outbound is required");
 
         ArtemisVertex inboundVertex = converter.toVertex(inbound);
+        ArtemisVertex outboundVertex = converter.toVertex(outbound);
 
+        Object outboundId = outboundVertex.getId()
+                .map(Value::get)
+                .orElseThrow(() -> new NullPointerException("outbound Id field is required"));
         Object inboundId = inboundVertex.getId()
                 .map(Value::get)
                 .orElseThrow(() -> new NullPointerException("inbound Id field is required"));
 
-        ArtemisVertex outboundVertex = converter.toVertex(inbound);
-        Object outboundId = inboundVertex.getId()
-                .map(Value::get)
-                .orElseThrow(() -> new NullPointerException("outbound Id field is required"));
 
         Optional<Edge> edge = graph.get()
                 .traversal().V()

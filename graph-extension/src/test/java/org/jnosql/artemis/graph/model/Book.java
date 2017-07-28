@@ -36,7 +36,8 @@ public class Book {
     Book() {
     }
 
-    Book(String name, Integer age) {
+    Book(String id, String name, Integer age) {
+        this.id = id;
         this.name = name;
         this.age = age;
     }
@@ -88,6 +89,7 @@ public class Book {
     public static class BookBuilder {
         private String name;
         private Integer age;
+        private String id;
 
         private BookBuilder() {
         }
@@ -102,8 +104,13 @@ public class Book {
             return this;
         }
 
+        public BookBuilder withId(String id) {
+            this.id = id;
+            return this;
+        }
+
         public Book build() {
-            return new Book(name, age);
+            return new Book(id, name, age);
         }
     }
 }
