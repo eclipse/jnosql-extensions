@@ -35,11 +35,14 @@ class DefaultVertexTraversal implements VertexTraversal {
 
     private final Supplier<GraphTraversal<Vertex, Vertex>> supplier;
     private final Function<GraphTraversal<Vertex, Vertex>, GraphTraversal<Vertex, Vertex>> flow;
+    private final VertexConverter converter;
 
     DefaultVertexTraversal(Supplier<GraphTraversal<Vertex, Vertex>> supplier,
-                           Function<GraphTraversal<Vertex, Vertex>, GraphTraversal<Vertex, Vertex>> flow) {
+                           Function<GraphTraversal<Vertex, Vertex>, GraphTraversal<Vertex, Vertex>> flow,
+                           VertexConverter converter) {
         this.supplier = supplier;
         this.flow = flow;
+        this.converter = converter;
     }
 
 
@@ -48,28 +51,28 @@ class DefaultVertexTraversal implements VertexTraversal {
         requireNonNull(propertyKey, "propertyKey is required");
         requireNonNull(value, "value is required");
 
-        return new DefaultVertexTraversal(supplier, flow.andThen(g -> g.has(propertyKey, value)));
+        return new DefaultVertexTraversal(supplier, flow.andThen(g -> g.has(propertyKey, value)), converter);
     }
 
     @Override
     public VertexTraversal has(String propertyKey, P<?> predicate) throws NullPointerException {
         requireNonNull(propertyKey, "propertyKey is required");
         requireNonNull(predicate, "predicate is required");
-        return new DefaultVertexTraversal(supplier, flow.andThen(g -> g.has(propertyKey, predicate)));
+        return new DefaultVertexTraversal(supplier, flow.andThen(g -> g.has(propertyKey, predicate)), converter);
     }
 
     @Override
     public VertexTraversal has(T accessor, Object value) throws NullPointerException {
         requireNonNull(accessor, "accessor is required");
         requireNonNull(value, "value is required");
-        return new DefaultVertexTraversal(supplier, flow.andThen(g -> g.has(accessor, value)));
+        return new DefaultVertexTraversal(supplier, flow.andThen(g -> g.has(accessor, value)), converter);
     }
 
     @Override
     public VertexTraversal has(T accessor, P<?> predicate) throws NullPointerException {
         requireNonNull(accessor, "accessor is required");
         requireNonNull(predicate, "predicate is required");
-        return new DefaultVertexTraversal(supplier, flow.andThen(g -> g.has(accessor, predicate)));
+        return new DefaultVertexTraversal(supplier, flow.andThen(g -> g.has(accessor, predicate)), converter);
     }
 
     @Override
@@ -77,7 +80,7 @@ class DefaultVertexTraversal implements VertexTraversal {
         if (Stream.of(labels).anyMatch(Objects::isNull)) {
             throw new NullPointerException("The no one label element cannot be null");
         }
-        return new DefaultVertexTraversal(supplier, flow.andThen(g -> g.out(labels)));
+        return new DefaultVertexTraversal(supplier, flow.andThen(g -> g.out(labels)), converter);
     }
 
     @Override
@@ -85,7 +88,7 @@ class DefaultVertexTraversal implements VertexTraversal {
         if (Stream.of(labels).anyMatch(Objects::isNull)) {
             throw new NullPointerException("The no one label element cannot be null");
         }
-        return new DefaultVertexTraversal(supplier, flow.andThen(g -> g.in(labels)));
+        return new DefaultVertexTraversal(supplier, flow.andThen(g -> g.in(labels)), converter);
     }
 
     @Override
@@ -93,7 +96,7 @@ class DefaultVertexTraversal implements VertexTraversal {
         if (Stream.of(labels).anyMatch(Objects::isNull)) {
             throw new NullPointerException("The no one label element cannot be null");
         }
-        return new DefaultVertexTraversal(supplier, flow.andThen(g -> g.both(labels)));
+        return new DefaultVertexTraversal(supplier, flow.andThen(g -> g.both(labels)), converter);
     }
 
     @Override
@@ -106,13 +109,14 @@ class DefaultVertexTraversal implements VertexTraversal {
         if (Stream.of(labels).anyMatch(Objects::isNull)) {
             throw new NullPointerException("The no one label element cannot be null");
         }
-        return new DefaultVertexTraversal(supplier, flow.andThen(g -> g.hasLabel(labels)));
+        return new DefaultVertexTraversal(supplier, flow.andThen(g -> g.hasLabel(labels)), converter);
     }
 
     @Override
     public <T> Optional<T> next() {
         Optional<Vertex> vertex = flow.apply(supplier.get()).tryNext();
         if(vertex.isPresent()) {
+            ArtemisVertex artemisVertex = TinkerPopUtil.toArtemisVertex(vertex.get());
 
         }
         return Optional.empty();
