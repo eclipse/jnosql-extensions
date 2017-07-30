@@ -75,7 +75,7 @@ public interface EdgeTraversal {
      * @return a {@link VertexTraversal} with the new condition
      * @throws NullPointerException when propertyKey is null
      */
-    VertexTraversal hasNot(String propertyKey) throws NullPointerException;
+    EdgeTraversal hasNot(String propertyKey) throws NullPointerException;
 
 
     /**

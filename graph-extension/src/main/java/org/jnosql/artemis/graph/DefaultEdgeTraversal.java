@@ -1,0 +1,131 @@
+/*
+ *  Copyright (c) 2017 Otávio Santana and others
+ *   All rights reserved. This program and the accompanying materials
+ *   are made available under the terms of the Eclipse Public License v1.0
+ *   and Apache License v2.0 which accompanies this distribution.
+ *   The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v10.html
+ *   and the Apache License v2.0 is available at http://www.opensource.org/licenses/apache2.0.php.
+ *
+ *   You may elect to redistribute this code under either of these licenses.
+ *
+ *   Contributors:
+ *
+ *   Otavio Santana
+ */
+package org.jnosql.artemis.graph;
+
+import org.apache.tinkerpop.gremlin.process.traversal.P;
+import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
+import org.apache.tinkerpop.gremlin.structure.Edge;
+import org.apache.tinkerpop.gremlin.structure.T;
+import org.apache.tinkerpop.gremlin.structure.Vertex;
+
+import java.util.Optional;
+import java.util.function.Function;
+import java.util.function.Supplier;
+import java.util.stream.Stream;
+
+import static java.util.Objects.requireNonNull;
+
+class DefaultEdgeTraversal implements EdgeTraversal {
+
+    private final Supplier<GraphTraversal<Vertex, Vertex>> supplier;
+    private final Function<GraphTraversal<?, ?>, GraphTraversal<Vertex, Edge>> flow;
+    private final VertexConverter converter;
+
+    DefaultEdgeTraversal(Supplier<GraphTraversal<Vertex, Vertex>> supplier,
+                         Function<GraphTraversal<?, ?>, GraphTraversal<Vertex, Edge>> flow,
+                         VertexConverter converter) {
+        this.supplier = supplier;
+        this.flow = flow;
+        this.converter = converter;
+    }
+
+
+    @Override
+    public EdgeTraversal has(String propertyKey, Object value) throws NullPointerException {
+        requireNonNull(propertyKey, "propertyKey is required");
+        requireNonNull(value, "value is required");
+
+        return new DefaultEdgeTraversal(supplier, flow.andThen(g -> g.has(propertyKey, value)), converter);
+    }
+
+    @Override
+    public EdgeTraversal has(String propertyKey, P<?> predicate) throws NullPointerException {
+        requireNonNull(propertyKey, "propertyKey is required");
+        requireNonNull(predicate, "predicate is required");
+        return new DefaultEdgeTraversal(supplier, flow.andThen(g -> g.has(propertyKey, predicate)), converter);
+    }
+
+    @Override
+    public EdgeTraversal has(T accessor, Object value) throws NullPointerException {
+        requireNonNull(accessor, "accessor is required");
+        requireNonNull(value, "value is required");
+        return new DefaultEdgeTraversal(supplier, flow.andThen(g -> g.has(accessor, value)), converter);
+    }
+
+    @Override
+    public EdgeTraversal has(T accessor, P<?> predicate) throws NullPointerException {
+        requireNonNull(accessor, "accessor is required");
+        requireNonNull(predicate, "predicate is required");
+        return new DefaultEdgeTraversal(supplier, flow.andThen(g -> g.has(accessor, predicate)), converter);
+    }
+
+    @Override
+    public EdgeTraversal hasNot(String propertyKey) throws NullPointerException {
+        requireNonNull(propertyKey, "propertyKey is required");
+        return new DefaultEdgeTraversal(supplier, flow.andThen(g -> g.hasNot(propertyKey)), converter);
+    }
+
+    @Override
+    public EdgeTraversal limit(long limit) {
+        return new DefaultEdgeTraversal(supplier, flow.andThen(g -> g.limit(limit)), converter);
+    }
+
+
+    @Override
+    public VertexTraversal inV() {
+        return null;
+    }
+
+    @Override
+    public VertexTraversal outV() {
+        return null;
+    }
+
+    @Override
+    public VertexTraversal bothV() {
+        return null;
+    }
+
+
+    @Override
+    public <OUT, IN> Optional<EdgeEntity<OUT, IN>> next() {
+        Optional<Edge> edgeOptional = flow.apply(supplier.get()).tryNext();
+        if (edgeOptional.isPresent()) {
+            Edge edge = edgeOptional.get();
+            return Optional.of(toEdgeEntity(edge));
+
+        }
+        return Optional.empty();
+    }
+
+    @Override
+    public <OUT, IN> Stream<EdgeEntity<OUT, IN>> stream() {
+        return flow.apply(supplier.get()).toList().stream().map(this::toEdgeEntity);
+    }
+
+    @Override
+    public <OUT, IN> Stream<EdgeEntity<OUT, IN>> stream(int limit) {
+        return flow.apply(supplier.get()).next(limit).stream().map(this::toEdgeEntity);
+    }
+
+
+    private <OUT, IN> EdgeEntity<OUT, IN> toEdgeEntity(Edge edge) {
+        ArtemisVertex inVertex = TinkerPopUtil.toArtemisVertex(edge.inVertex());
+        ArtemisVertex outVertex = TinkerPopUtil.toArtemisVertex(edge.outVertex());
+        return new DefaultEdgeEntity<>(edge, converter.toEntity(inVertex),
+                converter.toEntity(outVertex));
+    }
+
+}

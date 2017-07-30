@@ -117,7 +117,6 @@ class DefaultVertexTraversal implements VertexTraversal {
     @Override
     public VertexTraversal hasNot(String propertyKey) throws NullPointerException {
         requireNonNull(propertyKey, "propertyKey is required");
-
         return new DefaultVertexTraversal(supplier, flow.andThen(g -> g.hasNot(propertyKey)), converter);
     }
 
