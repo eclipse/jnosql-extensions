@@ -29,7 +29,7 @@ import java.util.Optional;
  * @param <OUT> the outbound entity
  *              <pre>outVertex ---label---> inVertex.</pre>
  */
-public interface EdgeEntity<IN, OUT> {
+public interface EdgeEntity<OUT, IN> {
 
     /**
      * Returns the id
