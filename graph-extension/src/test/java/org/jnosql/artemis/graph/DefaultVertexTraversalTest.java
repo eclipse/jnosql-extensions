@@ -38,6 +38,7 @@ import static org.junit.Assert.*;
 @RunWith(WeldJUnit4Runner.class)
 public class DefaultVertexTraversalTest {
 
+    private static final String READS = "reads";
     @Inject
     private GraphTemplate graphTemplate;
 
@@ -50,7 +51,9 @@ public class DefaultVertexTraversalTest {
     private Book license;
     private Book effectiveJava;
 
-    private EdgeEntity<>
+    private EdgeEntity<Person, Book> reads;
+    private EdgeEntity<Person, Book> read1;
+    private EdgeEntity<Person, Book> reads2;
 
     @Before
     public void setUp() {
@@ -67,9 +70,9 @@ public class DefaultVertexTraversalTest {
         effectiveJava = graphTemplate.insert(Book.builder().withAge(2001).withName("Effective Java").build());
 
 
-        graphTemplate.edge(otavio, "reads", effectiveJava);
-        graphTemplate.edge(poliana, "reads", shack);
-        graphTemplate.edge(paulo, "reads", license);
+        reads = graphTemplate.edge(otavio, READS, effectiveJava);
+        read1 = graphTemplate.edge(poliana, READS, shack);
+        reads2 = graphTemplate.edge(paulo, READS, license);
     }
 
     @After
@@ -81,6 +84,10 @@ public class DefaultVertexTraversalTest {
         graphTemplate.delete(shack.getId());
         graphTemplate.delete(license.getId());
         graphTemplate.delete(effectiveJava.getId());
+
+        reads.delete();
+        read1.delete();
+        reads2.delete();
     }
 
 
@@ -161,14 +168,14 @@ public class DefaultVertexTraversalTest {
 
     @Test
     public void shouldIn() {
-        List<Book> books = graphTemplate.getTraversal().in("reads").<Book>stream().collect(toList());
+        List<Book> books = graphTemplate.getTraversal().out(READS).<Book>stream().collect(toList());
         assertEquals(3, books.size());
         assertThat(books, containsInAnyOrder(shack, license, effectiveJava));
     }
 
     @Test
     public void shouldOut() {
-        List<Person> books = graphTemplate.getTraversal().out("Book").<Person>stream().collect(toList());
+        List<Person> books = graphTemplate.getTraversal().in(READS).<Person>stream().collect(toList());
         assertEquals(3, books.size());
         assertThat(books, containsInAnyOrder(otavio, poliana, paulo));
     }

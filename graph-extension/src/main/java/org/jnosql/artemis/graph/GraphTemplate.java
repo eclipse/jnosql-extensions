@@ -85,7 +85,7 @@ public interface GraphTemplate {
      * @throws IdNotFoundException     when {@link org.jnosql.artemis.Id} annotation is missing in the entities
      * @throws EntityNotFoundException when neither outbound or inbound is found
      */
-    <IN, OUT> EdgeEntity<IN, OUT> edge(OUT outbound, String label, IN inbound) throws NullPointerException,
+    <OUT, IN> EdgeEntity<OUT, IN> edge(OUT outbound, String label, IN inbound) throws NullPointerException,
             IdNotFoundException, EntityNotFoundException;
 
 

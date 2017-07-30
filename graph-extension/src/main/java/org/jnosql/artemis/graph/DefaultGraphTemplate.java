@@ -112,7 +112,7 @@ class DefaultGraphTemplate implements GraphTemplate {
     }
 
     @Override
-    public <IN, OUT> EdgeEntity<IN, OUT> edge(OUT outbound, String label, IN inbound) throws NullPointerException,
+    public <OUT, IN> EdgeEntity<OUT, IN> edge(OUT outbound, String label, IN inbound) throws NullPointerException,
             IdNotFoundException, EntityNotFoundException {
 
         requireNonNull(inbound, "inbound is required");
