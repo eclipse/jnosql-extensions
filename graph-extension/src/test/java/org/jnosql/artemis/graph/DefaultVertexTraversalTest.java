@@ -179,4 +179,10 @@ public class DefaultVertexTraversalTest {
         assertEquals(3, books.size());
         assertThat(books, containsInAnyOrder(otavio, poliana, paulo));
     }
+
+    @Test
+    public void shouldNot() {
+        List<?> result = graphTemplate.getTraversal().hasNot("year").stream().collect(toList());
+        assertEquals(6, result.size());
+    }
 }

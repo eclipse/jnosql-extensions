@@ -104,12 +104,21 @@ class DefaultVertexTraversal implements VertexTraversal {
         return new DefaultVertexTraversal(supplier, flow.andThen(g -> g.limit(limit)), converter);
     }
 
+
     @Override
     public VertexTraversal hasLabel(String... labels) throws NullPointerException {
         if (Stream.of(labels).anyMatch(Objects::isNull)) {
             throw new NullPointerException("The no one label element cannot be null");
         }
         return new DefaultVertexTraversal(supplier, flow.andThen(g -> g.hasLabel(labels)), converter);
+    }
+
+
+    @Override
+    public VertexTraversal hasNot(String propertyKey) throws NullPointerException {
+        requireNonNull(propertyKey, "propertyKey is required");
+
+        return new DefaultVertexTraversal(supplier, flow.andThen(g -> g.hasNot(propertyKey)), converter);
     }
 
     @Override
