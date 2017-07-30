@@ -83,8 +83,6 @@ public interface EdgeTraversal {
     EdgeTraversal limit(long limit);
 
 
-    //
-
     /**
      * Gets the first result
      *
