@@ -117,6 +117,7 @@ class DefaultVertexTraversal implements VertexTraversal {
         Optional<Vertex> vertex = flow.apply(supplier.get()).tryNext();
         if(vertex.isPresent()) {
             ArtemisVertex artemisVertex = TinkerPopUtil.toArtemisVertex(vertex.get());
+            return Optional.of(converter.toEntity(artemisVertex));
 
         }
         return Optional.empty();
@@ -124,11 +125,15 @@ class DefaultVertexTraversal implements VertexTraversal {
 
     @Override
     public <T> Stream<T> stream() {
-        return Stream.empty();
+        return flow.apply(supplier.get()).toList().stream()
+                .map(TinkerPopUtil::toArtemisVertex)
+                .map(converter::toEntity);
     }
 
     @Override
     public <T> Stream<T> stream(int limit) {
-        return Stream.empty();
+        return flow.apply(supplier.get()).next(limit).stream()
+                .map(TinkerPopUtil::toArtemisVertex)
+                .map(converter::toEntity);
     }
 }
