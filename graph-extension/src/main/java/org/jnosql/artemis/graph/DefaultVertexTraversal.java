@@ -84,6 +84,14 @@ class DefaultVertexTraversal implements VertexTraversal {
     }
 
     @Override
+    public EdgeTraversal outE(String... edgeLabels) throws NullPointerException {
+        if (Stream.of(edgeLabels).anyMatch(Objects::isNull)) {
+            throw new NullPointerException("The no one edgeLabels element cannot be null");
+        }
+        return new DefaultEdgeTraversal(supplier, flow.andThen(g -> g.outE(edgeLabels)), converter);
+    }
+
+    @Override
     public VertexTraversal in(String... labels) throws NullPointerException {
         if (Stream.of(labels).anyMatch(Objects::isNull)) {
             throw new NullPointerException("The no one label element cannot be null");
@@ -92,11 +100,28 @@ class DefaultVertexTraversal implements VertexTraversal {
     }
 
     @Override
+    public EdgeTraversal inE(String... edgeLabels) throws NullPointerException {
+        if (Stream.of(edgeLabels).anyMatch(Objects::isNull)) {
+            throw new NullPointerException("The no one edgeLabels element cannot be null");
+        }
+
+        return new DefaultEdgeTraversal(supplier, flow.andThen(g -> g.inE(edgeLabels)), converter);
+    }
+
+    @Override
     public VertexTraversal both(String... labels) throws NullPointerException {
         if (Stream.of(labels).anyMatch(Objects::isNull)) {
             throw new NullPointerException("The no one label element cannot be null");
         }
         return new DefaultVertexTraversal(supplier, flow.andThen(g -> g.both(labels)), converter);
+    }
+
+    @Override
+    public EdgeTraversal bothE(String... edgeLabels) throws NullPointerException {
+        if (Stream.of(edgeLabels).anyMatch(Objects::isNull)) {
+            throw new NullPointerException("The no one edgeLabels element cannot be null");
+        }
+        return new DefaultEdgeTraversal(supplier, flow.andThen(g -> g.bothE(edgeLabels)), converter);
     }
 
     @Override
