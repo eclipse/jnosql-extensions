@@ -101,7 +101,7 @@ class DefaultVertexTraversal implements VertexTraversal {
 
     @Override
     public VertexTraversal limit(long limit) {
-        return null;
+        return new DefaultVertexTraversal(supplier, flow.andThen(g -> g.limit(limit)), converter);
     }
 
     @Override
@@ -115,7 +115,7 @@ class DefaultVertexTraversal implements VertexTraversal {
     @Override
     public <T> Optional<T> next() {
         Optional<Vertex> vertex = flow.apply(supplier.get()).tryNext();
-        if(vertex.isPresent()) {
+        if (vertex.isPresent()) {
             ArtemisVertex artemisVertex = TinkerPopUtil.toArtemisVertex(vertex.get());
             return Optional.of(converter.toEntity(artemisVertex));
 
