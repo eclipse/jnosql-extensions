@@ -89,5 +89,14 @@ public interface GraphTemplate {
             IdNotFoundException, EntityNotFoundException;
 
 
+    /**
+     * Gets a {@link VertexTraversal} to run a query in the graph
+     *
+     * @param vertexIds get ids
+     * @return a {@link VertexTraversal} instance
+     * @throws NullPointerException if any id element is null
+     */
+    VertexTraversal getTraversal(Object... vertexIds) throws NullPointerException;
+
 
 }
