@@ -32,6 +32,7 @@ import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static org.apache.tinkerpop.gremlin.structure.T.id;
 import static org.apache.tinkerpop.gremlin.structure.T.label;
+import static org.jnosql.artemis.graph.TinkerPopUtil.toArtemisVertex;
 
 /**
  * The default {@link GraphTemplate}
@@ -159,10 +160,6 @@ class DefaultGraphTemplate implements GraphTemplate {
         classRepresentation.getId().orElseThrow(() -> IdNotFoundException.newInstance(entity.getClass()));
     }
 
-    private ArtemisVertex toArtemisVertex(Vertex vertex) {
-        ArtemisVertex vertexUpdated = ArtemisVertex.of(vertex.label(), vertex.id());
-        vertex.keys().stream().forEach(k -> vertexUpdated.add(k, Value.of(vertex.value(k))));
-        return vertexUpdated;
-    }
+
 
 }
