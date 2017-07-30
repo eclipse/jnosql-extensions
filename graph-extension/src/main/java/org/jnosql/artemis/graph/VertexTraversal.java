@@ -78,31 +78,58 @@ public interface VertexTraversal {
     VertexTraversal hasNot(String propertyKey) throws NullPointerException;
 
     /**
-     * Defines an outbound relationship
+     * Map the {@link VertexTraversal} to its outgoing adjacent vertices given the edge labels.
      *
-     * @param labels the labels in the condition
+     * @param labels the edge labels to traverse
      * @return a {@link VertexTraversal} with the new condition
      * @throws NullPointerException when has any null element
      */
     VertexTraversal out(String... labels) throws NullPointerException;
 
     /**
-     * Defines an inbound relationship
+     * Map the {@link EdgeTraversal} to its outgoing incident edges given the edge labels.
      *
-     * @param labels the labels in the condition
+     * @param edgeLabels the edge labels to traverse
+     * @return a {@link EdgeTraversal} with the new condition
+     * @throws NullPointerException when has any null element
+     */
+    EdgeTraversal outE(String... edgeLabels) throws NullPointerException;
+
+    /**
+     * Map the {@link VertexTraversal} to its adjacent vertices given the edge labels.
+     *
+     * @param labels the edge labels to traverse
      * @return a {@link VertexTraversal} with the new condition
      * @throws NullPointerException when has any null element
      */
     VertexTraversal in(String... labels) throws NullPointerException;
 
     /**
-     * Defines both, either inbound or outbound, relationship
+     * Map the {@link EdgeTraversal} to its ingoing incident edges given the edge labels.
      *
-     * @param labels the labels in the condition
+     * @param edgeLabels the edge labels to traverse
+     * @return a {@link EdgeTraversal} with the new condition
+     * @throws NullPointerException when has any null element
+     */
+    EdgeTraversal inE(String... edgeLabels) throws NullPointerException;
+
+    /**
+     * Map the {@link VertexTraversal} to its incoming adjacent vertices given the edge labels.
+     *
+     * @param labels the edge labels to traverse
      * @return a {@link VertexTraversal} with the new condition
      * @throws NullPointerException when has any null element
      */
     VertexTraversal both(String... labels) throws NullPointerException;
+
+    /**
+     * Map the {@link EdgeTraversal} to its either ingoing or outgoing incident edges given the edge labels.
+     *
+     * @param edgeLabels the edge labels to traverse
+     * @return a {@link EdgeTraversal} with the new condition
+     * @throws NullPointerException when has any null element
+     */
+    EdgeTraversal bothE(String... edgeLabels) throws NullPointerException;
 
     /**
      * Defines a limit
