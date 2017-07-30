@@ -20,6 +20,10 @@ import org.apache.tinkerpop.gremlin.structure.T;
 import java.util.Optional;
 import java.util.stream.Stream;
 
+/**
+ * The Graph Traversal that maps {@link org.apache.tinkerpop.gremlin.structure.Edge}.
+ * This Traversal is lazy, in other words, that just run after the
+ */
 public interface EdgeTraversal {
 
 
