@@ -1,0 +1,130 @@
+/*
+ *  Copyright (c) 2017 Otávio Santana and others
+ *   All rights reserved. This program and the accompanying materials
+ *   are made available under the terms of the Eclipse Public License v1.0
+ *   and Apache License v2.0 which accompanies this distribution.
+ *   The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v10.html
+ *   and the Apache License v2.0 is available at http://www.opensource.org/licenses/apache2.0.php.
+ *
+ *   You may elect to redistribute this code under either of these licenses.
+ *
+ *   Contributors:
+ *
+ *   Otavio Santana
+ */
+package org.jnosql.artemis.graph;
+
+import org.apache.tinkerpop.gremlin.process.traversal.P;
+import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
+import org.apache.tinkerpop.gremlin.structure.T;
+import org.apache.tinkerpop.gremlin.structure.Vertex;
+
+import java.util.Objects;
+import java.util.Optional;
+import java.util.function.Function;
+import java.util.function.Supplier;
+import java.util.stream.Stream;
+
+import static java.util.Objects.requireNonNull;
+
+/**
+ * The default implementation of {@link VertexTraversal}
+ */
+class DefaultVertexTraversal implements VertexTraversal {
+
+
+    private final Supplier<GraphTraversal<Vertex, Vertex>> supplier;
+    private final Function<GraphTraversal<Vertex, Vertex>, GraphTraversal<Vertex, Vertex>> flow;
+
+    DefaultVertexTraversal(Supplier<GraphTraversal<Vertex, Vertex>> supplier,
+                           Function<GraphTraversal<Vertex, Vertex>, GraphTraversal<Vertex, Vertex>> flow) {
+        this.supplier = supplier;
+        this.flow = flow;
+    }
+
+
+    @Override
+    public VertexTraversal has(String propertyKey, Object value) throws NullPointerException {
+        requireNonNull(propertyKey, "propertyKey is required");
+        requireNonNull(value, "value is required");
+
+        return new DefaultVertexTraversal(supplier, flow.andThen(g -> g.has(propertyKey, value)));
+    }
+
+    @Override
+    public VertexTraversal has(String propertyKey, P<?> predicate) throws NullPointerException {
+        requireNonNull(propertyKey, "propertyKey is required");
+        requireNonNull(predicate, "predicate is required");
+        return new DefaultVertexTraversal(supplier, flow.andThen(g -> g.has(propertyKey, predicate)));
+    }
+
+    @Override
+    public VertexTraversal has(T accessor, Object value) throws NullPointerException {
+        requireNonNull(accessor, "accessor is required");
+        requireNonNull(value, "value is required");
+        return new DefaultVertexTraversal(supplier, flow.andThen(g -> g.has(accessor, value)));
+    }
+
+    @Override
+    public VertexTraversal has(T accessor, P<?> predicate) throws NullPointerException {
+        requireNonNull(accessor, "accessor is required");
+        requireNonNull(predicate, "predicate is required");
+        return new DefaultVertexTraversal(supplier, flow.andThen(g -> g.has(accessor, predicate)));
+    }
+
+    @Override
+    public VertexTraversal out(String... labels) throws NullPointerException {
+        if (Stream.of(labels).anyMatch(Objects::isNull)) {
+            throw new NullPointerException("The no one label element cannot be null");
+        }
+        return new DefaultVertexTraversal(supplier, flow.andThen(g -> g.out(labels)));
+    }
+
+    @Override
+    public VertexTraversal in(String... labels) throws NullPointerException {
+        if (Stream.of(labels).anyMatch(Objects::isNull)) {
+            throw new NullPointerException("The no one label element cannot be null");
+        }
+        return new DefaultVertexTraversal(supplier, flow.andThen(g -> g.in(labels)));
+    }
+
+    @Override
+    public VertexTraversal both(String... labels) throws NullPointerException {
+        if (Stream.of(labels).anyMatch(Objects::isNull)) {
+            throw new NullPointerException("The no one label element cannot be null");
+        }
+        return new DefaultVertexTraversal(supplier, flow.andThen(g -> g.both(labels)));
+    }
+
+    @Override
+    public VertexTraversal limit(long limit) {
+        return null;
+    }
+
+    @Override
+    public VertexTraversal hasLabel(String... labels) throws NullPointerException {
+        if (Stream.of(labels).anyMatch(Objects::isNull)) {
+            throw new NullPointerException("The no one label element cannot be null");
+        }
+        return new DefaultVertexTraversal(supplier, flow.andThen(g -> g.hasLabel(labels)));
+    }
+
+    @Override
+    public <T> Optional<T> next() {
+        Optional<Vertex> vertex = flow.apply(supplier.get()).tryNext();
+        if(vertex.isPresent()) {
+
+        }
+        return Optional.empty();
+    }
+
+    @Override
+    public <T> Stream<T> stream() {
+        return Stream.empty();
+    }
+
+    @Override
+    public <T> Stream<T> stream(int limit) {
+        return Stream.empty();
+    }
+}
