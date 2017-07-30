@@ -94,6 +94,28 @@ public interface EdgeTraversal {
      */
     <OUT, IN> Optional<EdgeEntity<OUT, IN>> next();
 
+
+    /**
+     * Converts to vertex traversal taking the inbound Vertex
+     *
+     * @return {@link VertexTraversal}
+     */
+    VertexTraversal inV();
+
+    /**
+     * Converts to vertex traversal taking the outbound Vertex
+     *
+     * @return {@link VertexTraversal}
+     */
+    VertexTraversal outV();
+
+    /**
+     * Converts to vertex traversal taking both inbound and outbound Vertex
+     *
+     * @return {@link VertexTraversal}
+     */
+    VertexTraversal bothV();
+
     /**
      * Get the result as stream
      *
