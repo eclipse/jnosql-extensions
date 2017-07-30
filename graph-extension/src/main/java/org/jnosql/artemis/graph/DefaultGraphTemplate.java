@@ -26,7 +26,10 @@ import org.jnosql.diana.api.Value;
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Function;
+import java.util.stream.Stream;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
@@ -154,12 +157,19 @@ class DefaultGraphTemplate implements GraphTemplate {
 
     }
 
+    @Override
+    public VertexTraversal getTraversal(Object... vertexIds) throws NullPointerException {
+        if (Stream.of(vertexIds).anyMatch(Objects::isNull)) {
+            throw new NullPointerException("No one vertexId element cannot be null");
+        }
+        return new DefaultVertexTraversal(() -> graph.get().traversal().V(vertexIds), Function.identity(), converter);
+    }
+
 
     private <T> void checkId(T entity) {
         ClassRepresentation classRepresentation = classRepresentations.get(entity.getClass());
         classRepresentation.getId().orElseThrow(() -> IdNotFoundException.newInstance(entity.getClass()));
     }
-
 
 
 }
