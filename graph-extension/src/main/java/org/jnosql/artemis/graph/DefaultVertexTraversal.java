@@ -34,11 +34,11 @@ class DefaultVertexTraversal implements VertexTraversal {
 
 
     private final Supplier<GraphTraversal<Vertex, Vertex>> supplier;
-    private final Function<GraphTraversal<Vertex, Vertex>, GraphTraversal<Vertex, Vertex>> flow;
+    private final Function<GraphTraversal<?, ?>, GraphTraversal<Vertex, Vertex>> flow;
     private final VertexConverter converter;
 
     DefaultVertexTraversal(Supplier<GraphTraversal<Vertex, Vertex>> supplier,
-                           Function<GraphTraversal<Vertex, Vertex>, GraphTraversal<Vertex, Vertex>> flow,
+                           Function<GraphTraversal<?, ?>, GraphTraversal<Vertex, Vertex>> flow,
                            VertexConverter converter) {
         this.supplier = supplier;
         this.flow = flow;
