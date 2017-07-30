@@ -67,6 +67,16 @@ public interface VertexTraversal {
      */
     VertexTraversal has(T accessor, P<?> predicate) throws NullPointerException;
 
+
+    /**
+     * Defines Vetex has not a property
+     *
+     * @param propertyKey the property key
+     * @return a {@link VertexTraversal} with the new condition
+     * @throws NullPointerException when propertyKey is null
+     */
+    VertexTraversal hasNot(String propertyKey) throws NullPointerException;
+
     /**
      * Defines an outbound relationship
      *
@@ -111,14 +121,6 @@ public interface VertexTraversal {
      */
     VertexTraversal hasLabel(String... labels) throws NullPointerException;
 
-    /**
-     * Defines Vetex has not a property
-     *
-     * @param propertyKey the property key
-     * @return a {@link VertexTraversal} with the new condition
-     * @throws NullPointerException when propertyKey is null
-     */
-    VertexTraversal hasNot(String propertyKey) throws NullPointerException;
 
     /**
      * Gets the first result
