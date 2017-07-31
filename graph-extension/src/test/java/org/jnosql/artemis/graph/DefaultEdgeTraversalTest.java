@@ -125,4 +125,44 @@ public class DefaultEdgeTraversalTest extends AbstractTraversalTest {
         assertEquals(6, entities.size());
         assertThat(entities, containsInAnyOrder(shack, effectiveJava, license, paulo, otavio, poliana));
     }
+
+
+    @Test
+    public void shouldHasProperty() {
+        Optional<EdgeEntity<Person, Book>> edgeEntity = graphTemplate.getTraversalVertex()
+                .outE(READS)
+                .has("motivation", "hobby").next();
+
+        assertTrue(edgeEntity.isPresent());
+        assertEquals(reads.getId().get(), edgeEntity.get().getId().get());
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void shouldReturnErrorWhenHasPropertyWhenKeyIsNull() {
+        graphTemplate.getTraversalVertex()
+                .outE(READS)
+                .has((String)null, "hobby").next();
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void shouldReturnErrorWhenHasPropertyWhenValueIsNull() {
+        graphTemplate.getTraversalVertex()
+                .outE(READS)
+                .has("motivation", null).next();
+    }
+
+    @Test
+    public void shouldHasNot() {
+        List<EdgeEntity<Person, Book>> edgeEntities = graphTemplate.getTraversalVertex()
+                .outE(READS).hasNot("language")
+                .<Person, Book>stream()
+                .collect(toList());
+
+        assertEquals(2, edgeEntities.size());
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void shouldReturnErrorWhenHasNotIsNull() {
+        graphTemplate.getTraversalVertex().outE(READS).hasNot(null);
+    }
 }

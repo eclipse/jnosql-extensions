@@ -178,7 +178,7 @@ public class DefaultVertexTraversalTest extends AbstractTraversalTest {
     public void shouldReturnErrorWhenOutIsNull() {
         graphTemplate.getTraversalVertex().in(null).<Person>stream().collect(toList());
     }
-    
+
     @Test
     public void shouldBoth() {
         List<?> entities = graphTemplate.getTraversalVertex().both(READS).<Person>stream().collect(toList());

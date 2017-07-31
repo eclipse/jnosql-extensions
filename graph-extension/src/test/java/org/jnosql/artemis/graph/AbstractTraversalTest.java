@@ -72,6 +72,11 @@ public abstract class AbstractTraversalTest {
         reads = graphTemplate.edge(otavio, READS, effectiveJava);
         reads2 = graphTemplate.edge(poliana, READS, shack);
         reads3 = graphTemplate.edge(paulo, READS, license);
+
+        reads.add("motivation", "hobby");
+        reads.add("language", "Java");
+        reads2.add("motivation", "love");
+        reads3.add("motivation", "job");
     }
 
     @After
