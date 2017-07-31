@@ -14,6 +14,7 @@
  */
 package org.jnosql.artemis.graph;
 
+import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.jnosql.diana.api.Value;
 
@@ -26,5 +27,13 @@ final class TinkerPopUtil {
         ArtemisVertex artemisVertex = ArtemisVertex.of(vertex.label(), vertex.id());
         vertex.keys().stream().forEach(k -> artemisVertex.add(k, Value.of(vertex.value(k))));
         return artemisVertex;
+    }
+
+
+    static <OUT, IN> EdgeEntity<OUT, IN> toEdgeEntity(Edge edge, VertexConverter converter) {
+        ArtemisVertex inVertex = TinkerPopUtil.toArtemisVertex(edge.inVertex());
+        ArtemisVertex outVertex = TinkerPopUtil.toArtemisVertex(edge.outVertex());
+        return new DefaultEdgeEntity<>(edge, converter.toEntity(inVertex),
+                converter.toEntity(outVertex));
     }
 }
