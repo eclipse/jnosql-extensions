@@ -42,7 +42,7 @@ public class DefaultEdgeTraversalTest extends AbstractTraversalTest {
 
     @Test
     public void shouldReturnEdgeId() {
-        Optional<EdgeEntity<Object, Object>> edgeEntity = graphTemplate.getTraversalEdge(effectiveJava.getId())
+        Optional<EdgeEntity<Object, Object>> edgeEntity = graphTemplate.getTraversalEdge(reads.getId().get())
                 .next();
 
         assertTrue(edgeEntity.isPresent());
