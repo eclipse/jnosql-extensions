@@ -22,6 +22,7 @@ import org.jnosql.artemis.graph.model.Person;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import javax.naming.NoPermissionException;
 import java.util.List;
 import java.util.Optional;
 
@@ -89,12 +90,35 @@ public class DefaultVertexTraversalTest extends AbstractTraversalTest {
         assertEquals(person.get(), poliana);
     }
 
+    @Test(expected = NullPointerException.class)
+    public void shouldReturnErrorWhenHasHasNullKey() {
+        graphTemplate.getTraversalVertex().has((String) null, "Poliana").next();
+    }
+
+
+    @Test(expected = NullPointerException.class)
+    public void shouldReturnErrorWhenHasHasNullValue() {
+        graphTemplate.getTraversalVertex().has("name", null).next();
+    }
+
     @Test
     public void shouldHasId() {
         Optional<Person> person = graphTemplate.getTraversalVertex().has(T.id, poliana.getId()).next();
         assertTrue(person.isPresent());
         assertEquals(person.get(), poliana);
     }
+
+    @Test(expected = NullPointerException.class)
+    public void shouldReturnErrorWhenHasIdHasNullValue() {
+        graphTemplate.getTraversalVertex().has(T.id, null).next();
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void shouldReturnErrorWhenHasIdHasNullAccessor() {
+        T id = null;
+        graphTemplate.getTraversalVertex().has(id, poliana.getId()).next();
+    }
+
 
     @Test
     public void shouldHasPredicate() {
@@ -104,11 +128,31 @@ public class DefaultVertexTraversalTest extends AbstractTraversalTest {
         assertEquals(5, result.size());
     }
 
+    @Test(expected = NullPointerException.class)
+    public void shouldReturnErrorWhenHasPredicateIsNull() {
+        P<Integer> gt = null;
+        graphTemplate.getTraversalVertex().has("age", gt)
+                .stream()
+                .collect(toList());
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void shouldReturnErrorWhenHasKeyIsNull() {
+        List<?> result = graphTemplate.getTraversalVertex().has((String) null, P.gt(26))
+                .stream()
+                .collect(toList());
+    }
+
     @Test
     public void shouldHasLabel() {
         List<Book> books = graphTemplate.getTraversalVertex().hasLabel("Book").<Book>stream().collect(toList());
         assertEquals(3, books.size());
         assertThat(books, containsInAnyOrder(shack, license, effectiveJava));
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void shouldReturnErrorWhenHasLabelHasNull() {
+        graphTemplate.getTraversalVertex().hasLabel(null).<Book>stream().collect(toList());
     }
 
     @Test
@@ -118,6 +162,11 @@ public class DefaultVertexTraversalTest extends AbstractTraversalTest {
         assertThat(books, containsInAnyOrder(shack, license, effectiveJava));
     }
 
+    @Test(expected = NullPointerException.class)
+    public void shouldReturnErrorWhenInIsNull() {
+        graphTemplate.getTraversalVertex().out(null).<Book>stream().collect(toList());
+    }
+
     @Test
     public void shouldOut() {
         List<Person> books = graphTemplate.getTraversalVertex().in(READS).<Person>stream().collect(toList());
@@ -125,9 +174,19 @@ public class DefaultVertexTraversalTest extends AbstractTraversalTest {
         assertThat(books, containsInAnyOrder(otavio, poliana, paulo));
     }
 
+    @Test(expected = NullPointerException.class)
+    public void shouldReturnErrorWhenOutIsNull() {
+        graphTemplate.getTraversalVertex().in(null).<Person>stream().collect(toList());
+    }
+
     @Test
     public void shouldNot() {
         List<?> result = graphTemplate.getTraversalVertex().hasNot("year").stream().collect(toList());
         assertEquals(6, result.size());
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void shouldReturnErrorWhenHasNotIsNull() {
+        graphTemplate.getTraversalVertex().hasNot(null).stream().collect(toList());
     }
 }
