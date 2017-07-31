@@ -54,9 +54,9 @@ public abstract class AbstractTraversalTest {
         graphTemplate.delete(poliana.getId());
         graphTemplate.delete(paulo.getId());
 
-        graphTemplate.delete(shack.getId());
-        graphTemplate.delete(license.getId());
-        graphTemplate.delete(effectiveJava.getId());
+        graphTemplate.deleteEdge(shack.getId());
+        graphTemplate.deleteEdge(license.getId());
+        graphTemplate.deleteEdge(effectiveJava.getId());
 
         reads.delete();
         reads2.delete();

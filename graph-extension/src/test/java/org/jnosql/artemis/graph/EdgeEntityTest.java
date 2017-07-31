@@ -192,6 +192,54 @@ public class EdgeEntityTest {
 
         EdgeEntity<Person, Book> newEdge = graphTemplate.edge(person, "reads", book);
         assertNotEquals(edge.getId(), newEdge.getId());
+
+        graphTemplate.deleteEdge(newEdge.getId());
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void shouldReturnErrorWhenDeleteAnEdgeWithNull() {
+        graphTemplate.delete(null);
+    }
+
+    @Test
+    public void shouldDeleteAnEdge2() {
+        Person person = graphTemplate.insert(Person.builder().withName("Poliana").withAge().build());
+        Book book = graphTemplate.insert(Book.builder().withAge(2007).withName("The Shack").build());
+
+        EdgeEntity<Person, Book> edge = graphTemplate.edge(person, "reads", book);
+
+        graphTemplate.deleteEdge(edge.getId().get());
+
+        EdgeEntity<Person, Book> newEdge = graphTemplate.edge(person, "reads", book);
+        assertNotEquals(edge.getId(), newEdge.getId());
+    }
+
+
+    @Test(expected = NullPointerException.class)
+    public void shouldReturnErrorWhenFindEdgeWithNull() {
+        graphTemplate.edge(null);
+    }
+
+
+    @Test
+    public void shouldFindAnEdge() {
+        Person person = graphTemplate.insert(Person.builder().withName("Poliana").withAge().build());
+        Book book = graphTemplate.insert(Book.builder().withAge(2007).withName("The Shack").build());
+        EdgeEntity<Person, Book> edge = graphTemplate.edge(person, "reads", book);
+
+        Optional<EdgeEntity<Person, Book>> newEdge = graphTemplate.edge(edge.getId().get());
+
+        assertTrue(newEdge.isPresent());
+        assertEquals(edge.getId(), newEdge.get().getId());
+
+        graphTemplate.deleteEdge(edge.getId());
+    }
+
+    @Test
+    public void shouldNotFindAnEdge() {
+        Optional<EdgeEntity<Person, Book>> edgeEntity = graphTemplate.edge(12L);
+
+        assertFalse(edgeEntity.isPresent());
     }
 
 }
