@@ -75,7 +75,7 @@ public interface GraphTemplate {
      * @param <T>  the entity type
      * @param <ID> the id type
      * @return the entity found otherwise {@link Optional#empty()}
-     * @throws NullPointerException when either label and id are null
+     * @throws NullPointerException when id is null
      */
     <T, ID> Optional<T> find(ID id) throws NullPointerException;
 

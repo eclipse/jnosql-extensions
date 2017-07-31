@@ -37,6 +37,7 @@ import static java.util.Objects.requireNonNull;
 import static org.apache.tinkerpop.gremlin.structure.T.id;
 import static org.apache.tinkerpop.gremlin.structure.T.label;
 import static org.jnosql.artemis.graph.TinkerPopUtil.toArtemisVertex;
+import static org.jnosql.artemis.graph.TinkerPopUtil.toEdgeEntity;
 
 /**
  * The default {@link GraphTemplate}
@@ -97,7 +98,6 @@ class DefaultGraphTemplate implements GraphTemplate {
 
     @Override
     public <T> void delete(T idValue) throws NullPointerException {
-        requireNonNull(label, "label is required");
         requireNonNull(idValue, "id is required");
         List<Vertex> vertices = graph.get().traversal().V(idValue).toList();
         vertices.stream().forEach(Vertex::remove);
@@ -105,8 +105,14 @@ class DefaultGraphTemplate implements GraphTemplate {
     }
 
     @Override
+    public <T> void deleteEdge(T idEdge) throws NullPointerException {
+        requireNonNull(idEdge, "idEdge is required");
+        List<Edge> edges = graph.get().traversal().E(idEdge).toList();
+        edges.stream().forEach(Edge::remove);
+    }
+
+    @Override
     public <T, ID> Optional<T> find(ID idValue) throws NullPointerException {
-        requireNonNull(label, "label is required");
         requireNonNull(idValue, "id is required");
         Optional<Vertex> vertex = graph.get().traversal().V(idValue).tryNext();
         if (vertex.isPresent()) {
@@ -159,6 +165,20 @@ class DefaultGraphTemplate implements GraphTemplate {
         }
 
 
+    }
+
+    @Override
+    public <OUT, IN, E> Optional<EdgeEntity<OUT, IN>> edge(E edgeId) throws NullPointerException {
+        requireNonNull(edgeId, "edgeId is required");
+
+        Optional<Edge> edgeOptional = graph.get().traversal().E(edgeId).tryNext();
+
+        if (edgeOptional.isPresent()) {
+            Edge edge = edgeOptional.get();
+            return Optional.of(toEdgeEntity(edge, converter));
+        }
+
+        return Optional.empty();
     }
 
     @Override

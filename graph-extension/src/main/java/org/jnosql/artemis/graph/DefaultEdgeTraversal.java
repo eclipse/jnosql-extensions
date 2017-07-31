@@ -26,6 +26,7 @@ import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 import static java.util.Objects.requireNonNull;
+import static org.jnosql.artemis.graph.TinkerPopUtil.toEdgeEntity;
 
 class DefaultEdgeTraversal implements EdgeTraversal {
 
@@ -104,7 +105,7 @@ class DefaultEdgeTraversal implements EdgeTraversal {
         Optional<Edge> edgeOptional = flow.apply(supplier.get()).tryNext();
         if (edgeOptional.isPresent()) {
             Edge edge = edgeOptional.get();
-            return Optional.of(toEdgeEntity(edge));
+            return Optional.of(toEdge(edge));
 
         }
         return Optional.empty();
@@ -112,20 +113,18 @@ class DefaultEdgeTraversal implements EdgeTraversal {
 
     @Override
     public <OUT, IN> Stream<EdgeEntity<OUT, IN>> stream() {
-        return flow.apply(supplier.get()).toList().stream().map(this::toEdgeEntity);
+        return flow.apply(supplier.get()).toList().stream().map(this::toEdge);
     }
 
     @Override
     public <OUT, IN> Stream<EdgeEntity<OUT, IN>> stream(int limit) {
-        return flow.apply(supplier.get()).next(limit).stream().map(this::toEdgeEntity);
+        return flow.apply(supplier.get()).next(limit).stream().map(this::toEdge);
     }
 
 
-    private <OUT, IN> EdgeEntity<OUT, IN> toEdgeEntity(Edge edge) {
-        ArtemisVertex inVertex = TinkerPopUtil.toArtemisVertex(edge.inVertex());
-        ArtemisVertex outVertex = TinkerPopUtil.toArtemisVertex(edge.outVertex());
-        return new DefaultEdgeEntity<>(edge, converter.toEntity(inVertex),
-                converter.toEntity(outVertex));
+    <OUT, IN> EdgeEntity<OUT, IN> toEdge(Edge edge) {
+        return toEdgeEntity(edge, converter);
     }
+
 
 }
