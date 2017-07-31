@@ -44,8 +44,11 @@ import static org.jnosql.artemis.graph.TinkerPopUtil.toEdgeEntity;
  */
 class DefaultGraphTemplate implements GraphTemplate {
 
-    private static final Function<GraphTraversal<?, ?>, GraphTraversal<Vertex, Vertex>> INITIAL_FLOW =
+    private static final Function<GraphTraversal<?, ?>, GraphTraversal<Vertex, Vertex>> INITIAL_VERTEX =
             g -> (GraphTraversal<Vertex, Vertex>) g;
+
+    private static final Function<GraphTraversal<?, ?>, GraphTraversal<Vertex, Edge>> INITIAL_EDGE =
+            g -> (GraphTraversal<Vertex, Edge>) g;
 
     @Inject
     private Instance<Graph> graph;
@@ -186,7 +189,15 @@ class DefaultGraphTemplate implements GraphTemplate {
         if (Stream.of(vertexIds).anyMatch(Objects::isNull)) {
             throw new NullPointerException("No one vertexId element cannot be null");
         }
-        return new DefaultVertexTraversal(() -> graph.get().traversal().V(vertexIds), INITIAL_FLOW, converter);
+        return new DefaultVertexTraversal(() -> graph.get().traversal().V(vertexIds), INITIAL_VERTEX, converter);
+    }
+
+    @Override
+    public EdgeTraversal getTraversalEdge(Object... edgeIds) throws NullPointerException {
+        if (Stream.of(edgeIds).anyMatch(Objects::isNull)) {
+            throw new NullPointerException("No one edgeId element cannot be null");
+        }
+        return new DefaultEdgeTraversal(() -> graph.get().traversal().V(edgeIds), INITIAL_EDGE, converter);
     }
 
 
