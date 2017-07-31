@@ -46,7 +46,7 @@ public class DefaultEdgeTraversalTest extends AbstractTraversalTest {
                 .next();
 
         assertTrue(edgeEntity.isPresent());
-        assertEquals(effectiveJava.getId(), edgeEntity.get().getId().get());
+        assertEquals(reads.getId().get(), edgeEntity.get().getId().get());
     }
 
     @Test
