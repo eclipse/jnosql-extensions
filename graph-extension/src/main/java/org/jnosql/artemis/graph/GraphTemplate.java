@@ -118,7 +118,17 @@ public interface GraphTemplate {
      * @return a {@link VertexTraversal} instance
      * @throws NullPointerException if any id element is null
      */
-    VertexTraversal getTraversal(Object... vertexIds) throws NullPointerException;
+    VertexTraversal getTraversalVertex(Object... vertexIds) throws NullPointerException;
+
+
+    /**
+     * Gets a {@link EdgeTraversal} to run a query in the graph
+     *
+     * @param edgeIds get ids
+     * @return a {@link VertexTraversal} instance
+     * @throws NullPointerException if any id element is null
+     */
+    EdgeTraversal getTraversalEdge(Object... edgeIds) throws NullPointerException;
 
 
 }

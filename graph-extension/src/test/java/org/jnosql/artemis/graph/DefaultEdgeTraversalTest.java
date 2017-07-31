@@ -14,17 +14,13 @@
  */
 package org.jnosql.artemis.graph;
 
-import org.hamcrest.Matchers;
 import org.jnosql.artemis.graph.cdi.WeldJUnit4Runner;
 import org.jnosql.artemis.graph.model.Book;
 import org.jnosql.artemis.graph.model.Person;
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toList;
 import static org.hamcrest.Matchers.containsInAnyOrder;
@@ -37,7 +33,7 @@ public class DefaultEdgeTraversalTest extends AbstractTraversalTest {
 
     @Test
     public void shouldReturnOutE() {
-        List<EdgeEntity<Person, Book>> edges = graphTemplate.getTraversal().outE(READS)
+        List<EdgeEntity<Person, Book>> edges = graphTemplate.getTraversalVertex().outE(READS)
                 .<Person, Book>stream()
                 .collect(toList());
 
@@ -47,7 +43,7 @@ public class DefaultEdgeTraversalTest extends AbstractTraversalTest {
 
     @Test
     public void shouldReturnInE() {
-        List<EdgeEntity<Person, Book>> edges = graphTemplate.getTraversal().inE(READS)
+        List<EdgeEntity<Person, Book>> edges = graphTemplate.getTraversalVertex().inE(READS)
                 .<Person, Book>stream()
                 .collect(toList());
 
@@ -57,7 +53,7 @@ public class DefaultEdgeTraversalTest extends AbstractTraversalTest {
 
     @Test
     public void shouldReturnBothE() {
-        List<EdgeEntity<Person, Book>> edges = graphTemplate.getTraversal().bothE(READS)
+        List<EdgeEntity<Person, Book>> edges = graphTemplate.getTraversalVertex().bothE(READS)
                 .<Person, Book>stream()
                 .collect(toList());
 
@@ -67,14 +63,14 @@ public class DefaultEdgeTraversalTest extends AbstractTraversalTest {
 
     @Test
     public void shouldReturnOut() {
-        List<Person> people = graphTemplate.getTraversal().outE(READS).outV().<Person>stream().collect(toList());
+        List<Person> people = graphTemplate.getTraversalVertex().outE(READS).outV().<Person>stream().collect(toList());
         assertEquals(3, people.size());
         assertThat(people, containsInAnyOrder(poliana, otavio, paulo));
     }
 
     @Test
     public void shouldReturnIn() {
-        List<Book> books = graphTemplate.getTraversal().outE(READS).inV().<Book>stream().collect(toList());
+        List<Book> books = graphTemplate.getTraversalVertex().outE(READS).inV().<Book>stream().collect(toList());
         assertEquals(3, books.size());
         assertThat(books, containsInAnyOrder(shack, effectiveJava, license));
     }
@@ -82,7 +78,7 @@ public class DefaultEdgeTraversalTest extends AbstractTraversalTest {
 
     @Test
     public void shouldReturnBoth() {
-        List<?> entities = graphTemplate.getTraversal().outE(READS).bothV().stream().collect(toList());
+        List<?> entities = graphTemplate.getTraversalVertex().outE(READS).bothV().stream().collect(toList());
         assertEquals(6, entities.size());
         assertThat(entities, containsInAnyOrder(shack, effectiveJava, license, paulo, otavio, poliana));
     }

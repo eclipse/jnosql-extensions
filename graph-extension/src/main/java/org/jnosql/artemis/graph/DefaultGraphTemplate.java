@@ -182,7 +182,7 @@ class DefaultGraphTemplate implements GraphTemplate {
     }
 
     @Override
-    public VertexTraversal getTraversal(Object... vertexIds) throws NullPointerException {
+    public VertexTraversal getTraversalVertex(Object... vertexIds) throws NullPointerException {
         if (Stream.of(vertexIds).anyMatch(Objects::isNull)) {
             throw new NullPointerException("No one vertexId element cannot be null");
         }

@@ -38,13 +38,13 @@ public class DefaultVertexTraversalTest extends AbstractTraversalTest {
 
     @Test(expected = NullPointerException.class)
     public void shouldReturnErrorWhenVertexIdIsNull() {
-        graphTemplate.getTraversal(null);
+        graphTemplate.getTraversalVertex(null);
     }
 
 
     @Test
     public void shouldGetVertexFromId() {
-        List<Person> people = graphTemplate.getTraversal(otavio.getId(), poliana.getId()).<Person>stream()
+        List<Person> people = graphTemplate.getTraversalVertex(otavio.getId(), poliana.getId()).<Person>stream()
                 .collect(toList());
 
         assertThat(people, containsInAnyOrder(otavio, poliana));
@@ -52,7 +52,7 @@ public class DefaultVertexTraversalTest extends AbstractTraversalTest {
 
     @Test
     public void shouldDefineLimit() {
-        List<Person> people = graphTemplate.getTraversal(otavio.getId(), poliana.getId(), paulo.getId()).limit(1).<Person>stream()
+        List<Person> people = graphTemplate.getTraversalVertex(otavio.getId(), poliana.getId(), paulo.getId()).limit(1).<Person>stream()
                 .collect(toList());
 
         assertEquals(1, people.size());
@@ -61,7 +61,7 @@ public class DefaultVertexTraversalTest extends AbstractTraversalTest {
 
     @Test
     public void shouldDefineLimit2() {
-        List<Person> people = graphTemplate.getTraversal(otavio.getId(), poliana.getId(), paulo.getId()).
+        List<Person> people = graphTemplate.getTraversalVertex(otavio.getId(), poliana.getId(), paulo.getId()).
                 <Person>stream(2)
                 .collect(toList());
 
@@ -71,34 +71,34 @@ public class DefaultVertexTraversalTest extends AbstractTraversalTest {
 
     @Test
     public void shouldNext() {
-        Optional<?> next = graphTemplate.getTraversal().next();
+        Optional<?> next = graphTemplate.getTraversalVertex().next();
         assertTrue(next.isPresent());
     }
 
     @Test
     public void shouldEmptyNext() {
-        Optional<?> next = graphTemplate.getTraversal(-12).next();
+        Optional<?> next = graphTemplate.getTraversalVertex(-12).next();
         assertFalse(next.isPresent());
     }
 
 
     @Test
     public void shouldHas() {
-        Optional<Person> person = graphTemplate.getTraversal().has("name", "Poliana").next();
+        Optional<Person> person = graphTemplate.getTraversalVertex().has("name", "Poliana").next();
         assertTrue(person.isPresent());
         assertEquals(person.get(), poliana);
     }
 
     @Test
     public void shouldHasId() {
-        Optional<Person> person = graphTemplate.getTraversal().has(T.id, poliana.getId()).next();
+        Optional<Person> person = graphTemplate.getTraversalVertex().has(T.id, poliana.getId()).next();
         assertTrue(person.isPresent());
         assertEquals(person.get(), poliana);
     }
 
     @Test
     public void shouldHasPredicate() {
-        List<?> result = graphTemplate.getTraversal().has("age", P.gt(26))
+        List<?> result = graphTemplate.getTraversalVertex().has("age", P.gt(26))
                 .stream()
                 .collect(toList());
         assertEquals(5, result.size());
@@ -106,28 +106,28 @@ public class DefaultVertexTraversalTest extends AbstractTraversalTest {
 
     @Test
     public void shouldHasLabel() {
-        List<Book> books = graphTemplate.getTraversal().hasLabel("Book").<Book>stream().collect(toList());
+        List<Book> books = graphTemplate.getTraversalVertex().hasLabel("Book").<Book>stream().collect(toList());
         assertEquals(3, books.size());
         assertThat(books, containsInAnyOrder(shack, license, effectiveJava));
     }
 
     @Test
     public void shouldIn() {
-        List<Book> books = graphTemplate.getTraversal().out(READS).<Book>stream().collect(toList());
+        List<Book> books = graphTemplate.getTraversalVertex().out(READS).<Book>stream().collect(toList());
         assertEquals(3, books.size());
         assertThat(books, containsInAnyOrder(shack, license, effectiveJava));
     }
 
     @Test
     public void shouldOut() {
-        List<Person> books = graphTemplate.getTraversal().in(READS).<Person>stream().collect(toList());
+        List<Person> books = graphTemplate.getTraversalVertex().in(READS).<Person>stream().collect(toList());
         assertEquals(3, books.size());
         assertThat(books, containsInAnyOrder(otavio, poliana, paulo));
     }
 
     @Test
     public void shouldNot() {
-        List<?> result = graphTemplate.getTraversal().hasNot("year").stream().collect(toList());
+        List<?> result = graphTemplate.getTraversalVertex().hasNot("year").stream().collect(toList());
         assertEquals(6, result.size());
     }
 }
