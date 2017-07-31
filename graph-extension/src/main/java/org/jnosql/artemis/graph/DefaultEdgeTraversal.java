@@ -30,11 +30,11 @@ import static org.jnosql.artemis.graph.TinkerPopUtil.toEdgeEntity;
 
 class DefaultEdgeTraversal implements EdgeTraversal {
 
-    private final Supplier<GraphTraversal<Vertex, Vertex>> supplier;
+    private final Supplier<GraphTraversal<?, ?>> supplier;
     private final Function<GraphTraversal<?, ?>, GraphTraversal<Vertex, Edge>> flow;
     private final VertexConverter converter;
 
-    DefaultEdgeTraversal(Supplier<GraphTraversal<Vertex, Vertex>> supplier,
+    DefaultEdgeTraversal(Supplier<GraphTraversal<?, ?>> supplier,
                          Function<GraphTraversal<?, ?>, GraphTraversal<Vertex, Edge>> flow,
                          VertexConverter converter) {
         this.supplier = supplier;

@@ -197,7 +197,7 @@ class DefaultGraphTemplate implements GraphTemplate {
         if (Stream.of(edgeIds).anyMatch(Objects::isNull)) {
             throw new NullPointerException("No one edgeId element cannot be null");
         }
-        return new DefaultEdgeTraversal(() -> graph.get().traversal().V(edgeIds), INITIAL_EDGE, converter);
+        return new DefaultEdgeTraversal(() -> graph.get().traversal().E(edgeIds), INITIAL_EDGE, converter);
     }
 
 

@@ -21,15 +21,33 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.List;
+import java.util.Optional;
 
 import static java.util.stream.Collectors.toList;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(WeldJUnit4Runner.class)
 public class DefaultEdgeTraversalTest extends AbstractTraversalTest {
 
+
+
+    @Test(expected = NullPointerException.class)
+    public void shouldReturnErrorWhenEdgeIdIsNull() {
+        graphTemplate.getTraversalEdge(null);
+    }
+
+
+    @Test
+    public void shouldReturnEdgeId() {
+        Optional<EdgeEntity<Object, Object>> edgeEntity = graphTemplate.getTraversalEdge(effectiveJava.getId())
+                .next();
+
+        assertTrue(edgeEntity.isPresent());
+        assertEquals(effectiveJava.getId(), edgeEntity.get().getId().get());
+    }
 
     @Test
     public void shouldReturnOutE() {

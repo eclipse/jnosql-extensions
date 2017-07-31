@@ -33,11 +33,11 @@ import static java.util.Objects.requireNonNull;
 class DefaultVertexTraversal implements VertexTraversal {
 
 
-    private final Supplier<GraphTraversal<Vertex, Vertex>> supplier;
+    private final Supplier<GraphTraversal<?, ?>> supplier;
     private final Function<GraphTraversal<?, ?>, GraphTraversal<Vertex, Vertex>> flow;
     private final VertexConverter converter;
 
-    DefaultVertexTraversal(Supplier<GraphTraversal<Vertex, Vertex>> supplier,
+    DefaultVertexTraversal(Supplier<GraphTraversal<?, ?>> supplier,
                            Function<GraphTraversal<?, ?>, GraphTraversal<Vertex, Vertex>> flow,
                            VertexConverter converter) {
         this.supplier = supplier;
