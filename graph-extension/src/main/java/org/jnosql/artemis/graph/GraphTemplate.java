@@ -90,6 +90,19 @@ public interface GraphTemplate {
 
 
     /**
+     * Finds an {@link EdgeEntity} from the Edge Id
+     *
+     * @param edgeId the edge id
+     * @param <OUT>  the outbound type
+     * @param <IN>   the incoming type
+     * @param <E>    the edge id type
+     * @return the {@link EdgeEntity} otherwise {@link Optional#empty()}
+     * @throws NullPointerException when edgeId is null
+     */
+    <OUT, IN, E> Optional<EdgeEntity<OUT, IN>> edge(E edgeId) throws NullPointerException;
+
+
+    /**
      * Gets a {@link VertexTraversal} to run a query in the graph
      *
      * @param vertexIds get ids
