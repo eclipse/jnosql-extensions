@@ -49,13 +49,22 @@ public interface GraphTemplate {
 
 
     /**
-     * Deletes a either {@link org.apache.tinkerpop.gremlin.structure.Vertex}
+     * Deletes a {@link org.apache.tinkerpop.gremlin.structure.Vertex}
+     *
+     * @param id  the id to be used in the query {@link org.apache.tinkerpop.gremlin.structure.T#id}
+     * @param <T> the id type
+     * @throws NullPointerException when id is null
+     */
+    <T> void delete(T id) throws NullPointerException;
+
+    /**
+     * Deletes a {@link org.apache.tinkerpop.gremlin.structure.Edge}
      *
      * @param id  the id to be used in the query {@link org.apache.tinkerpop.gremlin.structure.T#id}
      * @param <T> the id type
      * @throws NullPointerException when either label and id are null
      */
-    <T> void delete(T id) throws NullPointerException;
+    <T> void deleteEdge(T id) throws NullPointerException;
 
 
     /**
