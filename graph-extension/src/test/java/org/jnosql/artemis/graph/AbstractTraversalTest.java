@@ -25,8 +25,8 @@ public abstract class AbstractTraversalTest {
     protected Book effectiveJava;
 
     protected EdgeEntity<Person, Book> reads;
-    protected EdgeEntity<Person, Book> read1;
     protected EdgeEntity<Person, Book> reads2;
+    protected EdgeEntity<Person, Book> reads3;
 
     @Before
     public void setUp() {
@@ -44,8 +44,8 @@ public abstract class AbstractTraversalTest {
 
 
         reads = graphTemplate.edge(otavio, READS, effectiveJava);
-        read1 = graphTemplate.edge(poliana, READS, shack);
-        reads2 = graphTemplate.edge(paulo, READS, license);
+        reads2 = graphTemplate.edge(poliana, READS, shack);
+        reads3 = graphTemplate.edge(paulo, READS, license);
     }
 
     @After
@@ -59,7 +59,7 @@ public abstract class AbstractTraversalTest {
         graphTemplate.delete(effectiveJava.getId());
 
         reads.delete();
-        read1.delete();
         reads2.delete();
+        reads3.delete();
     }
 }
