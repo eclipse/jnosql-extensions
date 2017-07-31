@@ -169,14 +169,25 @@ public class DefaultVertexTraversalTest extends AbstractTraversalTest {
 
     @Test
     public void shouldOut() {
-        List<Person> books = graphTemplate.getTraversalVertex().in(READS).<Person>stream().collect(toList());
-        assertEquals(3, books.size());
-        assertThat(books, containsInAnyOrder(otavio, poliana, paulo));
+        List<Person> people = graphTemplate.getTraversalVertex().in(READS).<Person>stream().collect(toList());
+        assertEquals(3, people.size());
+        assertThat(people, containsInAnyOrder(otavio, poliana, paulo));
     }
 
     @Test(expected = NullPointerException.class)
     public void shouldReturnErrorWhenOutIsNull() {
         graphTemplate.getTraversalVertex().in(null).<Person>stream().collect(toList());
+    }
+    
+    @Test
+    public void shouldBoth() {
+        List<?> entities = graphTemplate.getTraversalVertex().both(READS).<Person>stream().collect(toList());
+        assertEquals(6, entities.size());
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void shouldReturnErrorWhenBothIsNull() {
+        graphTemplate.getTraversalVertex().both(null).<Person>stream().collect(toList());
     }
 
     @Test
