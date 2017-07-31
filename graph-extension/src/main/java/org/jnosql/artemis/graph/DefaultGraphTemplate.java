@@ -14,6 +14,7 @@
  */
 package org.jnosql.artemis.graph;
 
+import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
@@ -41,6 +42,9 @@ import static org.jnosql.artemis.graph.TinkerPopUtil.toArtemisVertex;
  * The default {@link GraphTemplate}
  */
 class DefaultGraphTemplate implements GraphTemplate {
+
+    private static final Function<GraphTraversal<?, ?>, GraphTraversal<Vertex, Vertex>> INITIAL_FLOW =
+            g -> (GraphTraversal<Vertex, Vertex>) g;
 
     @Inject
     private Instance<Graph> graph;
@@ -162,7 +166,7 @@ class DefaultGraphTemplate implements GraphTemplate {
         if (Stream.of(vertexIds).anyMatch(Objects::isNull)) {
             throw new NullPointerException("No one vertexId element cannot be null");
         }
-        return new DefaultVertexTraversal(() -> graph.get().traversal().V(vertexIds), Function.identity(), converter);
+        return new DefaultVertexTraversal(() -> graph.get().traversal().V(vertexIds), INITIAL_FLOW, converter);
     }
 
 
