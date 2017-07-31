@@ -59,6 +59,15 @@ public class DefaultEdgeTraversalTest extends AbstractTraversalTest {
         assertThat(edges, containsInAnyOrder(reads, reads2, reads3));
     }
 
+    @Test(expected = NullPointerException.class)
+    public void shouldReturnErrorOutEWhenIsNull() {
+        graphTemplate.getTraversalVertex().outE(null)
+                .<Person, Book>stream()
+                .collect(toList());
+
+
+    }
+
     @Test
     public void shouldReturnInE() {
         List<EdgeEntity<Person, Book>> edges = graphTemplate.getTraversalVertex().inE(READS)
@@ -69,6 +78,15 @@ public class DefaultEdgeTraversalTest extends AbstractTraversalTest {
         assertThat(edges, containsInAnyOrder(reads, reads2, reads3));
     }
 
+
+    @Test(expected = NullPointerException.class)
+    public void shouldReturnErrorWhenInEIsNull() {
+        graphTemplate.getTraversalVertex().inE(null)
+                .<Person, Book>stream()
+                .collect(toList());
+
+    }
+
     @Test
     public void shouldReturnBothE() {
         List<EdgeEntity<Person, Book>> edges = graphTemplate.getTraversalVertex().bothE(READS)
@@ -76,6 +94,13 @@ public class DefaultEdgeTraversalTest extends AbstractTraversalTest {
                 .collect(toList());
 
         assertEquals(6, edges.size());
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void shouldReturErrorWhennBothEIsNull() {
+        graphTemplate.getTraversalVertex().bothE(null)
+                .<Person, Book>stream()
+                .collect(toList());
     }
 
 
