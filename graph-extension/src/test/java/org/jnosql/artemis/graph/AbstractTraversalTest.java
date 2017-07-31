@@ -16,6 +16,9 @@
  */
 package org.jnosql.artemis.graph;
 
+import org.apache.tinkerpop.gremlin.structure.Edge;
+import org.apache.tinkerpop.gremlin.structure.Graph;
+import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.jnosql.artemis.graph.model.Book;
 import org.jnosql.artemis.graph.model.Person;
 import org.junit.After;
@@ -28,8 +31,12 @@ import static org.jnosql.artemis.graph.model.Person.builder;
 public abstract class AbstractTraversalTest {
 
     static final String READS = "reads";
+
     @Inject
     protected GraphTemplate graphTemplate;
+
+    @Inject
+    private Graph graph;
 
 
     protected Person otavio;
@@ -46,6 +53,9 @@ public abstract class AbstractTraversalTest {
 
     @Before
     public void setUp() {
+
+        graph.traversal().V().toList().forEach(Vertex::remove);
+        graph.traversal().E().toList().forEach(Edge::remove);
 
         otavio = graphTemplate.insert(builder().withAge(27)
                 .withName("Otavio").build());
@@ -77,5 +87,8 @@ public abstract class AbstractTraversalTest {
         reads.delete();
         reads2.delete();
         reads3.delete();
+        
+        graph.traversal().V().toList().forEach(Vertex::remove);
+        graph.traversal().E().toList().forEach(Edge::remove);
     }
 }

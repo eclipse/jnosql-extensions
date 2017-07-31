@@ -57,6 +57,8 @@ public class GraphTemplateTest {
         Person updated = graphTemplate.insert(person);
 
         assertNotNull(updated.getId());
+
+        graphTemplate.delete(updated.getId());
     }
 
 
@@ -89,6 +91,8 @@ public class GraphTemplateTest {
         Person update = graphTemplate.update(newPerson);
 
         assertEquals(newPerson, update);
+
+        graphTemplate.delete(update.getId());
     }
 
 
@@ -106,6 +110,8 @@ public class GraphTemplateTest {
 
         assertTrue(personFound.isPresent());
         assertEquals(updated, personFound.get());
+
+        graphTemplate.delete(updated.getId());
     }
 
     @Test
