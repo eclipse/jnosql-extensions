@@ -19,76 +19,21 @@ import org.apache.tinkerpop.gremlin.structure.T;
 import org.jnosql.artemis.graph.cdi.WeldJUnit4Runner;
 import org.jnosql.artemis.graph.model.Book;
 import org.jnosql.artemis.graph.model.Person;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import javax.inject.Inject;
-
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toList;
 import static org.hamcrest.Matchers.containsInAnyOrder;
-import static org.jnosql.artemis.graph.model.Person.builder;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(WeldJUnit4Runner.class)
-public class DefaultVertexTraversalTest {
-
-    private static final String READS = "reads";
-    @Inject
-    private GraphTemplate graphTemplate;
-
-
-    private Person otavio;
-    private Person poliana;
-    private Person paulo;
-
-    private Book shack;
-    private Book license;
-    private Book effectiveJava;
-
-    private EdgeEntity<Person, Book> reads;
-    private EdgeEntity<Person, Book> read1;
-    private EdgeEntity<Person, Book> reads2;
-
-    @Before
-    public void setUp() {
-
-        otavio = graphTemplate.insert(builder().withAge(27)
-                .withName("Otavio").build());
-        poliana = graphTemplate.insert(builder().withAge(26)
-                .withName("Poliana").build());
-        paulo = graphTemplate.insert(builder().withAge(50)
-                .withName("Paulo").build());
-
-        shack = graphTemplate.insert(Book.builder().withAge(2007).withName("The Shack").build());
-        license = graphTemplate.insert(Book.builder().withAge(2013).withName("Software License").build());
-        effectiveJava = graphTemplate.insert(Book.builder().withAge(2001).withName("Effective Java").build());
-
-
-        reads = graphTemplate.edge(otavio, READS, effectiveJava);
-        read1 = graphTemplate.edge(poliana, READS, shack);
-        reads2 = graphTemplate.edge(paulo, READS, license);
-    }
-
-    @After
-    public void after() {
-        graphTemplate.delete(otavio.getId());
-        graphTemplate.delete(poliana.getId());
-        graphTemplate.delete(paulo.getId());
-
-        graphTemplate.delete(shack.getId());
-        graphTemplate.delete(license.getId());
-        graphTemplate.delete(effectiveJava.getId());
-
-        reads.delete();
-        read1.delete();
-        reads2.delete();
-    }
+public class DefaultVertexTraversalTest extends AbstractTraversalTest {
 
 
     @Test(expected = NullPointerException.class)
