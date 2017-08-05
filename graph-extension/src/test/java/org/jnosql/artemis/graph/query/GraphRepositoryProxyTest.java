@@ -14,7 +14,10 @@
  */
 package org.jnosql.artemis.graph.query;
 
+import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Graph;
+import org.apache.tinkerpop.gremlin.structure.T;
+import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.hamcrest.Matchers;
 import org.jnosql.artemis.Repository;
 import org.jnosql.artemis.graph.GraphTemplate;
@@ -28,6 +31,7 @@ import org.jnosql.diana.api.column.Column;
 import org.jnosql.diana.api.column.ColumnCondition;
 import org.jnosql.diana.api.column.ColumnDeleteQuery;
 import org.jnosql.diana.api.column.ColumnQuery;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -81,6 +85,11 @@ public class GraphRepositoryProxyTest {
 
     @Before
     public void setUp() {
+
+        graph.traversal().V().toList().forEach(Vertex::remove);
+        graph.traversal().E().toList().forEach(Edge::remove);
+
+
         this.template = Mockito.mock(GraphTemplate.class);
 
         GraphRepositoryProxy handler = new GraphRepositoryProxy(template,
@@ -91,6 +100,13 @@ public class GraphRepositoryProxyTest {
         personRepository = (PersonRepository) Proxy.newProxyInstance(PersonRepository.class.getClassLoader(),
                 new Class[]{PersonRepository.class},
                 handler);
+    }
+
+    @After
+    public void after() {
+        graph.traversal().V().toList().forEach(Vertex::remove);
+        graph.traversal().E().toList().forEach(Edge::remove);
+
     }
 
 
@@ -169,48 +185,37 @@ public class GraphRepositoryProxyTest {
 
     @Test
     public void shouldFindByNameAndAge() {
-        Person ada = Person.builder()
-                .withAge(20).withName("Ada").build();
+
+        graph.addVertex(T.label, "Person", "name", "name", "age", 20);
+        graph.addVertex(T.label, "Person", "name", "name", "age", 20);
 
 
-        List<Person> persons = personRepository.findByNameAndAge("name", 20);
-        ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
-        assertThat(persons, Matchers.contains(ada));
+
+
+        List<Person> people = personRepository.findByNameAndAge("name", 20);
+        assertEquals(2, people.size());
 
     }
 
     @Test
     public void shouldFindByAgeAndName() {
-        Person ada = Person.builder()
-                .withAge(20).withName("Ada").build();
 
-        Set<Person> persons = personRepository.findByAgeAndName(20, "name");
-        ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
-        assertThat(persons, Matchers.contains(ada));
+        graph.addVertex(T.label, "Person", "name", "name", "age", 20);
+        graph.addVertex(T.label, "Person", "name", "name", "age", 20);
 
-    }
-
-    @Test
-    public void shouldFindByNameANDAgeOrderByName() {
-        Person ada = Person.builder()
-                .withAge(20).withName("Ada").build();
-
-
-        Stream<Person> persons = personRepository.findByNameAndAgeOrderByName("name", 20);
-        ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
-        assertThat(persons.collect(Collectors.toList()), Matchers.contains(ada));
+        Set<Person> people = personRepository.findByAgeAndName(20, "name");
+        assertEquals(2, people.size());
 
     }
 
     @Test
-    public void shouldFindByNameANDAgeOrderByAge() {
-        Person ada = Person.builder()
-                .withAge(20).withName("Ada").build();
+    public void shouldFindByAge() {
 
+        graph.addVertex(T.label, "Person", "name", "name", "age", 20);
+        graph.addVertex(T.label, "Person", "name", "name", "age", 20);
 
-        Queue<Person> persons = personRepository.findByNameAndAgeOrderByAge("name", 20);
-        ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
-        assertThat(persons, Matchers.contains(ada));
+        Optional<Person> person = personRepository.findByAge(20);
+        assertTrue(person.isPresent());
 
     }
 
@@ -224,34 +229,6 @@ public class GraphRepositoryProxyTest {
         assertEquals("Person", deleteQuery.getColumnFamily());
         assertEquals(Condition.EQUALS, condition.getCondition());
         assertEquals(Column.of("name", "Ada"), condition.getColumn());
-
-    }
-
-    @Test
-    public void shouldExecuteQuery() {
-        ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
-        Person ada = Person.builder()
-                .withAge(20).withName("Ada").build();
-        when(template.find(any(ColumnQuery.class)))
-                .thenReturn(Optional.of(ada));
-
-
-        ColumnQuery query = select().from("Person").where(eq(Column.of("name", "Ada"))).build();
-        Person person = personRepository.query(query);
-        verify(template).find(captor.capture());
-        assertEquals(ada, person);
-        assertEquals(query, captor.getValue());
-
-    }
-
-    @Test
-    public void shouldDeleteQuery() {
-        ArgumentCaptor<ColumnDeleteQuery> captor = ArgumentCaptor.forClass(ColumnDeleteQuery.class);
-
-        ColumnDeleteQuery query = delete().from("Person").where(eq(Column.of("name", "Ada"))).build();
-        personRepository.deleteQuery(query);
-        verify(template).delete(captor.capture());
-        assertEquals(query, captor.getValue());
 
     }
 
@@ -284,7 +261,7 @@ public class GraphRepositoryProxyTest {
         personRepository.deleteById(10L);
         verify(template).delete(captor.capture());
 
-       assertEquals(captor.getValue(), 10L);
+        assertEquals(captor.getValue(), 10L);
     }
 
     @Test
@@ -322,12 +299,5 @@ public class GraphRepositoryProxyTest {
 
         Set<Person> findByAgeAndName(Integer age, String name);
 
-        Stream<Person> findByNameAndAgeOrderByName(String name, Integer age);
-
-        Queue<Person> findByNameAndAgeOrderByAge(String name, Integer age);
-
-        Person query(ColumnQuery query);
-
-        void deleteQuery(ColumnDeleteQuery query);
     }
 }
