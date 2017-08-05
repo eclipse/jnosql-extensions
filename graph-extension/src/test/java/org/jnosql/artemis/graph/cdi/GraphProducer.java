@@ -16,10 +16,16 @@ package org.jnosql.artemis.graph.cdi;
 
 import com.thinkaurelius.titan.core.TitanFactory;
 import org.apache.tinkerpop.gremlin.structure.Graph;
+import org.apache.tinkerpop.gremlin.structure.Vertex;
+import org.jnosql.artemis.Database;
+import org.jnosql.artemis.DatabaseType;
+import org.mockito.Mockito;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Disposes;
 import javax.enterprise.inject.Produces;
+
+import static org.mockito.Mockito.mock;
 
 @ApplicationScoped
 public class GraphProducer {
@@ -34,6 +40,19 @@ public class GraphProducer {
         return graph;
     }
 
+    @Produces
+    @ApplicationScoped
+    @Database(value = DatabaseType.GRAPH, provider = "graphRepositoryMock")
+    public Graph getGraphMock() {
+
+        Graph graphMock = mock(Graph.class);
+
+        Vertex vertex = mock(Vertex.class);
+
+        Mockito.when(graphMock.addVertex(Mockito.anyString())).thenReturn(vertex);
+
+        return graphMock;
+    }
     public void dispose(@Disposes Graph graph) throws Exception {
         graph.close();
     }

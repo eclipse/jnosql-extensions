@@ -12,3 +12,4 @@
 #
 #   Otavio Santana
 #
+org.jnosql.artemis.graph.spi.GraphProducerExtension
