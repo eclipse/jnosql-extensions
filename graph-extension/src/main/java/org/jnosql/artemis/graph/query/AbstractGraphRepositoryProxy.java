@@ -15,13 +15,12 @@
 package org.jnosql.artemis.graph.query;
 
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
-import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
 import org.apache.tinkerpop.gremlin.structure.Element;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.jnosql.artemis.Repository;
+import org.jnosql.artemis.graph.VertexConverter;
 import org.jnosql.artemis.reflection.ClassRepresentation;
-import org.jnosql.diana.api.column.ColumnQuery;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -44,6 +43,8 @@ abstract class AbstractGraphRepositoryProxy<T, ID> implements InvocationHandler 
 
     protected abstract Graph getGraph();
 
+    protected abstract VertexConverter getVertexConverter();
+
 
     @Override
     public Object invoke(Object instance, Method method, Object[] args) throws Throwable {
@@ -56,6 +57,9 @@ abstract class AbstractGraphRepositoryProxy<T, ID> implements InvocationHandler 
             case FIND_BY:
                 GraphTraversal<Vertex, Vertex> traversal = getGraph().traversal().V();
                 getQueryParser().parse(methodName, args, getClassRepresentation(), traversal);
+
+                List<Vertex> vertices = traversal.toList();
+
                 return null;
             case DELETE_BY:
                 GraphTraversal<Vertex, Vertex> deleteTraversal = getGraph().traversal().V();

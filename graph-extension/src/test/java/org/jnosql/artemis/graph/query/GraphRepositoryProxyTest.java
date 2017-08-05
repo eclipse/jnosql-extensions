@@ -165,23 +165,23 @@ public class GraphRepositoryProxyTest {
     }
 
     @Test
-    public void shouldFindByNameANDAge() {
+    public void shouldFindByNameAndAge() {
         Person ada = Person.builder()
                 .withAge(20).withName("Ada").build();
 
 
-        List<Person> persons = personRepository.findByNameANDAge("name", 20);
+        List<Person> persons = personRepository.findByNameAndAge("name", 20);
         ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
         assertThat(persons, Matchers.contains(ada));
 
     }
 
     @Test
-    public void shouldFindByAgeANDName() {
+    public void shouldFindByAgeAndName() {
         Person ada = Person.builder()
                 .withAge(20).withName("Ada").build();
 
-        Set<Person> persons = personRepository.findByAgeANDName(20, "name");
+        Set<Person> persons = personRepository.findByAgeAndName(20, "name");
         ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
         assertThat(persons, Matchers.contains(ada));
 
@@ -193,7 +193,7 @@ public class GraphRepositoryProxyTest {
                 .withAge(20).withName("Ada").build();
 
 
-        Stream<Person> persons = personRepository.findByNameANDAgeOrderByName("name", 20);
+        Stream<Person> persons = personRepository.findByNameAndAgeOrderByName("name", 20);
         ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
         assertThat(persons.collect(Collectors.toList()), Matchers.contains(ada));
 
@@ -205,7 +205,7 @@ public class GraphRepositoryProxyTest {
                 .withAge(20).withName("Ada").build();
 
 
-        Queue<Person> persons = personRepository.findByNameANDAgeOrderByAge("name", 20);
+        Queue<Person> persons = personRepository.findByNameAndAgeOrderByAge("name", 20);
         ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
         assertThat(persons, Matchers.contains(ada));
 
@@ -315,13 +315,13 @@ public class GraphRepositoryProxyTest {
 
         Optional<Person> findByAge(Integer age);
 
-        List<Person> findByNameANDAge(String name, Integer age);
+        List<Person> findByNameAndAge(String name, Integer age);
 
-        Set<Person> findByAgeANDName(Integer age, String name);
+        Set<Person> findByAgeAndName(Integer age, String name);
 
-        Stream<Person> findByNameANDAgeOrderByName(String name, Integer age);
+        Stream<Person> findByNameAndAgeOrderByName(String name, Integer age);
 
-        Queue<Person> findByNameANDAgeOrderByAge(String name, Integer age);
+        Queue<Person> findByNameAndAgeOrderByAge(String name, Integer age);
 
         Person query(ColumnQuery query);
 

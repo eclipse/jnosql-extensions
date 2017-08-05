@@ -14,10 +14,13 @@
  */
 package org.jnosql.artemis.graph;
 
+import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.jnosql.diana.api.Value;
 
 import java.util.List;
 import java.util.Optional;
+
+import static java.util.Objects.requireNonNull;
 
 /**
  * The representation of {@link org.apache.tinkerpop.gremlin.structure.Edge} that links two Entity.
@@ -121,4 +124,12 @@ public interface EdgeEntity<OUT, IN> {
      * such as add a property will an illegal state.
      */
     void delete();
+
+
+    static <OUT, IN> EdgeEntity<OUT, IN> of(OUT outgoing, Edge edge, IN incoming) throws NullPointerException {
+        requireNonNull(outgoing, "outgoing is required");
+        requireNonNull(edge, "edge is required");
+        requireNonNull(incoming, "incoming is required");
+        return new DefaultEdgeEntity<>(edge, incoming, outgoing);
+    }
 }

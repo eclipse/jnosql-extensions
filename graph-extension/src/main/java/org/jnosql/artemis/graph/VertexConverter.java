@@ -19,7 +19,7 @@ package org.jnosql.artemis.graph;
 /**
  * This interface represents the converter between an entity and the {@link ArtemisVertex}
  */
-interface VertexConverter {
+public interface VertexConverter {
 
     /**
      * Converts the instance entity to {@link ArtemisVertex}
