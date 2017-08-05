@@ -76,8 +76,6 @@ public class GraphRepositoryProxyTest {
     private Graph graph;
 
 
-    //    GraphRepositoryProxy(GraphTemplate template, ClassRepresentations classRepresentations,
-//                         Class<?> repositoryType, Reflections reflections, Graph graph) {
     @Before
     public void setUp() {
         this.template = Mockito.mock(GraphTemplate.class);
@@ -256,67 +254,54 @@ public class GraphRepositoryProxyTest {
 
     @Test
     public void shouldFindById() {
-        ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
+        ArgumentCaptor<Object> captor = ArgumentCaptor.forClass(Object.class);
         personRepository.findById(10L);
         verify(template).find(captor.capture());
 
-        ColumnQuery query = captor.getValue();
+        Object id = captor.getValue();
 
-        assertEquals("Person", query.getColumnFamily());
-        assertEquals(ColumnCondition.eq(Column.of("_id", 10L)), query.getCondition().get());
+        assertEquals(10L, id);
     }
 
     @Test
     public void shouldFindByIds() {
-        when(template.find(any(ColumnQuery.class))).thenReturn(Optional.of(Person.builder().build()));
-        ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
+
+        when(template.find(any(Object.class))).thenReturn(Optional.empty());
+        ArgumentCaptor<Iterable> captor = ArgumentCaptor.forClass(Iterable.class);
         personRepository.findById(singletonList(10L));
         verify(template).find(captor.capture());
 
-        ColumnQuery query = captor.getValue();
-
-        assertEquals("Person", query.getColumnFamily());
-        assertEquals(ColumnCondition.eq(Column.of("_id", 10L)), query.getCondition().get());
         personRepository.findById(asList(1L, 2L, 3L));
-        verify(template, times(4)).find(any(ColumnQuery.class));
+        verify(template, times(4)).find(any(Long.class));
     }
 
     @Test
     public void shouldDeleteById() {
-        ArgumentCaptor<ColumnDeleteQuery> captor = ArgumentCaptor.forClass(ColumnDeleteQuery.class);
+        ArgumentCaptor<Object> captor = ArgumentCaptor.forClass(Object.class);
         personRepository.deleteById(10L);
         verify(template).delete(captor.capture());
 
-        ColumnDeleteQuery query = captor.getValue();
-
-        assertEquals("Person", query.getColumnFamily());
-        assertEquals(ColumnCondition.eq(Column.of("_id", 10L)), query.getCondition().get());
+       assertEquals(captor.getValue(), 10L);
     }
 
     @Test
     public void shouldDeleteByIds() {
-        ArgumentCaptor<ColumnDeleteQuery> captor = ArgumentCaptor.forClass(ColumnDeleteQuery.class);
         personRepository.deleteById(singletonList(10L));
-        verify(template).delete(captor.capture());
-
-        ColumnDeleteQuery query = captor.getValue();
-
-        assertEquals("Person", query.getColumnFamily());
-        assertEquals(ColumnCondition.eq(Column.of("_id", 10L)), query.getCondition().get());
+        verify(template).delete(10L);
 
         personRepository.deleteById(asList(1L, 2L, 3L));
-        verify(template, times(4)).delete(any(ColumnDeleteQuery.class));
+        verify(template, times(4)).delete(any(Long.class));
     }
 
 
     @Test
     public void shouldContainsById() {
-        when(template.find(any(ColumnQuery.class))).thenReturn(Optional.of(Person.builder().build()));
+        when(template.find(any(Long.class))).thenReturn(Optional.of(Person.builder().build()));
 
         assertTrue(personRepository.existsById(10L));
-        Mockito.verify(template).find(any(ColumnQuery.class));
+        Mockito.verify(template).find(any(Long.class));
 
-        when(template.find(any(ColumnQuery.class))).thenReturn(Optional.empty());
+        when(template.find(any(Long.class))).thenReturn(Optional.empty());
         assertFalse(personRepository.existsById(10L));
 
     }
