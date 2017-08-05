@@ -42,13 +42,8 @@ import static org.jnosql.artemis.graph.util.TinkerPopUtil.toEdgeEntity;
 /**
  * The default {@link GraphTemplate}
  */
-class DefaultGraphTemplate implements GraphTemplate {
+class DefaultGraphTemplate extends AbstractGraphTemplate {
 
-    private static final Function<GraphTraversal<?, ?>, GraphTraversal<Vertex, Vertex>> INITIAL_VERTEX =
-            g -> (GraphTraversal<Vertex, Vertex>) g;
-
-    private static final Function<GraphTraversal<?, ?>, GraphTraversal<Vertex, Edge>> INITIAL_EDGE =
-            g -> (GraphTraversal<Vertex, Edge>) g;
 
     @Inject
     private Instance<Graph> graph;
@@ -59,152 +54,19 @@ class DefaultGraphTemplate implements GraphTemplate {
     @Inject
     private VertexConverter converter;
 
+
     @Override
-    public <T> T insert(T entity) throws NullPointerException, IdNotFoundException {
-        requireNonNull(entity, "entity is required");
-        checkId(entity);
-
-        ArtemisVertex artemisVertex = converter.toVertex(entity);
-
-        Vertex vertex = artemisVertex.getId().map(v -> graph.get().addVertex(label, artemisVertex.getLabel(), id, v.get()))
-                .orElse(graph.get().addVertex(artemisVertex.getLabel()));
-
-        artemisVertex.getProperties().stream().forEach(e -> vertex.property(e.getKey(), e.get()));
-
-
-        ArtemisVertex vertexUpdated = toArtemisVertex(vertex);
-
-        return converter.toEntity(vertexUpdated);
+    protected Graph getGraph() {
+        return graph.get();
     }
 
     @Override
-    public <T> T update(T entity) throws NullPointerException, IdNotFoundException {
-        requireNonNull(entity, "entity is required");
-        checkId(entity);
-
-        ArtemisVertex artemisVertex = converter.toVertex(entity);
-        Object idValue = artemisVertex.getId()
-                .map(Value::get)
-                .orElseThrow(() -> new NullPointerException("Id field is required"));
-
-        Vertex vertex = graph.get()
-                .traversal()
-                .V(idValue)
-                .tryNext()
-                .orElseThrow(() -> new EntityNotFoundException(format("The entity %s with id %s is not found to update",
-                        entity.getClass().getName(), idValue.toString())));
-
-        artemisVertex.getProperties().stream().forEach(e -> vertex.property(e.getKey(), e.get()));
-
-        return entity;
+    protected ClassRepresentations getClassRepresentations() {
+        return classRepresentations;
     }
 
     @Override
-    public <T> void delete(T idValue) throws NullPointerException {
-        requireNonNull(idValue, "id is required");
-        List<Vertex> vertices = graph.get().traversal().V(idValue).toList();
-        vertices.stream().forEach(Vertex::remove);
-
+    protected VertexConverter getVertex() {
+        return converter;
     }
-
-    @Override
-    public <T> void deleteEdge(T idEdge) throws NullPointerException {
-        requireNonNull(idEdge, "idEdge is required");
-        List<Edge> edges = graph.get().traversal().E(idEdge).toList();
-        edges.stream().forEach(Edge::remove);
-    }
-
-    @Override
-    public <T, ID> Optional<T> find(ID idValue) throws NullPointerException {
-        requireNonNull(idValue, "id is required");
-        Optional<Vertex> vertex = graph.get().traversal().V(idValue).tryNext();
-        if (vertex.isPresent()) {
-            return Optional.of(converter.toEntity(toArtemisVertex(vertex.get())));
-        }
-        return Optional.empty();
-    }
-
-    @Override
-    public <OUT, IN> EdgeEntity<OUT, IN> edge(OUT outbound, String label, IN inbound) throws NullPointerException,
-            IdNotFoundException, EntityNotFoundException {
-
-        requireNonNull(inbound, "inbound is required");
-        requireNonNull(label, "label is required");
-        requireNonNull(outbound, "outbound is required");
-
-        ArtemisVertex inboundVertex = converter.toVertex(inbound);
-        ArtemisVertex outboundVertex = converter.toVertex(outbound);
-
-        Object outboundId = outboundVertex.getId()
-                .map(Value::get)
-                .orElseThrow(() -> new NullPointerException("outbound Id field is required"));
-        Object inboundId = inboundVertex.getId()
-                .map(Value::get)
-                .orElseThrow(() -> new NullPointerException("inbound Id field is required"));
-
-
-        Optional<Edge> edge = graph.get()
-                .traversal().V()
-                .has(id, outboundId).out(label)
-                .has(id, inboundId).inE(label).tryNext();
-
-        if (edge.isPresent()) {
-            return new DefaultEdgeEntity<>(edge.get(), inbound, outbound);
-        } else {
-
-            Vertex inVertex = graph.get()
-                    .traversal()
-                    .V(inboundId)
-                    .tryNext()
-                    .orElseThrow(() -> new EntityNotFoundException("inbound entity not found"));
-
-            Vertex outVertex = graph.get()
-                    .traversal()
-                    .V(outboundId)
-                    .tryNext()
-                    .orElseThrow(() -> new EntityNotFoundException("outbound entity not found"));
-
-            return new DefaultEdgeEntity<>(outVertex.addEdge(label, inVertex), inbound, outbound);
-        }
-
-
-    }
-
-    @Override
-    public <OUT, IN, E> Optional<EdgeEntity<OUT, IN>> edge(E edgeId) throws NullPointerException {
-        requireNonNull(edgeId, "edgeId is required");
-
-        Optional<Edge> edgeOptional = graph.get().traversal().E(edgeId).tryNext();
-
-        if (edgeOptional.isPresent()) {
-            Edge edge = edgeOptional.get();
-            return Optional.of(toEdgeEntity(edge, converter));
-        }
-
-        return Optional.empty();
-    }
-
-    @Override
-    public VertexTraversal getTraversalVertex(Object... vertexIds) throws NullPointerException {
-        if (Stream.of(vertexIds).anyMatch(Objects::isNull)) {
-            throw new NullPointerException("No one vertexId element cannot be null");
-        }
-        return new DefaultVertexTraversal(() -> graph.get().traversal().V(vertexIds), INITIAL_VERTEX, converter);
-    }
-
-    @Override
-    public EdgeTraversal getTraversalEdge(Object... edgeIds) throws NullPointerException {
-        if (Stream.of(edgeIds).anyMatch(Objects::isNull)) {
-            throw new NullPointerException("No one edgeId element cannot be null");
-        }
-        return new DefaultEdgeTraversal(() -> graph.get().traversal().E(edgeIds), INITIAL_EDGE, converter);
-    }
-
-
-    private <T> void checkId(T entity) {
-        ClassRepresentation classRepresentation = classRepresentations.get(entity.getClass());
-        classRepresentation.getId().orElseThrow(() -> IdNotFoundException.newInstance(entity.getClass()));
-    }
-
-
 }
