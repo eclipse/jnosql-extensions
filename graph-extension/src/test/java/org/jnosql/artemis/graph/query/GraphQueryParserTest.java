@@ -20,6 +20,7 @@ import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.T;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.apache.tinkerpop.gremlin.structure.VertexProperty;
+import org.jnosql.artemis.DynamicQueryException;
 import org.jnosql.artemis.graph.cdi.WeldJUnit4Runner;
 import org.jnosql.artemis.graph.model.Person;
 import org.jnosql.artemis.reflection.ClassRepresentation;
@@ -172,4 +173,20 @@ public class GraphQueryParserTest {
         assertEquals(1, traversal.toList().size());
     }
 
+    @Test(expected = DynamicQueryException.class)
+    public void shouldReturnErrorWhenIsMissedArgument() {
+        GraphTraversal<Vertex, Vertex> traversal = graph.traversal().V();
+
+        parser.parse("findByNameAndAgeBetween", new Object[]{"name", 10},
+                classRepresentation, traversal);
+    }
+
+    @Test(expected = DynamicQueryException.class)
+    public void shouldReturnErrorWhenIsMissedArgument2() {
+
+        GraphTraversal<Vertex, Vertex> traversal = graph.traversal().V();
+        parser.parse("findByName", new Object[]{},
+                classRepresentation, traversal);
+
+    }
 }
