@@ -31,9 +31,13 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import javax.inject.Inject;
+import java.util.List;
 import java.util.Optional;
 
+import static java.util.stream.Collectors.toList;
+import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(WeldJUnit4Runner.class)
@@ -171,6 +175,60 @@ public class GraphQueryParserTest {
                 classRepresentation, traversal);
 
         assertEquals(1, traversal.toList().size());
+    }
+
+    @Test
+    public void shouldFindByKnowsOutV() {
+        Vertex poliana = graph.addVertex(T.label, "Person", "name", "Poliana", "age", 10);
+        Vertex otavio = graph.addVertex(T.label, "Person", "name", "Otavio", "age", 9);
+
+        poliana.addEdge("knows", otavio);
+
+
+        GraphTraversal<Vertex, Vertex> traversal = graph.traversal().V();
+
+        parser.findByParse("findByKnowsOutV", new Object[]{},
+                classRepresentation, traversal);
+
+        Optional<Vertex> vertex = traversal.tryNext();
+        assertTrue(vertex.isPresent());
+        assertEquals(otavio.id(), vertex.get().id());
+    }
+
+    @Test
+    public void shouldFindByKnowsInV() {
+        Vertex poliana = graph.addVertex(T.label, "Person", "name", "Poliana", "age", 10);
+        Vertex otavio = graph.addVertex(T.label, "Person", "name", "Otavio", "age", 9);
+
+        poliana.addEdge("knows", otavio);
+
+        GraphTraversal<Vertex, Vertex> traversal = graph.traversal().V();
+
+        parser.findByParse("findByKnowsInV", new Object[]{},
+                classRepresentation, traversal);
+
+        Optional<Vertex> vertex = traversal.tryNext();
+        assertTrue(vertex.isPresent());
+        assertEquals(poliana.id(), vertex.get().id());
+    }
+
+
+    @Test
+    public void shouldFindByKnowsBothV() {
+        Vertex poliana = graph.addVertex(T.label, "Person", "name", "Poliana", "age", 10);
+        Vertex otavio = graph.addVertex(T.label, "Person", "name", "Otavio", "age", 9);
+
+        poliana.addEdge("knows", otavio);
+
+        GraphTraversal<Vertex, Vertex> traversal = graph.traversal().V();
+
+        parser.findByParse("findByKnowsBothV", new Object[]{},
+                classRepresentation, traversal);
+
+        List<Vertex> vertices = traversal.toList();
+
+        List<Object> ids = vertices.stream().map(Vertex::id).collect(toList());
+        assertThat(ids,  containsInAnyOrder(poliana.id(), otavio.id()));
     }
 
     @Test(expected = DynamicQueryException.class)

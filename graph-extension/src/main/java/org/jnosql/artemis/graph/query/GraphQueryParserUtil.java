@@ -19,6 +19,9 @@ import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import org.jnosql.artemis.DynamicQueryException;
 import org.jnosql.artemis.reflection.ClassRepresentation;
 
+import java.util.Arrays;
+import java.util.List;
+
 final class GraphQueryParserUtil {
 
     static final String AND = "And";
@@ -29,6 +32,12 @@ final class GraphQueryParserUtil {
     private static final String GREATER_THAN = "GreaterThan";
     private static final String LESS_THAN_EQUAL = "LessEqualThan";
     private static final String GREATER_THAN_EQUAL = "GreaterEqualThan";
+
+    private static final String OUT_V = "OutV";
+    private static final String IN_V = "InV";
+    private static final String BOTH_V = "BothV";
+
+    private static List<String> GRAPH_CONDITION = Arrays.asList(OUT_V, IN_V, BOTH_V);
 
     private GraphQueryParserUtil() {
     }
@@ -46,6 +55,21 @@ final class GraphQueryParserUtil {
             checkContents(index, args.length, 2, methodName);
             String name = getName(token, representation).replace(BETWEEN, EMPTY);
             return traversal.has(name, P.between(args[index], args[++index]));
+        }
+
+        if (token.contains(OUT_V)) {
+            String label = getName(token).replace(OUT_V, EMPTY);
+            return traversal.out(label);
+        }
+
+        if (token.contains(IN_V)) {
+            String label = getName(token).replace(IN_V, EMPTY);
+            return traversal.in(label);
+        }
+
+        if (token.contains(BOTH_V)) {
+            String label = getName(token).replace(BOTH_V, EMPTY);
+            return traversal.both(label);
         }
 
         checkContents(index, args.length, 1, methodName);
@@ -85,9 +109,11 @@ final class GraphQueryParserUtil {
         String field = token.replace(AND, EMPTY);
         feedTraversal(field, index, args, methodName, representation, traversal);
 
-        if (token.contains(BETWEEN)){
+        if (token.contains(BETWEEN)) {
             return index + 2;
-        } else{
+        } else if (GRAPH_CONDITION.contains(token)) {
+            return index;
+        } else {
             return ++index;
         }
     }
@@ -103,8 +129,11 @@ final class GraphQueryParserUtil {
 
 
     private static String getName(String token, ClassRepresentation representation) {
-        return representation.getColumnField(String.valueOf(Character.toLowerCase(token.charAt(0)))
-                .concat(token.substring(1)));
+        return representation.getColumnField(getName(token));
+    }
+
+    private static String getName(String token) {
+        return String.valueOf(Character.toLowerCase(token.charAt(0))).concat(token.substring(1));
     }
 
 }
