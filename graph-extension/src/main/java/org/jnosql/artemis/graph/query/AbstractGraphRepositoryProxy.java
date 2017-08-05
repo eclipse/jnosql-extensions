@@ -20,11 +20,15 @@ import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.jnosql.artemis.Repository;
 import org.jnosql.artemis.graph.VertexConverter;
+import org.jnosql.artemis.graph.util.TinkerPopUtil;
 import org.jnosql.artemis.reflection.ClassRepresentation;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.util.List;
+import java.util.stream.Stream;
+
+import static org.jnosql.artemis.graph.query.ReturnTypeConverterUtil.returnObject;
 
 /**
  * Template method to {@link Repository} proxy on Graph
@@ -55,12 +59,16 @@ abstract class AbstractGraphRepositoryProxy<T, ID> implements InvocationHandler 
             case DEFAULT:
                 return method.invoke(getRepository(), args);
             case FIND_BY:
+                Class<?> classInstance = getClassRepresentation().getClassInstance();
                 GraphTraversal<Vertex, Vertex> traversal = getGraph().traversal().V();
                 getQueryParser().parse(methodName, args, getClassRepresentation(), traversal);
 
                 List<Vertex> vertices = traversal.toList();
 
-                return null;
+                Stream<T> stream = vertices.stream().map(TinkerPopUtil::toArtemisVertex)
+                        .map(getVertexConverter()::toEntity);
+
+                return returnObject(stream, classInstance, method);
             case DELETE_BY:
                 GraphTraversal<Vertex, Vertex> deleteTraversal = getGraph().traversal().V();
                 getQueryParser().parse(methodName, args, getClassRepresentation(), deleteTraversal);

@@ -17,6 +17,7 @@ package org.jnosql.artemis.graph.query;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.jnosql.artemis.Repository;
 import org.jnosql.artemis.graph.GraphTemplate;
+import org.jnosql.artemis.graph.VertexConverter;
 import org.jnosql.artemis.reflection.ClassRepresentation;
 import org.jnosql.artemis.reflection.ClassRepresentations;
 import org.jnosql.artemis.reflection.Reflections;
@@ -43,18 +44,21 @@ class GraphRepositoryProxy<T, ID> extends AbstractGraphRepositoryProxy<T, ID> {
 
     private final Graph graph;
 
+    private final VertexConverter converter;
+
 
     GraphRepositoryProxy(GraphTemplate template, ClassRepresentations classRepresentations,
-                         Class<?> repositoryType, Reflections reflections, Graph graph) {
-
+                         Class<?> repositoryType, Reflections reflections,
+                         Graph graph, VertexConverter converter) {
 
         Class<T> typeClass = Class.class.cast(ParameterizedType.class.cast(repositoryType.getGenericInterfaces()[0])
                 .getActualTypeArguments()[0]);
 
         this.template = template;
         this.graph = graph;
-        this.classRepresentation = classRepresentations.get(typeClass);
+        this.converter = converter;
         this.reflections = reflections;
+        this.classRepresentation = classRepresentations.get(typeClass);
         this.queryParser = new GraphQueryParser();
         this.repository = new GraphRepository(template, classRepresentation);
 
@@ -78,6 +82,11 @@ class GraphRepositoryProxy<T, ID> extends AbstractGraphRepositoryProxy<T, ID> {
     @Override
     protected Graph getGraph() {
         return graph;
+    }
+
+    @Override
+    protected VertexConverter getVertexConverter() {
+        return converter;
     }
 
 
