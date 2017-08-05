@@ -17,15 +17,11 @@ package org.jnosql.artemis.graph.query;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import org.jnosql.artemis.reflection.ClassRepresentation;
 
-import java.util.logging.Logger;
-
 import static org.jnosql.artemis.graph.query.GraphQueryParserUtil.feedTraversal;
 
 
 class GraphQueryParser {
 
-
-    private static final Logger LOGGER = Logger.getLogger(GraphQueryParser.class.getName());
 
 
     private static final String PREFIX = "findBy";
