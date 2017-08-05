@@ -17,7 +17,6 @@ package org.jnosql.artemis.graph.spi;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.jnosql.artemis.DatabaseQualifier;
 import org.jnosql.artemis.DatabaseType;
-import org.jnosql.artemis.document.DocumentTemplate;
 import org.jnosql.artemis.graph.GraphTemplate;
 import org.jnosql.artemis.graph.GraphTemplateProducer;
 
@@ -50,14 +49,14 @@ class GraphTemplateBean implements Bean<GraphTemplate>, PassivationCapable {
      */
     public GraphTemplateBean(BeanManager beanManager, String provider) {
         this.beanManager = beanManager;
-        this.types = Collections.singleton(DocumentTemplate.class);
+        this.types = Collections.singleton(GraphTemplate.class);
         this.provider = provider;
-        this.qualifiers = Collections.singleton(DatabaseQualifier.ofDocument(provider));
+        this.qualifiers = Collections.singleton(DatabaseQualifier.ofGraph(provider));
     }
 
     @Override
     public Class<?> getBeanClass() {
-        return DocumentTemplate.class;
+        return GraphTemplate.class;
     }
 
     @Override
@@ -136,7 +135,7 @@ class GraphTemplateBean implements Bean<GraphTemplate>, PassivationCapable {
 
     @Override
     public String getId() {
-        return DocumentTemplate.class.getName() + DatabaseType.COLUMN + "-" + provider;
+        return GraphTemplate.class.getName() + DatabaseType.COLUMN + "-" + provider;
     }
 
 }

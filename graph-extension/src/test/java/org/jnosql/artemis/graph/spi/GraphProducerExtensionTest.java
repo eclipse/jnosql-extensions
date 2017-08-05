@@ -17,6 +17,7 @@ package org.jnosql.artemis.graph.spi;
 import org.jnosql.artemis.Database;
 import org.jnosql.artemis.DatabaseType;
 import org.jnosql.artemis.column.ColumnTemplate;
+import org.jnosql.artemis.graph.GraphTemplate;
 import org.jnosql.artemis.graph.cdi.WeldJUnit4Runner;
 import org.jnosql.artemis.graph.model.Person;
 import org.junit.Test;
@@ -32,10 +33,10 @@ public class GraphProducerExtensionTest {
 
     @Inject
     @Database(value = DatabaseType.GRAPH, provider = "graphRepositoryMock")
-    private ColumnTemplate managerMock;
+    private GraphTemplate managerMock;
 
     @Inject
-    private ColumnTemplate manager;
+    private GraphTemplate manager;
 
 
     @Test
