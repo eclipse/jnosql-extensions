@@ -1,3 +1,17 @@
+/*
+ *  Copyright (c) 2017 Otávio Santana and others
+ *   All rights reserved. This program and the accompanying materials
+ *   are made available under the terms of the Eclipse Public License v1.0
+ *   and Apache License v2.0 which accompanies this distribution.
+ *   The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v10.html
+ *   and the Apache License v2.0 is available at http://www.opensource.org/licenses/apache2.0.php.
+ *
+ *   You may elect to redistribute this code under either of these licenses.
+ *
+ *   Contributors:
+ *
+ *   Otavio Santana
+ */
 package org.jnosql.artemis.graph.query;
 
 import org.apache.tinkerpop.gremlin.process.traversal.P;
@@ -10,7 +24,6 @@ final class GraphQueryParserUtil {
     static final String AND = "And";
     static final String EMPTY = "";
 
-    static final String ORDER_BY = "OrderBy";
     private static final String BETWEEN = "Between";
     private static final String LESS_THAN = "LessThan";
     private static final String GREATER_THAN = "GreaterThan";
