@@ -63,8 +63,7 @@ public final class TinkerPopUtil {
 
         ArtemisVertex inVertex = toArtemisVertex(edge.inVertex());
         ArtemisVertex outVertex = toArtemisVertex(edge.outVertex());
-        EdgeEntity.of(inVertex, edge, outVertex);
-        return EdgeEntity.<>of(converter.toEntity(outVertex), edge, inVertex);
+        return EdgeEntity.of(converter.toEntity(outVertex), edge, converter.toEntity(inVertex));
 
     }
 }
