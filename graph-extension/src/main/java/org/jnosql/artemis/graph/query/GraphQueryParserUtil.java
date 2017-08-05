@@ -19,9 +19,6 @@ import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import org.jnosql.artemis.DynamicQueryException;
 import org.jnosql.artemis.reflection.ClassRepresentation;
 
-import java.util.Arrays;
-import java.util.List;
-
 final class GraphQueryParserUtil {
 
     static final String AND = "And";
