@@ -24,7 +24,7 @@ import java.util.Set;
 /**
  * A structure to represents {@link org.apache.tinkerpop.gremlin.structure.Vertex} in memory
  */
-interface ArtemisVertex {
+public interface ArtemisVertex {
 
     /**
      * Returns the property from the key

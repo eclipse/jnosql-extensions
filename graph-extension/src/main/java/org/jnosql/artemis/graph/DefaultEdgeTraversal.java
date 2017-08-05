@@ -26,7 +26,7 @@ import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 import static java.util.Objects.requireNonNull;
-import static org.jnosql.artemis.graph.TinkerPopUtil.toEdgeEntity;
+import static org.jnosql.artemis.graph.util.TinkerPopUtil.toEdgeEntity;
 
 class DefaultEdgeTraversal implements EdgeTraversal {
 
