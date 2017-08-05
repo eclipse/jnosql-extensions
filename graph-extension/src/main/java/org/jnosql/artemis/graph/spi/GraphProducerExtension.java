@@ -18,8 +18,6 @@ import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.jnosql.artemis.Database;
 import org.jnosql.artemis.Databases;
 import org.jnosql.artemis.Repository;
-import org.jnosql.artemis.column.query.RepositoryColumnBean;
-import org.jnosql.artemis.column.spi.ColumnTemplateBean;
 import org.jnosql.artemis.graph.query.RepositoryGraphBean;
 
 import javax.enterprise.event.Observes;
@@ -74,7 +72,7 @@ public class GraphProducerExtension implements Extension {
                 databases.size(), crudTypes.size()));
 
         databases.forEach(type -> {
-            final ColumnTemplateBean bean = new ColumnTemplateBean(beanManager, type.provider());
+            final GraphTemplateBean bean = new GraphTemplateBean(beanManager, type.provider());
             afterBeanDiscovery.addBean(bean);
         });
 
