@@ -34,8 +34,6 @@ class GraphQueryParser {
 
 
         String[] tokens = methodName.replace(PREFIX, EMPTY).split(TOKENIZER);
-        String className = representation.getClassInstance().getName();
-
         int index = 0;
         for (String token : tokens) {
             if (token.startsWith(GraphQueryParserUtil.AND)) {

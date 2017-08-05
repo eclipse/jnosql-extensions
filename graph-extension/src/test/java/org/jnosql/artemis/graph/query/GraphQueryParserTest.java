@@ -189,4 +189,6 @@ public class GraphQueryParserTest {
                 classRepresentation, traversal);
 
     }
+
+
 }
