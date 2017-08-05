@@ -24,16 +24,32 @@ class GraphQueryParser {
 
 
 
-    private static final String PREFIX = "findBy";
+    private static final String PREFIX_FIND_BY = "findBy";
+    private static final String PREFIX_DELETE_BY = "deleteBy";
     private static final String TOKENIZER = "(?=And|OrderBy)";
 
     private static final String EMPTY = "";
 
 
-    public void parse(String methodName, Object[] args, ClassRepresentation representation, GraphTraversal<?, ?> traversal) {
+    public void findByParse(String methodName, Object[] args, ClassRepresentation representation,
+                            GraphTraversal<?, ?> traversal) {
 
 
-        String[] tokens = methodName.replace(PREFIX, EMPTY).split(TOKENIZER);
+        parse(methodName, args, representation, traversal, PREFIX_FIND_BY);
+    }
+
+    public void deleteByParse(String methodName, Object[] args, ClassRepresentation representation,
+                            GraphTraversal<?, ?> traversal) {
+
+        parse(methodName, args, representation, traversal, PREFIX_DELETE_BY);
+    }
+
+
+    private void parse(String methodName, Object[] args, ClassRepresentation representation,
+                            GraphTraversal<?, ?> traversal, String parse) {
+
+
+        String[] tokens = methodName.replace(parse, EMPTY).split(TOKENIZER);
         int index = 0;
         for (String token : tokens) {
             if (token.startsWith(GraphQueryParserUtil.AND)) {

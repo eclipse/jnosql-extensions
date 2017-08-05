@@ -18,7 +18,6 @@ import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.T;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
-import org.hamcrest.Matchers;
 import org.jnosql.artemis.Repository;
 import org.jnosql.artemis.graph.GraphTemplate;
 import org.jnosql.artemis.graph.VertexConverter;
@@ -26,11 +25,6 @@ import org.jnosql.artemis.graph.cdi.WeldJUnit4Runner;
 import org.jnosql.artemis.graph.model.Person;
 import org.jnosql.artemis.reflection.ClassRepresentations;
 import org.jnosql.artemis.reflection.Reflections;
-import org.jnosql.diana.api.Condition;
-import org.jnosql.diana.api.column.Column;
-import org.jnosql.diana.api.column.ColumnCondition;
-import org.jnosql.diana.api.column.ColumnDeleteQuery;
-import org.jnosql.diana.api.column.ColumnQuery;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -42,21 +36,14 @@ import javax.inject.Inject;
 import java.lang.reflect.Proxy;
 import java.util.List;
 import java.util.Optional;
-import java.util.Queue;
 import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
-import static org.jnosql.diana.api.column.ColumnCondition.eq;
-import static org.jnosql.diana.api.column.query.ColumnQueryBuilder.delete;
-import static org.jnosql.diana.api.column.query.ColumnQueryBuilder.select;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.times;
@@ -112,7 +99,7 @@ public class GraphRepositoryProxyTest {
 
     @Test
     public void shouldSaveUsingInsertWhenDataDoesNotExist() {
-        when(template.find(Mockito.any(ColumnQuery.class))).thenReturn(Optional.empty());
+        when(template.find(Mockito.any(Long.class))).thenReturn(Optional.empty());
 
         ArgumentCaptor<Person> captor = ArgumentCaptor.forClass(Person.class);
         Person person = Person.builder().withName("Ada")
@@ -127,7 +114,7 @@ public class GraphRepositoryProxyTest {
 
     @Test
     public void shouldSaveUsingUpdateWhenDataExists() {
-        when(template.find(Mockito.any(ColumnQuery.class))).thenReturn(Optional.of(Person.builder().build()));
+        when(template.find(Mockito.any(Long.class))).thenReturn(Optional.of(Person.builder().build()));
 
         ArgumentCaptor<Person> captor = ArgumentCaptor.forClass(Person.class);
         Person person = Person.builder().withName("Ada")
@@ -161,25 +148,11 @@ public class GraphRepositoryProxyTest {
     @Test
     public void shouldFindByNameInstance() {
 
-        when(template.find(any(ColumnQuery.class))).thenReturn(Optional
-                .of(Person.builder().build()));
+        graph.addVertex(T.label, "Person", "name", "name", "age", 20);
 
-        personRepository.findByName("name");
-
-        ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
-        verify(template).find(captor.capture());
-        ColumnQuery query = captor.getValue();
-        ColumnCondition condition = query.getCondition().get();
-        assertEquals("Person", query.getColumnFamily());
-        assertEquals(Condition.EQUALS, condition.getCondition());
-        assertEquals(Column.of("name", "name"), condition.getColumn());
-
-        assertNotNull(personRepository.findByName("name"));
-        when(template.find(any(ColumnQuery.class))).thenReturn(Optional
-                .empty());
-
-        assertNull(personRepository.findByName("name"));
-
+        Person person = personRepository.findByName("name");
+        assertNotNull(person);
+        assertNull(personRepository.findByName("name2"));
 
     }
 
@@ -188,9 +161,6 @@ public class GraphRepositoryProxyTest {
 
         graph.addVertex(T.label, "Person", "name", "name", "age", 20);
         graph.addVertex(T.label, "Person", "name", "name", "age", 20);
-
-
-
 
         List<Person> people = personRepository.findByNameAndAge("name", 20);
         assertEquals(2, people.size());
@@ -221,14 +191,10 @@ public class GraphRepositoryProxyTest {
 
     @Test
     public void shouldDeleteByName() {
-        ArgumentCaptor<ColumnDeleteQuery> captor = ArgumentCaptor.forClass(ColumnDeleteQuery.class);
+        Vertex vertex = graph.addVertex(T.label, "Person", "name", "Ada", "age", 20);
+
         personRepository.deleteByName("Ada");
-        verify(template).delete(captor.capture());
-        ColumnDeleteQuery deleteQuery = captor.getValue();
-        ColumnCondition condition = deleteQuery.getCondition().get();
-        assertEquals("Person", deleteQuery.getColumnFamily());
-        assertEquals(Condition.EQUALS, condition.getCondition());
-        assertEquals(Column.of("name", "Ada"), condition.getColumn());
+        assertFalse(graph.traversal().V(vertex.id()).tryNext().isPresent());
 
     }
 

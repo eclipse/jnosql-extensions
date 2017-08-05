@@ -71,7 +71,7 @@ public class GraphQueryParserTest {
         graph.addVertex(T.label, "Person", "name", "name");
 
         GraphTraversal<Vertex, Vertex> traversal = graph.traversal().V();
-        parser.parse("findByName", new Object[]{"name"}, classRepresentation, traversal);
+        parser.findByParse("findByName", new Object[]{"name"}, classRepresentation, traversal);
         Optional<Vertex> vertex = traversal.tryNext();
         assertTrue(vertex.isPresent());
         assertEquals("Person", vertex.get().label());
@@ -85,7 +85,7 @@ public class GraphQueryParserTest {
         graph.addVertex(T.label, "Person", "name", "name", "age", 10);
 
         GraphTraversal<Vertex, Vertex> traversal = graph.traversal().V();
-        parser.parse("findByNameAndAge", new Object[]{"name", 10}, classRepresentation, traversal);
+        parser.findByParse("findByNameAndAge", new Object[]{"name", 10}, classRepresentation, traversal);
 
         Optional<Vertex> vertex = traversal.tryNext();
         assertTrue(vertex.isPresent());
@@ -106,7 +106,7 @@ public class GraphQueryParserTest {
         graph.addVertex(T.label, "Person", "name", "name3", "age", 8);
 
         GraphTraversal<Vertex, Vertex> traversal = graph.traversal().V();
-        parser.parse("findByAgeLessThan", new Object[]{10}, classRepresentation, traversal);
+        parser.findByParse("findByAgeLessThan", new Object[]{10}, classRepresentation, traversal);
         assertEquals(2, traversal.toList().size());
 
     }
@@ -120,7 +120,7 @@ public class GraphQueryParserTest {
         graph.addVertex(T.label, "Person", "name", "name5", "age", 13);
         GraphTraversal<Vertex, Vertex> traversal = graph.traversal().V();
 
-        parser.parse("findByAgeGreaterThan", new Object[]{10}, classRepresentation, traversal);
+        parser.findByParse("findByAgeGreaterThan", new Object[]{10}, classRepresentation, traversal);
         assertEquals(3, traversal.toList().size());
 
 
@@ -137,7 +137,7 @@ public class GraphQueryParserTest {
 
         GraphTraversal<Vertex, Vertex> traversal = graph.traversal().V();
 
-        parser.parse("findByAgeLessEqualThan", new Object[]{10}, classRepresentation, traversal);
+        parser.findByParse("findByAgeLessEqualThan", new Object[]{10}, classRepresentation, traversal);
         assertEquals(2, traversal.toList().size());
 
     }
@@ -153,7 +153,7 @@ public class GraphQueryParserTest {
         GraphTraversal<Vertex, Vertex> traversal = graph.traversal().V();
 
 
-        parser.parse("findByAgeGreaterEqualThan", new Object[]{10}, classRepresentation, traversal);
+        parser.findByParse("findByAgeGreaterEqualThan", new Object[]{10}, classRepresentation, traversal);
     }
 
 
@@ -167,7 +167,7 @@ public class GraphQueryParserTest {
 
         GraphTraversal<Vertex, Vertex> traversal = graph.traversal().V();
 
-        parser.parse("findByNameAndAgeBetween", new Object[]{"name", 10, 12},
+        parser.findByParse("findByNameAndAgeBetween", new Object[]{"name", 10, 12},
                 classRepresentation, traversal);
 
         assertEquals(1, traversal.toList().size());
@@ -177,7 +177,7 @@ public class GraphQueryParserTest {
     public void shouldReturnErrorWhenIsMissedArgument() {
         GraphTraversal<Vertex, Vertex> traversal = graph.traversal().V();
 
-        parser.parse("findByNameAndAgeBetween", new Object[]{"name", 10},
+        parser.findByParse("findByNameAndAgeBetween", new Object[]{"name", 10},
                 classRepresentation, traversal);
     }
 
@@ -185,7 +185,7 @@ public class GraphQueryParserTest {
     public void shouldReturnErrorWhenIsMissedArgument2() {
 
         GraphTraversal<Vertex, Vertex> traversal = graph.traversal().V();
-        parser.parse("findByName", new Object[]{},
+        parser.findByParse("findByName", new Object[]{},
                 classRepresentation, traversal);
 
     }

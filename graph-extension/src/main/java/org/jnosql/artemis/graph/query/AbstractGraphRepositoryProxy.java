@@ -59,33 +59,41 @@ abstract class AbstractGraphRepositoryProxy<T, ID> implements InvocationHandler 
             case DEFAULT:
                 return method.invoke(getRepository(), args);
             case FIND_BY:
-                Class<?> classInstance = getClassRepresentation().getClassInstance();
-                GraphTraversal<Vertex, Vertex> traversal = getGraph().traversal().V();
-                getQueryParser().parse(methodName, args, getClassRepresentation(), traversal);
-
-                List<Vertex> vertices = traversal.toList();
-
-                Stream<T> stream = vertices.stream().map(TinkerPopUtil::toArtemisVertex)
-                        .map(getVertexConverter()::toEntity);
-
-                return returnObject(stream, classInstance, method);
+                return executeFindByMethod(method, args, methodName);
             case DELETE_BY:
-                GraphTraversal<Vertex, Vertex> deleteTraversal = getGraph().traversal().V();
-                getQueryParser().parse(methodName, args, getClassRepresentation(), deleteTraversal);
-
-                List<?> result = deleteTraversal.toList();
-
-                for (Object element : result) {
-                    if (Element.class.isInstance(element)) {
-                        Element.class.cast(element).remove();
-                    }
-                }
-                return Void.class;
+                return executeDeleteMethod(args, methodName);
             case UNKNOWN:
             default:
                 return Void.class;
 
         }
+    }
+
+    private Object executeDeleteMethod(Object[] args, String methodName) {
+        GraphTraversal<Vertex, Vertex> traversal = getGraph().traversal().V();
+        getQueryParser().deleteByParse(methodName, args, getClassRepresentation(), traversal);
+
+        List<?> vertices = traversal.toList();
+
+        for (Object element : vertices) {
+            if (Element.class.isInstance(element)) {
+                Element.class.cast(element).remove();
+            }
+        }
+        return Void.class;
+    }
+
+    private Object executeFindByMethod(Method method, Object[] args, String methodName) {
+        Class<?> classInstance = getClassRepresentation().getClassInstance();
+        GraphTraversal<Vertex, Vertex> traversal = getGraph().traversal().V();
+        getQueryParser().findByParse(methodName, args, getClassRepresentation(), traversal);
+
+        List<Vertex> vertices = traversal.toList();
+
+        Stream<T> stream = vertices.stream().map(TinkerPopUtil::toArtemisVertex)
+                .map(getVertexConverter()::toEntity);
+
+        return returnObject(stream, classInstance, method);
     }
 
 }
