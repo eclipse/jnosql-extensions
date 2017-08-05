@@ -158,7 +158,7 @@ public class GraphQueryParserTest {
 
 
     @Test
-    public void shouldFindByNameAndAAgeBetween() {
+    public void shouldFindByNameAndAgeBetween() {
         graph.addVertex(T.label, "Person", "name", "name", "age", 10);
         graph.addVertex(T.label, "Person", "name", "name2", "age", 9);
         graph.addVertex(T.label, "Person", "name", "name3", "age", 11);
