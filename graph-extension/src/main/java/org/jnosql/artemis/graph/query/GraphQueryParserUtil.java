@@ -37,8 +37,6 @@ final class GraphQueryParserUtil {
     private static final String IN_V = "InV";
     private static final String BOTH_V = "BothV";
 
-    private static List<String> GRAPH_CONDITION = Arrays.asList(OUT_V, IN_V, BOTH_V);
-
     private GraphQueryParserUtil() {
     }
 
@@ -111,11 +109,15 @@ final class GraphQueryParserUtil {
 
         if (token.contains(BETWEEN)) {
             return index + 2;
-        } else if (GRAPH_CONDITION.contains(token)) {
+        } else if (isGraphCondition(token)) {
             return index;
         } else {
             return ++index;
         }
+    }
+
+    static boolean isGraphCondition(String token) {
+        return token.contains(OUT_V) || token.contains(IN_V)|| token.contains(BOTH_V);
     }
 
 

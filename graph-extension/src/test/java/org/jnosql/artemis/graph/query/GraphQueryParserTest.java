@@ -231,6 +231,42 @@ public class GraphQueryParserTest {
         assertThat(ids,  containsInAnyOrder(poliana.id(), otavio.id()));
     }
 
+    @Test
+    public void shouldFindByNameAndKnowsOutV() {
+        Vertex poliana = graph.addVertex(T.label, "Person", "name", "Poliana", "age", 10);
+        Vertex otavio = graph.addVertex(T.label, "Person", "name", "Otavio", "age", 9);
+
+        poliana.addEdge("knows", otavio);
+
+        GraphTraversal<Vertex, Vertex> traversal = graph.traversal().V();
+
+        parser.findByParse("findByNameAndKnowsOutV", new Object[]{"Poliana"},
+                classRepresentation, traversal);
+
+        Optional<Vertex> vertex = traversal.tryNext();
+        assertTrue(vertex.isPresent());
+        assertEquals(otavio.id(), vertex.get().id());
+
+    }
+
+    @Test
+    public void shouldFindByKnowsOutVAndName() {
+        Vertex poliana = graph.addVertex(T.label, "Person", "name", "Poliana", "age", 10);
+        Vertex otavio = graph.addVertex(T.label, "Person", "name", "Otavio", "age", 9);
+
+        poliana.addEdge("knows", otavio);
+
+        GraphTraversal<Vertex, Vertex> traversal = graph.traversal().V();
+
+        parser.findByParse("findByKnowsOutVAndName", new Object[]{"Otavio"},
+                classRepresentation, traversal);
+
+        Optional<Vertex> vertex = traversal.tryNext();
+        assertTrue(vertex.isPresent());
+        assertEquals(otavio.id(), vertex.get().id());
+
+    }
+
     @Test(expected = DynamicQueryException.class)
     public void shouldReturnErrorWhenIsMissedArgument() {
         GraphTraversal<Vertex, Vertex> traversal = graph.traversal().V();

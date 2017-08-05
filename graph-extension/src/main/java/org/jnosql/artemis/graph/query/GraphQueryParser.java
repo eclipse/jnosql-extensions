@@ -18,15 +18,15 @@ import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import org.jnosql.artemis.reflection.ClassRepresentation;
 
 import static org.jnosql.artemis.graph.query.GraphQueryParserUtil.feedTraversal;
+import static org.jnosql.artemis.graph.query.GraphQueryParserUtil.isGraphCondition;
 
 
 class GraphQueryParser {
 
 
-
     private static final String PREFIX_FIND_BY = "findBy";
     private static final String PREFIX_DELETE_BY = "deleteBy";
-    private static final String TOKENIZER = "(?=And|OrderBy)";
+    private static final String TOKENIZER = "(?=And)";
 
     private static final String EMPTY = "";
 
@@ -39,14 +39,14 @@ class GraphQueryParser {
     }
 
     public void deleteByParse(String methodName, Object[] args, ClassRepresentation representation,
-                            GraphTraversal<?, ?> traversal) {
+                              GraphTraversal<?, ?> traversal) {
 
         parse(methodName, args, representation, traversal, PREFIX_DELETE_BY);
     }
 
 
     private void parse(String methodName, Object[] args, ClassRepresentation representation,
-                            GraphTraversal<?, ?> traversal, String parse) {
+                       GraphTraversal<?, ?> traversal, String parse) {
 
 
         String[] tokens = methodName.replace(parse, EMPTY).split(TOKENIZER);
@@ -56,7 +56,9 @@ class GraphQueryParser {
                 index = GraphQueryParserUtil.and(args, index, token, methodName, representation, traversal);
             } else {
                 feedTraversal(token, index, args, methodName, representation, traversal);
-                index++;
+                if (!isGraphCondition(token)) {
+                    index++;
+                }
             }
         }
     }
