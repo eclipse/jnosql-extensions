@@ -43,17 +43,20 @@ class DefaultGraphTemplateProducer implements GraphTemplateProducer {
     @Vetoed
     static class ProducerGraphTemplate extends AbstractGraphTemplate {
 
-        private final ClassRepresentations classRepresentations;
+        private ClassRepresentations classRepresentations;
 
-        private final VertexConverter vertexConverter;
+        private VertexConverter vertexConverter;
 
-        private final Graph graph;
+        private Graph graph;
 
         ProducerGraphTemplate(ClassRepresentations classRepresentations, VertexConverter vertexConverter,
                               Graph graph) {
             this.classRepresentations = classRepresentations;
             this.vertexConverter = vertexConverter;
             this.graph = graph;
+        }
+
+        ProducerGraphTemplate() {
         }
 
         @Override

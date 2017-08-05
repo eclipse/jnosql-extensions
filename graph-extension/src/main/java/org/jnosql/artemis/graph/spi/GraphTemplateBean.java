@@ -14,12 +14,12 @@
  */
 package org.jnosql.artemis.graph.spi;
 
+import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.jnosql.artemis.DatabaseQualifier;
 import org.jnosql.artemis.DatabaseType;
 import org.jnosql.artemis.document.DocumentTemplate;
-import org.jnosql.artemis.document.DocumentTemplateProducer;
 import org.jnosql.artemis.graph.GraphTemplate;
-import org.jnosql.diana.api.document.DocumentCollectionManager;
+import org.jnosql.artemis.graph.GraphTemplateProducer;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.spi.CreationalContext;
@@ -73,16 +73,16 @@ class GraphTemplateBean implements Bean<GraphTemplate>, PassivationCapable {
     @Override
     public GraphTemplate create(CreationalContext<GraphTemplate> creationalContext) {
 
-        DocumentTemplateProducer producer = getInstance(DocumentTemplateProducer.class);
-        DocumentCollectionManager manager = getManager();
+        GraphTemplateProducer producer = getInstance(GraphTemplateProducer.class);
+        Graph manager = getGraph();
         return producer.get(manager);
     }
 
-    private DocumentCollectionManager getManager() {
-        Bean<DocumentCollectionManager> bean = (Bean<DocumentCollectionManager>) beanManager.getBeans(DocumentCollectionManager.class,
-                DatabaseQualifier.ofDocument(provider) ).iterator().next();
-        CreationalContext<DocumentCollectionManager> ctx = beanManager.createCreationalContext(bean);
-        return (DocumentCollectionManager) beanManager.getReference(bean, DocumentCollectionManager.class, ctx);
+    private Graph getGraph() {
+        Bean<Graph> bean = (Bean<Graph>) beanManager.getBeans(Graph.class,
+                DatabaseQualifier.ofGraph(provider) ).iterator().next();
+        CreationalContext<Graph> ctx = beanManager.createCreationalContext(bean);
+        return (Graph) beanManager.getReference(bean, Graph.class, ctx);
     }
 
 
