@@ -49,7 +49,7 @@ public class GraphProducerExtensionTest {
     public void shouldSave() {
         Person personMock = managerMock.insert(Person.builder().build());
 
-        assertEquals("columnRepositoryMock", personMock.getName());
+        assertEquals("nameMock", personMock.getName());
     }
 
 }

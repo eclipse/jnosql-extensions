@@ -25,7 +25,11 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Disposes;
 import javax.enterprise.inject.Produces;
 
+import java.util.Collections;
+
+import static java.util.Collections.singleton;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 @ApplicationScoped
 public class GraphProducer {
@@ -49,7 +53,12 @@ public class GraphProducer {
 
         Vertex vertex = mock(Vertex.class);
 
-        Mockito.when(graphMock.addVertex(Mockito.anyString())).thenReturn(vertex);
+        when(vertex.label()).thenReturn("Person");
+        when(vertex.id()).thenReturn(10L);
+
+        when(vertex.keys()).thenReturn(singleton("name"));
+        when(vertex.value("name")).thenReturn("nameMock");
+        when(graphMock.addVertex(Mockito.anyString())).thenReturn(vertex);
 
         return graphMock;
     }
