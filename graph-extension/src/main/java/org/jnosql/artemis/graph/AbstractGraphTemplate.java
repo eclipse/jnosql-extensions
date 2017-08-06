@@ -48,7 +48,6 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
 
     protected abstract Graph getGraph();
 
-
     protected abstract ClassRepresentations getClassRepresentations();
 
     protected abstract VertexConverter getVertex();

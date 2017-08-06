@@ -33,10 +33,13 @@ class DefaultGraphTemplateProducer implements GraphTemplateProducer {
     @Inject
     private VertexConverter vertexConverter;
 
+    @Inject
+    private GraphWorkflow workflow;
+
     @Override
     public GraphTemplate get(Graph graph) throws NullPointerException {
         requireNonNull(graph, "graph is required");
-        return new ProducerGraphTemplate(classRepresentations, vertexConverter, graph);
+        return new ProducerGraphTemplate(classRepresentations, vertexConverter, workflow, graph);
     }
 
 
@@ -49,11 +52,17 @@ class DefaultGraphTemplateProducer implements GraphTemplateProducer {
 
         private Graph graph;
 
-        ProducerGraphTemplate(ClassRepresentations classRepresentations, VertexConverter vertexConverter,
+        private GraphWorkflow workflow;
+
+        ProducerGraphTemplate(ClassRepresentations classRepresentations,
+                              VertexConverter vertexConverter,
+                              GraphWorkflow workflow,
                               Graph graph) {
+
             this.classRepresentations = classRepresentations;
             this.vertexConverter = vertexConverter;
             this.graph = graph;
+            this.workflow = workflow;
         }
 
         ProducerGraphTemplate() {
@@ -72,6 +81,11 @@ class DefaultGraphTemplateProducer implements GraphTemplateProducer {
         @Override
         protected VertexConverter getVertex() {
             return vertexConverter;
+        }
+
+        @Override
+        protected GraphWorkflow getFlow() {
+            return workflow;
         }
     }
 }

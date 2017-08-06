@@ -35,6 +35,9 @@ class DefaultGraphTemplate extends AbstractGraphTemplate {
     @Inject
     private VertexConverter converter;
 
+    @Inject
+    private GraphWorkflow workflow;
+
 
     @Override
     protected Graph getGraph() {
@@ -49,5 +52,10 @@ class DefaultGraphTemplate extends AbstractGraphTemplate {
     @Override
     protected VertexConverter getVertex() {
         return converter;
+    }
+
+    @Override
+    protected GraphWorkflow getFlow() {
+        return workflow;
     }
 }
