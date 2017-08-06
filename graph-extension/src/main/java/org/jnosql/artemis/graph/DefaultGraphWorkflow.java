@@ -52,19 +52,19 @@ class DefaultGraphWorkflow implements GraphWorkflow {
             return t;
         };
 
-        UnaryOperator<T> firePreColumnEntity = t -> {
+        UnaryOperator<T> firePreGraphEntity = t -> {
             graphEventPersistManager.firePreGraphEntity(t);
             return t;
         };
 
-        Function<T, ArtemisVertex> converterColumn = t -> converter.toVertex(t);
+        Function<T, ArtemisVertex> converterGraph = t -> converter.toVertex(t);
 
-        UnaryOperator<ArtemisVertex> firePreDocument = t -> {
+        UnaryOperator<ArtemisVertex> firePreGraph = t -> {
             graphEventPersistManager.firePreGraph(t);
             return t;
         };
 
-        UnaryOperator<ArtemisVertex> firePostDocument = t -> {
+        UnaryOperator<ArtemisVertex> firePostGraph = t -> {
             graphEventPersistManager.firePostGraph(t);
             return t;
         };
@@ -76,20 +76,20 @@ class DefaultGraphWorkflow implements GraphWorkflow {
             return t;
         };
 
-        UnaryOperator<T> firePostColumnEntity = t -> {
+        UnaryOperator<T> firePostGraphEntity = t -> {
             graphEventPersistManager.firePostGraphEntity(t);
             return t;
         };
 
         return validation
                 .andThen(firePreEntity)
-                .andThen(firePreColumnEntity)
-                .andThen(converterColumn)
-                .andThen(firePreDocument)
+                .andThen(firePreGraphEntity)
+                .andThen(converterGraph)
+                .andThen(firePreGraph)
                 .andThen(action)
-                .andThen(firePostDocument)
+                .andThen(firePostGraph)
                 .andThen(converterEntity)
                 .andThen(firePostEntity)
-                .andThen(firePostColumnEntity);
+                .andThen(firePostGraphEntity);
     }
 }
