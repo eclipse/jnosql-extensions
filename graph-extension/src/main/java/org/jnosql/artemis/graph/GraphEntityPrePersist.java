@@ -14,5 +14,32 @@
  */
 package org.jnosql.artemis.graph;
 
+import org.jnosql.artemis.column.ColumnEntityPrePersist;
+
+import java.util.Objects;
+
+/**
+ * The interface represents the model before the {@link ArtemisVertex} be saved that  event will fired.
+ */
 public interface GraphEntityPrePersist {
+
+
+    /**
+     * The {@link ArtemisVertex}  before be saved
+     *
+     * @return the {@link ArtemisVertex} instance
+     */
+    ArtemisVertex getEntity();
+
+    /**
+     * Creates the {@link GraphEntityPrePersist} instance
+     *
+     * @param entity the entity
+     * @return {@link GraphEntityPrePersist} instance
+     * @throws NullPointerException when the entity is null
+     */
+    static GraphEntityPrePersist of(ArtemisVertex entity) throws NullPointerException {
+        Objects.requireNonNull(entity, "Entity is required");
+        return new DefaultGraphEntityPrePersist(entity);
+    }
 }

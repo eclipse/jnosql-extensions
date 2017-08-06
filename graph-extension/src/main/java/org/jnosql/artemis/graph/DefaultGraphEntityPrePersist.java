@@ -1,17 +1,17 @@
 package org.jnosql.artemis.graph;
 
+import org.jnosql.diana.api.column.ColumnEntity;
+
 import java.util.Objects;
 
-/**
- * The default implementation of {@link GraphEntityPostPersist}
- */
-class DefaultGraphEntityPostPersist implements GraphEntityPostPersist {
+class DefaultGraphEntityPrePersist implements GraphEntityPrePersist {
 
     private final ArtemisVertex entity;
 
-    DefaultGraphEntityPostPersist(ArtemisVertex entity) {
+    DefaultGraphEntityPrePersist(ArtemisVertex entity) {
         this.entity = entity;
     }
+
 
     @Override
     public ArtemisVertex getEntity() {
@@ -23,10 +23,10 @@ class DefaultGraphEntityPostPersist implements GraphEntityPostPersist {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof DefaultGraphEntityPostPersist)) {
+        if (!(o instanceof DefaultGraphEntityPrePersist)) {
             return false;
         }
-        DefaultGraphEntityPostPersist that = (DefaultGraphEntityPostPersist) o;
+        DefaultGraphEntityPrePersist that = (DefaultGraphEntityPrePersist) o;
         return Objects.equals(entity, that.entity);
     }
 
@@ -37,7 +37,7 @@ class DefaultGraphEntityPostPersist implements GraphEntityPostPersist {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("DefaultGraphEntityPostPersist{");
+        final StringBuilder sb = new StringBuilder("DefaultGraphEntityPrePersist{");
         sb.append("entity=").append(entity);
         sb.append('}');
         return sb.toString();
