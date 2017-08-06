@@ -1,9 +1,10 @@
 package org.jnosql.artemis.graph;
 
-import org.jnosql.diana.api.column.ColumnEntity;
-
 import java.util.Objects;
 
+/**
+ * The default implementation of {@link GraphEntityPrePersist}
+ */
 class DefaultGraphEntityPrePersist implements GraphEntityPrePersist {
 
     private final ArtemisVertex entity;
