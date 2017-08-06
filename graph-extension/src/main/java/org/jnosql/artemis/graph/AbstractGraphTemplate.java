@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
+import java.util.function.UnaryOperator;
 import java.util.stream.Stream;
 
 import static java.lang.String.format;
@@ -45,7 +46,6 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
             g -> (GraphTraversal<Vertex, Edge>) g;
 
 
-
     protected abstract Graph getGraph();
 
 
@@ -53,22 +53,22 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
 
     protected abstract VertexConverter getVertex();
 
+    protected abstract GraphWorkflow getFlow();
+
     @Override
     public <T> T insert(T entity) throws NullPointerException, IdNotFoundException {
         requireNonNull(entity, "entity is required");
         checkId(entity);
 
-        ArtemisVertex artemisVertex = getVertex().toVertex(entity);
+        UnaryOperator<ArtemisVertex> save = e -> {
+            ArtemisVertex artemisVertex = getVertex().toVertex(entity);
+            Vertex vertex = artemisVertex.getId().map(v -> getGraph().addVertex(label, artemisVertex.getLabel(), id, v.get()))
+                    .orElse(getGraph().addVertex(artemisVertex.getLabel()));
+            artemisVertex.getProperties().stream().forEach(p -> vertex.property(p.getKey(), p.get()));
+            return toArtemisVertex(vertex);
+        };
 
-        Vertex vertex = artemisVertex.getId().map(v -> getGraph().addVertex(label, artemisVertex.getLabel(), id, v.get()))
-                .orElse(getGraph().addVertex(artemisVertex.getLabel()));
-
-        artemisVertex.getProperties().stream().forEach(e -> vertex.property(e.getKey(), e.get()));
-
-
-        ArtemisVertex vertexUpdated = toArtemisVertex(vertex);
-
-        return getVertex().toEntity(vertexUpdated);
+        return getFlow().flow(entity, save);
     }
 
     @Override
@@ -76,21 +76,23 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
         requireNonNull(entity, "entity is required");
         checkId(entity);
 
-        ArtemisVertex artemisVertex = getVertex().toVertex(entity);
-        Object idValue = artemisVertex.getId()
-                .map(Value::get)
-                .orElseThrow(() -> new NullPointerException("Id field is required"));
+        UnaryOperator<ArtemisVertex> update = e -> {
+            ArtemisVertex artemisVertex = getVertex().toVertex(entity);
+            Object idValue = artemisVertex.getId()
+                    .map(Value::get)
+                    .orElseThrow(() -> new NullPointerException("Id field is required"));
 
-        Vertex vertex = getGraph()
-                .traversal()
-                .V(idValue)
-                .tryNext()
-                .orElseThrow(() -> new EntityNotFoundException(format("The entity %s with id %s is not found to update",
-                        entity.getClass().getName(), idValue.toString())));
+            Vertex vertex = getGraph()
+                    .traversal()
+                    .V(idValue)
+                    .tryNext()
+                    .orElseThrow(() -> new EntityNotFoundException(format("The entity %s with id %s is not found to update",
+                            entity.getClass().getName(), idValue.toString())));
 
-        artemisVertex.getProperties().stream().forEach(e -> vertex.property(e.getKey(), e.get()));
-
-        return entity;
+            artemisVertex.getProperties().stream().forEach(p -> vertex.property(p.getKey(), p.get()));
+            return artemisVertex;
+        };
+        return getFlow().flow(entity, update);
     }
 
     @Override
