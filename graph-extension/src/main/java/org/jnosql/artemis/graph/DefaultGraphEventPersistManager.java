@@ -14,8 +14,62 @@
  */
 package org.jnosql.artemis.graph;
 
+import org.jnosql.artemis.EntityPostPersit;
+import org.jnosql.artemis.EntityPrePersist;
+
 import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.event.Event;
+import javax.inject.Inject;
 
 @ApplicationScoped
-class DefaultGraphEventPersistManager {
+class DefaultGraphEventPersistManager implements GraphEventPersistManager{
+
+
+    @Inject
+    private Event<GraphEntityPrePersist> graphEntityPrePersistEvent;
+
+    @Inject
+    private Event<GraphEntityPostPersist> graphEntityPostPersistEvent;
+
+    @Inject
+    private Event<EntityPrePersist> entityPrePersistEvent;
+
+    @Inject
+    private Event<EntityPostPersit> entityPostPersitEvent;
+
+    @Inject
+    private Event<EntityGraphPrePersist> entityGraphPrePersist;
+
+    @Inject
+    private Event<EntityGraphPostPersist> entityGraphPostPersist;
+
+    @Override
+    public void firePreGraph(ArtemisVertex entity) {
+        graphEntityPrePersistEvent.fire(GraphEntityPrePersist.of(entity));
+    }
+
+    @Override
+    public void firePostGraph(ArtemisVertex entity) {
+        graphEntityPostPersistEvent.fire(GraphEntityPostPersist.of(entity));
+    }
+
+    @Override
+    public <T> void firePreEntity(T entity) {
+        entityPrePersistEvent.fire(EntityPrePersist.of(entity));
+    }
+
+    @Override
+    public <T> void firePostEntity(T entity) {
+        entityPostPersitEvent.fire(EntityPostPersit.of(entity));
+    }
+
+    @Override
+    public <T> void firePreGraphEntity(T entity) {
+        entityGraphPrePersist.fire(EntityGraphPrePersist.of(entity));
+    }
+
+    @Override
+    public <T> void firePostGraphEntity(T entity) {
+        entityGraphPostPersist.fire(EntityGraphPostPersist.of(entity));
+    }
 }
