@@ -14,8 +14,6 @@
  */
 package org.jnosql.artemis.graph;
 
-import org.jnosql.artemis.column.ColumnEntityPrePersist;
-
 import java.util.Objects;
 
 /**
