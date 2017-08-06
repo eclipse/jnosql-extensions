@@ -14,12 +14,11 @@
  */
 package org.jnosql.artemis.graph;
 
-import org.jnosql.artemis.column.ColumnTemplate;
 
 import java.util.function.UnaryOperator;
 
 /**
- * This implementation defines the workflow to insert an Entity on {@link ColumnTemplate}.
+ * This implementation defines the workflow to insert an Entity on {@link ArtemisVertex}.
  * The default implementation follows:
  *  <p>{@link GraphEventPersistManager#firePreEntity(Object)}</p>
  *  <p>{@link GraphEventPersistManager#firePreGraphEntity(Object)}</p>

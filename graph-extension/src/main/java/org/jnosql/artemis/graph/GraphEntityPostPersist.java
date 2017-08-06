@@ -14,8 +14,6 @@
  */
 package org.jnosql.artemis.graph;
 
-import org.jnosql.diana.api.column.ColumnEntity;
-
 import java.util.Objects;
 
 /**
@@ -24,9 +22,9 @@ import java.util.Objects;
 public interface GraphEntityPostPersist {
 
     /**
-     * The {@link ColumnEntity}  after be saved
+     * The {@link ArtemisVertex}  after be saved
      *
-     * @return the {@link ColumnEntity} instance
+     * @return the {@link ArtemisVertex} instance
      */
     ArtemisVertex getEntity();
 
