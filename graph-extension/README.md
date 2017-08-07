@@ -7,3 +7,12 @@ JNoSQL has the support of the Graph database through the TinkerPop project. Apac
 ## Graph Template
 
   This template has the duty to be a bridge between the entity model and Graph database.
+  
+ ```java 
+  
+GraphTemplate graphTemplate =//instance
+
+Animal lion = new Animal("lion");
+graphTemplate.insert(lion);
+
+```
