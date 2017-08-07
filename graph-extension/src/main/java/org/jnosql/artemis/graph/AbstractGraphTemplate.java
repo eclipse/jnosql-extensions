@@ -34,9 +34,9 @@ import java.util.stream.Stream;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static org.apache.tinkerpop.gremlin.structure.T.id;
-import static org.apache.tinkerpop.gremlin.structure.T.label;
 import static org.jnosql.artemis.graph.util.TinkerPopUtil.toArtemisVertex;
 import static org.jnosql.artemis.graph.util.TinkerPopUtil.toEdgeEntity;
+import static org.jnosql.artemis.graph.util.TinkerPopUtil.toVertex;
 
 public abstract class AbstractGraphTemplate implements GraphTemplate {
     private static final Function<GraphTraversal<?, ?>, GraphTraversal<Vertex, Vertex>> INITIAL_VERTEX =
@@ -61,10 +61,7 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
 
         UnaryOperator<ArtemisVertex> save = e -> {
             ArtemisVertex artemisVertex = getVertex().toVertex(entity);
-            Vertex vertex = artemisVertex.getId().map(v -> getGraph().addVertex(label, artemisVertex.getLabel(), id, v.get()))
-                    .orElse(getGraph().addVertex(artemisVertex.getLabel()));
-            artemisVertex.getProperties().stream().forEach(p -> vertex.property(p.getKey(), p.get()));
-            return toArtemisVertex(vertex);
+            return toArtemisVertex(toVertex(artemisVertex, getGraph()));
         };
 
         return getFlow().flow(entity, save);
