@@ -12,7 +12,12 @@ JNoSQL has the support of the Graph database through the TinkerPop project. Apac
   
 GraphTemplate graphTemplate =//instance
 
-Animal lion = new Animal("lion");
-graphTemplate.insert(lion);
+ Person person = builder().withAge(27)
+                .withName("Otavio").build();
+graphTemplate.insert(person);
+
+person.setAge(29);
+graphTemplate.update(person);
+graphTemplate.delete(person.getId());
 
 ```
