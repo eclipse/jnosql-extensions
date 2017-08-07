@@ -100,4 +100,7 @@ Also the operators:
 * GreaterThan
 * LessThanEqual
 * GreaterThanEqual
+* OutV
+* InV
+* BothV
 
