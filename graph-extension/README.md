@@ -46,3 +46,24 @@ Book inbound = edge.getInbound();
 ```java
 Optional<EdgeEntity<Person, Book>> reads = graphTemplate.edge(edgeId);
 ```
+
+
+## Repository
+
+In addition to template class, Artemis has the Repository. This interface helps the Entity repository to save, update, delete and retrieve information.
+
+To use Repository, just need to create a new interface that extends the Repository.
+
+```java
+ interface PersonRepository extends Repository<Person, String> {
+
+}
+```
+
+The qualifier is mandatory to define the database type that will be used at the injection point moment.
+
+```java
+@Inject
+@Database(DatabaseType.GRAPH)
+private PersonRepository graphRepository;
+```
