@@ -34,4 +34,15 @@ Person poliana = graphTemplate.insert(Person.builder().withName("Poliana").withA
 Book shack = graphTemplate.insert(Book.builder().withAge(2007).withName("The Shack").build());
 EdgeEntity<Person, Book> reads = graphTemplate.edge(poliana, "reads", shack);
 reads.add("where", "Brazil");
+int size = edge.size();
+String label = edge.getLabel();
+Person outbound = edge.getOutbound();
+Book inbound = edge.getInbound();
+```
+
+#### Find an EdgeEntity
+
+
+```java
+Optional<EdgeEntity<Person, Book>> reads = graphTemplate.edge(edgeId);
 ```
