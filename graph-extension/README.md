@@ -67,3 +67,20 @@ The qualifier is mandatory to define the database type that will be used at the 
 @Database(DatabaseType.GRAPH)
 private PersonRepository graphRepository;
 ```
+
+So, Artemis will inject automatically.
+
+```java
+
+PersonRepository repository = //instance
+
+Person person = new Person();
+person.setNickname("diana");
+person.setName("Diana Goodness");
+
+List<Person> people = Collections.singletonList(person);
+
+repository.save(person);
+repository.save(people);
+
+```
