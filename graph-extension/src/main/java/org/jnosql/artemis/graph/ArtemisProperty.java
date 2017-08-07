@@ -19,10 +19,23 @@ import org.jnosql.diana.api.Value;
 
 import static java.util.Objects.requireNonNull;
 
-interface ArtemisProperty {
+/**
+ * The tuple o
+ */
+public interface ArtemisProperty {
 
+    /**
+     * Gets the key
+     *
+     * @return the key
+     */
     String getKey();
 
+    /**
+     * Gets the value
+     *
+     * @return the value
+     */
     Value getValue();
 
 
@@ -41,7 +54,7 @@ interface ArtemisProperty {
      * @param typeSupplier {@link org.jnosql.diana.api.Value#get(TypeSupplier)}
      * @param <T>          {@link org.jnosql.diana.api.Value#get(TypeSupplier)}
      * @return {@link org.jnosql.diana.api.Value#get(TypeSupplier)}
-     * @throws NullPointerException when type is null
+     * @throws NullPointerException          when type is null
      * @throws UnsupportedOperationException when {@link org.jnosql.diana.api.Value#get(TypeSupplier)} has not support
      */
     <T> T get(TypeSupplier<T> typeSupplier) throws NullPointerException, UnsupportedOperationException;
