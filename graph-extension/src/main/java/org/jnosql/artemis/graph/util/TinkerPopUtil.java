@@ -49,6 +49,14 @@ public final class TinkerPopUtil {
         return artemisVertex;
     }
 
+    /**
+     * Converts {@link ArtemisVertex} to {@link Vertex}
+     *
+     * @param artemisVertex the vertex
+     * @param graph         the graph the graph
+     * @return the {@link Vertex} with {@link ArtemisVertex} information
+     * @throws NullPointerException when either vertex or graph are null
+     */
     public static Vertex toVertex(ArtemisVertex artemisVertex, Graph graph) throws NullPointerException {
 
         requireNonNull(artemisVertex, "artemisVertex is required");
