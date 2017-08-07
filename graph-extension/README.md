@@ -20,3 +20,7 @@ graphTemplate.update(person);
 graphTemplate.delete(person.getId());
 
 ```
+
+## Edge
+ 
+   An Edge links two Vertex objects. Along with its Property objects, an Edge has both a Direction and a label. The Direction determines which Vertex is the tail Vertex (out Vertex) and which Vertex is the head Vertex (in Vertex). The Edge label determines the type of relationship that exists between the two vertices.
