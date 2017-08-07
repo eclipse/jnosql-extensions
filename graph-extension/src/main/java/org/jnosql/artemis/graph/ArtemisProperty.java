@@ -20,7 +20,7 @@ import org.jnosql.diana.api.Value;
 import static java.util.Objects.requireNonNull;
 
 /**
- * The tuple o
+ * The tuple that represent a property at {@link ArtemisVertex}
  */
 public interface ArtemisProperty {
 

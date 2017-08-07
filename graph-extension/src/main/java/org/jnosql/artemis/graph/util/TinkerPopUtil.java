@@ -15,6 +15,7 @@
 package org.jnosql.artemis.graph.util;
 
 import org.apache.tinkerpop.gremlin.structure.Edge;
+import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.jnosql.artemis.graph.ArtemisVertex;
 import org.jnosql.artemis.graph.EdgeEntity;
@@ -22,6 +23,8 @@ import org.jnosql.artemis.graph.VertexConverter;
 import org.jnosql.diana.api.Value;
 
 import static java.util.Objects.requireNonNull;
+import static org.apache.tinkerpop.gremlin.structure.T.id;
+import static org.apache.tinkerpop.gremlin.structure.T.label;
 
 
 /**
@@ -44,6 +47,20 @@ public final class TinkerPopUtil {
         ArtemisVertex artemisVertex = ArtemisVertex.of(vertex.label(), vertex.id());
         vertex.keys().stream().forEach(k -> artemisVertex.add(k, Value.of(vertex.value(k))));
         return artemisVertex;
+    }
+
+    public static Vertex toVertex(ArtemisVertex artemisVertex, Graph graph) throws NullPointerException {
+
+        requireNonNull(artemisVertex, "artemisVertex is required");
+        requireNonNull(graph, "graph is required");
+        Vertex vertex = artemisVertex.getId().map(v -> graph.addVertex(label, artemisVertex.getLabel(), id, v.get()))
+                .orElse(graph.addVertex(artemisVertex.getLabel()));
+
+        artemisVertex.getProperties()
+                .stream()
+                .forEach(p -> vertex.property(p.getKey(), p.get()));
+
+        return vertex;
     }
 
 
