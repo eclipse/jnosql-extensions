@@ -84,3 +84,20 @@ repository.save(person);
 repository.save(people);
 
 ```
+
+### Search information from Repository
+
+The Repository also has a method query from the method name. These are the keywords:
+
+* **findBy**: The prefix to find some information
+* **deleteBy**: The prefix to delete some information
+
+Also the operators:
+
+* And
+* Between
+* LessThan
+* GreaterThan
+* LessThanEqual
+* GreaterThanEqual
+
