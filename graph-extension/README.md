@@ -30,7 +30,8 @@ graphTemplate.delete(person.getId());
 The representation of Edge that links two Entity. Along with its Property objects, an Edge has both a Direction and a label.
 
 ```java
-Person person = graphTemplate.insert(Person.builder().withName("Poliana").withAge(25).build());
-Book book = graphTemplate.insert(Book.builder().withAge(2007).withName("The Shack").build());
-EdgeEntity<Person, Book> edge = graphTemplate.edge(person, "reads", book);
+Person poliana = graphTemplate.insert(Person.builder().withName("Poliana").withAge(25).build());
+Book shack = graphTemplate.insert(Book.builder().withAge(2007).withName("The Shack").build());
+EdgeEntity<Person, Book> reads = graphTemplate.edge(poliana, "reads", shack);
+reads.add("where", "Brazil");
 ```
