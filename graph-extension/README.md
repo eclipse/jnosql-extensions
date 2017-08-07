@@ -104,3 +104,17 @@ Also the operators:
 * InV
 * BothV
 
+```java
+interface PersonRepository extends Repository<Person, Long> {
+
+    List<Person> findByAddress(String address);
+
+    Stream<Person> findByName(String name);
+
+    Stream<Person> findByNameAndKnowsOutV(String name);
+
+    Optional<Person> findByNickname(String nickname);
+
+    void deleteByNickName(String nickname);
+}
+```
