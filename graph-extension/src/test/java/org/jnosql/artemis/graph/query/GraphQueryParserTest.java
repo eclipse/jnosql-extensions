@@ -187,7 +187,7 @@ public class GraphQueryParserTest {
 
         GraphTraversal<Vertex, Vertex> traversal = graph.traversal().V();
 
-        parser.findByParse("findByKnowsOutV", new Object[]{},
+        parser.findByParse("findByKnowsOut", new Object[]{},
                 classRepresentation, traversal);
 
         Optional<Vertex> vertex = traversal.tryNext();
@@ -196,7 +196,7 @@ public class GraphQueryParserTest {
     }
 
     @Test
-    public void shouldFindByKnowsInV() {
+    public void shouldFindByKnowsIn() {
         Vertex poliana = graph.addVertex(T.label, "Person", "name", "Poliana", "age", 10);
         Vertex otavio = graph.addVertex(T.label, "Person", "name", "Otavio", "age", 9);
 
@@ -204,7 +204,7 @@ public class GraphQueryParserTest {
 
         GraphTraversal<Vertex, Vertex> traversal = graph.traversal().V();
 
-        parser.findByParse("findByKnowsInV", new Object[]{},
+        parser.findByParse("findByKnowsIn", new Object[]{},
                 classRepresentation, traversal);
 
         Optional<Vertex> vertex = traversal.tryNext();
@@ -214,7 +214,7 @@ public class GraphQueryParserTest {
 
 
     @Test
-    public void shouldFindByKnowsBothV() {
+    public void shouldFindByKnowsBoth() {
         Vertex poliana = graph.addVertex(T.label, "Person", "name", "Poliana", "age", 10);
         Vertex otavio = graph.addVertex(T.label, "Person", "name", "Otavio", "age", 9);
 
@@ -222,7 +222,7 @@ public class GraphQueryParserTest {
 
         GraphTraversal<Vertex, Vertex> traversal = graph.traversal().V();
 
-        parser.findByParse("findByKnowsBothV", new Object[]{},
+        parser.findByParse("findByKnowsBoth", new Object[]{},
                 classRepresentation, traversal);
 
         List<Vertex> vertices = traversal.toList();
@@ -232,7 +232,7 @@ public class GraphQueryParserTest {
     }
 
     @Test
-    public void shouldFindByNameAndKnowsOutV() {
+    public void shouldFindByNameAndKnowsOut() {
         Vertex poliana = graph.addVertex(T.label, "Person", "name", "Poliana", "age", 10);
         Vertex otavio = graph.addVertex(T.label, "Person", "name", "Otavio", "age", 9);
 
@@ -240,7 +240,7 @@ public class GraphQueryParserTest {
 
         GraphTraversal<Vertex, Vertex> traversal = graph.traversal().V();
 
-        parser.findByParse("findByNameAndKnowsOutV", new Object[]{"Poliana"},
+        parser.findByParse("findByNameAndKnowsOut", new Object[]{"Poliana"},
                 classRepresentation, traversal);
 
         Optional<Vertex> vertex = traversal.tryNext();
@@ -250,7 +250,7 @@ public class GraphQueryParserTest {
     }
 
     @Test
-    public void shouldFindByKnowsOutVAndName() {
+    public void shouldFindByKnowsOutAndName() {
         Vertex poliana = graph.addVertex(T.label, "Person", "name", "Poliana", "age", 10);
         Vertex otavio = graph.addVertex(T.label, "Person", "name", "Otavio", "age", 9);
 
@@ -258,7 +258,7 @@ public class GraphQueryParserTest {
 
         GraphTraversal<Vertex, Vertex> traversal = graph.traversal().V();
 
-        parser.findByParse("findByKnowsOutVAndName", new Object[]{"Otavio"},
+        parser.findByParse("findByKnowsOutAndName", new Object[]{"Otavio"},
                 classRepresentation, traversal);
 
         Optional<Vertex> vertex = traversal.tryNext();

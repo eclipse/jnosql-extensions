@@ -30,9 +30,9 @@ final class GraphQueryParserUtil {
     private static final String LESS_THAN_EQUAL = "LessEqualThan";
     private static final String GREATER_THAN_EQUAL = "GreaterEqualThan";
 
-    private static final String OUT_V = "OutV";
-    private static final String IN_V = "InV";
-    private static final String BOTH_V = "BothV";
+    private static final String OUT = "Out";
+    private static final String IN = "In";
+    private static final String BOTH = "Both";
 
     private GraphQueryParserUtil() {
     }
@@ -52,18 +52,18 @@ final class GraphQueryParserUtil {
             return traversal.has(name, P.between(args[index], args[++index]));
         }
 
-        if (token.contains(OUT_V)) {
-            String label = getName(token).replace(OUT_V, EMPTY);
+        if (token.contains(OUT)) {
+            String label = getName(token).replace(OUT, EMPTY);
             return traversal.out(label);
         }
 
-        if (token.contains(IN_V)) {
-            String label = getName(token).replace(IN_V, EMPTY);
+        if (token.contains(IN)) {
+            String label = getName(token).replace(IN, EMPTY);
             return traversal.in(label);
         }
 
-        if (token.contains(BOTH_V)) {
-            String label = getName(token).replace(BOTH_V, EMPTY);
+        if (token.contains(BOTH)) {
+            String label = getName(token).replace(BOTH, EMPTY);
             return traversal.both(label);
         }
 
@@ -114,7 +114,7 @@ final class GraphQueryParserUtil {
     }
 
     static boolean isGraphCondition(String token) {
-        return token.contains(OUT_V) || token.contains(IN_V)|| token.contains(BOTH_V);
+        return token.contains(OUT) || token.contains(IN)|| token.contains(BOTH);
     }
 
 
