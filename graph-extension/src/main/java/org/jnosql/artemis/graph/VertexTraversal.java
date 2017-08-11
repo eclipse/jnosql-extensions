@@ -105,7 +105,7 @@ public interface VertexTraversal {
     VertexTraversal in(String... labels) throws NullPointerException;
 
     /**
-     * Map the {@link EdgeTraversal} to its ingoing incident edges given the edge labels.
+     * Map the {@link EdgeTraversal} to its incoming incident edges given the edge labels.
      *
      * @param edgeLabels the edge labels to traverse
      * @return a {@link EdgeTraversal} with the new condition
@@ -123,7 +123,7 @@ public interface VertexTraversal {
     VertexTraversal both(String... labels) throws NullPointerException;
 
     /**
-     * Map the {@link EdgeTraversal} to its either ingoing or outgoing incident edges given the edge labels.
+     * Map the {@link EdgeTraversal} to its either incoming or outgoing incident edges given the edge labels.
      *
      * @param edgeLabels the edge labels to traverse
      * @return a {@link EdgeTraversal} with the new condition

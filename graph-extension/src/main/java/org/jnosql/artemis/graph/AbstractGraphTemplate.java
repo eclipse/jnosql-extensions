@@ -117,14 +117,14 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
     }
 
     @Override
-    public <OUT, IN> EdgeEntity<OUT, IN> edge(OUT outbound, String label, IN inbound) throws NullPointerException,
+    public <OUT, IN> EdgeEntity<OUT, IN> edge(OUT outbound, String label, IN incoming) throws NullPointerException,
             IdNotFoundException, EntityNotFoundException {
 
-        requireNonNull(inbound, "inbound is required");
+        requireNonNull(incoming, "inbound is required");
         requireNonNull(label, "label is required");
         requireNonNull(outbound, "outbound is required");
 
-        ArtemisVertex inboundVertex = getVertex().toVertex(inbound);
+        ArtemisVertex inboundVertex = getVertex().toVertex(incoming);
         ArtemisVertex outboundVertex = getVertex().toVertex(outbound);
 
         Object outboundId = outboundVertex.getId()
@@ -141,7 +141,7 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
                 .has(id, inboundId).inE(label).tryNext();
 
         if (edge.isPresent()) {
-            return new DefaultEdgeEntity<>(edge.get(), inbound, outbound);
+            return new DefaultEdgeEntity<>(edge.get(), incoming, outbound);
         } else {
 
             Vertex inVertex = getGraph()
@@ -156,7 +156,7 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
                     .tryNext()
                     .orElseThrow(() -> new EntityNotFoundException("outbound entity not found"));
 
-            return new DefaultEdgeEntity<>(outVertex.addEdge(label, inVertex), inbound, outbound);
+            return new DefaultEdgeEntity<>(outVertex.addEdge(label, inVertex), incoming, outbound);
         }
 
 
