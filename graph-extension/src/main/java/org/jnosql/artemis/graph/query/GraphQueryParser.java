@@ -18,7 +18,7 @@ import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import org.jnosql.artemis.reflection.ClassRepresentation;
 
 import static org.jnosql.artemis.graph.query.GraphQueryParserUtil.feedTraversal;
-import static org.jnosql.artemis.graph.query.GraphQueryParserUtil.isGraphCondition;
+import static org.jnosql.artemis.graph.query.TokenProcessorType.isNotGraphToken;
 
 
 class GraphQueryParser {
@@ -56,7 +56,7 @@ class GraphQueryParser {
                 index = GraphQueryParserUtil.and(args, index, token, methodName, representation, traversal);
             } else {
                 feedTraversal(token, index, args, methodName, representation, traversal);
-                if (!isGraphCondition(token)) {
+                if (isNotGraphToken(token)) {
                     index++;
                 }
             }
