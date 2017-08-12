@@ -230,6 +230,23 @@ public class GraphQueryParserTest {
         assertEquals(poliana.id(), vertex.get().id());
     }
 
+    @Test
+    public void shouldFindByInV() {
+        Vertex poliana = graph.addVertex(T.label, "Person", "name", "Poliana", "age", 10);
+        Vertex otavio = graph.addVertex(T.label, "Person", "name", "Otavio", "age", 9);
+
+        poliana.addEdge("knows", otavio);
+
+        GraphTraversal<Vertex, Vertex> traversal = graph.traversal().V();
+
+        parser.findByParse("findByInV", new Object[]{"knows"},
+                classRepresentation, traversal);
+
+        Optional<Vertex> vertex = traversal.tryNext();
+        assertTrue(vertex.isPresent());
+        assertEquals(poliana.id(), vertex.get().id());
+    }
+
 
     @Test
     public void shouldFindByKnowsBothV() {
@@ -241,6 +258,24 @@ public class GraphQueryParserTest {
         GraphTraversal<Vertex, Vertex> traversal = graph.traversal().V();
 
         parser.findByParse("findByKnowsBothV", new Object[]{},
+                classRepresentation, traversal);
+
+        List<Vertex> vertices = traversal.toList();
+
+        List<Object> ids = vertices.stream().map(Vertex::id).collect(toList());
+        assertThat(ids,  containsInAnyOrder(poliana.id(), otavio.id()));
+    }
+
+    @Test
+    public void shouldFindByBothV() {
+        Vertex poliana = graph.addVertex(T.label, "Person", "name", "Poliana", "age", 10);
+        Vertex otavio = graph.addVertex(T.label, "Person", "name", "Otavio", "age", 9);
+
+        poliana.addEdge("knows", otavio);
+
+        GraphTraversal<Vertex, Vertex> traversal = graph.traversal().V();
+
+        parser.findByParse("findByBothV", new Object[]{"knows"},
                 classRepresentation, traversal);
 
         List<Vertex> vertices = traversal.toList();
