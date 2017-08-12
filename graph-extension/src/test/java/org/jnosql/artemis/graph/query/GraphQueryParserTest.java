@@ -196,6 +196,24 @@ public class GraphQueryParserTest {
     }
 
     @Test
+    public void shouldFindByOutV() {
+        Vertex poliana = graph.addVertex(T.label, "Person", "name", "Poliana", "age", 10);
+        Vertex otavio = graph.addVertex(T.label, "Person", "name", "Otavio", "age", 9);
+
+        poliana.addEdge("knows", otavio);
+
+
+        GraphTraversal<Vertex, Vertex> traversal = graph.traversal().V();
+
+        parser.findByParse("findByOutV", new Object[]{"knows"},
+                classRepresentation, traversal);
+
+        Optional<Vertex> vertex = traversal.tryNext();
+        assertTrue(vertex.isPresent());
+        assertEquals(otavio.id(), vertex.get().id());
+    }
+
+    @Test
     public void shouldFindByKnowsInV() {
         Vertex poliana = graph.addVertex(T.label, "Person", "name", "Poliana", "age", 10);
         Vertex otavio = graph.addVertex(T.label, "Person", "name", "Otavio", "age", 9);

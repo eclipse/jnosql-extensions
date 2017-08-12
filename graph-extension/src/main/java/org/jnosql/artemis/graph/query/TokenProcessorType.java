@@ -36,18 +36,33 @@ enum TokenProcessorType implements TokenProcessor {
     OUT_V("OutV") {
         @Override
         public GraphTraversal<?, ?> process(String token, int index, Object[] args, String methodName, ClassRepresentation representation, GraphTraversal<?, ?> traversal) {
+
+            if (this.getType().equals(token)) {
+                checkContents(index, args.length, 1, methodName);
+                return traversal.out(args[index].toString());
+            }
+
             String label = getName(token).replace(this.getType(), EMPTY);
             return traversal.out(label);
         }
     }, IN_V("InV") {
         @Override
         public GraphTraversal<?, ?> process(String token, int index, Object[] args, String methodName, ClassRepresentation representation, GraphTraversal<?, ?> traversal) {
+
+            if (this.getType().equals(token)) {
+                checkContents(index, args.length, 1, methodName);
+                return traversal.in(args[index].toString());
+            }
             String label = getName(token).replace(this.getType(), EMPTY);
             return traversal.in(label);
         }
     }, BOTH_V("BothV") {
         @Override
         public GraphTraversal<?, ?> process(String token, int index, Object[] args, String methodName, ClassRepresentation representation, GraphTraversal<?, ?> traversal) {
+            if (this.getType().equals(token)) {
+                checkContents(index, args.length, 1, methodName);
+                return traversal.both(args[index].toString());
+            }
             String label = getName(token).replace(this.getType(), EMPTY);
             return traversal.both(label);
         }
@@ -90,7 +105,7 @@ enum TokenProcessorType implements TokenProcessor {
 
     private final String type;
 
-    TokenProcessorType(String type){
+    TokenProcessorType(String type) {
         this.type = type;
     }
 
@@ -133,7 +148,7 @@ enum TokenProcessorType implements TokenProcessor {
         return !isGraphToken(token);
     }
 
-    static boolean isBetweenToken(String token){
+    static boolean isBetweenToken(String token) {
         return BETWEEN.getType().contains(token);
     }
 
