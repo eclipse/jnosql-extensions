@@ -98,6 +98,7 @@ enum TokenProcessorType implements TokenProcessor {
         return type;
     }
 
+
     private static void checkContents(int index, int argSize, int required, String method) {
         if ((index + required) <= argSize) {
             return;
@@ -119,6 +120,21 @@ enum TokenProcessorType implements TokenProcessor {
         return Stream.of(TokenProcessorType.values())
                 .filter(t -> token.contains(t.getType()))
                 .findFirst().orElse(DEFAULT);
+    }
+
+
+    static boolean isGraphToken(String token) {
+        return Stream.of(OUT_V, IN_V, BOTH_V)
+                .anyMatch(t -> token.contains(t.getType()));
+    }
+
+
+    static boolean isNotGraphToken(String token) {
+        return !isGraphToken(token);
+    }
+
+    static boolean isBetweenToken(String token){
+        return BETWEEN.getType().contains(token);
     }
 
 
