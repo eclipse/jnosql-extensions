@@ -110,10 +110,7 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
     public <T, ID> Optional<T> find(ID idValue) throws NullPointerException {
         requireNonNull(idValue, "id is required");
         Optional<Vertex> vertex = getGraph().traversal().V(idValue).tryNext();
-        if (vertex.isPresent()) {
-            return Optional.of(getVertex().toEntity(toArtemisVertex(vertex.get())));
-        }
-        return Optional.empty();
+        return vertex.map(vertex1 -> getVertex().toEntity(toArtemisVertex(vertex1)));
     }
 
     @Override
