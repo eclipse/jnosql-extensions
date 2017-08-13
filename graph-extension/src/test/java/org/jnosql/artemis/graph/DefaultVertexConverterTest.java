@@ -138,7 +138,7 @@ public class DefaultVertexConverterTest {
 
         assertEquals(getValue(entity.find("name")), director.getName());
         assertEquals(getValue(entity.find("age")), director.getAge());
-        assertEquals(entity.getId().get().get(Long.class), Long.valueOf(director.getId()));
+        assertEquals(entity.getId().get().get(Long.class), director.getId());
         assertEquals(getValue(entity.find("phones")), director.getPhones());
 
         assertEquals(movie.getTitle(), getValue(entity.find("title")));

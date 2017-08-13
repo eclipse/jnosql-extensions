@@ -31,7 +31,7 @@ class FieldGraph {
 
     private final FieldRepresentation field;
 
-    FieldGraph(Object value, FieldRepresentation field) {
+    private FieldGraph(Object value, FieldRepresentation field) {
         this.value = value;
         this.field = field;
     }
