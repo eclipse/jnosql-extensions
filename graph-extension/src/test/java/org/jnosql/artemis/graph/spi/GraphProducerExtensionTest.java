@@ -16,7 +16,6 @@ package org.jnosql.artemis.graph.spi;
 
 import org.jnosql.artemis.Database;
 import org.jnosql.artemis.DatabaseType;
-import org.jnosql.artemis.column.ColumnTemplate;
 import org.jnosql.artemis.graph.GraphTemplate;
 import org.jnosql.artemis.graph.cdi.WeldJUnit4Runner;
 import org.jnosql.artemis.graph.model.Person;

@@ -15,8 +15,6 @@
 package org.jnosql.artemis.graph.model;
 
 
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 import org.jnosql.artemis.Column;
 import org.jnosql.artemis.Entity;
 import org.jnosql.artemis.Id;

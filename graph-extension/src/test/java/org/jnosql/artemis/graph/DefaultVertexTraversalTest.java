@@ -22,7 +22,6 @@ import org.jnosql.artemis.graph.model.Person;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import javax.naming.NoPermissionException;
 import java.util.List;
 import java.util.Optional;
 

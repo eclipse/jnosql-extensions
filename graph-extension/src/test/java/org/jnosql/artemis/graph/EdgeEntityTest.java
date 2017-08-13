@@ -20,12 +20,10 @@ import org.jnosql.artemis.graph.cdi.WeldJUnit4Runner;
 import org.jnosql.artemis.graph.model.Book;
 import org.jnosql.artemis.graph.model.Person;
 import org.jnosql.diana.api.Value;
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import javax.inject.Inject;
-
 import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
