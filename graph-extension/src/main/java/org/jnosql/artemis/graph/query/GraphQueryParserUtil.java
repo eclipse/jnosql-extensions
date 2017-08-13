@@ -29,15 +29,15 @@ final class GraphQueryParserUtil {
     private GraphQueryParserUtil() {
     }
 
-    static GraphTraversal<?, ?> feedTraversal(String token,
-                                              int index,
-                                              Object[] args,
-                                              String methodName,
-                                              ClassRepresentation representation,
-                                              GraphTraversal<?, ?> traversal) {
+    static void feedTraversal(String token,
+                              int index,
+                              Object[] args,
+                              String methodName,
+                              ClassRepresentation representation,
+                              GraphTraversal<?, ?> traversal) {
 
         TokenProcessor tokenProcessor = TokenProcessorType.of(token);
-        return tokenProcessor.process(token, index, args, methodName, representation, traversal);
+        tokenProcessor.process(token, index, args, methodName, representation, traversal);
     }
 
 
