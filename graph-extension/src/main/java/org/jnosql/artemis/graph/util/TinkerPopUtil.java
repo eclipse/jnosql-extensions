@@ -45,7 +45,7 @@ public final class TinkerPopUtil {
     public static ArtemisVertex toArtemisVertex(Vertex vertex) throws NullPointerException {
         requireNonNull(vertex, "vertex is required");
         ArtemisVertex artemisVertex = ArtemisVertex.of(vertex.label(), vertex.id());
-        vertex.keys().stream().forEach(k -> artemisVertex.add(k, Value.of(vertex.value(k))));
+        vertex.keys().forEach(k -> artemisVertex.add(k, Value.of(vertex.value(k))));
         return artemisVertex;
     }
 
@@ -65,7 +65,6 @@ public final class TinkerPopUtil {
                 .orElse(graph.addVertex(artemisVertex.getLabel()));
 
         artemisVertex.getProperties()
-                .stream()
                 .forEach(p -> vertex.property(p.getKey(), p.get()));
 
         return vertex;

@@ -85,7 +85,7 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
                     .orElseThrow(() -> new EntityNotFoundException(format("The entity %s with id %s is not found to update",
                             entity.getClass().getName(), idValue.toString())));
 
-            artemisVertex.getProperties().stream().forEach(p -> vertex.property(p.getKey(), p.get()));
+            artemisVertex.getProperties().forEach(p -> vertex.property(p.getKey(), p.get()));
             return artemisVertex;
         };
         return getFlow().flow(entity, update);
@@ -95,7 +95,7 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
     public <T> void delete(T idValue) throws NullPointerException {
         requireNonNull(idValue, "id is required");
         List<Vertex> vertices = getGraph().traversal().V(idValue).toList();
-        vertices.stream().forEach(Vertex::remove);
+        vertices.forEach(Vertex::remove);
 
     }
 
@@ -103,7 +103,7 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
     public <T> void deleteEdge(T idEdge) throws NullPointerException {
         requireNonNull(idEdge, "idEdge is required");
         List<Edge> edges = getGraph().traversal().E(idEdge).toList();
-        edges.stream().forEach(Edge::remove);
+        edges.forEach(Edge::remove);
     }
 
     @Override
