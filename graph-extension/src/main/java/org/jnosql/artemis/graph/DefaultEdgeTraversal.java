@@ -86,17 +86,17 @@ class DefaultEdgeTraversal implements EdgeTraversal {
 
     @Override
     public VertexTraversal inV() {
-        return new DefaultVertexTraversal(supplier, flow.andThen(g -> g.inV()), converter);
+        return new DefaultVertexTraversal(supplier, flow.andThen(GraphTraversal::inV), converter);
     }
 
     @Override
     public VertexTraversal outV() {
-        return new DefaultVertexTraversal(supplier, flow.andThen(g -> g.outV()), converter);
+        return new DefaultVertexTraversal(supplier, flow.andThen(GraphTraversal::outV), converter);
     }
 
     @Override
     public VertexTraversal bothV() {
-        return new DefaultVertexTraversal(supplier, flow.andThen(g -> g.bothV()), converter);
+        return new DefaultVertexTraversal(supplier, flow.andThen(GraphTraversal::bothV), converter);
     }
 
 
