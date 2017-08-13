@@ -112,6 +112,8 @@ interface PersonRepository extends Repository<Person, Long> {
     Stream<Person> findByName(String name);
 
     Stream<Person> findByNameAndKnowsOutV(String name);
+    
+    Stream<Person> findByNameAndBothV(String name, String label);
 
     Optional<Person> findByNickname(String nickname);
 
