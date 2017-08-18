@@ -161,6 +161,18 @@ public class DefaultEdgeTraversalTest extends AbstractTraversalTest {
         assertEquals(2, edgeEntities.size());
     }
 
+    @Test
+    public void shouldCount() {
+        long count = graphTemplate.getTraversalVertex().outE(READS).count();
+        assertEquals(3L, count);
+    }
+
+    @Test
+    public void shouldReturnZeroWhenCountIsEmpty() {
+        long count = graphTemplate.getTraversalVertex().outE("WRITES").count();
+        assertEquals(0L, count);
+    }
+
     @Test(expected = NullPointerException.class)
     public void shouldReturnErrorWhenHasNotIsNull() {
         graphTemplate.getTraversalVertex().outE(READS).hasNot(null);
