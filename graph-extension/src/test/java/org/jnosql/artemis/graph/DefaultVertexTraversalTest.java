@@ -199,4 +199,16 @@ public class DefaultVertexTraversalTest extends AbstractTraversalTest {
     public void shouldReturnErrorWhenHasNotIsNull() {
         graphTemplate.getTraversalVertex().hasNot(null).stream().collect(toList());
     }
+
+    @Test
+    public void shouldCount() {
+        long count = graphTemplate.getTraversalVertex().both(READS).count();
+        assertEquals(6L, count);
+    }
+
+    @Test
+    public void shouldReturnZeroWhenCountIsEmpty() {
+        long count = graphTemplate.getTraversalVertex().both("WRITES").count();
+        assertEquals(0L, count);
+    }
 }
