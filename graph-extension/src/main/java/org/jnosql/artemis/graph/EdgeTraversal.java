@@ -136,4 +136,11 @@ public interface EdgeTraversal {
      * @return the entity result as {@link Stream}
      */
     <OUT, IN> Stream<EdgeEntity<OUT, IN>> stream(int limit);
+
+    /**
+     * Map the traversal stream to its reduction as a sum of the elements
+     *
+     * @return the sum
+     */
+    long count();
 }
