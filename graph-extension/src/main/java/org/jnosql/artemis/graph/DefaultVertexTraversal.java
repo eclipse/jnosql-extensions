@@ -170,4 +170,9 @@ class DefaultVertexTraversal implements VertexTraversal {
                 .map(TinkerPopUtil::toArtemisVertex)
                 .map(converter::toEntity);
     }
+
+    @Override
+    public long count() {
+        return flow.apply(supplier.get()).count().tryNext().orElse(0L);
+    }
 }
