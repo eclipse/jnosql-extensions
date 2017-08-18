@@ -173,4 +173,11 @@ public interface VertexTraversal {
      * @return the entity result as {@link Stream}
      */
     <T> Stream<T> stream(int limit);
+
+    /**
+     * Map the traversal stream to its reduction as a sum of the elements
+     *
+     * @return the sum
+     */
+    long count();
 }
