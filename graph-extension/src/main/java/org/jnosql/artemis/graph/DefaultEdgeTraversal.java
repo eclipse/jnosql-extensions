@@ -121,6 +121,11 @@ class DefaultEdgeTraversal implements EdgeTraversal {
         return flow.apply(supplier.get()).next(limit).stream().map(this::toEdge);
     }
 
+    @Override
+    public long count() {
+        return flow.apply(supplier.get()).count().tryNext().orElse(0L);
+    }
+
 
     <OUT, IN> EdgeEntity<OUT, IN> toEdge(Edge edge) {
         return toEdgeEntity(edge, converter);
