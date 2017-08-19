@@ -122,6 +122,11 @@ class DefaultEdgeTraversal implements EdgeTraversal {
     }
 
     @Override
+    public ValueMapTraversal valueMap(String... propertyKeys) {
+        return new DefaultValueMapTraversal(supplier, flow.andThen(g -> g.valueMap(true, propertyKeys)));
+    }
+    
+    @Override
     public long count() {
         return flow.apply(supplier.get()).count().tryNext().orElse(0L);
     }
