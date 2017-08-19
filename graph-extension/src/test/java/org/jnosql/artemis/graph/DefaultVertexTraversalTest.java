@@ -255,8 +255,6 @@ public class DefaultVertexTraversalTest extends AbstractTraversalTest {
 
         assertNotNull(map);
         assertFalse(map.isEmpty());
-
-
     }
 
 

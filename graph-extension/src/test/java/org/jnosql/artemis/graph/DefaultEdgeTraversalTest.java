@@ -20,18 +20,22 @@ import org.jnosql.artemis.graph.model.Person;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toList;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(WeldJUnit4Runner.class)
 public class DefaultEdgeTraversalTest extends AbstractTraversalTest {
-
 
 
     @Test(expected = NullPointerException.class)
@@ -141,7 +145,7 @@ public class DefaultEdgeTraversalTest extends AbstractTraversalTest {
     public void shouldReturnErrorWhenHasPropertyWhenKeyIsNull() {
         graphTemplate.getTraversalVertex()
                 .outE(READS)
-                .has((String)null, "hobby").next();
+                .has((String) null, "hobby").next();
     }
 
     @Test(expected = NullPointerException.class)
@@ -176,5 +180,47 @@ public class DefaultEdgeTraversalTest extends AbstractTraversalTest {
     @Test(expected = NullPointerException.class)
     public void shouldReturnErrorWhenHasNotIsNull() {
         graphTemplate.getTraversalVertex().outE(READS).hasNot(null);
+    }
+
+
+    @Test
+    public void shouldMapValuesAsStream() {
+        List<Map<String, Object>> maps = graphTemplate.getTraversalVertex().inE("reads")
+                .valueMap("motivation").stream().collect(toList());
+
+        assertFalse(maps.isEmpty());
+        assertEquals(3, maps.size());
+
+        List<String> names = new ArrayList<>();
+
+        maps.forEach(m -> names.add(m.get("motivation").toString()));
+
+        assertThat(names, containsInAnyOrder("hobby", "love", "job"));
+    }
+
+    @Test
+    public void shouldMapValuesAsStreamLimit() {
+        List<Map<String, Object>> maps = graphTemplate.getTraversalVertex().inE("reads")
+                .valueMap("motivation").stream(2).collect(toList());
+
+        assertFalse(maps.isEmpty());
+        assertEquals(2, maps.size());
+    }
+
+
+    @Test
+    public void shouldReturnMapValueAsEmptyStream() {
+        Stream<Map<String, Object>> stream = graphTemplate.getTraversalVertex().inE("reads")
+                .valueMap("noFoundProperty").stream();
+        assertTrue(stream.allMatch(Map::isEmpty));
+    }
+
+    @Test
+    public void shouldReturnNext() {
+        Map<String, Object> map = graphTemplate.getTraversalVertex().inE("reads")
+                .valueMap("motivation").next();
+
+        assertNotNull(map);
+        assertFalse(map.isEmpty());
     }
 }
