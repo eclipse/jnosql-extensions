@@ -15,6 +15,7 @@
 package org.jnosql.artemis.graph;
 
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 /**
@@ -38,6 +39,13 @@ public interface ValueMapTraversal {
      * @return the entity result as {@link Stream}
      */
     Stream<Map<String, Object>> stream(int limit);
+
+    /**
+     * Gets the first result
+     *
+     * @return the map
+     */
+    Map<String, Object> next();
 
     /**
      * Map the traversal stream to its reduction as a sum of the elements
