@@ -15,8 +15,11 @@
 package org.jnosql.artemis.graph;
 
 import org.apache.tinkerpop.gremlin.process.traversal.P;
+import org.apache.tinkerpop.gremlin.structure.Element;
+import org.apache.tinkerpop.gremlin.structure.Property;
 import org.apache.tinkerpop.gremlin.structure.T;
 
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -173,6 +176,15 @@ public interface VertexTraversal {
      * @return the entity result as {@link Stream}
      */
     <T> Stream<T> stream(int limit);
+
+    /**
+     * Map the {@link Element} to a {@link Map} of the properties key'd according to their {@link Property#key}.
+     * If no property keys are provided, then all properties are retrieved.
+     *
+     * @param propertyKeys the properties to retrieve
+     * @return a {@link ValueMapTraversal} instance
+     */
+    ValueMapTraversal valueMap(final String... propertyKeys);
 
     /**
      * Map the traversal stream to its reduction as a sum of the elements
