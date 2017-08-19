@@ -19,7 +19,6 @@ import com.couchbase.client.java.document.json.JsonObject;
 import com.couchbase.client.java.query.Statement;
 import com.couchbase.client.java.search.SearchQuery;
 import org.jnosql.artemis.document.DocumentTemplate;
-import org.jnosql.diana.api.document.DocumentEntity;
 
 import java.util.List;
 
