@@ -26,7 +26,7 @@ import org.jnosql.diana.cassandra.column.UDTBuilder;
 
 import java.util.Objects;
 
-class CassandraUDTType implements FieldValue {
+class CassandraUDTType implements ColumnFieldValue {
 
     private final String type;
 
@@ -54,11 +54,6 @@ class CassandraUDTType implements FieldValue {
     @Override
     public boolean isNotEmpty() {
         return value != null;
-    }
-
-    @Override
-    public Document toDocument(DocumentEntityConverter converter, Converters converters) {
-      throw new UnsupportedOperationException("Cassandra UDT type just supports Column");
     }
 
     @Override

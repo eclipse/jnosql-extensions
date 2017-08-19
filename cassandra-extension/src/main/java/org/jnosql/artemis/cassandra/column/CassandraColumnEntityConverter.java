@@ -88,11 +88,11 @@ class CassandraColumnEntityConverter implements ColumnEntityConverter {
         return convertEntity(entity.getColumns(), representation, instance);
     }
 
-    private FieldValue to(FieldRepresentation field, Object entityInstance) {
+    private ColumnFieldValue to(FieldRepresentation field, Object entityInstance) {
         Object value = reflections.getValue(entityInstance, field.getField());
         UDT annotation = field.getField().getAnnotation(UDT.class);
         if (Objects.isNull(annotation)) {
-            return FieldValue.of(value, field);
+            return CassandraColumnFieldValue.of(value, field);
         } else {
             return new CassandraUDTType(annotation.value(), value, field);
         }
