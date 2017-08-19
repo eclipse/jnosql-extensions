@@ -173,6 +173,11 @@ class DefaultVertexTraversal implements VertexTraversal {
 
     @Override
     public ValueMapTraversal valueMap(String... propertyKeys) {
+        return new DefaultValueMapTraversal(supplier, flow.andThen(g -> g.valueMap(propertyKeys)));
+    }
+
+    @Override
+    public ValueMapTraversal valueMapIncludeTokens(String... propertyKeys) {
         return new DefaultValueMapTraversal(supplier, flow.andThen(g -> g.valueMap(true, propertyKeys)));
     }
 
