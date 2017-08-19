@@ -32,6 +32,7 @@ import static java.util.stream.Collectors.toList;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
@@ -246,5 +247,17 @@ public class DefaultVertexTraversalTest extends AbstractTraversalTest {
                 .valueMap("noField").stream();
         assertTrue(stream.allMatch(Map::isEmpty));
     }
+
+    @Test
+    public void shouldReturnNext() {
+        Map<String, Object> map = graphTemplate.getTraversalVertex().hasLabel("Person")
+                .valueMap("name").next();
+
+        assertNotNull(map);
+        assertFalse(map.isEmpty());
+
+
+    }
+
 
 }
