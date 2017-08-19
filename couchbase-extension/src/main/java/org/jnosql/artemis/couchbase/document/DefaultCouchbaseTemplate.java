@@ -17,6 +17,7 @@ package org.jnosql.artemis.couchbase.document;
 
 import com.couchbase.client.java.document.json.JsonObject;
 import com.couchbase.client.java.query.Statement;
+import com.couchbase.client.java.search.SearchQuery;
 import org.jnosql.artemis.document.AbstractDocumentTemplate;
 import org.jnosql.artemis.document.DocumentEntityConverter;
 import org.jnosql.artemis.document.DocumentEventPersistManager;
@@ -28,8 +29,9 @@ import javax.enterprise.inject.Instance;
 import javax.enterprise.inject.Typed;
 import javax.inject.Inject;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
+
+import static java.util.Objects.requireNonNull;
 
 /**
  * The Default implementation of {@link CouchbaseTemplate}
@@ -81,8 +83,8 @@ class DefaultCouchbaseTemplate extends AbstractDocumentTemplate
 
     @Override
     public <T> List<T> n1qlQuery(String n1qlQuery, JsonObject params) throws NullPointerException {
-        Objects.requireNonNull(n1qlQuery, "n1qlQuery is required");
-        Objects.requireNonNull(params, "params is required");
+        requireNonNull(n1qlQuery, "n1qlQuery is required");
+        requireNonNull(params, "params is required");
         return manager.get().n1qlQuery(n1qlQuery, params).stream()
                 .map(converter::toEntity)
                 .map(d -> (T) d)
@@ -91,8 +93,8 @@ class DefaultCouchbaseTemplate extends AbstractDocumentTemplate
 
     @Override
     public <T> List<T> n1qlQuery(Statement n1qlQuery, JsonObject params) throws NullPointerException {
-        Objects.requireNonNull(n1qlQuery, "n1qlQuery is required");
-        Objects.requireNonNull(params, "params is required");
+        requireNonNull(n1qlQuery, "n1qlQuery is required");
+        requireNonNull(params, "params is required");
         return manager.get().n1qlQuery(n1qlQuery, params).stream()
                 .map(converter::toEntity)
                 .map(d -> (T) d)
@@ -101,7 +103,7 @@ class DefaultCouchbaseTemplate extends AbstractDocumentTemplate
 
     @Override
     public <T> List<T> n1qlQuery(String n1qlQuery) throws NullPointerException {
-        Objects.requireNonNull(n1qlQuery, "n1qlQuery is required");
+        requireNonNull(n1qlQuery, "n1qlQuery is required");
         return manager.get().n1qlQuery(n1qlQuery).stream()
                 .map(converter::toEntity)
                 .map(d -> (T) d)
@@ -109,8 +111,17 @@ class DefaultCouchbaseTemplate extends AbstractDocumentTemplate
     }
 
     @Override
+    public <T> List<T> search(SearchQuery query) throws NullPointerException {
+        requireNonNull(query, "query is required");
+        return manager.get().search(query).stream()
+                .map(converter::toEntity)
+                .map(d -> (T) d)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public <T> List<T> n1qlQuery(Statement n1qlQuery) throws NullPointerException {
-        Objects.requireNonNull(n1qlQuery, "n1qlQuery is required");
+        requireNonNull(n1qlQuery, "n1qlQuery is required");
         return manager.get().n1qlQuery(n1qlQuery).stream()
                 .map(converter::toEntity)
                 .map(d -> (T) d)

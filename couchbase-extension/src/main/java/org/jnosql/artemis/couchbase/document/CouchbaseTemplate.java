@@ -17,7 +17,9 @@ package org.jnosql.artemis.couchbase.document;
 
 import com.couchbase.client.java.document.json.JsonObject;
 import com.couchbase.client.java.query.Statement;
+import com.couchbase.client.java.search.SearchQuery;
 import org.jnosql.artemis.document.DocumentTemplate;
+import org.jnosql.diana.api.document.DocumentEntity;
 
 import java.util.List;
 
@@ -55,6 +57,16 @@ public interface CouchbaseTemplate extends DocumentTemplate {
      * @throws NullPointerException when either n1qlQuery or params are null
      */
     <T> List<T> n1qlQuery(String n1qlQuery) throws NullPointerException;
+
+    /**
+     * Searches in Couchbase using Full Text Search
+     *
+     * @param <T>   the type
+     * @param query the query to be used
+     * @return the elements from the query
+     * @throws NullPointerException when either the query or index are null
+     */
+    <T> List<T> search(SearchQuery query) throws NullPointerException;
 
     /**
      * Executes the n1qlquery  plain query and then result que result

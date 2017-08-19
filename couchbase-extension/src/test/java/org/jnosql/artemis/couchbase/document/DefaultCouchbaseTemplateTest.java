@@ -16,6 +16,7 @@ package org.jnosql.artemis.couchbase.document;
 
 import com.couchbase.client.java.document.json.JsonObject;
 import com.couchbase.client.java.query.Statement;
+import com.couchbase.client.java.search.SearchQuery;
 import org.jnosql.artemis.document.DocumentEntityConverter;
 import org.jnosql.artemis.document.DocumentEventPersistManager;
 import org.jnosql.artemis.document.DocumentWorkflow;
@@ -29,7 +30,12 @@ import org.mockito.Mockito;
 
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
+import java.util.List;
 
+import static java.util.Collections.singletonList;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
 
 
@@ -58,8 +64,10 @@ public class DefaultCouchbaseTemplateTest {
         template = new DefaultCouchbaseTemplate(instance, converter, flow, persistManager);
 
         DocumentEntity entity = DocumentEntity.of("Person");
-        entity.add(Document.of("name", "Ada"));
+        entity.add(Document.of("_id", "Ada"));
         entity.add(Document.of("age", 10));
+
+        when(manager.search(any(SearchQuery.class))).thenReturn(singletonList(entity));
 
     }
 
@@ -90,6 +98,19 @@ public class DefaultCouchbaseTemplateTest {
         Statement statement = Mockito.mock(Statement.class);
         template.n1qlQuery(statement);
         Mockito.verify(manager).n1qlQuery(statement);
+    }
+
+    @Test
+    public void shouldSearch() {
+        SearchQuery query = Mockito.mock(SearchQuery.class);
+
+        List<Person> people = template.search(query);
+
+        assertFalse(people.isEmpty());
+        assertEquals(1, people.size());
+        Person person = people.get(0);
+
+        assertEquals("Ada", person.getName());
     }
 
 }
