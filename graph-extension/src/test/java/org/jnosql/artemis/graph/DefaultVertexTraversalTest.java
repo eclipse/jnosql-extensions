@@ -22,8 +22,11 @@ import org.jnosql.artemis.graph.model.Person;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toList;
 import static org.hamcrest.Matchers.containsInAnyOrder;
@@ -211,4 +214,37 @@ public class DefaultVertexTraversalTest extends AbstractTraversalTest {
         long count = graphTemplate.getTraversalVertex().both("WRITES").count();
         assertEquals(0L, count);
     }
+
+    @Test
+    public void shouldMapValuesAsStream() {
+        List<Map<String, Object>> maps = graphTemplate.getTraversalVertex().hasLabel("Person")
+                .valueMap("name").stream().collect(toList());
+
+        assertFalse(maps.isEmpty());
+        assertEquals(3, maps.size());
+
+        List<String> names = new ArrayList<>();
+
+        maps.forEach(m-> names.add(List.class.cast(m.get("name")).get(0).toString()));
+
+        assertThat(names, containsInAnyOrder("Otavio", "Poliana", "Paulo"));
+    }
+
+    @Test
+    public void shouldMapValuesAsStreamLimit() {
+        List<Map<String, Object>> maps = graphTemplate.getTraversalVertex().hasLabel("Person")
+                .valueMap("name").stream(2).collect(toList());
+
+        assertFalse(maps.isEmpty());
+        assertEquals(2, maps.size());
+    }
+
+
+    @Test
+    public void shouldReturnMapValueAsEmptyStream() {
+        Stream<Map<String, Object>> stream = graphTemplate.getTraversalVertex().hasLabel("Person")
+                .valueMap("noField").stream();
+        assertTrue(stream.allMatch(Map::isEmpty));
+    }
+
 }
