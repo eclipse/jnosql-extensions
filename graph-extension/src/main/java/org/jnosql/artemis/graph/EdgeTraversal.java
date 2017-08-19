@@ -19,7 +19,6 @@ import org.apache.tinkerpop.gremlin.structure.Element;
 import org.apache.tinkerpop.gremlin.structure.Property;
 import org.apache.tinkerpop.gremlin.structure.T;
 
-import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -141,7 +140,7 @@ public interface EdgeTraversal {
     <OUT, IN> Stream<EdgeEntity<OUT, IN>> stream(int limit);
 
     /**
-     * Map the {@link Element} to a {@link Map} of the properties key'd according to their {@link Property#key}.
+     * Map the {@link Element} to a {@link java.util.Map} of the properties key'd according to their {@link Property#key}.
      * If no property keys are provided, then all properties are retrieved.
      *
      * @param propertyKeys the properties to retrieve
@@ -150,7 +149,7 @@ public interface EdgeTraversal {
     ValueMapTraversal valueMap(final String... propertyKeys);
 
     /**
-     * Map the {@link Element} to a {@link Map} of the properties key'd according to their {@link Property#key}.
+     * Map the {@link Element} to a {@link java.util.Map} of the properties key'd according to their {@link Property#key}.
      * If no property keys are provided, then all properties are retrieved. Plus {@link T} tokens in the emitted map.
      *
      * @param propertyKeys the properties to retrieve
