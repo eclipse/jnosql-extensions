@@ -179,12 +179,21 @@ public interface VertexTraversal {
 
     /**
      * Map the {@link Element} to a {@link Map} of the properties key'd according to their {@link Property#key}.
-     * If no property keys are provided, then all properties are retrieved. Plus {@link T} tokens in the emitted map.
+     * If no property keys are provided, then all properties are retrieved.
      *
      * @param propertyKeys the properties to retrieve
      * @return a {@link ValueMapTraversal} instance
      */
     ValueMapTraversal valueMap(final String... propertyKeys);
+
+    /**
+     * Map the {@link Element} to a {@link Map} of the properties key'd according to their {@link Property#key}.
+     * If no property keys are provided, then all properties are retrieved. Plus {@link T} tokens in the emitted map.
+     *
+     * @param propertyKeys the properties to retrieve
+     * @return a {@link ValueMapTraversal} instance
+     */
+    ValueMapTraversal valueMapIncludeTokens(final String... propertyKeys);
 
 
     /**

@@ -140,6 +140,14 @@ public interface EdgeTraversal {
      */
     <OUT, IN> Stream<EdgeEntity<OUT, IN>> stream(int limit);
 
+    /**
+     * Map the {@link Element} to a {@link Map} of the properties key'd according to their {@link Property#key}.
+     * If no property keys are provided, then all properties are retrieved.
+     *
+     * @param propertyKeys the properties to retrieve
+     * @return a {@link ValueMapTraversal} instance
+     */
+    ValueMapTraversal valueMap(final String... propertyKeys);
 
     /**
      * Map the {@link Element} to a {@link Map} of the properties key'd according to their {@link Property#key}.
@@ -148,7 +156,7 @@ public interface EdgeTraversal {
      * @param propertyKeys the properties to retrieve
      * @return a {@link ValueMapTraversal} instance
      */
-    ValueMapTraversal valueMap(final String... propertyKeys);
+    ValueMapTraversal valueMapIncludeTokens(final String... propertyKeys);
 
 
     /**
