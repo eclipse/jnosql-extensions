@@ -142,11 +142,11 @@ public interface VertexTraversal {
     /**
      * Defines Vertex as label condition
      *
-     * @param labels the labels in the condition
+     * @param label the labels in the condition
      * @return a {@link VertexTraversal} with the new condition
      * @throws NullPointerException when has any null element
      */
-    VertexTraversal hasLabel(String... labels) throws NullPointerException;
+    VertexTraversal hasLabel(String label) throws NullPointerException;
 
 
     /**
