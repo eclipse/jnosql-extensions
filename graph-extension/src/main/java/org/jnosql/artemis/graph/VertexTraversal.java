@@ -184,16 +184,6 @@ public interface VertexTraversal {
      */
     ValueMapTraversal valueMap(final String... propertyKeys);
 
-    /**
-     * Map the {@link org.apache.tinkerpop.gremlin.structure.Element} to a {@link java.util.Map} of the properties key'd
-     * according to their {@link org.apache.tinkerpop.gremlin.structure.Property#key}.
-     * If no property keys are provided, then all properties are retrieved. Plus {@link T} tokens in the emitted map.
-     *
-     * @param propertyKeys the properties to retrieve
-     * @return a {@link ValueMapTraversal} instance
-     */
-    ValueMapTraversal valueMapIncludeTokens(final String... propertyKeys);
-
 
     /**
      * Map the traversal stream to its reduction as a sum of the elements
