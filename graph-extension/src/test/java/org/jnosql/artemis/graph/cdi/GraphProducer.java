@@ -14,7 +14,7 @@
  */
 package org.jnosql.artemis.graph.cdi;
 
-import com.thinkaurelius.titan.core.TitanFactory;
+import org.apache.tinkerpop.gremlin.neo4j.structure.Neo4jGraph;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.jnosql.artemis.Database;
@@ -24,6 +24,7 @@ import org.mockito.Mockito;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Disposes;
 import javax.enterprise.inject.Produces;
+import java.io.File;
 
 import static java.util.Collections.singleton;
 import static org.mockito.Mockito.mock;
@@ -32,9 +33,8 @@ import static org.mockito.Mockito.when;
 @ApplicationScoped
 public class GraphProducer {
 
-    private static final String DATA_DIR = "./target/jnosql-graph";
 
-    private Graph graph = TitanFactory.open("berkeleyje:" + DATA_DIR);
+    private Graph graph = Neo4jGraph.open(new File("").getAbsolutePath() + "/target/jnosql-graph");
 
     @Produces
     @ApplicationScoped

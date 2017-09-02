@@ -79,7 +79,7 @@ public class EdgeEntityTest {
 
     @Test(expected = EntityNotFoundException.class)
     public void shouldReturnEntityNotFoundWhenOutBoundDidNotFound() {
-        Person person = Person.builder().withId(10L).withName("Poliana").withAge().build();
+        Person person = Person.builder().withId(-10L).withName("Poliana").withAge().build();
         Book book = graphTemplate.insert(Book.builder().withAge(2007).withName("The Shack").build());
         graphTemplate.edge(person, "reads", book);
     }
@@ -191,7 +191,7 @@ public class EdgeEntityTest {
         EdgeEntity<Person, Book> newEdge = graphTemplate.edge(person, "reads", book);
         assertNotEquals(edge.getId(), newEdge.getId());
 
-        graphTemplate.deleteEdge(newEdge.getId());
+        graphTemplate.deleteEdge(newEdge.getId().get());
     }
 
     @Test(expected = NullPointerException.class)
@@ -230,7 +230,7 @@ public class EdgeEntityTest {
         assertTrue(newEdge.isPresent());
         assertEquals(edge.getId(), newEdge.get().getId());
 
-        graphTemplate.deleteEdge(edge.getId());
+        graphTemplate.deleteEdge(edge.getId().get());
     }
 
     @Test
