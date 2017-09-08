@@ -61,7 +61,8 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
 
         UnaryOperator<ArtemisVertex> save = e -> {
             ArtemisVertex artemisVertex = getVertex().toVertex(entity);
-            return toArtemisVertex(toVertex(artemisVertex, getGraph()));
+            Vertex vertex = toVertex(artemisVertex, getGraph());
+            return toArtemisVertex(vertex);
         };
 
         return getFlow().flow(entity, save);

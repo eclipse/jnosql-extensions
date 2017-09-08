@@ -23,6 +23,7 @@ import org.jnosql.artemis.graph.VertexConverter;
 import org.jnosql.diana.api.Value;
 
 import static java.util.Objects.requireNonNull;
+import static java.util.Optional.ofNullable;
 import static org.apache.tinkerpop.gremlin.structure.T.id;
 import static org.apache.tinkerpop.gremlin.structure.T.label;
 
@@ -44,7 +45,12 @@ public final class TinkerPopUtil {
      */
     public static ArtemisVertex toArtemisVertex(Vertex vertex) throws NullPointerException {
         requireNonNull(vertex, "vertex is required");
-        ArtemisVertex artemisVertex = ArtemisVertex.of(vertex.label(), vertex.id());
+
+
+        ArtemisVertex artemisVertex = ofNullable(vertex.id())
+                .map(id -> ArtemisVertex.of(vertex.label(), id))
+                .orElse(ArtemisVertex.of(vertex.label()));
+
         vertex.keys().forEach(k -> artemisVertex.add(k, Value.of(vertex.value(k))));
         return artemisVertex;
     }
