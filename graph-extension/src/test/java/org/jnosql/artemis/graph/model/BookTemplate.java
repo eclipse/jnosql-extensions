@@ -34,4 +34,9 @@ public class BookTemplate {
         graphTemplate.insert(actor);
         throw new NullPointerException("should get a rollback");
     }
+
+    public void normalInsertion(Book actor) {
+        graphTemplate.insert(actor);
+    }
+
 }

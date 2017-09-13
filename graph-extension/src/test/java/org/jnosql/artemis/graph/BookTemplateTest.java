@@ -20,7 +20,6 @@ import org.apache.tinkerpop.gremlin.structure.Transaction.Status;
 import org.jnosql.artemis.graph.cdi.WeldJUnit4Runner;
 import org.jnosql.artemis.graph.model.Book;
 import org.jnosql.artemis.graph.model.BookTemplate;
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -29,6 +28,10 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import static org.apache.tinkerpop.gremlin.structure.Transaction.Status.COMMIT;
 import static org.apache.tinkerpop.gremlin.structure.Transaction.Status.ROLLBACK;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(WeldJUnit4Runner.class)
 public class BookTemplateTest {
@@ -48,8 +51,8 @@ public class BookTemplateTest {
         Transaction transaction = graph.tx();
         transaction.addTransactionListener(status::set);
         template.insert(book);
-        Assert.assertFalse(transaction.isOpen());
-        Assert.assertEquals(COMMIT, status.get());
+        assertFalse(transaction.isOpen());
+        assertEquals(COMMIT, status.get());
     }
 
     @Test
@@ -66,7 +69,19 @@ public class BookTemplateTest {
 
         }
 
-        Assert.assertFalse(transaction.isOpen());
-        Assert.assertEquals(ROLLBACK, status.get());
+        assertFalse(transaction.isOpen());
+        assertEquals(ROLLBACK, status.get());
+    }
+
+    @Test
+    public void shouldUseNormalTransaction() {
+        AtomicReference<Status> status = new AtomicReference<>();
+
+        Book book = Book.builder().withName("The Book").build();
+        Transaction transaction = graph.tx();
+        transaction.addTransactionListener(status::set);
+        template.normalInsertion(book);
+        assertTrue(transaction.isOpen());
+       assertNull(status.get());
     }
 }
