@@ -15,18 +15,20 @@
 package org.jnosql.artemis.graph.spi;
 
 import org.jnosql.artemis.Database;
-import org.jnosql.artemis.DatabaseType;
 import org.jnosql.artemis.graph.BookRepository;
 import org.jnosql.artemis.graph.GraphTemplate;
 import org.jnosql.artemis.graph.cdi.WeldJUnit4Runner;
 import org.jnosql.artemis.graph.model.Book;
 import org.jnosql.artemis.graph.model.Person;
-import org.jnosql.artemis.key.KeyValueTemplate;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import javax.inject.Inject;
+import javax.management.openmbean.OpenDataException;
 
+import java.util.Optional;
+
+import static org.jnosql.artemis.DatabaseType.GRAPH;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
@@ -34,17 +36,18 @@ import static org.junit.Assert.assertNotNull;
 public class GraphProducerExtensionTest {
 
     @Inject
-    @Database(value = DatabaseType.GRAPH, provider = "graphRepositoryMock")
+    @Database(value = GRAPH, provider = "graphRepositoryMock")
     private GraphTemplate managerMock;
 
     @Inject
     private GraphTemplate manager;
 
     @Inject
-    @Database(value = DatabaseType.GRAPH, provider = "graphRepositoryMock")
-    private KeyValueTemplate repositoryMock;
+    @Database(value = GRAPH, provider = "graphRepositoryMock")
+    private BookRepository repositoryMock;
 
     @Inject
+    @Database(value = GRAPH)
     private BookRepository repository;
 
 
@@ -62,13 +65,9 @@ public class GraphProducerExtensionTest {
     }
 
     @Test
-    public void shouldGet() {
-        Book user = repository.findById("user").get();
-        Book userDefault = repository.findById("user").get();
-        Book userMock = repository.findById("user").get();
-        assertEquals("Default", user.getName());
-        assertEquals("Default", userDefault.getName());
-        assertEquals("keyvalueMock", userMock.getName());
+    public void shoudlInjectRepository() {
+        repositoryMock.save(Book.builder().withName("book").build());
+        assertNotNull(repository.findById("10"));
     }
 
 }

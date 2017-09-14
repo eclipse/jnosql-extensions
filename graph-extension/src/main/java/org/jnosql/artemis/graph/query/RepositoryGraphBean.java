@@ -65,9 +65,9 @@ public class RepositoryGraphBean implements Bean<Repository>, PassivationCapable
         this.provider = provider;
         if (provider.isEmpty()) {
             this.qualifiers = new HashSet<>();
-            qualifiers.add(DatabaseQualifier.ofColumn());
+            qualifiers.add(DatabaseQualifier.ofGraph());
         } else {
-            this.qualifiers = Collections.singleton(DatabaseQualifier.ofColumn(provider));
+            this.qualifiers = Collections.singleton(DatabaseQualifier.ofGraph(provider));
         }
     }
 
@@ -94,7 +94,7 @@ public class RepositoryGraphBean implements Bean<Repository>, PassivationCapable
                 getInstance(GraphTemplate.class, provider);
         Reflections reflections = getInstance(Reflections.class);
         VertexConverter vertexConverter = getInstance(VertexConverter.class);
-        Graph graph =provider.isEmpty() ? getInstance(Graph.class) :
+        Graph graph = provider.isEmpty() ? getInstance(Graph.class) :
                 getInstance(Graph.class, provider);
 
         GraphRepositoryProxy handler = new GraphRepositoryProxy(repository,
@@ -112,7 +112,7 @@ public class RepositoryGraphBean implements Bean<Repository>, PassivationCapable
     }
 
     private <T> T getInstance(Class<T> clazz, String name) {
-        Bean bean = beanManager.getBeans(clazz, DatabaseQualifier.ofColumn(name)).iterator().next();
+        Bean bean = beanManager.getBeans(clazz, DatabaseQualifier.ofGraph(name)).iterator().next();
         CreationalContext ctx = beanManager.createCreationalContext(bean);
         return (T) beanManager.getReference(bean, clazz, ctx);
     }
