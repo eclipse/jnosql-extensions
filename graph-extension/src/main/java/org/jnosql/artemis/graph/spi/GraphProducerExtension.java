@@ -68,7 +68,7 @@ public class GraphProducerExtension implements Extension {
 
 
     void onAfterBeanDiscovery(@Observes final AfterBeanDiscovery afterBeanDiscovery, final BeanManager beanManager) {
-        LOGGER.info(String.format("Starting to process on columns: %d databases crud %d",
+        LOGGER.info(String.format("Starting to process on graphs: %d databases crud %d",
                 databases.size(), crudTypes.size()));
 
         databases.forEach(type -> {
