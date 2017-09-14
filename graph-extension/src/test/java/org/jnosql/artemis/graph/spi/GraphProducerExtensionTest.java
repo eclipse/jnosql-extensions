@@ -16,9 +16,12 @@ package org.jnosql.artemis.graph.spi;
 
 import org.jnosql.artemis.Database;
 import org.jnosql.artemis.DatabaseType;
+import org.jnosql.artemis.graph.BookRepository;
 import org.jnosql.artemis.graph.GraphTemplate;
 import org.jnosql.artemis.graph.cdi.WeldJUnit4Runner;
+import org.jnosql.artemis.graph.model.Book;
 import org.jnosql.artemis.graph.model.Person;
+import org.jnosql.artemis.key.KeyValueTemplate;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -37,6 +40,13 @@ public class GraphProducerExtensionTest {
     @Inject
     private GraphTemplate manager;
 
+    @Inject
+    @Database(value = DatabaseType.GRAPH, provider = "graphRepositoryMock")
+    private KeyValueTemplate repositoryMock;
+
+    @Inject
+    private BookRepository repository;
+
 
     @Test
     public void shouldInstance() {
@@ -49,6 +59,16 @@ public class GraphProducerExtensionTest {
         Person personMock = managerMock.insert(Person.builder().build());
 
         assertEquals("nameMock", personMock.getName());
+    }
+
+    @Test
+    public void shouldGet() {
+        Book user = repository.findById("user").get();
+        Book userDefault = repository.findById("user").get();
+        Book userMock = repository.findById("user").get();
+        assertEquals("Default", user.getName());
+        assertEquals("Default", userDefault.getName());
+        assertEquals("keyvalueMock", userMock.getName());
     }
 
 }
