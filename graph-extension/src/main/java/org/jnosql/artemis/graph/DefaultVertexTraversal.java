@@ -163,7 +163,7 @@ class DefaultVertexTraversal implements VertexTraversal {
     }
 
     @Override
-    public <T> Stream<T> stream(int limit) {
+    public <T> Stream<T> next(int limit) {
         return flow.apply(supplier.get()).next(limit).stream()
                 .map(TinkerPopUtil::toArtemisVertex)
                 .map(converter::toEntity);

@@ -66,7 +66,7 @@ public class DefaultVertexTraversalTest extends AbstractTraversalTest {
     @Test
     public void shouldDefineLimit2() {
         List<Person> people = graphTemplate.getTraversalVertex(otavio.getId(), poliana.getId(), paulo.getId()).
-                <Person>stream(2)
+                <Person>next(2)
                 .collect(toList());
 
         assertEquals(2, people.size());

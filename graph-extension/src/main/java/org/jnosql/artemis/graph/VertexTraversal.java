@@ -174,7 +174,7 @@ public interface VertexTraversal {
      * @param limit the limit to result
      * @return the entity result as {@link Stream}
      */
-    <T> Stream<T> stream(int limit);
+    <T> Stream<T> next(int limit);
 
     /**
      * Map the {@link org.apache.tinkerpop.gremlin.structure.Element} to a {@link java.util.Map} of the properties key'd according
