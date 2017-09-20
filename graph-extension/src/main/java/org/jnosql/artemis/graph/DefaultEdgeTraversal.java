@@ -117,7 +117,7 @@ class DefaultEdgeTraversal implements EdgeTraversal {
     }
 
     @Override
-    public <OUT, IN> Stream<EdgeEntity<OUT, IN>> stream(int limit) {
+    public <OUT, IN> Stream<EdgeEntity<OUT, IN>> next(int limit) {
         return flow.apply(supplier.get()).next(limit).stream().map(this::toEdge);
     }
 

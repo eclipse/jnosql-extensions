@@ -132,10 +132,10 @@ public interface VertexTraversal {
     EdgeTraversal bothE(String... edgeLabels) throws NullPointerException;
 
     /**
-     * Filter the objects in the traversal by the number of them to pass through the stream, where only the first
+     * Filter the objects in the traversal by the number of them to pass through the next, where only the first
      * {@code n} objects are allowed as defined by the {@code limit} argument.
      *
-     * @param limit the number at which to end the stream
+     * @param limit the number at which to end the next
      * @return a {@link VertexTraversal} with the limit
      */
     VertexTraversal limit(long limit);
@@ -160,7 +160,7 @@ public interface VertexTraversal {
     <T> Optional<T> next();
 
     /**
-     * Get all the result as stream
+     * Get all the result as next
      *
      * @param <T> the entity type
      * @return the entity result as {@link Stream}
@@ -188,7 +188,7 @@ public interface VertexTraversal {
 
 
     /**
-     * Map the traversal stream to its reduction as a sum of the elements
+     * Map the traversal next to its reduction as a sum of the elements
      *
      * @return the sum
      */

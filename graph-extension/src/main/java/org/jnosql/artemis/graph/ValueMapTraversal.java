@@ -25,14 +25,14 @@ public interface ValueMapTraversal {
 
 
     /**
-     * Get the result as stream
+     * Get the result as next
      *
      * @return the entity result as {@link Stream}
      */
     Stream<Map<String, Object>> stream();
 
     /**
-     * Get the result as stream
+     * Get the result as next
      *
      * @param limit the limit to result
      * @return the entity result as {@link Stream}
@@ -47,7 +47,7 @@ public interface ValueMapTraversal {
     Map<String, Object> next();
 
     /**
-     * Map the traversal stream to its reduction as a sum of the elements
+     * Map the traversal next to its reduction as a sum of the elements
      *
      * @return the sum
      */

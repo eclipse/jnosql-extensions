@@ -79,9 +79,9 @@ public interface EdgeTraversal {
 
 
     /**
-     * Filter the objects in the traversal by the number of them to pass through the stream, where only the first
+     * Filter the objects in the traversal by the number of them to pass through the next, where only the first
      * {@code n} objects are allowed as defined by the {@code limit} argument.
-     * @param limit the number at which to end the stream
+     * @param limit the number at which to end the next
      * @return a {@link EdgeTraversal} with the limit
      */
     EdgeTraversal limit(long limit);
@@ -120,7 +120,7 @@ public interface EdgeTraversal {
     VertexTraversal bothV();
 
     /**
-     * Get all the result as stream
+     * Get all the result as next
      *
      * @param <IN>  inbound
      * @param <OUT> outbound
@@ -129,14 +129,14 @@ public interface EdgeTraversal {
     <OUT, IN> Stream<EdgeEntity<OUT, IN>> stream();
 
     /**
-     * Get the next n elements result as stream, the number of elements is limit based
+     * Get the next n elements result as next, the number of elements is limit based
      *
      * @param <IN>  inbound
      * @param <OUT> outbound
      * @param limit the limit to result
      * @return the entity result as {@link Stream}
      */
-    <OUT, IN> Stream<EdgeEntity<OUT, IN>> stream(int limit);
+    <OUT, IN> Stream<EdgeEntity<OUT, IN>> next(int limit);
 
     /**
      * Map the {@link org.apache.tinkerpop.gremlin.structure.Element} to a {@link java.util.Map} of the properties key'd according
@@ -150,7 +150,7 @@ public interface EdgeTraversal {
 
 
     /**
-     * Map the traversal stream to its reduction as a sum of the elements
+     * Map the traversal next to its reduction as a sum of the elements
      *
      * @return the sum
      */
