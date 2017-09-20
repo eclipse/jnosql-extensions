@@ -132,9 +132,10 @@ public interface VertexTraversal {
     EdgeTraversal bothE(String... edgeLabels) throws NullPointerException;
 
     /**
-     * Defines a limit
+     * Filter the objects in the traversal by the number of them to pass through the stream, where only the first
+     * {@code n} objects are allowed as defined by the {@code limit} argument.
      *
-     * @param limit the limit in the traversal
+     * @param limit the number at which to end the stream
      * @return a {@link VertexTraversal} with the limit
      */
     VertexTraversal limit(long limit);
