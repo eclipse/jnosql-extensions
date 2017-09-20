@@ -25,22 +25,22 @@ public interface ValueMapTraversal {
 
 
     /**
-     * Get the result as next
+     * Get all the result in the traversal as Stream
      *
      * @return the entity result as {@link Stream}
      */
     Stream<Map<String, Object>> stream();
 
     /**
-     * Get the result as next
+     * Get the next n-number of results from the traversal.
      *
      * @param limit the limit to result
      * @return the entity result as {@link Stream}
      */
-    Stream<Map<String, Object>> stream(int limit);
+    Stream<Map<String, Object>> next(int limit);
 
     /**
-     * Gets the first result
+     * Returns the next elements in the traversal.
      *
      * @return the map
      */

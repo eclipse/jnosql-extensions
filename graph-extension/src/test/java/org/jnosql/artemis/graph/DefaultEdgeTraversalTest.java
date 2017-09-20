@@ -201,7 +201,7 @@ public class DefaultEdgeTraversalTest extends AbstractTraversalTest {
     @Test
     public void shouldMapValuesAsStreamLimit() {
         List<Map<String, Object>> maps = graphTemplate.getTraversalVertex().inE("reads")
-                .valueMap("motivation").stream(2).collect(toList());
+                .valueMap("motivation").next(2).collect(toList());
 
         assertFalse(maps.isEmpty());
         assertEquals(2, maps.size());

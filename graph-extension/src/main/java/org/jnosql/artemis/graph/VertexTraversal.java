@@ -160,7 +160,7 @@ public interface VertexTraversal {
     <T> Optional<T> next();
 
     /**
-     * Get all the result as next
+     * Get all the result in the traversal as Stream
      *
      * @param <T> the entity type
      * @return the entity result as {@link Stream}

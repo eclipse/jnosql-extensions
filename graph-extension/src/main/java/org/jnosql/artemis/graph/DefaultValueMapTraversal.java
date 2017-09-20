@@ -45,7 +45,7 @@ class DefaultValueMapTraversal implements ValueMapTraversal{
     }
 
     @Override
-    public Stream<Map<String, Object>> stream(int limit) {
+    public Stream<Map<String, Object>> next(int limit) {
         return flow.apply(supplier.get()).next(limit).stream();
     }
 

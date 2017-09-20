@@ -120,7 +120,7 @@ public interface EdgeTraversal {
     VertexTraversal bothV();
 
     /**
-     * Get all the result as next
+     * Get all the result in the traversal as Stream
      *
      * @param <IN>  inbound
      * @param <OUT> outbound

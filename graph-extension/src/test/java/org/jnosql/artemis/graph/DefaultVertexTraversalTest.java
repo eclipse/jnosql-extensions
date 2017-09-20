@@ -234,7 +234,7 @@ public class DefaultVertexTraversalTest extends AbstractTraversalTest {
     @Test
     public void shouldMapValuesAsStreamLimit() {
         List<Map<String, Object>> maps = graphTemplate.getTraversalVertex().hasLabel("Person")
-                .valueMap("name").stream(2).collect(toList());
+                .valueMap("name").next(2).collect(toList());
 
         assertFalse(maps.isEmpty());
         assertEquals(2, maps.size());
