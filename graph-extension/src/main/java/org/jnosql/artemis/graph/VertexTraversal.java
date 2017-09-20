@@ -172,6 +172,81 @@ public interface VertexTraversal {
      */
     EdgeTraversal bothE(String... edgeLabels) throws NullPointerException;
 
+    
+
+    /**
+     * Map the {@link VertexTraversal} to its outgoing adjacent vertices given the edge labels.
+     *
+     * @param label the edge labels to traverse
+     * @return a {@link VertexTraversal} with the new condition
+     * @throws NullPointerException when has any null element
+     */
+    default VertexTraversal out(Supplier<String> label) throws NullPointerException{
+        requireNonNull(label, "the supplier is required");
+        return out(label.get());
+    }
+
+    /**
+     * Map the {@link EdgeTraversal} to its outgoing incident edges given the edge labels.
+     *
+     * @param label the edge labels to traverse
+     * @return a {@link EdgeTraversal} with the new condition
+     * @throws NullPointerException when has any null element
+     */
+    default EdgeTraversal outE(Supplier<String> label) throws NullPointerException{
+        requireNonNull(label, "the supplier is required");
+        return outE(label.get());
+    }
+
+    /**
+     * Map the {@link VertexTraversal} to its adjacent vertices given the edge labels.
+     *
+     * @param label the edge labels to traverse
+     * @return a {@link VertexTraversal} with the new condition
+     * @throws NullPointerException when has any null element
+     */
+    default VertexTraversal in(Supplier<String> label) throws NullPointerException{
+        requireNonNull(label, "the supplier is required");
+        return in(label.get());
+    }
+
+    /**
+     * Map the {@link EdgeTraversal} to its incoming incident edges given the edge labels.
+     *
+     * @param label the edge labels to traverse
+     * @return a {@link EdgeTraversal} with the new condition
+     * @throws NullPointerException when has any null element
+     */
+    default EdgeTraversal inE(Supplier<String> label) throws NullPointerException{
+        requireNonNull(label, "the supplier is required");
+        return inE(label.get());
+    }
+
+    /**
+     * Map the {@link VertexTraversal} to its incoming adjacent vertices given the edge labels.
+     *
+     * @param label the edge labels to traverse
+     * @return a {@link VertexTraversal} with the new condition
+     * @throws NullPointerException when has any null element
+     */
+    default VertexTraversal both(Supplier<String> label) throws NullPointerException{
+        requireNonNull(label, "the supplier is required");
+        return both(label.get());
+    }
+
+    /**
+     * Map the {@link EdgeTraversal} to its either incoming or outgoing incident edges given the edge labels.
+     *
+     * @param label the edge labels to traverse
+     * @return a {@link EdgeTraversal} with the new condition
+     * @throws NullPointerException when has any null element
+     */
+    default EdgeTraversal bothE(Supplier<String> label) throws NullPointerException{
+        requireNonNull(label, "the supplier is required");
+        return bothE(label.get());
+    }
+
+
     /**
      * Filter the objects in the traversal by the number of them to pass through the next, where only the first
      * {@code n} objects are allowed as defined by the {@code limit} argument.
