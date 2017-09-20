@@ -18,7 +18,10 @@ import org.apache.tinkerpop.gremlin.process.traversal.P;
 import org.apache.tinkerpop.gremlin.structure.T;
 
 import java.util.Optional;
+import java.util.function.Supplier;
 import java.util.stream.Stream;
+
+import static java.util.Objects.requireNonNull;
 
 /**
  * The Graph Traversal that maps {@link org.apache.tinkerpop.gremlin.structure.Vertex}.
@@ -50,6 +53,32 @@ public interface VertexTraversal {
     /**
      * Adds a equals condition to a query
      *
+     * @param propertyKey the key
+     * @param value       the value to the condition
+     * @return a {@link VertexTraversal} with the new condition
+     * @throws NullPointerException when either key or value are null
+     */
+    default VertexTraversal has(Supplier<String> propertyKey, Object value) throws NullPointerException{
+        requireNonNull(propertyKey, "the supplier is required");
+        return has(propertyKey.get(), value);
+    }
+
+    /**
+     * Adds a equals condition to a query
+     *
+     * @param propertyKey the key
+     * @param predicate   the predicate condition
+     * @return a {@link VertexTraversal} with the new condition
+     * @throws NullPointerException when either key or predicate condition are null
+     */
+    default VertexTraversal has(Supplier<String> propertyKey, P<?> predicate) throws NullPointerException{
+        requireNonNull(propertyKey, "the supplier is required");
+        return has(propertyKey.get(), predicate);
+    }
+
+    /**
+     * Adds a equals condition to a query
+     *
      * @param accessor the key
      * @param value    the value to the condition
      * @return a {@link VertexTraversal} with the new condition
@@ -69,13 +98,25 @@ public interface VertexTraversal {
 
 
     /**
-     * Defines Vetex has not a property
+     * Defines Vertex has not a property
      *
      * @param propertyKey the property key
      * @return a {@link VertexTraversal} with the new condition
      * @throws NullPointerException when propertyKey is null
      */
     VertexTraversal hasNot(String propertyKey) throws NullPointerException;
+
+    /**
+     * Defines Vertex has not a property
+     *
+     * @param propertyKey the property key
+     * @return a {@link VertexTraversal} with the new condition
+     * @throws NullPointerException when propertyKey is null
+     */
+    default VertexTraversal hasNot(Supplier<String> propertyKey) throws NullPointerException{
+        requireNonNull(propertyKey, "the supplier is required");
+        return hasNot(propertyKey.get());
+    }
 
     /**
      * Map the {@link VertexTraversal} to its outgoing adjacent vertices given the edge labels.
@@ -148,6 +189,18 @@ public interface VertexTraversal {
      * @throws NullPointerException when has any null element
      */
     VertexTraversal hasLabel(String label) throws NullPointerException;
+
+    /**
+     * Defines Vertex as label condition
+     *
+     * @param label the labels in the condition
+     * @return a {@link VertexTraversal} with the new condition
+     * @throws NullPointerException when has any null element
+     */
+    default VertexTraversal hasLabel(Supplier<String> label) throws NullPointerException{
+        requireNonNull(label, "the supplier is required");
+        return hasNot(label.get());
+    }
 
 
     /**
