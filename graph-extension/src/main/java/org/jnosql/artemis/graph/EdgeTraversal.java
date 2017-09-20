@@ -128,7 +128,7 @@ public interface EdgeTraversal {
     <OUT, IN> Stream<EdgeEntity<OUT, IN>> stream();
 
     /**
-     * Get the result as stream
+     * Get the next n elements result as stream, the number of elements is limit based
      *
      * @param <IN>  inbound
      * @param <OUT> outbound
