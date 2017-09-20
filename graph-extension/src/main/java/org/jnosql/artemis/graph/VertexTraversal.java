@@ -150,7 +150,8 @@ public interface VertexTraversal {
 
 
     /**
-     * Gets the first result
+     * Returns the next elements in the traversal.
+     * If the traversal is empty, then an {@link Optional#empty()} is returned.
      *
      * @param <T> the entity type
      * @return the entity result otherwise {@link Optional#empty()}
@@ -158,7 +159,7 @@ public interface VertexTraversal {
     <T> Optional<T> next();
 
     /**
-     * Get the result as stream
+     * Get all the result as stream
      *
      * @param <T> the entity type
      * @return the entity result as {@link Stream}
@@ -166,7 +167,7 @@ public interface VertexTraversal {
     <T> Stream<T> stream();
 
     /**
-     * Get the result as stream
+     * Get the next n-number of results from the traversal.
      *
      * @param <T>   the entity type
      * @param limit the limit to result
