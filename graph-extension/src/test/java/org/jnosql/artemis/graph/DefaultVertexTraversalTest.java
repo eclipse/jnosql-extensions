@@ -155,7 +155,7 @@ public class DefaultVertexTraversalTest extends AbstractTraversalTest {
 
     @Test(expected = NullPointerException.class)
     public void shouldReturnErrorWhenHasLabelHasNull() {
-        graphTemplate.getTraversalVertex().hasLabel(null).<Book>stream().collect(toList());
+        graphTemplate.getTraversalVertex().hasLabel((String) null).<Book>stream().collect(toList());
     }
 
     @Test
@@ -167,7 +167,7 @@ public class DefaultVertexTraversalTest extends AbstractTraversalTest {
 
     @Test(expected = NullPointerException.class)
     public void shouldReturnErrorWhenInIsNull() {
-        graphTemplate.getTraversalVertex().out(null).<Book>stream().collect(toList());
+        graphTemplate.getTraversalVertex().out((String) null).<Book>stream().collect(toList());
     }
 
     @Test
@@ -179,7 +179,7 @@ public class DefaultVertexTraversalTest extends AbstractTraversalTest {
 
     @Test(expected = NullPointerException.class)
     public void shouldReturnErrorWhenOutIsNull() {
-        graphTemplate.getTraversalVertex().in(null).<Person>stream().collect(toList());
+        graphTemplate.getTraversalVertex().in((String) null).<Person>stream().collect(toList());
     }
 
     @Test
@@ -190,7 +190,7 @@ public class DefaultVertexTraversalTest extends AbstractTraversalTest {
 
     @Test(expected = NullPointerException.class)
     public void shouldReturnErrorWhenBothIsNull() {
-        graphTemplate.getTraversalVertex().both(null).<Person>stream().collect(toList());
+        graphTemplate.getTraversalVertex().both((String) null).<Person>stream().collect(toList());
     }
 
     @Test
@@ -201,7 +201,7 @@ public class DefaultVertexTraversalTest extends AbstractTraversalTest {
 
     @Test(expected = NullPointerException.class)
     public void shouldReturnErrorWhenHasNotIsNull() {
-        graphTemplate.getTraversalVertex().hasNot(null).stream().collect(toList());
+        graphTemplate.getTraversalVertex().hasNot((String) null).stream().collect(toList());
     }
 
     @Test
@@ -226,7 +226,7 @@ public class DefaultVertexTraversalTest extends AbstractTraversalTest {
 
         List<String> names = new ArrayList<>();
 
-        maps.forEach(m-> names.add(List.class.cast(m.get("name")).get(0).toString()));
+        maps.forEach(m -> names.add(List.class.cast(m.get("name")).get(0).toString()));
 
         assertThat(names, containsInAnyOrder("Otavio", "Poliana", "Paulo"));
     }

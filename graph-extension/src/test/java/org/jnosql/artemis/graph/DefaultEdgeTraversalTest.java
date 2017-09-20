@@ -65,7 +65,7 @@ public class DefaultEdgeTraversalTest extends AbstractTraversalTest {
 
     @Test(expected = NullPointerException.class)
     public void shouldReturnErrorOutEWhenIsNull() {
-        graphTemplate.getTraversalVertex().outE(null)
+        graphTemplate.getTraversalVertex().outE((String) null)
                 .<Person, Book>stream()
                 .collect(toList());
 
@@ -85,7 +85,7 @@ public class DefaultEdgeTraversalTest extends AbstractTraversalTest {
 
     @Test(expected = NullPointerException.class)
     public void shouldReturnErrorWhenInEIsNull() {
-        graphTemplate.getTraversalVertex().inE(null)
+        graphTemplate.getTraversalVertex().inE((String) null)
                 .<Person, Book>stream()
                 .collect(toList());
 
@@ -102,7 +102,7 @@ public class DefaultEdgeTraversalTest extends AbstractTraversalTest {
 
     @Test(expected = NullPointerException.class)
     public void shouldReturErrorWhennBothEIsNull() {
-        graphTemplate.getTraversalVertex().bothE(null)
+        graphTemplate.getTraversalVertex().bothE((String) null)
                 .<Person, Book>stream()
                 .collect(toList());
     }
@@ -179,7 +179,7 @@ public class DefaultEdgeTraversalTest extends AbstractTraversalTest {
 
     @Test(expected = NullPointerException.class)
     public void shouldReturnErrorWhenHasNotIsNull() {
-        graphTemplate.getTraversalVertex().outE(READS).hasNot(null);
+        graphTemplate.getTraversalVertex().outE(READS).hasNot((String) null);
     }
 
 

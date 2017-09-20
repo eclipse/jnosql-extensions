@@ -172,7 +172,7 @@ public interface VertexTraversal {
      */
     EdgeTraversal bothE(String... edgeLabels) throws NullPointerException;
 
-    
+
 
     /**
      * Map the {@link VertexTraversal} to its outgoing adjacent vertices given the edge labels.
