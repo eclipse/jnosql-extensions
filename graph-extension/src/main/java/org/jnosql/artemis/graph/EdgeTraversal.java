@@ -79,16 +79,17 @@ public interface EdgeTraversal {
 
 
     /**
-     * Defines a limit
-     *
-     * @param limit the limit in the traversal
+     * Filter the objects in the traversal by the number of them to pass through the stream, where only the first
+     * {@code n} objects are allowed as defined by the {@code limit} argument.
+     * @param limit the number at which to end the stream
      * @return a {@link EdgeTraversal} with the limit
      */
     EdgeTraversal limit(long limit);
 
 
     /**
-     * Gets the first result
+     * Returns the next elements in the traversal.
+     * If the traversal is empty, then an {@link Optional#empty()} is returned.
      *
      * @param <IN>  inbound
      * @param <OUT> outbound
@@ -119,7 +120,7 @@ public interface EdgeTraversal {
     VertexTraversal bothV();
 
     /**
-     * Get the result as stream
+     * Get all the result as stream
      *
      * @param <IN>  inbound
      * @param <OUT> outbound
