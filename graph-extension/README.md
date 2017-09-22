@@ -90,10 +90,11 @@ The Transactional annotation provides the application the ability to declarative
 
 ```java
 
-   @Transactional//that will use the 
+   @Transactional//that will use the current trasaction
     public void save(Site site) {
         repository.save(site);
     }
+    //after the method will commit the transaction
 
 ```
 
