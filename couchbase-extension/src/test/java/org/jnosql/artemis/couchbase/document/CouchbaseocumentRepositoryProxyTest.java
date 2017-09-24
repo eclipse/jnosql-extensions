@@ -20,6 +20,7 @@ import org.jnosql.artemis.reflection.Reflections;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
 import javax.inject.Inject;
@@ -27,6 +28,7 @@ import java.lang.reflect.Proxy;
 import java.time.Duration;
 import java.util.List;
 
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -70,9 +72,13 @@ public class CouchbaseocumentRepositoryProxyTest {
 
     @Test
     public void shouldFindByNameN1ql() {
-        JsonObject params = JsonObject.create().put("name", "Ada");
-        personRepository.findByName(params);
-        verify(template).n1qlQuery(Mockito.eq("select * from Person where name = $name"), Mockito.any());
+        ArgumentCaptor<JsonObject> captor = ArgumentCaptor.forClass(JsonObject.class);
+        personRepository.findByName("Ada");
+        verify(template).n1qlQuery(Mockito.eq("select * from Person where name = $name"), captor.capture());
+
+        JsonObject value = captor.getValue();
+
+        assertEquals("Ada", value.getString("name"));
     }
 
     interface PersonRepository extends CouchbaseRepository<Person, String> {
@@ -81,6 +87,6 @@ public class CouchbaseocumentRepositoryProxyTest {
         List<Person> findAll();
 
         @N1QL("select * from Person where name = $name")
-        List<Person> findByName(JsonObject params);
+        List<Person> findByName(@Param("name") String name);
     }
 }
