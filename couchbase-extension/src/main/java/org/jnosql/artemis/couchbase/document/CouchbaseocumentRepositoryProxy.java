@@ -26,6 +26,7 @@ import org.jnosql.artemis.reflection.ClassRepresentation;
 import org.jnosql.artemis.reflection.ClassRepresentations;
 import org.jnosql.artemis.reflection.Reflections;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.util.Collections;
@@ -33,6 +34,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 class CouchbaseocumentRepositoryProxy<T> extends AbstractDocumentRepositoryProxy<T> {
 
@@ -93,22 +95,37 @@ class CouchbaseocumentRepositoryProxy<T> extends AbstractDocumentRepositoryProxy
         N1QL n1QL = method.getAnnotation(N1QL.class);
         if (Objects.nonNull(n1QL)) {
             List<T> result = Collections.emptyList();
-            Optional<JsonObject> params = getParams(args);
-            if (params.isPresent()) {
-                result = template.n1qlQuery(n1QL.value(), params.get());
-            } else {
+            JsonObject params = getParams(args, method);
+            if (params.isEmpty()) {
                 result = template.n1qlQuery(n1QL.value());
+            } else {
+                result = template.n1qlQuery(n1QL.value(), params);
             }
             return ReturnTypeConverterUtil.returnObject(result, typeClass, method);
         }
         return super.invoke(o, method, args);
     }
 
-    private Optional<JsonObject> getParams(Object[] args) {
-        return Stream.of(Optional.ofNullable(args).orElse(new Object[0]))
-                .filter(a -> JsonObject.class.isInstance(a))
-                .map(c -> JsonObject.class.cast(c))
-                .findFirst();
+    private JsonObject getParams(Object[] args, Method method) {
+
+        JsonObject jsonObject = JsonObject.create();
+        Annotation[][] annotations = method.getParameterAnnotations();
+
+        for (int index = 0; index < annotations.length; index++) {
+
+            final Object arg = args[index];
+
+            Optional<Param> param = Stream.of(annotations[index])
+                    .filter(Param.class::isInstance)
+                    .map(Param.class::cast)
+                    .findFirst();
+            param.ifPresent(p -> {
+                jsonObject.put(p.value(), arg);
+            });
+
+        }
+
+        return jsonObject;
     }
 
 
