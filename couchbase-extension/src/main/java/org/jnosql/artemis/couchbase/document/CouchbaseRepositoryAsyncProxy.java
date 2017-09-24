@@ -29,9 +29,9 @@ import org.jnosql.artemis.reflection.Reflections;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.function.Consumer;
-import java.util.stream.Stream;
+
+import static org.jnosql.artemis.couchbase.document.JsonObjectUtil.getParams;
 
 class CouchbaseRepositoryAsyncProxy<T> extends AbstractDocumentRepositoryAsyncProxy<T> {
 
@@ -99,24 +99,18 @@ class CouchbaseRepositoryAsyncProxy<T> extends AbstractDocumentRepositoryAsyncPr
                 callBack = Consumer.class.cast(args[args.length - 1]);
             }
 
-            Optional<JsonObject> params = getParams(args);
-            if (params.isPresent()) {
-                template.n1qlQuery(n1QL.value(), params.get(), callBack);
+            JsonObject params = getParams(args, method);
+            if (params.isEmpty()) {
+                template.n1qlQuery(n1QL.value(), callBack);
                 return Void.class;
             } else {
-                template.n1qlQuery(n1QL.value(), callBack);
+                template.n1qlQuery(n1QL.value(), params, callBack);
                 return Void.class;
             }
         }
         return super.invoke(instance, method, args);
     }
 
-    private Optional<JsonObject> getParams(Object[] args) {
-        return Stream.of(Optional.ofNullable(args).orElse(new Object[0]))
-                .filter(a -> JsonObject.class.isInstance(a))
-                .map(c -> JsonObject.class.cast(c))
-                .findFirst();
-    }
 
     class DocumentCrudRepositoryAsync extends AbstractDocumentRepositoryAsync implements RepositoryAsync {
 

@@ -26,15 +26,13 @@ import org.jnosql.artemis.reflection.ClassRepresentation;
 import org.jnosql.artemis.reflection.ClassRepresentations;
 import org.jnosql.artemis.reflection.Reflections;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
-import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
+
+import static org.jnosql.artemis.couchbase.document.JsonObjectUtil.getParams;
 
 class CouchbaseocumentRepositoryProxy<T> extends AbstractDocumentRepositoryProxy<T> {
 
@@ -106,27 +104,6 @@ class CouchbaseocumentRepositoryProxy<T> extends AbstractDocumentRepositoryProxy
         return super.invoke(o, method, args);
     }
 
-    private JsonObject getParams(Object[] args, Method method) {
-
-        JsonObject jsonObject = JsonObject.create();
-        Annotation[][] annotations = method.getParameterAnnotations();
-
-        for (int index = 0; index < annotations.length; index++) {
-
-            final Object arg = args[index];
-
-            Optional<Param> param = Stream.of(annotations[index])
-                    .filter(Param.class::isInstance)
-                    .map(Param.class::cast)
-                    .findFirst();
-            param.ifPresent(p -> {
-                jsonObject.put(p.value(), arg);
-            });
-
-        }
-
-        return jsonObject;
-    }
 
 
     class DocumentCrudRepository extends AbstractDocumentRepository implements Repository {

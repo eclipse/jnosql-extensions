@@ -31,6 +31,7 @@ import java.util.List;
 import java.util.function.Consumer;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verify;
 
 @RunWith(WeldJUnit4Runner.class)
@@ -84,9 +85,14 @@ public class CouchbaseRepositoryAsyncProxyTest {
 
     @Test
     public void shouldFindNoCallback() {
-        ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
+        ArgumentCaptor<JsonObject> captor = ArgumentCaptor.forClass(JsonObject.class);
         JsonObject params = JsonObject.create().put("name", "Ada");
-        personRepository.queryName(params);
+        personRepository.queryName("Ada");
+        verify(template).n1qlQuery(Mockito.eq("select * from Person where name= $name"), captor.capture(),
+                any(Consumer.class));
+
+        JsonObject value = captor.getValue();
+        assertEquals("Ada", value.getString("name"));
     }
 
     @Test
@@ -95,9 +101,10 @@ public class CouchbaseRepositoryAsyncProxyTest {
         };
 
         JsonObject params = JsonObject.create().put("name", "Ada");
-        personRepository.queryName(params, callBack);
+        personRepository.queryName("Ada", callBack);
 
         verify(template).n1qlQuery(Mockito.eq("select * from Person where name= $name"), Mockito.eq(params), Mockito.eq(callBack));
+
     }
 
     interface PersonAsyncRepository extends CouchbaseRepositoryAsync<Person, String> {
@@ -106,9 +113,9 @@ public class CouchbaseRepositoryAsyncProxyTest {
 
 
         @N1QL("select * from Person where name= $name")
-        void queryName(JsonObject params);
+        void queryName(@Param("name") String name);
 
         @N1QL("select * from Person where name= $name")
-        void queryName(JsonObject params, Consumer<List<Person>> callBack);
+        void queryName(@Param("name") String name, Consumer<List<Person>> callBack);
     }
 }
