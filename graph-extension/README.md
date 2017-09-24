@@ -85,6 +85,19 @@ repository.save(people);
 
 ```
 
+## Transactional
+The Transactional annotation provides the application the ability to declaratively control transaction boundaries on CDI managed beans. *org.apache.tinkerpop.gremlin.structure.Transaction*
+
+```java
+
+   @Transactional//that will use the current trasaction
+    public void save(Site site) {
+        repository.save(site);
+    }
+    //after the method will commit the transaction
+
+```
+
 ### Search information from Repository
 
 The Repository also has a method query from the method name. These are the keywords:
