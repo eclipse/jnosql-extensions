@@ -17,7 +17,7 @@ CouchbaseRepository is an extension of Repository that allows using N1QL annotat
         List<Person> findAll();
 
         @N1QL("select * from Person where name = $name")
-        List<Person> findByName(JsonObject params);
+        List<Person> findByName(@Param("name") String name);
     }
 ```
 
@@ -33,10 +33,10 @@ CouchbaseRepositoryAsync is an extension of RepositoryAsync that allows using N1
 
 
         @N1QL("select * from Person where name= $name")
-        void queryName(JsonObject params);
+        void queryName(@Param("name") String name);
 
         @N1QL("select * from Person where name= $name")
-        void queryName(JsonObject params, Consumer<List<Person>> callBack);
+        void queryName(@Param("name") String name, Consumer<List<Person>> callBack);
     }
 ```
 
