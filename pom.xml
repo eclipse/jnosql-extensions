@@ -29,7 +29,7 @@
     <packaging>pom</packaging>
 
     <name>${project.groupId}:${project.artifactId}</name>
-    <description>Artemis extensions</description>
+    <description>Eclipse JNoSQL mapping layer, Artemis, extensions</description>
     <url>http://jnosql.org/</url>
 
     <licenses>

@@ -19,7 +19,7 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>graph-extension</artifactId>
     <name>${project.groupId}:${project.artifactId}</name>
-    <description>Artemis extension to Graph API</description>
+    <description>Eclipse JNoSQL mapping layer, Artemis, to Graph API</description>
     <url>http://jnosql.org/</url>
 
     <licenses>

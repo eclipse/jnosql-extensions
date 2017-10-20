@@ -20,7 +20,7 @@
     <artifactId>elasticsearch-extension</artifactId>
 
     <name>${project.groupId}:${project.artifactId}</name>
-    <description>Artemis extension to Elasticsearch</description>
+    <description>Eclipse JNoSQL mapping layer, Artemis, to Elasticsearch</description>
     <url>http://jnosql.org/</url>
 
     <licenses>

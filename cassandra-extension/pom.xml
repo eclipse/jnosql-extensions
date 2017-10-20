@@ -20,7 +20,7 @@
     <artifactId>cassandra-extension</artifactId>
 
     <name>${project.groupId}:${project.artifactId}</name>
-    <description>Artemis extension to Cassandra</description>
+    <description>Eclipse JNoSQL mapping layer, Artemis, to Cassandra</description>
     <url>http://jnosql.org/</url>
 
     <licenses>

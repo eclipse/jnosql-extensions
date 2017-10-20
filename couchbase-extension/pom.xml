@@ -20,7 +20,7 @@
     <artifactId>couchbase-extension</artifactId>
 
     <name>${project.groupId}:${project.artifactId}</name>
-    <description>Artemis extension to Couchbase</description>
+    <description>Eclipse JNoSQL mapping layer, Artemis, to Couchbase</description>
     <url>http://jnosql.org/</url>
 
     <licenses>
