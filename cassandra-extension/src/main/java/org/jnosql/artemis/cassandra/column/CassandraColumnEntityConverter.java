@@ -18,6 +18,7 @@ package org.jnosql.artemis.cassandra.column;
 import org.jnosql.artemis.Converters;
 import org.jnosql.artemis.column.AbstractColumnEntityConverter;
 import org.jnosql.artemis.column.ColumnEntityConverter;
+import org.jnosql.artemis.column.ColumnFieldValue;
 import org.jnosql.artemis.reflection.ClassRepresentations;
 import org.jnosql.artemis.reflection.FieldRepresentation;
 import org.jnosql.artemis.reflection.Reflections;
@@ -81,5 +82,14 @@ class CassandraColumnEntityConverter extends AbstractColumnEntityConverter imple
         }
     }
 
-
+    @Override
+    protected ColumnFieldValue to(FieldRepresentation field, Object entityInstance) {
+        Object value = reflections.getValue(entityInstance, field.getNativeField());
+        UDT annotation = field.getNativeField().getAnnotation(UDT.class);
+        if (Objects.isNull(annotation)) {
+            return super.to(field, entityInstance);
+        } else {
+            return new CassandraUDTType(annotation.value(), value, field);
+        }
+    }
 }
