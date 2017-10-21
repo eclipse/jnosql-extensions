@@ -16,6 +16,7 @@ package org.jnosql.artemis.cassandra.column;
 
 import org.jnosql.artemis.Converters;
 import org.jnosql.artemis.column.ColumnEntityConverter;
+import org.jnosql.artemis.column.ColumnFieldValue;
 import org.jnosql.artemis.reflection.FieldRepresentation;
 import org.jnosql.diana.api.column.Column;
 import org.jnosql.diana.cassandra.column.UDT;

@@ -15,37 +15,27 @@
 package org.jnosql.artemis.cassandra.column;
 
 
-import org.jnosql.artemis.AttributeConverter;
 import org.jnosql.artemis.Converters;
+import org.jnosql.artemis.column.AbstractColumnEntityConverter;
 import org.jnosql.artemis.column.ColumnEntityConverter;
-import org.jnosql.artemis.reflection.ClassRepresentation;
+import org.jnosql.artemis.column.ColumnFieldValue;
 import org.jnosql.artemis.reflection.ClassRepresentations;
 import org.jnosql.artemis.reflection.FieldRepresentation;
-import org.jnosql.artemis.reflection.FieldValue;
 import org.jnosql.artemis.reflection.Reflections;
-import org.jnosql.diana.api.TypeReference;
-import org.jnosql.diana.api.Value;
 import org.jnosql.diana.api.column.Column;
-import org.jnosql.diana.api.column.ColumnEntity;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Typed;
 import javax.inject.Inject;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
-
-import static org.jnosql.artemis.reflection.FieldType.EMBEDDED;
 
 @ApplicationScoped
 @Typed(CassandraColumnEntityConverter.class)
-class CassandraColumnEntityConverter implements ColumnEntityConverter {
+class CassandraColumnEntityConverter extends AbstractColumnEntityConverter implements ColumnEntityConverter {
 
     @Inject
     private ClassRepresentations classRepresentations;
@@ -56,114 +46,50 @@ class CassandraColumnEntityConverter implements ColumnEntityConverter {
     @Inject
     private Converters converters;
 
+
     @Override
-    public ColumnEntity toColumn(Object entityInstance) {
-        Objects.requireNonNull(entityInstance, "Object is required");
-        ClassRepresentation representation = classRepresentations.get(entityInstance.getClass());
-        ColumnEntity entity = ColumnEntity.of(representation.getName());
-        representation.getFields().stream()
-                .map(f -> to(f, entityInstance))
-                .filter(FieldValue::isNotEmpty)
-                .map(f -> f.toColumn(this, converters))
-                .forEach(entity::add);
-        return entity;
+    protected ClassRepresentations getClassRepresentations() {
+        return classRepresentations;
     }
 
     @Override
-    public <T> T toEntity(Class<T> entityClass, ColumnEntity entity) {
-        return toEntity(entityClass, entity.getColumns());
+    protected Reflections getReflections() {
+        return reflections;
     }
 
-    private <T> T toEntity(Class<T> entityClass, List<Column> columns) {
-        ClassRepresentation representation = classRepresentations.get(entityClass);
-        T instance = reflections.newInstance(representation.getConstructor());
-        return convertEntity(columns, representation, instance);
-    }
-
-    @SuppressWarnings("unchecked")
     @Override
-    public <T> T toEntity(ColumnEntity entity) {
-        ClassRepresentation representation = classRepresentations.findByName(entity.getName());
-        T instance = reflections.newInstance(representation.getConstructor());
-        return convertEntity(entity.getColumns(), representation, instance);
+    protected Converters getConverters() {
+        return converters;
     }
 
-    private ColumnFieldValue to(FieldRepresentation field, Object entityInstance) {
-        Object value = reflections.getValue(entityInstance, field.getField());
-        UDT annotation = field.getField().getAnnotation(UDT.class);
-        if (Objects.isNull(annotation)) {
-            return CassandraColumnFieldValue.of(value, field);
-        } else {
-            return new CassandraUDTType(annotation.value(), value, field);
-        }
-
-    }
-
-    private <T> Consumer<String> feedObject(T instance, List<Column> columns, Map<String, FieldRepresentation> fieldsGroupByName) {
+    @Override
+    protected <T> Consumer<String> feedObject(T instance, List<Column> columns, Map<String, FieldRepresentation> fieldsGroupByName) {
         return k -> {
-            Optional<Column> column = columns.stream().filter(c -> c.getName().equals(k)).findFirst();
             FieldRepresentation field = fieldsGroupByName.get(k);
-            if (EMBEDDED.equals(field.getType())) {
-                setEmbeddedField(instance, columns, column, field);
-            } else if (Objects.nonNull(field.getField().getAnnotation(UDT.class))) {
+            if (Objects.nonNull(field.getNativeField().getAnnotation(UDT.class))) {
+                Optional<Column> column = columns.stream().filter(c -> c.getName().equals(k)).findFirst();
                 setUDTField(instance, column, field);
             } else {
-                setSingleField(instance, column, field);
+                super.feedObject(instance, columns, fieldsGroupByName).accept(k);
             }
         };
-    }
-
-    private <T> void setSingleField(T instance, Optional<Column> column, FieldRepresentation field) {
-        Value value = column.get().getValue();
-        Optional<Class<? extends AttributeConverter>> converter = field.getConverter();
-        if (converter.isPresent()) {
-            AttributeConverter attributeConverter = converters.get(converter.get());
-            Object attributeConverted = attributeConverter.convertToEntityAttribute(value.get());
-            reflections.setValue(instance, field.getField(), field.getValue(Value.of(attributeConverted)));
-        } else {
-            reflections.setValue(instance, field.getField(), field.getValue(value));
-        }
-    }
-
-    private <T> T convertEntity(List<Column> columns, ClassRepresentation representation, T instance) {
-        Map<String, FieldRepresentation> fieldsGroupByName = representation.getFieldsGroupByName();
-        List<String> names = columns.stream().map(Column::getName).sorted().collect(Collectors.toList());
-        Predicate<String> existField = k -> Collections.binarySearch(names, k) >= 0;
-        fieldsGroupByName.keySet().stream()
-                .filter(existField.or(k -> EMBEDDED.equals(fieldsGroupByName.get(k).getType())))
-                .forEach(feedObject(instance, columns, fieldsGroupByName));
-
-        return instance;
-    }
-
-    private <T> void setEmbeddedField(T instance, List<Column> columns, Optional<Column> column, FieldRepresentation field) {
-        if (column.isPresent()) {
-            Column subColumn = column.get();
-            Object value = subColumn.get();
-            if (Map.class.isInstance(value)) {
-                Map map = Map.class.cast(value);
-                List<Column> embeddedColumns = new ArrayList<>();
-                for (Object key : map.keySet()) {
-                    embeddedColumns.add(Column.of(key.toString(), map.get(key)));
-                }
-                reflections.setValue(instance, field.getField(), toEntity(field.getField().getType(), embeddedColumns));
-            } else {
-                reflections.setValue(instance, field.getField(), toEntity(field.getField().getType(),
-                        subColumn.get(new TypeReference<List<Column>>() {
-                        })));
-            }
-
-        } else {
-            reflections.setValue(instance, field.getField(), toEntity(field.getField().getType(), columns));
-        }
     }
 
     private <T> void setUDTField(T instance, Optional<Column> column, FieldRepresentation field) {
         if (column.isPresent() && org.jnosql.diana.cassandra.column.UDT.class.isInstance(column.get())) {
             org.jnosql.diana.cassandra.column.UDT udt = org.jnosql.diana.cassandra.column.UDT.class.cast(column.get());
-            reflections.setValue(instance, field.getField(), toEntity(field.getField().getType(), udt.getColumns()));
+            reflections.setValue(instance, field.getNativeField(), toEntity(field.getNativeField().getType(), udt.getColumns()));
         }
     }
 
-
+    @Override
+    protected ColumnFieldValue to(FieldRepresentation field, Object entityInstance) {
+        Object value = reflections.getValue(entityInstance, field.getNativeField());
+        UDT annotation = field.getNativeField().getAnnotation(UDT.class);
+        if (Objects.isNull(annotation)) {
+            return super.to(field, entityInstance);
+        } else {
+            return new CassandraUDTType(annotation.value(), value, field);
+        }
+    }
 }
