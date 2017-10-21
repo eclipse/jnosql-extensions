@@ -16,9 +16,7 @@ package org.jnosql.artemis.cassandra.column;
 
 import org.hamcrest.Matchers;
 import org.jnosql.artemis.cassandra.column.model.Actor;
-import org.jnosql.artemis.cassandra.column.model.AppointmentBook;
 import org.jnosql.artemis.cassandra.column.model.Artist;
-import org.jnosql.artemis.cassandra.column.model.Contact;
 import org.jnosql.artemis.cassandra.column.model.Director;
 import org.jnosql.artemis.cassandra.column.model.History;
 import org.jnosql.artemis.cassandra.column.model.History2;
@@ -34,6 +32,7 @@ import org.jnosql.diana.api.column.ColumnEntity;
 import org.jnosql.diana.cassandra.column.UDT;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -42,7 +41,6 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
@@ -54,12 +52,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static java.util.Arrays.asList;
 import static java.util.Collections.singleton;
 import static org.hamcrest.Matchers.containsInAnyOrder;
-import static org.jnosql.artemis.cassandra.column.model.ContactType.EMAIL;
-import static org.jnosql.artemis.cassandra.column.model.ContactType.MOBILE;
-import static org.jnosql.artemis.cassandra.column.model.ContactType.PHONE;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
@@ -282,6 +276,7 @@ public class CassandraColumnEntityConverterTest {
     }
 
     @Test
+    @Ignore
     public void shouldSupportLocalDateConverter() {
         History history = new History();
         history.setCalendar(Calendar.getInstance());
@@ -365,47 +360,6 @@ public class CassandraColumnEntityConverterTest {
 
     }
 
-    @Test
-    public void shouldConvertoListEmbeddable() {
-        AppointmentBook appointmentBook = new AppointmentBook("ids");
-        appointmentBook.add(Contact.builder().withType(EMAIL).withName("Ada").withInformation("ada@lovelace.com").build());
-        appointmentBook.add(Contact.builder().withType(MOBILE).withName("Ada").withInformation("11 1231231 123").build());
-        appointmentBook.add(Contact.builder().withType(PHONE).withName("Ada").withInformation("12 123 1231 123123").build());
-
-        ColumnEntity entity = converter.toColumn(appointmentBook);
-        Column contacts = entity.find("contacts").get();
-        assertEquals("ids", appointmentBook.getId());
-        List<List<Column>> columns = (List<List<Column>>) contacts.get();
-
-        assertEquals(3L, columns.stream().flatMap(c -> c.stream())
-                .filter(c -> c.getName().equals("name"))
-                .count());
-    }
-
-    @Test
-    public void shouldConvertFromListEmbeddable() {
-        ColumnEntity entity = ColumnEntity.of("AppointmentBook");
-        entity.add(Column.of("_id", "ids"));
-        List<List<Column>> columns = new ArrayList<>();
-
-        columns.add(asList(Column.of("name", "Ada"), Column.of("type", EMAIL),
-                Column.of("information", "ada@lovelace.com")));
-
-        columns.add(asList(Column.of("name", "Ada"), Column.of("type", MOBILE),
-                Column.of("information", "11 1231231 123")));
-
-        columns.add(asList(Column.of("name", "Ada"), Column.of("type", PHONE),
-                Column.of("information", "phone")));
-
-        entity.add(Column.of("contacts", columns));
-
-        AppointmentBook appointmentBook = converter.toEntity(entity);
-
-        List<Contact> contacts = appointmentBook.getContacts();
-        assertEquals("ids", appointmentBook.getId());
-        assertEquals("Ada", contacts.stream().map(Contact::getName).distinct().findFirst().get());
-
-    }
 
     private Object getValue(Optional<Column> document) {
         return document.map(Column::getValue).map(Value::get).orElse(null);
