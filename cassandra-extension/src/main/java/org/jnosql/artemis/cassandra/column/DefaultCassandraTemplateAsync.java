@@ -30,10 +30,11 @@ import javax.enterprise.inject.Typed;
 import javax.inject.Inject;
 import java.time.Duration;
 import java.util.List;
-import java.util.Objects;
+import java.util.Map;
 import java.util.function.Consumer;
 import java.util.stream.StreamSupport;
 
+import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.toList;
 
 /**
@@ -70,17 +71,17 @@ class DefaultCassandraTemplateAsync extends AbstractColumnTemplateAsync
 
     @Override
     public <T> void save(T entity, ConsistencyLevel level) {
-        Objects.requireNonNull(entity, "entity is required");
-        Objects.requireNonNull(level, "level is required");
+        requireNonNull(entity, "entity is required");
+        requireNonNull(level, "level is required");
         managerAsync.get().save(converter.toColumn(entity), level);
     }
 
     @Override
     public <T> void save(T entity, ConsistencyLevel level, Consumer<T> callBack)
             throws ExecuteAsyncQueryException, UnsupportedOperationException, NullPointerException {
-        Objects.requireNonNull(entity, "entity is required");
-        Objects.requireNonNull(level, "level is required");
-        Objects.requireNonNull(callBack, "callBack is required");
+        requireNonNull(entity, "entity is required");
+        requireNonNull(level, "level is required");
+        requireNonNull(callBack, "callBack is required");
         Consumer<ColumnEntity> dianaCallBack = c -> callBack.accept((T) getConverter().toEntity(entity.getClass(), c));
         managerAsync.get().save(converter.toColumn(entity), level, dianaCallBack);
     }
@@ -88,16 +89,16 @@ class DefaultCassandraTemplateAsync extends AbstractColumnTemplateAsync
     @Override
     public <T> void save(T entity, Duration ttl, ConsistencyLevel level)
             throws ExecuteAsyncQueryException, UnsupportedOperationException {
-        Objects.requireNonNull(entity, "entity is required");
-        Objects.requireNonNull(level, "level is required");
-        Objects.requireNonNull(ttl, "ttl is required");
+        requireNonNull(entity, "entity is required");
+        requireNonNull(level, "level is required");
+        requireNonNull(ttl, "ttl is required");
         managerAsync.get().save(converter.toColumn(entity), ttl, level);
     }
 
     @Override
     public <T> void save(Iterable<T> entities, ConsistencyLevel level) {
-        Objects.requireNonNull(entities, "entities is required");
-        Objects.requireNonNull(level, "level is required");
+        requireNonNull(entities, "entities is required");
+        requireNonNull(level, "level is required");
         StreamSupport.stream(entities.spliterator(), false)
                 .map(converter::toColumn)
                 .forEach(c -> managerAsync.get().save(c, level));
@@ -106,9 +107,9 @@ class DefaultCassandraTemplateAsync extends AbstractColumnTemplateAsync
     @Override
     public <T> void save(Iterable<T> entities, Duration ttl, ConsistencyLevel level)
             throws ExecuteAsyncQueryException, UnsupportedOperationException, NullPointerException {
-        Objects.requireNonNull(entities, "entities is required");
-        Objects.requireNonNull(level, "level is required");
-        Objects.requireNonNull(ttl, "ttl is required");
+        requireNonNull(entities, "entities is required");
+        requireNonNull(level, "level is required");
+        requireNonNull(ttl, "ttl is required");
         StreamSupport.stream(entities.spliterator(), false)
                 .map(converter::toColumn)
                 .forEach(c -> managerAsync.get().save(c, ttl, level));
@@ -117,10 +118,10 @@ class DefaultCassandraTemplateAsync extends AbstractColumnTemplateAsync
     @Override
     public <T> void save(T entity, Duration ttl, ConsistencyLevel level, Consumer<T> callBack)
             throws ExecuteAsyncQueryException, UnsupportedOperationException, NullPointerException {
-        Objects.requireNonNull(entity, "entity is required");
-        Objects.requireNonNull(level, "level is required");
-        Objects.requireNonNull(ttl, "ttl is required");
-        Objects.requireNonNull(callBack, "callBack is required");
+        requireNonNull(entity, "entity is required");
+        requireNonNull(level, "level is required");
+        requireNonNull(ttl, "ttl is required");
+        requireNonNull(callBack, "callBack is required");
         Consumer<ColumnEntity> dianaCallBack = c -> callBack.accept((T) getConverter().toEntity(entity.getClass(), c));
         managerAsync.get().save(converter.toColumn(entity), ttl, level, dianaCallBack);
     }
@@ -138,7 +139,7 @@ class DefaultCassandraTemplateAsync extends AbstractColumnTemplateAsync
     @Override
     public <T> void select(ColumnQuery query, ConsistencyLevel level, Consumer<List<T>> callBack)
             throws ExecuteAsyncQueryException, NullPointerException {
-        Objects.requireNonNull(callBack, "callBack is required");
+        requireNonNull(callBack, "callBack is required");
         Consumer<List<ColumnEntity>> dianaCallBack = d -> {
             callBack.accept(
                     d.stream()
@@ -153,7 +154,7 @@ class DefaultCassandraTemplateAsync extends AbstractColumnTemplateAsync
     @Override
     public <T> void cql(String query, Consumer<List<T>> callBack)
             throws ExecuteAsyncQueryException, NullPointerException {
-        Objects.requireNonNull(callBack, "callBack is required");
+        requireNonNull(callBack, "callBack is required");
         Consumer<List<ColumnEntity>> dianaCallBack = d -> {
             callBack.accept(
                     d.stream()
@@ -165,10 +166,23 @@ class DefaultCassandraTemplateAsync extends AbstractColumnTemplateAsync
     }
 
     @Override
+    public <T> void cql(String query, Map<String, Object> values, Consumer<List<T>> callBack) throws ExecuteAsyncQueryException, NullPointerException {
+        requireNonNull(callBack, "callBack is required");
+        Consumer<List<ColumnEntity>> dianaCallBack = d -> {
+            callBack.accept(
+                    d.stream()
+                            .map(getConverter()::toEntity)
+                            .map(o -> (T) o)
+                            .collect(toList()));
+        };
+        managerAsync.get().cql(query, values, dianaCallBack);
+    }
+
+    @Override
     public <T> void cql(String query, Consumer<List<T>> callBack, Object... params) throws NullPointerException {
-        Objects.requireNonNull(query, "callBack is required");
-        Objects.requireNonNull(callBack, "callBack is required");
-        Objects.requireNonNull(params, "params is required");
+        requireNonNull(query, "callBack is required");
+        requireNonNull(callBack, "callBack is required");
+        requireNonNull(params, "params is required");
         Consumer<List<ColumnEntity>> dianaCallBack = d -> {
             callBack.accept(
                     d.stream()
@@ -182,7 +196,7 @@ class DefaultCassandraTemplateAsync extends AbstractColumnTemplateAsync
     @Override
     public <T> void execute(Statement statement, Consumer<List<T>> callBack)
             throws ExecuteAsyncQueryException, NullPointerException {
-        Objects.requireNonNull(callBack, "callBack is required");
+        requireNonNull(callBack, "callBack is required");
         Consumer<List<ColumnEntity>> dianaCallBack = d -> {
             callBack.accept(
                     d.stream()

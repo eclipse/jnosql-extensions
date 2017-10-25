@@ -33,6 +33,7 @@ import javax.enterprise.inject.Typed;
 import javax.inject.Inject;
 import java.time.Duration;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
@@ -149,6 +150,13 @@ class DefaultCassandraTemplate extends AbstractColumnTemplate implements Cassand
     @Override
     public <T> List<T> cql(String query) throws NullPointerException {
         return manager.get().cql(query).stream()
+                .map(c -> (T) converter.toEntity(c))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public <T> List<T> cql(String query, Map<String, Object> values) throws NullPointerException {
+        return manager.get().cql(query, values).stream()
                 .map(c -> (T) converter.toEntity(c))
                 .collect(Collectors.toList());
     }
