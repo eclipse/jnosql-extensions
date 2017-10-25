@@ -14,6 +14,7 @@
  */
 package org.jnosql.artemis.cassandra.column;
 
+import org.hamcrest.Matchers;
 import org.jnosql.artemis.cassandra.column.model.Actor;
 import org.jnosql.artemis.cassandra.column.model.AppointmentBook;
 import org.jnosql.artemis.cassandra.column.model.Artist;
@@ -42,7 +43,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
@@ -374,9 +375,31 @@ public class CassandraColumnEntityConverterTest {
         assertEquals("AppointmentBook", entity.getName());
         assertEquals("otaviojava", entity.find("user").get().get());
         UDT column = (UDT) entity.find("contacts").get();
+
         List<List<Column>> contacts = (List<List<Column>>) column.get();
         assertEquals(2, contacts.size());
         assertTrue(contacts.stream().allMatch(c -> c.size() == 2));
+        assertEquals("Contact", column.getUserType());
+
+
+    }
+
+
+    @Test
+    public void shouldConvertListUDTToEntity() {
+        List<Iterable<Column>> columns = new ArrayList<>();
+        columns.add(asList(Column.of("name", "Poliana"), Column.of("description", "poliana")));
+        columns.add(asList(Column.of("name", "Ada"), Column.of("description", "ada@lovelace.com")));
+
+        ColumnEntity entity = ColumnEntity.of("AppointmentBook");
+        entity.add(Column.of("user", "otaviojava"));
+        entity.add(UDT.builder("Contact").withName("contacts").addUDTs(columns).build());
+        AppointmentBook appointmentBook = converter.toEntity(entity);
+        List<Contact> contacts = appointmentBook.getContacts();
+        assertEquals("otaviojava", appointmentBook.getUser());
+
+        assertThat(contacts, containsInAnyOrder(new Contact("Poliana", "poliana"),
+                new Contact("Ada", "ada@lovelace.com")));
 
 
     }
