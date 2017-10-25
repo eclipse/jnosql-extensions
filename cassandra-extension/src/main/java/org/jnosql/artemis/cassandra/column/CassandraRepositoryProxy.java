@@ -31,11 +31,14 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.time.Duration;
-import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Stream;
+
+import static java.util.Collections.emptyList;
+import static org.jnosql.artemis.cassandra.column.CQLObjectUtil.getValues;
 
 class CassandraRepositoryProxy<T> implements InvocationHandler {
 
@@ -75,8 +78,12 @@ class CassandraRepositoryProxy<T> implements InvocationHandler {
 
         CQL cql = method.getAnnotation(CQL.class);
         if (Objects.nonNull(cql)) {
-            List<T> result = Collections.emptyList();
-            if (args == null || args.length == 0) {
+
+            List<T> result;
+            Map<String, Object> values = getValues(args, method);
+            if (!values.isEmpty()) {
+                result = repository.cql(cql.value(), values);
+            } else if (args == null || args.length == 0) {
                 result = repository.cql(cql.value());
             } else {
                 result = repository.cql(cql.value(), args);
@@ -119,9 +126,9 @@ class CassandraRepositoryProxy<T> implements InvocationHandler {
 
     private Optional<ConsistencyLevel> getConsistencyLevel(Object[] args) {
         return Stream.of(args)
-                        .filter(a -> ConsistencyLevel.class.isInstance(a))
-                        .map(c -> ConsistencyLevel.class.cast(c))
-                        .findFirst();
+                .filter(a -> ConsistencyLevel.class.isInstance(a))
+                .map(c -> ConsistencyLevel.class.cast(c))
+                .findFirst();
     }
 
 
