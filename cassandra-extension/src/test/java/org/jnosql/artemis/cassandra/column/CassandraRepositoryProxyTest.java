@@ -102,7 +102,7 @@ public class CassandraRepositoryProxyTest {
         ArgumentCaptor<Map> captor = ArgumentCaptor.forClass(Map.class);
 
         personRepository.findByName2("Ada");
-        verify(template).cql(Mockito.eq("select * from Person where name = ?"), captor.capture());
+        verify(template).cql(Mockito.eq("select * from Person where name = :name"), captor.capture());
         Map map = captor.getValue();
         Assert.assertEquals("Ada", map.get("name"));
     }
