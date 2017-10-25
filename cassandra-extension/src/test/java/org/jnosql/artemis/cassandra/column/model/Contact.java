@@ -16,6 +16,8 @@ package org.jnosql.artemis.cassandra.column.model;
 
 import org.jnosql.artemis.Column;
 
+import java.util.Objects;
+
 public class Contact {
 
     @Column
@@ -37,18 +39,28 @@ public class Contact {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getDescription() {
         return description;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Contact contact = (Contact) o;
+        return Objects.equals(name, contact.name) &&
+                Objects.equals(description, contact.description);
     }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, description);
+    }
 
     @Override
     public String toString() {
