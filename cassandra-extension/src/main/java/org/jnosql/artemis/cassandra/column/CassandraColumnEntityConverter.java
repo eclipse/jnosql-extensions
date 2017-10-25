@@ -78,7 +78,8 @@ class CassandraColumnEntityConverter extends AbstractColumnEntityConverter imple
     private <T> void setUDTField(T instance, Optional<Column> column, FieldRepresentation field) {
         if (column.isPresent() && org.jnosql.diana.cassandra.column.UDT.class.isInstance(column.get())) {
             org.jnosql.diana.cassandra.column.UDT udt = org.jnosql.diana.cassandra.column.UDT.class.cast(column.get());
-            reflections.setValue(instance, field.getNativeField(), toEntity(field.getNativeField().getType(), udt.getColumns()));
+            Object value = toEntity(field.getNativeField().getType(), (List<Column>) udt.get());
+            reflections.setValue(instance, field.getNativeField(), value);
         }
     }
 

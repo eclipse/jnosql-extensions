@@ -14,7 +14,6 @@
  */
 package org.jnosql.artemis.cassandra.column;
 
-import org.hamcrest.Matchers;
 import org.jnosql.artemis.cassandra.column.model.Actor;
 import org.jnosql.artemis.cassandra.column.model.Artist;
 import org.jnosql.artemis.cassandra.column.model.Director;
@@ -255,7 +254,7 @@ public class CassandraColumnEntityConverterTest {
         Column subDocument = entity.find("job").get();
         List<Column> documents = subDocument.get(new TypeReference<List<Column>>() {
         });
-        assertThat(documents, Matchers.containsInAnyOrder(Column.of("city", "Sao Paulo"), Column.of("description", "Java Developer")));
+        assertThat(documents, containsInAnyOrder(Column.of("city", "Sao Paulo"), Column.of("description", "Java Developer")));
         assertEquals("BRL 10", entity.find("money").get().get());
     }
 
@@ -291,7 +290,7 @@ public class CassandraColumnEntityConverterTest {
         Set<Object> collect = entity.getColumns().stream()
                 .map(Column::get).collect(Collectors.toSet());
         assertThat(collect,
-                Matchers.containsInAnyOrder(com.datastax.driver.core.LocalDate
+                containsInAnyOrder(com.datastax.driver.core.LocalDate
                         .fromMillisSinceEpoch(new java.util.Date().getTime())));
 
         History historyConverted = converter.toEntity(entity);
@@ -318,7 +317,8 @@ public class CassandraColumnEntityConverterTest {
 
         assertEquals("address", udt.getUserType());
         assertEquals("home", udt.getName());
-        assertThat(udt.getColumns(), Matchers.containsInAnyOrder(Column.of("city", "California"), Column.of("street", "Street")));
+        assertThat((List<Column>) udt.get(),
+                containsInAnyOrder(Column.of("city", "California"), Column.of("street", "Street")));
 
     }
 
@@ -328,10 +328,9 @@ public class CassandraColumnEntityConverterTest {
         ColumnEntity entity = ColumnEntity.of("Person");
         entity.add(Column.of("name", "Poliana"));
         entity.add(Column.of("age", 20));
-        UDT udt = UDT.builder().withName("home")
-                .withTypeName("address")
-                .add(Column.of("city", "Salvador"))
-                .add(Column.of("street", "Jose Anasoh")).build();
+        List<Column> columns = Arrays.asList(Column.of("city", "Salvador"), Column.of("street", "Jose Anasoh"));
+        UDT udt = UDT.builder("address").withName("home")
+                .addUDT(columns).build();
         entity.add(udt);
 
         Person person = converter.toEntity(entity);
