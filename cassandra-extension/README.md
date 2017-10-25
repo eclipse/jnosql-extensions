@@ -23,7 +23,7 @@ CassandraRepository is an extension of Repository that allows using CQL annotati
         @CQL("select * from Person where name = ?")
         List<Person> findByName(String name);
         
-        @CQL("select * from Person where name = :age")
+        @CQL("select * from Person where age = :age")
         List<Person> findByAge(@Param("age") Integer age);
 
     }
