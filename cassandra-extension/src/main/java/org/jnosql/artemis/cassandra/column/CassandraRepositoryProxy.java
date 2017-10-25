@@ -37,7 +37,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-import static java.util.Collections.emptyList;
 import static org.jnosql.artemis.cassandra.column.CQLObjectUtil.getValues;
 
 class CassandraRepositoryProxy<T> implements InvocationHandler {
