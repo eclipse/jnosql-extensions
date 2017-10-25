@@ -20,7 +20,6 @@ import org.jnosql.artemis.column.ColumnFieldValue;
 import org.jnosql.artemis.reflection.FieldRepresentation;
 import org.jnosql.diana.api.column.Column;
 import org.jnosql.diana.cassandra.column.UDT;
-import org.jnosql.diana.cassandra.column.UDTBuilder;
 
 import java.util.Objects;
 
@@ -56,10 +55,10 @@ class CassandraUDTType implements ColumnFieldValue {
 
     @Override
     public Column toColumn(ColumnEntityConverter converter, Converters converters) {
-        UDTBuilder builder = UDT.builder();
-        return builder.withTypeName(type).withName(field.getName())
-                .addAll(converter.toColumn(value).getColumns()).build();
-
+        return UDT.builder(type)
+                .withName(field.getName())
+                .addUDT(converter.toColumn(value).getColumns())
+                .build();
     }
 
     @Override
