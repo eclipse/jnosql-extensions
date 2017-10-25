@@ -24,6 +24,7 @@ import org.jnosql.diana.api.column.ColumnQuery;
 
 import java.time.Duration;
 import java.util.List;
+import java.util.Map;
 
 /**
  * A Cassandra extension of {@link org.jnosql.artemis.column.ColumnTemplate}
@@ -109,6 +110,18 @@ public interface CassandraTemplate extends ColumnTemplate {
      * @throws NullPointerException when query is null
      */
     <T> List<T> cql(String query) throws NullPointerException;
+
+    /**
+     * Executes CQL using the provided named values.
+     * E.g.: "SELECT * FROM users WHERE id = :i", Map.<String, Object>of("i", 1)"
+     *
+     * @param <T>    type
+     * @param query  the Cassndra query language
+     * @param values values required for the execution of {@code query}
+     * @return the result of this query
+     * @throws NullPointerException when query is null
+     */
+    <T> List<T> cql(String query, Map<String, Object> values) throws NullPointerException;
 
     /**
      * Executes CQL

@@ -24,6 +24,7 @@ import org.jnosql.diana.api.column.ColumnQuery;
 
 import java.time.Duration;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
 
 /**
@@ -56,19 +57,19 @@ public interface CassandraTemplateAsync extends ColumnTemplateAsync {
     /**
      * Save the entity with ConsistencyLevel
      *
-     * @param <T>    the type
+     * @param <T>      the type
      * @param entities the entities
-     * @param level  {@link ConsistencyLevel}
+     * @param level    {@link ConsistencyLevel}
      */
     <T> void save(Iterable<T> entities, ConsistencyLevel level);
 
     /**
      * Saves the entity with ConsistencyLevel
      *
-     * @param <T>    the type
+     * @param <T>      the type
      * @param entities the entities
-     * @param ttl    the ttl
-     * @param level  {@link ConsistencyLevel}
+     * @param ttl      the ttl
+     * @param level    {@link ConsistencyLevel}
      * @throws ExecuteAsyncQueryException
      * @throws UnsupportedOperationException
      */
@@ -144,6 +145,20 @@ public interface CassandraTemplateAsync extends ColumnTemplateAsync {
      */
     <T> void cql(String query, Consumer<List<T>> consumer)
             throws ExecuteAsyncQueryException, NullPointerException;
+
+    /**
+     * Executes CQL using the provided named values.
+     * E.g.: "SELECT * FROM users WHERE id = :i", Map.<String, Object>of("i", 1)"
+     *
+     * @param <T>      the type
+     * @param query    the query
+     * @param values   values required for the execution of {@code query}
+     * @param consumer the callback
+     * @throws ExecuteAsyncQueryException a thread exception
+     */
+    <T> void cql(String query, Map<String, Object> values, Consumer<List<T>> consumer)
+            throws ExecuteAsyncQueryException, NullPointerException;
+
 
     /**
      * Executes CQL
