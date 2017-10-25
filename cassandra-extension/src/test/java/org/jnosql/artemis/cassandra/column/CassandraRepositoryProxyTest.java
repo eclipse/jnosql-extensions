@@ -19,6 +19,7 @@ import org.jnosql.artemis.reflection.ClassRepresentations;
 import org.jnosql.artemis.reflection.Reflections;
 import org.jnosql.diana.api.column.ColumnDeleteQuery;
 import org.jnosql.diana.api.column.ColumnQuery;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,6 +30,7 @@ import javax.inject.Inject;
 import java.lang.reflect.Proxy;
 import java.time.Duration;
 import java.util.List;
+import java.util.Map;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verify;
@@ -92,7 +94,17 @@ public class CassandraRepositoryProxyTest {
     @Test
     public void shouldFindByNameCQL() {
         personRepository.findByName("Ada");
-        verify(template).cql(Mockito.eq("select * from Person where name = ?"), Mockito.any());
+        verify(template).cql(Mockito.eq("select * from Person where name = ?"), Mockito.any(Object.class));
+    }
+
+    @Test
+    public void shouldFindByName2CQL() {
+        ArgumentCaptor<Map> captor = ArgumentCaptor.forClass(Map.class);
+
+        personRepository.findByName2("Ada");
+        verify(template).cql(Mockito.eq("select * from Person where name = ?"), captor.capture());
+        Map map = captor.getValue();
+        Assert.assertEquals("Ada", map.get("name"));
     }
 
     interface PersonRepository extends CassandraRepository<Person, String> {
@@ -106,6 +118,9 @@ public class CassandraRepositoryProxyTest {
 
         @CQL("select * from Person where name = ?")
         List<Person> findByName(String name);
+
+        @CQL("select * from Person where name = :name")
+        List<Person> findByName2(@Param("name") String name);
     }
 
 }
