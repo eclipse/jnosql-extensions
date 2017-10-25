@@ -21,17 +21,20 @@ import org.jnosql.artemis.column.ColumnEntityConverter;
 import org.jnosql.artemis.column.ColumnFieldValue;
 import org.jnosql.artemis.reflection.ClassRepresentations;
 import org.jnosql.artemis.reflection.FieldRepresentation;
+import org.jnosql.artemis.reflection.GenericFieldRepresentation;
 import org.jnosql.artemis.reflection.Reflections;
 import org.jnosql.diana.api.column.Column;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Typed;
 import javax.inject.Inject;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
+import java.util.stream.StreamSupport;
 
 @ApplicationScoped
 @Typed(CassandraColumnEntityConverter.class)
@@ -78,8 +81,20 @@ class CassandraColumnEntityConverter extends AbstractColumnEntityConverter imple
     private <T> void setUDTField(T instance, Optional<Column> column, FieldRepresentation field) {
         if (column.isPresent() && org.jnosql.diana.cassandra.column.UDT.class.isInstance(column.get())) {
             org.jnosql.diana.cassandra.column.UDT udt = org.jnosql.diana.cassandra.column.UDT.class.cast(column.get());
-            Object value = toEntity(field.getNativeField().getType(), (List<Column>) udt.get());
-            reflections.setValue(instance, field.getNativeField(), value);
+            Object columns = udt.get();
+            if (StreamSupport.stream(Iterable.class.cast(columns).spliterator(), false).allMatch(Iterable.class::isInstance)) {
+                GenericFieldRepresentation genericField = GenericFieldRepresentation.class.cast(field);
+                Collection collection = genericField.getCollectionInstance();
+                List<List<Column>> embeddable = (List<List<Column>>) columns;
+                for (List<Column> columnList : embeddable) {
+                    Object element = toEntity(genericField.getElementType(), columnList);
+                    collection.add(element);
+                }
+                reflections.setValue(instance, field.getNativeField(), collection);
+            } else {
+                Object value = toEntity(field.getNativeField().getType(), (List<Column>) columns);
+                reflections.setValue(instance, field.getNativeField(), value);
+            }
         }
     }
 
