@@ -15,7 +15,9 @@
 package org.jnosql.artemis.cassandra.column;
 
 import org.jnosql.artemis.cassandra.column.model.Actor;
+import org.jnosql.artemis.cassandra.column.model.AppointmentBook;
 import org.jnosql.artemis.cassandra.column.model.Artist;
+import org.jnosql.artemis.cassandra.column.model.Contact;
 import org.jnosql.artemis.cassandra.column.model.Director;
 import org.jnosql.artemis.cassandra.column.model.History;
 import org.jnosql.artemis.cassandra.column.model.History2;
@@ -51,11 +53,13 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static java.util.Arrays.asList;
 import static java.util.Collections.singleton;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(WeldJUnit4Runner.class)
 public class CassandraColumnEntityConverterTest {
@@ -72,7 +76,7 @@ public class CassandraColumnEntityConverterTest {
     private Actor actor = Actor.actorBuilder().withAge()
             .withId()
             .withName()
-            .withPhones(Arrays.asList("234", "2342"))
+            .withPhones(asList("234", "2342"))
             .withMovieCharacter(Collections.singletonMap("JavaZone", "Jedi"))
             .withMovierRating(Collections.singletonMap("JavaZone", 10))
             .build();
@@ -82,7 +86,7 @@ public class CassandraColumnEntityConverterTest {
 
         columns = new Column[]{Column.of("_id", 12L),
                 Column.of("age", 10), Column.of("name", "Otavio"),
-                Column.of("phones", Arrays.asList("234", "2342"))
+                Column.of("phones", asList("234", "2342"))
                 , Column.of("movieCharacter", Collections.singletonMap("JavaZone", "Jedi"))
                 , Column.of("movieRating", Collections.singletonMap("JavaZone", 10))};
     }
@@ -93,7 +97,7 @@ public class CassandraColumnEntityConverterTest {
         Artist artist = Artist.builder().withAge()
                 .withId(12)
                 .withName("Otavio")
-                .withPhones(Arrays.asList("234", "2342")).build();
+                .withPhones(asList("234", "2342")).build();
 
         ColumnEntity entity = converter.toColumn(artist);
         assertEquals("Artist", entity.getName());
@@ -124,7 +128,7 @@ public class CassandraColumnEntityConverterTest {
         assertNotNull(actor);
         assertEquals(10, actor.getAge());
         assertEquals(12L, actor.getId());
-        assertEquals(Arrays.asList("234", "2342"), actor.getPhones());
+        assertEquals(asList("234", "2342"), actor.getPhones());
         assertEquals(Collections.singletonMap("JavaZone", "Jedi"), actor.getMovieCharacter());
         assertEquals(Collections.singletonMap("JavaZone", 10), actor.getMovieRating());
     }
@@ -138,7 +142,7 @@ public class CassandraColumnEntityConverterTest {
         assertNotNull(actor);
         assertEquals(10, actor.getAge());
         assertEquals(12L, actor.getId());
-        assertEquals(Arrays.asList("234", "2342"), actor.getPhones());
+        assertEquals(asList("234", "2342"), actor.getPhones());
         assertEquals(Collections.singletonMap("JavaZone", "Jedi"), actor.getMovieCharacter());
         assertEquals(Collections.singletonMap("JavaZone", 10), actor.getMovieRating());
     }
@@ -151,7 +155,7 @@ public class CassandraColumnEntityConverterTest {
         Director director = Director.builderDiretor().withAge(12)
                 .withId(12)
                 .withName("Otavio")
-                .withPhones(Arrays.asList("234", "2342")).withMovie(movie).build();
+                .withPhones(asList("234", "2342")).withMovie(movie).build();
 
         ColumnEntity entity = converter.toColumn(director);
         assertEquals(5, entity.size());
@@ -181,7 +185,7 @@ public class CassandraColumnEntityConverterTest {
         Director director = Director.builderDiretor().withAge(12)
                 .withId(12)
                 .withName("Otavio")
-                .withPhones(Arrays.asList("234", "2342")).withMovie(movie).build();
+                .withPhones(asList("234", "2342")).withMovie(movie).build();
 
         ColumnEntity entity = converter.toColumn(director);
         Director director1 = converter.toEntity(entity);
@@ -198,7 +202,7 @@ public class CassandraColumnEntityConverterTest {
         Director director = Director.builderDiretor().withAge(12)
                 .withId(12)
                 .withName("Otavio")
-                .withPhones(Arrays.asList("234", "2342")).withMovie(movie).build();
+                .withPhones(asList("234", "2342")).withMovie(movie).build();
 
         ColumnEntity entity = converter.toColumn(director);
         entity.remove("movie");
@@ -220,7 +224,7 @@ public class CassandraColumnEntityConverterTest {
         Director director = Director.builderDiretor().withAge(12)
                 .withId(12)
                 .withName("Otavio")
-                .withPhones(Arrays.asList("234", "2342")).withMovie(movie).build();
+                .withPhones(asList("234", "2342")).withMovie(movie).build();
 
         ColumnEntity entity = converter.toColumn(director);
         entity.remove("movie");
@@ -328,7 +332,7 @@ public class CassandraColumnEntityConverterTest {
         ColumnEntity entity = ColumnEntity.of("Person");
         entity.add(Column.of("name", "Poliana"));
         entity.add(Column.of("age", 20));
-        List<Column> columns = Arrays.asList(Column.of("city", "Salvador"), Column.of("street", "Jose Anasoh"));
+        List<Column> columns = asList(Column.of("city", "Salvador"), Column.of("street", "Jose Anasoh"));
         UDT udt = UDT.builder("address").withName("home")
                 .addUDT(columns).build();
         entity.add(udt);
@@ -359,6 +363,23 @@ public class CassandraColumnEntityConverterTest {
 
     }
 
+    @Test
+    public void shouldConvertListUDT() {
+        AppointmentBook appointmentBook = new AppointmentBook();
+        appointmentBook.setUser("otaviojava");
+        appointmentBook.setContacts(asList(new Contact("Poliana", "poliana@santana.com"),
+                new Contact("Ada", "ada@lovelace.com")));
+
+        ColumnEntity entity = converter.toColumn(appointmentBook);
+        assertEquals("AppointmentBook", entity.getName());
+        assertEquals("otaviojava", entity.find("user").get().get());
+        UDT column = (UDT) entity.find("contacts").get();
+        List<List<Column>> contacts = (List<List<Column>>) column.get();
+        assertEquals(2, contacts.size());
+        assertTrue(contacts.stream().allMatch(c -> c.size() == 2));
+
+
+    }
 
     private Object getValue(Optional<Column> document) {
         return document.map(Column::getValue).map(Value::get).orElse(null);

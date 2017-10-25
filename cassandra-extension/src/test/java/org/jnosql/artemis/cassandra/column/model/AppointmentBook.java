@@ -25,7 +25,7 @@ import java.util.Objects;
 @Entity
 public class AppointmentBook {
 
-    @Id
+    @Id("user")
     private String user;
 
 
