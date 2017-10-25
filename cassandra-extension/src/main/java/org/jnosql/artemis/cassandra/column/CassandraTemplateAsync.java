@@ -50,7 +50,8 @@ public interface CassandraTemplateAsync extends ColumnTemplateAsync {
      * @throws ExecuteAsyncQueryException
      * @throws UnsupportedOperationException
      */
-    <T> void save(T entity, Duration ttl, ConsistencyLevel level) throws ExecuteAsyncQueryException, UnsupportedOperationException, NullPointerException;
+    <T> void save(T entity, Duration ttl, ConsistencyLevel level) throws
+            ExecuteAsyncQueryException, UnsupportedOperationException, NullPointerException;
 
     /**
      * Save the entity with ConsistencyLevel
@@ -71,7 +72,8 @@ public interface CassandraTemplateAsync extends ColumnTemplateAsync {
      * @throws ExecuteAsyncQueryException
      * @throws UnsupportedOperationException
      */
-    <T> void save(Iterable<T> entities, Duration ttl, ConsistencyLevel level) throws ExecuteAsyncQueryException, UnsupportedOperationException, NullPointerException;
+    <T> void save(Iterable<T> entities, Duration ttl, ConsistencyLevel level)
+            throws ExecuteAsyncQueryException, UnsupportedOperationException, NullPointerException;
 
     /**
      * Save the entity with ConsistencyLevel
@@ -81,7 +83,8 @@ public interface CassandraTemplateAsync extends ColumnTemplateAsync {
      * @param entity   the entity
      * @param level    {@link ConsistencyLevel}
      */
-    <T> void save(T entity, ConsistencyLevel level, Consumer<T> callBack) throws ExecuteAsyncQueryException, UnsupportedOperationException, NullPointerException;
+    <T> void save(T entity, ConsistencyLevel level, Consumer<T> callBack)
+            throws ExecuteAsyncQueryException, UnsupportedOperationException, NullPointerException;
 
     /**
      * Saves the entity with ConsistencyLevel
@@ -94,7 +97,8 @@ public interface CassandraTemplateAsync extends ColumnTemplateAsync {
      * @throws ExecuteAsyncQueryException
      * @throws UnsupportedOperationException
      */
-    <T> void save(T entity, Duration ttl, ConsistencyLevel level, Consumer<T> callBack) throws ExecuteAsyncQueryException, UnsupportedOperationException, NullPointerException;
+    <T> void save(T entity, Duration ttl, ConsistencyLevel level, Consumer<T> callBack)
+            throws ExecuteAsyncQueryException, UnsupportedOperationException, NullPointerException;
 
 
     /**
