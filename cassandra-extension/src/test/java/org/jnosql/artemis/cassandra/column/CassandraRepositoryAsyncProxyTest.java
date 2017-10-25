@@ -30,6 +30,7 @@ import javax.inject.Inject;
 import java.lang.reflect.Proxy;
 import java.time.Duration;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
 
 import static org.junit.Assert.assertEquals;
@@ -63,7 +64,6 @@ public class CassandraRepositoryAsyncProxyTest {
                 new Class[]{PersonAsyncRepository.class},
                 handler);
     }
-
 
 
     @Test
@@ -139,6 +139,19 @@ public class CassandraRepositoryAsyncProxyTest {
 
     }
 
+    @Test
+    public void shouldFindByNameFromCQL2() {
+        ArgumentCaptor<Map> captor = ArgumentCaptor.forClass(Map.class);
+        Consumer<List<Person>> callBack = p -> {
+        };
+        personRepository.queryName2("Ada", callBack);
+
+        verify(template).cql(Mockito.eq("select * from Person where name= :personName"), captor.capture(), Mockito.eq(callBack));
+        Map value = captor.getValue();
+        assertEquals("Ada", value.get("personName"));
+
+    }
+
     interface PersonAsyncRepository extends CassandraRepositoryAsync<Person, String> {
 
         Person findByName(String name);
@@ -152,6 +165,10 @@ public class CassandraRepositoryAsyncProxyTest {
 
         @CQL("select * from Person where name= ?")
         void queryName(String name, Consumer<List<Person>> callBack);
+
+
+        @CQL("select * from Person where name= :personName")
+        void queryName2(@Param("personName") String name, Consumer<List<Person>> callBack);
     }
 
 

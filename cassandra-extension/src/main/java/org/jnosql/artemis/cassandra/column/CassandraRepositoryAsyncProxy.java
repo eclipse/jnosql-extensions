@@ -31,11 +31,14 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.time.Duration;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
+
+import static org.jnosql.artemis.cassandra.column.CQLObjectUtil.getValues;
 
 class CassandraRepositoryAsyncProxy<T> implements InvocationHandler {
 
@@ -85,8 +88,11 @@ class CassandraRepositoryAsyncProxy<T> implements InvocationHandler {
             if (Consumer.class.isInstance(args[args.length - 1])) {
                 callBack = Consumer.class.cast(args[args.length - 1]);
             }
-
-            if (args == null || args.length == 1) {
+            Map<String, Object> values = getValues(args, method);
+            if (!values.isEmpty()) {
+                repository.cql(cql.value(), values, callBack);
+                return Void.class;
+            } else if (args == null || args.length == 1) {
                 repository.cql(cql.value(), callBack);
                 return Void.class;
             } else {
