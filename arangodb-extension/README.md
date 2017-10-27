@@ -1,33 +1,33 @@
-# Couchbase-extension
+# ArangoDB-extension
 
-![Couchbase Project](https://github.com/JNOSQL/jnosql-site/blob/master/assets/img/logos/couchbase.png)
+![Couchbase Project](https://github.com/JNOSQL/jnosql-site/blob/master/assets/img/logos/arangodb.png)
 
 
 Couchbase extension has implementations to use specific behavior that is beyond the API such as N1QL.
 
-## CouchbaseRepository
+## ArangoDBRepository
 
-CouchbaseRepository is an extension of Repository that allows using N1QL annotation that executes N1QL.
+CouchbaseRepository is an extension of Repository that allows using AQL annotation that executes N1QL.
 
 
 ```java
-    interface PersonRepository extends CouchbaseRepository<Person, String> {
+    interface PersonRepository extends ArangoDBRepository<Person, String> {
 
-        @N1QL("select * from Person")
+        @AQL("select * from Person")
         List<Person> findAll();
 
-        @N1QL("select * from Person where name = $name")
+        @AQL("select * from Person where name = @name")
         List<Person> findByName(@Param("name") String name);
     }
 ```
 
-## CouchbaseRepositoryAsync
+## ArangoDBRepositoryAsync
 
-CouchbaseRepositoryAsync is an extension of RepositoryAsync that allows using N1QL annotation that executes N1QL.
+ArangoDBRepositoryAsync is an extension of RepositoryAsync that allows using N1QL annotation that executes N1QL.
 
 
 ```java
-    interface PersonAsyncRepository extends CouchbaseRepositoryAsync<Person, String> {
+    interface PersonAsyncRepository extends ArangoDBRepositoryAsync<Person, String> {
 
         Person findByName(String name);
 
@@ -41,12 +41,12 @@ CouchbaseRepositoryAsync is an extension of RepositoryAsync that allows using N1
 ```
 
 
-## CouchbaseTemplate and CouchbaseTemplateAsync
+## ArangoDBTemplate and ArangoDBTemplateAsync
 
-CouchbaseTemplate is a specialization of Document Template that allows using N1QL both synchronous and asynchronous.
+ArangoDBTemplate is a specialization of Document Template that allows using AQL both synchronous and asynchronous.
 
 ```java
-        template.n1qlQuery("select * from Person where name = $name", params);
+        template.aql("select * from Person where name = @name", params);
 
         String query = "select * from Person where name = ?";
         Consumer<List<Person>> callBack = p -> {
