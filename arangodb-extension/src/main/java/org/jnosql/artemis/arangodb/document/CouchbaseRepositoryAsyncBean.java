@@ -68,7 +68,7 @@ class CouchbaseRepositoryAsyncBean implements Bean<CouchbaseRepositoryAsync>, Pa
     @Override
     public CouchbaseRepositoryAsync create(CreationalContext<CouchbaseRepositoryAsync> creationalContext) {
         ClassRepresentations classRepresentations = getInstance(ClassRepresentations.class);
-        CouchbaseTemplateAsync repository = getInstance(CouchbaseTemplateAsync.class);
+        ArangoDBTemplateAsync repository = getInstance(ArangoDBTemplateAsync.class);
         Reflections reflections = getInstance(Reflections.class);
 
         CouchbaseRepositoryAsyncProxy handler = new CouchbaseRepositoryAsyncProxy(repository,

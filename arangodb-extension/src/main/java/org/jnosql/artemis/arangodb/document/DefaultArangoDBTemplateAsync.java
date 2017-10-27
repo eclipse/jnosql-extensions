@@ -22,7 +22,7 @@ import org.jnosql.artemis.document.DocumentEntityConverter;
 import org.jnosql.diana.api.ExecuteAsyncQueryException;
 import org.jnosql.diana.api.document.DocumentCollectionManagerAsync;
 import org.jnosql.diana.api.document.DocumentEntity;
-import org.jnosql.diana.couchbase.document.CouchbaseDocumentCollectionManagerAsync;
+import org.jnosql.diana.arangodb.document.ArangoDBDocumentCollectionManagerAsync;
 
 import javax.enterprise.inject.Instance;
 import javax.enterprise.inject.Typed;
@@ -34,24 +34,24 @@ import java.util.function.Consumer;
 import static java.util.stream.Collectors.toList;
 
 /**
- * The default implementation of {@link CouchbaseTemplateAsync}
+ * The default implementation of {@link ArangoDBTemplateAsync}
  */
-@Typed(CouchbaseTemplateAsync.class)
-class DefaultCouchbaseTemplateAsync extends AbstractDocumentTemplateAsync implements
-        CouchbaseTemplateAsync {
+@Typed(ArangoDBTemplateAsync.class)
+class DefaultArangoDBTemplateAsync extends AbstractDocumentTemplateAsync implements
+        ArangoDBTemplateAsync {
 
     private DocumentEntityConverter converter;
 
-    private Instance<CouchbaseDocumentCollectionManagerAsync> manager;
+    private Instance<ArangoDBDocumentCollectionManagerAsync> manager;
 
     @Inject
-    DefaultCouchbaseTemplateAsync(DocumentEntityConverter converter,
-                                  Instance<CouchbaseDocumentCollectionManagerAsync> manager) {
+    DefaultArangoDBTemplateAsync(DocumentEntityConverter converter,
+                                 Instance<ArangoDBDocumentCollectionManagerAsync> manager) {
         this.converter = converter;
         this.manager = manager;
     }
 
-    DefaultCouchbaseTemplateAsync() {
+    DefaultArangoDBTemplateAsync() {
     }
 
     @Override

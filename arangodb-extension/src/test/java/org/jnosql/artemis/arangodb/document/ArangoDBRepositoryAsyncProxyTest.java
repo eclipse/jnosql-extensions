@@ -37,7 +37,7 @@ import static org.mockito.Mockito.verify;
 public class ArangoDBRepositoryAsyncProxyTest {
 
 
-    private CouchbaseTemplateAsync template;
+    private ArangoDBTemplateAsync template;
 
     @Inject
     private ClassRepresentations classRepresentations;
@@ -50,7 +50,7 @@ public class ArangoDBRepositoryAsyncProxyTest {
 
     @Before
     public void setUp() {
-        this.template = Mockito.mock(CouchbaseTemplateAsync.class);
+        this.template = Mockito.mock(ArangoDBTemplateAsync.class);
 
         CouchbaseRepositoryAsyncProxy handler = new CouchbaseRepositoryAsyncProxy(template,
                 classRepresentations, PersonAsyncRepository.class, reflections);

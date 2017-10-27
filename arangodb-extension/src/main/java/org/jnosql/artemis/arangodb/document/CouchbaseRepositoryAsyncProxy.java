@@ -38,7 +38,7 @@ class CouchbaseRepositoryAsyncProxy<T> extends AbstractDocumentRepositoryAsyncPr
 
     private final Class<T> typeClass;
 
-    private final CouchbaseTemplateAsync template;
+    private final ArangoDBTemplateAsync template;
 
 
     private final DocumentCrudRepositoryAsync repository;
@@ -50,7 +50,7 @@ class CouchbaseRepositoryAsyncProxy<T> extends AbstractDocumentRepositoryAsyncPr
     private final DocumentQueryDeleteParser deleteParser;
 
 
-    CouchbaseRepositoryAsyncProxy(CouchbaseTemplateAsync template, ClassRepresentations classRepresentations,
+    CouchbaseRepositoryAsyncProxy(ArangoDBTemplateAsync template, ClassRepresentations classRepresentations,
                                   Class<?> repositoryType, Reflections reflections) {
         this.template = template;
         this.typeClass = Class.class.cast(ParameterizedType.class.cast(repositoryType.getGenericInterfaces()[0])

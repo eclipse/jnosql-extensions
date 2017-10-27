@@ -40,7 +40,7 @@ public class DefaultArangoDBTemplateAsyncTest {
 
     private CouchbaseDocumentCollectionManagerAsync managerAsync;
 
-    private CouchbaseTemplateAsync templateAsync;
+    private ArangoDBTemplateAsync templateAsync;
 
 
     @Before
@@ -49,7 +49,7 @@ public class DefaultArangoDBTemplateAsyncTest {
         Instance instance = Mockito.mock(Instance.class);
         when(instance.get()).thenReturn(managerAsync);
 
-        templateAsync = new DefaultCouchbaseTemplateAsync(converter, instance);
+        templateAsync = new DefaultArangoDBTemplateAsync(converter, instance);
 
         DocumentEntity entity = DocumentEntity.of("Person");
         entity.add(Document.of("name", "Ada"));
