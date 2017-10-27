@@ -18,7 +18,6 @@ import com.couchbase.client.java.document.json.JsonObject;
 import org.jnosql.artemis.DynamicQueryException;
 import org.jnosql.artemis.reflection.ClassRepresentations;
 import org.jnosql.artemis.reflection.Reflections;
-import org.jnosql.diana.api.column.ColumnQuery;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
