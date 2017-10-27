@@ -15,7 +15,6 @@
 package org.jnosql.artemis.arangodb.document;
 
 
-import com.couchbase.client.java.document.json.JsonObject;
 import org.jnosql.artemis.RepositoryAsync;
 import org.jnosql.artemis.document.DocumentTemplateAsync;
 import org.jnosql.artemis.document.query.AbstractDocumentRepositoryAsync;
@@ -28,8 +27,11 @@ import org.jnosql.artemis.reflection.Reflections;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
+import java.util.Map;
 import java.util.Objects;
 import java.util.function.Consumer;
+
+import static java.util.Collections.emptyMap;
 
 class CouchbaseRepositoryAsyncProxy<T> extends AbstractDocumentRepositoryAsyncProxy<T> {
 
@@ -97,12 +99,12 @@ class CouchbaseRepositoryAsyncProxy<T> extends AbstractDocumentRepositoryAsyncPr
                 callBack = Consumer.class.cast(args[args.length - 1]);
             }
 
-            JsonObject params = JsonObjectUtil.getParams(args, method);
+            Map<String, Object> params = ParamUtil.getParams(args, method);
             if (params.isEmpty()) {
-                template.n1qlQuery(AQL.value(), callBack);
+                template.aql(AQL.value(), emptyMap(), callBack);
                 return Void.class;
             } else {
-                template.n1qlQuery(AQL.value(), params, callBack);
+                template.aql(AQL.value(), params, callBack);
                 return Void.class;
             }
         }

@@ -33,7 +33,7 @@ import java.util.Collections;
 import java.util.Set;
 
 
-class CouchbaseRepositoryBean implements Bean<ArangoDBRepository>, PassivationCapable {
+class ArangoDBRepositoryBean implements Bean<ArangoDBRepository>, PassivationCapable {
 
     private final Class type;
 
@@ -44,7 +44,7 @@ class CouchbaseRepositoryBean implements Bean<ArangoDBRepository>, PassivationCa
     private final Set<Annotation> qualifiers = Collections.singleton(new AnnotationLiteral<Default>() {
     });
 
-    CouchbaseRepositoryBean(Class type, BeanManager beanManager) {
+    ArangoDBRepositoryBean(Class type, BeanManager beanManager) {
         this.type = type;
         this.beanManager = beanManager;
         this.types = Collections.singleton(type);

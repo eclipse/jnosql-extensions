@@ -65,11 +65,11 @@ class ArangoDBExtension implements Extension {
         LOGGER.info("Starting the onAfterBeanDiscovery with elements number: " + crudTypes.size());
 
         crudTypes.forEach(type -> {
-            afterBeanDiscovery.addBean(new CouchbaseRepositoryBean(type, beanManager));
+            afterBeanDiscovery.addBean(new ArangoDBRepositoryBean(type, beanManager));
         });
 
         crudAsyncTypes.forEach(type -> {
-            afterBeanDiscovery.addBean(new CouchbaseRepositoryAsyncBean(type, beanManager));
+            afterBeanDiscovery.addBean(new ArangoDBRepositoryAsyncBean(type, beanManager));
         });
 
         LOGGER.info("Finished the onAfterBeanDiscovery");

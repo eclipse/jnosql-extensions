@@ -21,9 +21,9 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-final class JsonObjectUtil {
+final class ParamUtil {
 
-    private JsonObjectUtil() {
+    private ParamUtil() {
     }
 
     static Map<String, Object> getParams(Object[] args, Method method) {
