@@ -12,7 +12,7 @@
  *
  *   Otavio Santana
  */
-package org.jnosql.artemis.couchbase.document;
+package org.jnosql.artemis.arangodb.document;
 
 
 import com.couchbase.client.java.document.json.JsonObject;
@@ -31,8 +31,6 @@ import java.lang.reflect.ParameterizedType;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-
-import static org.jnosql.artemis.couchbase.document.JsonObjectUtil.getParams;
 
 class CouchbaseocumentRepositoryProxy<T> extends AbstractDocumentRepositoryProxy<T> {
 
@@ -90,14 +88,14 @@ class CouchbaseocumentRepositoryProxy<T> extends AbstractDocumentRepositoryProxy
     @Override
     public Object invoke(Object o, Method method, Object[] args) throws Throwable {
 
-        N1QL n1QL = method.getAnnotation(N1QL.class);
-        if (Objects.nonNull(n1QL)) {
+        AQL AQL = method.getAnnotation(AQL.class);
+        if (Objects.nonNull(AQL)) {
             List<T> result = Collections.emptyList();
-            JsonObject params = getParams(args, method);
+            JsonObject params = JsonObjectUtil.getParams(args, method);
             if (params.isEmpty()) {
-                result = template.n1qlQuery(n1QL.value());
+                result = template.n1qlQuery(AQL.value());
             } else {
-                result = template.n1qlQuery(n1QL.value(), params);
+                result = template.n1qlQuery(AQL.value(), params);
             }
             return ReturnTypeConverterUtil.returnObject(result, typeClass, method);
         }

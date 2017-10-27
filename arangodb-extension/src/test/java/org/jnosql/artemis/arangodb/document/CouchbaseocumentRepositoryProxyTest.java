@@ -12,7 +12,7 @@
  *
  *   Otavio Santana
  */
-package org.jnosql.artemis.couchbase.document;
+package org.jnosql.artemis.arangodb.document;
 
 import com.couchbase.client.java.document.json.JsonObject;
 import org.jnosql.artemis.reflection.ClassRepresentations;
@@ -83,10 +83,10 @@ public class CouchbaseocumentRepositoryProxyTest {
 
     interface PersonRepository extends CouchbaseRepository<Person, String> {
 
-        @N1QL("select * from Person")
+        @AQL("select * from Person")
         List<Person> findAll();
 
-        @N1QL("select * from Person where name = $name")
+        @AQL("select * from Person where name = $name")
         List<Person> findByName(@Param("name") String name);
     }
 }

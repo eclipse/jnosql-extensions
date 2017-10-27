@@ -12,7 +12,7 @@
  *
  *   Otavio Santana
  */
-package org.jnosql.artemis.couchbase.document;
+package org.jnosql.artemis.arangodb.document;
 
 import org.jnosql.artemis.document.DocumentTemplate;
 import org.jnosql.diana.api.document.DocumentQuery;

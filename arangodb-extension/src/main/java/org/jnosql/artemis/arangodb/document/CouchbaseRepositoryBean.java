@@ -12,7 +12,7 @@
  *
  *   Otavio Santana
  */
-package org.jnosql.artemis.couchbase.document;
+package org.jnosql.artemis.arangodb.document;
 
 import org.jnosql.artemis.DatabaseQualifier;
 import org.jnosql.artemis.reflection.ClassRepresentations;
@@ -33,7 +33,7 @@ import java.util.Collections;
 import java.util.Set;
 
 
-class CouchbaseRepositoryAsyncBean implements Bean<CouchbaseRepositoryAsync>, PassivationCapable {
+class CouchbaseRepositoryBean implements Bean<CouchbaseRepository>, PassivationCapable {
 
     private final Class type;
 
@@ -44,7 +44,7 @@ class CouchbaseRepositoryAsyncBean implements Bean<CouchbaseRepositoryAsync>, Pa
     private final Set<Annotation> qualifiers = Collections.singleton(new AnnotationLiteral<Default>() {
     });
 
-    CouchbaseRepositoryAsyncBean(Class type, BeanManager beanManager) {
+    CouchbaseRepositoryBean(Class type, BeanManager beanManager) {
         this.type = type;
         this.beanManager = beanManager;
         this.types = Collections.singleton(type);
@@ -66,14 +66,15 @@ class CouchbaseRepositoryAsyncBean implements Bean<CouchbaseRepositoryAsync>, Pa
     }
 
     @Override
-    public CouchbaseRepositoryAsync create(CreationalContext<CouchbaseRepositoryAsync> creationalContext) {
+    public CouchbaseRepository create(CreationalContext<CouchbaseRepository> creationalContext) {
         ClassRepresentations classRepresentations = getInstance(ClassRepresentations.class);
-        CouchbaseTemplateAsync repository = getInstance(CouchbaseTemplateAsync.class);
+        CouchbaseTemplate repository = getInstance(CouchbaseTemplate.class);
+
         Reflections reflections = getInstance(Reflections.class);
 
-        CouchbaseRepositoryAsyncProxy handler = new CouchbaseRepositoryAsyncProxy(repository,
+        CouchbaseocumentRepositoryProxy handler = new CouchbaseocumentRepositoryProxy(repository,
                 classRepresentations, type, reflections);
-        return (CouchbaseRepositoryAsync) Proxy.newProxyInstance(type.getClassLoader(),
+        return (CouchbaseRepository) Proxy.newProxyInstance(type.getClassLoader(),
                 new Class[]{type},
                 handler);
     }
@@ -93,7 +94,7 @@ class CouchbaseRepositoryAsyncBean implements Bean<CouchbaseRepositoryAsync>, Pa
 
 
     @Override
-    public void destroy(CouchbaseRepositoryAsync instance, CreationalContext<CouchbaseRepositoryAsync> creationalContext) {
+    public void destroy(CouchbaseRepository instance, CreationalContext<CouchbaseRepository> creationalContext) {
 
     }
 
@@ -129,7 +130,7 @@ class CouchbaseRepositoryAsyncBean implements Bean<CouchbaseRepositoryAsync>, Pa
 
     @Override
     public String getId() {
-        return type.getName() + "Async@cassandra";
+        return type.getName() + '@' + "orientdb";
     }
 
 }

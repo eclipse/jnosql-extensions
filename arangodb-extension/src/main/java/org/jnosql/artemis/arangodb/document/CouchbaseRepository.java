@@ -12,19 +12,14 @@
  *
  *   Otavio Santana
  */
-package org.jnosql.artemis.couchbase.document;
+package org.jnosql.artemis.arangodb.document;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+
+import org.jnosql.artemis.Repository;
 
 /**
- * To a dynamic query on CouchbaseRepository and CouchbaseRepositoryAsync interfaces.
+ * The couchbase {@link Repository}
+ * @param <T>
  */
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.METHOD)
-public @interface N1QL {
-
-    String value();
+public interface CouchbaseRepository<T, ID> extends Repository<T, ID> {
 }

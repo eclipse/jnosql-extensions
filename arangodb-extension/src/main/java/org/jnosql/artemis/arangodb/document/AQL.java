@@ -12,8 +12,19 @@
  *
  *   Otavio Santana
  */
-package org.jnosql.artemis.couchbase.document;
+package org.jnosql.artemis.arangodb.document;
 
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-public interface PersonRepository extends CouchbaseRepository<Person, String> {
+/**
+ * To a dynamic query on ArangoDBRepository and ArangoDBRepositoryAsync interfaces.
+ */
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.METHOD)
+public @interface AQL {
+
+    String value();
 }

@@ -12,7 +12,7 @@
  *
  *   Otavio Santana
  */
-package org.jnosql.artemis.couchbase.document;
+package org.jnosql.artemis.arangodb.document;
 
 
 import com.couchbase.client.java.document.json.JsonObject;
@@ -30,8 +30,6 @@ import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.util.Objects;
 import java.util.function.Consumer;
-
-import static org.jnosql.artemis.couchbase.document.JsonObjectUtil.getParams;
 
 class CouchbaseRepositoryAsyncProxy<T> extends AbstractDocumentRepositoryAsyncProxy<T> {
 
@@ -92,19 +90,19 @@ class CouchbaseRepositoryAsyncProxy<T> extends AbstractDocumentRepositoryAsyncPr
     @Override
     public Object invoke(Object instance, Method method, Object[] args) throws Throwable {
 
-        N1QL n1QL = method.getAnnotation(N1QL.class);
-        if (Objects.nonNull(n1QL)) {
+        AQL AQL = method.getAnnotation(AQL.class);
+        if (Objects.nonNull(AQL)) {
             Consumer callBack = NOOP;
             if (Consumer.class.isInstance(args[args.length - 1])) {
                 callBack = Consumer.class.cast(args[args.length - 1]);
             }
 
-            JsonObject params = getParams(args, method);
+            JsonObject params = JsonObjectUtil.getParams(args, method);
             if (params.isEmpty()) {
-                template.n1qlQuery(n1QL.value(), callBack);
+                template.n1qlQuery(AQL.value(), callBack);
                 return Void.class;
             } else {
-                template.n1qlQuery(n1QL.value(), params, callBack);
+                template.n1qlQuery(AQL.value(), params, callBack);
                 return Void.class;
             }
         }

@@ -12,26 +12,8 @@
  *
  *   Otavio Santana
  */
-package org.jnosql.artemis.couchbase.document;
+package org.jnosql.artemis.arangodb.document;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
 
-import javax.inject.Inject;
-
-@RunWith(WeldJUnit4Runner.class)
-public class CouchbaseExtensionTest {
-
-    @Inject
-    private PersonRepositoryAsync personRepositoryAsync;
-
-    @Inject
-    private PersonRepository personRepository;
-
-    @Test
-    public void shouldSaveOrientDB() {
-        Person person = new Person("Ada", 10);
-        personRepository.deleteById(person.getName());
-        personRepositoryAsync.deleteById(person.getName());
-    }
+public interface PersonRepository extends CouchbaseRepository<Person, String> {
 }

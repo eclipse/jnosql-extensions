@@ -12,13 +12,12 @@
  *
  *   Otavio Santana
  */
-package org.jnosql.artemis.couchbase.document;
+package org.jnosql.artemis.arangodb.document;
 
 import com.couchbase.client.java.document.json.JsonObject;
 import org.jnosql.artemis.DynamicQueryException;
 import org.jnosql.artemis.reflection.ClassRepresentations;
 import org.jnosql.artemis.reflection.Reflections;
-import org.jnosql.diana.api.column.ColumnQuery;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -112,10 +111,10 @@ public class CouchbaseRepositoryAsyncProxyTest {
         Person findByName(String name);
 
 
-        @N1QL("select * from Person where name= $name")
+        @AQL("select * from Person where name= $name")
         void queryName(@Param("name") String name);
 
-        @N1QL("select * from Person where name= $name")
+        @AQL("select * from Person where name= $name")
         void queryName(@Param("name") String name, Consumer<List<Person>> callBack);
     }
 }

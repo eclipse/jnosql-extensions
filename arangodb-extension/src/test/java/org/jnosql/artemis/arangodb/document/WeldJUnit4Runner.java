@@ -12,14 +12,20 @@
  *
  *   Otavio Santana
  */
-package org.jnosql.artemis.couchbase.document;
+package org.jnosql.artemis.arangodb.document;
 
+import org.junit.runners.BlockJUnit4ClassRunner;
+import org.junit.runners.model.InitializationError;
 
-import org.jnosql.artemis.Repository;
+public class WeldJUnit4Runner extends BlockJUnit4ClassRunner {
 
-/**
- * The couchbase {@link Repository}
- * @param <T>
- */
-public interface CouchbaseRepository<T, ID> extends Repository<T, ID> {
+    public WeldJUnit4Runner(Class<Object> clazz) throws InitializationError {
+        super(clazz);
+    }
+
+    @Override
+    protected Object createTest() {
+        final Class<?> test = getTestClass().getJavaClass();
+        return WeldContext.INSTANCE.getBean(test);
+    }
 }
