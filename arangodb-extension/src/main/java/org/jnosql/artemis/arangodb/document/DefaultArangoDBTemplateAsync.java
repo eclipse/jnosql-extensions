@@ -15,8 +15,6 @@
 package org.jnosql.artemis.arangodb.document;
 
 
-import com.couchbase.client.java.document.json.JsonObject;
-import com.couchbase.client.java.query.Statement;
 import org.jnosql.artemis.document.AbstractDocumentTemplateAsync;
 import org.jnosql.artemis.document.DocumentEntityConverter;
 import org.jnosql.diana.api.ExecuteAsyncQueryException;
@@ -28,9 +26,10 @@ import javax.enterprise.inject.Instance;
 import javax.enterprise.inject.Typed;
 import javax.inject.Inject;
 import java.util.List;
-import java.util.Objects;
+import java.util.Map;
 import java.util.function.Consumer;
 
+import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.toList;
 
 /**
@@ -64,71 +63,21 @@ class DefaultArangoDBTemplateAsync extends AbstractDocumentTemplateAsync impleme
         return manager.get();
     }
 
-    @Override
-    public <T> void n1qlQuery(String n1qlQuery, JsonObject params, Consumer<List<T>> callback)
-            throws NullPointerException, ExecuteAsyncQueryException {
 
-        Objects.requireNonNull(n1qlQuery, "n1qlQuery is required");
-        Objects.requireNonNull(params, "params is required");
-        Objects.requireNonNull(callback, "callback is required");
+
+    @Override
+    public <T> void aql(String query, Map<String, Object> values, Consumer<List<T>> callBack) throws ExecuteAsyncQueryException, UnsupportedOperationException, NullPointerException {
+        requireNonNull(query, "query is required");
+        requireNonNull(values, "values is required");
+        requireNonNull(callBack, "callback is required");
+
         Consumer<List<DocumentEntity>> dianaCallBack = d -> {
-            callback.accept(
+            callBack.accept(
                     d.stream()
                             .map(getConverter()::toEntity)
                             .map(o -> (T) o)
                             .collect(toList()));
         };
-        manager.get().n1qlQuery(n1qlQuery, params, dianaCallBack);
-
-    }
-
-    @Override
-    public <T> void n1qlQuery(Statement n1qlQuery, JsonObject params, Consumer<List<T>> callback)
-            throws NullPointerException, ExecuteAsyncQueryException {
-        Objects.requireNonNull(n1qlQuery, "n1qlQuery is required");
-        Objects.requireNonNull(params, "params is required");
-        Objects.requireNonNull(callback, "callback is required");
-        Consumer<List<DocumentEntity>> dianaCallBack = d -> {
-            callback.accept(
-                    d.stream()
-                            .map(getConverter()::toEntity)
-                            .map(o -> (T) o)
-                            .collect(toList()));
-        };
-        manager.get().n1qlQuery(n1qlQuery, params, dianaCallBack);
-    }
-
-    @Override
-    public <T> void n1qlQuery(String n1qlQuery, Consumer<List<T>> callback)
-            throws NullPointerException, ExecuteAsyncQueryException {
-
-        Objects.requireNonNull(n1qlQuery, "n1qlQuery is required");
-        Objects.requireNonNull(callback, "callback is required");
-
-        Consumer<List<DocumentEntity>> dianaCallBack = d -> {
-            callback.accept(
-                    d.stream()
-                            .map(getConverter()::toEntity)
-                            .map(o -> (T) o)
-                            .collect(toList()));
-        };
-        manager.get().n1qlQuery(n1qlQuery, dianaCallBack);
-
-    }
-
-    @Override
-    public <T> void n1qlQuery(Statement n1qlQuery, Consumer<List<T>> callback)
-            throws NullPointerException, ExecuteAsyncQueryException {
-        Objects.requireNonNull(n1qlQuery, "n1qlQuery is required");
-        Objects.requireNonNull(callback, "callback is required");
-
-        Consumer<List<DocumentEntity>> dianaCallBack = d -> {
-            callback.accept(
-                    d.stream()
-                            .map(getConverter()::toEntity)
-                            .map(o -> (T) o)
-                            .collect(toList()));
-        };
-        manager.get().n1qlQuery(n1qlQuery, dianaCallBack);
+        manager.get().aql(query, values, dianaCallBack);
     }
 }
