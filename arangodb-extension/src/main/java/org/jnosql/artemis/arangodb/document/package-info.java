@@ -14,16 +14,19 @@
  */
 
 /**
- * OrientDB is an open source NoSQL database management system written in Java. It is a multi-model database,
- * supporting graph, document, key/value, and object models, but the relationships are managed as in graph databases
- * with direct connections between records. It supports schema-less, schema-full and schema-mixed modes.
- * It has a strong security profiling system based on users and roles and supports querying with Gremlin
- * along with AQL extended for graph traversal. OrientDB uses several indexing mechanisms based
- * on B-tree and Extendible hashing, the last one is known as "hash index", there are plans to implement
- * LSM-tree and Fractal tree index based indexes. Each record has Surrogate key which indicates position
- * of record inside of Array list , links between records are stored either as single value of record's
- * position stored inside of referrer or as B-tree of record positions (so-called record IDs or RIDs)
- * which allows fast traversal (with O(1) complexity) of one-to-many relationships and fast addition/removal
- * of new links. OrientDB is the second most popular graph database according to the DB-Engines graph database ranking.
+ * ArangoDB is a native NoSQL multi-model database system developed by triAGENS GmbH. In a book published in 2015,
+ * it was referred to as the most popular NoSQL database available that had an open-source license.
+ * It has also been referred to as a universal database. Its creators refer to it as a "native multi-model" database to
+ * indicate that it was designed specifically to allow key/value, document, and graph data to be stored together and
+ * queried with a common language.
+ * ArangoDB provides scalable, highly efficient queries when working with graph data.
+ * The database uses JSON as a default storage format, but internally it uses ArangoDB's VelocyPack –
+ * a fast and compact binary format for serialization and storage. ArangoDB can natively store a nested JSON object
+ * as a data entry inside a collection. Therefore, there is no need to disassemble the resulting JSON objects.
+ * Thus, the stored data would simply inherit the tree structure of the XML data.
+ * ArangoDB works in a distributed cluster unlike some other existing graph databases and it is the first DBMS being
+ * certified for the Datacenter Operating System (DC/OS). DC/OS allows the user to deploy ArangoDB
+ * on most existing ecosystems: Amazon Web Services (AWS), Google Compute Engine and Microsoft Azure.
+ * Moreover, it provides single-click deployment for the user's cluster.
  */
 package org.jnosql.artemis.arangodb.document;
