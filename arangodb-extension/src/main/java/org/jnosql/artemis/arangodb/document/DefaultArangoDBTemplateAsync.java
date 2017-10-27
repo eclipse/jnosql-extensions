@@ -68,7 +68,7 @@ class DefaultArangoDBTemplateAsync extends AbstractDocumentTemplateAsync impleme
     @Override
     public <T> void aql(String query, Map<String, Object> values, Consumer<List<T>> callBack)
             throws ExecuteAsyncQueryException, UnsupportedOperationException, NullPointerException {
-        
+
         requireNonNull(query, "query is required");
         requireNonNull(values, "values is required");
         requireNonNull(callBack, "callback is required");

@@ -67,7 +67,7 @@ public class DefaultArangoDBTemplateTest {
     public void shouldFindAQL() {
         Map<String, Object> params = Collections.singletonMap("name", "Ada");
         template.aql("FOR p IN Person FILTER p.name = @name RETURN p", params);
-        Mockito.verify(manager).aql("select * from Person where name = $name", params);
+        Mockito.verify(manager).aql("FOR p IN Person FILTER p.name = @name RETURN p", params);
     }
 
 

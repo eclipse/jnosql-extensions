@@ -87,7 +87,7 @@ public class ArangoDBRepositoryAsyncProxyTest {
         ArgumentCaptor<Map> captor = ArgumentCaptor.forClass(Map.class);
         Map params = Collections.singletonMap("name", "Ada");
         personRepository.queryName("Ada");
-        verify(template).aql(Mockito.eq("select * from Person where name= $name"), captor.capture(),
+        verify(template).aql(Mockito.eq("FOR p IN Person RETURN p"), captor.capture(),
                 any(Consumer.class));
 
         Map value = captor.getValue();
@@ -102,7 +102,7 @@ public class ArangoDBRepositoryAsyncProxyTest {
         Map params = Collections.singletonMap("name", "Ada");
         personRepository.queryName("Ada", callBack);
 
-        verify(template).aql(Mockito.eq("select * from Person where name= $name"), Mockito.eq(params), Mockito.eq(callBack));
+        verify(template).aql(Mockito.eq("FOR p IN Person FILTER p.name = @name RETURN p"), Mockito.eq(params), Mockito.eq(callBack));
 
     }
 
