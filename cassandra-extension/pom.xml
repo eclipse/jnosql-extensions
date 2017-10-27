@@ -108,7 +108,7 @@
         </dependency>
         <dependency>
             <groupId>org.jnosql.artemis</groupId>
-            <artifactId>artemis-core</artifactId>
+            <artifactId>artemis-column</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>
