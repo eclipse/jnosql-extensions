@@ -128,7 +128,7 @@
 
         <dependency>
             <groupId>org.jnosql.diana</groupId>
-            <artifactId>couchbase-driver</artifactId>
+            <artifactId>arangodb-driver</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
