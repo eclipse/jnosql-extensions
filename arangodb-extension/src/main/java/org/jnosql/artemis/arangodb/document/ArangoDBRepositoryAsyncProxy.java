@@ -92,8 +92,8 @@ class ArangoDBRepositoryAsyncProxy<T> extends AbstractDocumentRepositoryAsyncPro
     @Override
     public Object invoke(Object instance, Method method, Object[] args) throws Throwable {
 
-        AQL AQL = method.getAnnotation(AQL.class);
-        if (Objects.nonNull(AQL)) {
+        AQL aql = method.getAnnotation(AQL.class);
+        if (Objects.nonNull(aql)) {
             Consumer callBack = NOOP;
             if (Consumer.class.isInstance(args[args.length - 1])) {
                 callBack = Consumer.class.cast(args[args.length - 1]);
@@ -101,10 +101,10 @@ class ArangoDBRepositoryAsyncProxy<T> extends AbstractDocumentRepositoryAsyncPro
 
             Map<String, Object> params = ParamUtil.getParams(args, method);
             if (params.isEmpty()) {
-                template.aql(AQL.value(), emptyMap(), callBack);
+                template.aql(aql.value(), emptyMap(), callBack);
                 return Void.class;
             } else {
-                template.aql(AQL.value(), params, callBack);
+                template.aql(aql.value(), params, callBack);
                 return Void.class;
             }
         }

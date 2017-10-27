@@ -17,7 +17,6 @@ package org.jnosql.artemis.arangodb.document;
 
 import org.jnosql.artemis.document.DocumentTemplateAsync;
 import org.jnosql.diana.api.ExecuteAsyncQueryException;
-import org.jnosql.diana.api.document.DocumentEntity;
 
 import java.util.List;
 import java.util.Map;
@@ -29,7 +28,7 @@ import java.util.function.Consumer;
 public interface ArangoDBTemplateAsync extends DocumentTemplateAsync {
 
     /**
-     * Executes AQL, finds {@link DocumentEntity} from select asynchronously
+     * Executes AQL, finds {@link org.jnosql.diana.api.document.DocumentEntity} from select asynchronously
      * <p>FOR u IN users FILTER u.status == @status RETURN u </p>
      *
      * @param <T>      the entity type
