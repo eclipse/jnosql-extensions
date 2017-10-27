@@ -33,7 +33,7 @@ import java.util.function.Consumer;
 import static org.mockito.Mockito.when;
 
 @RunWith(WeldJUnit4Runner.class)
-public class DefaultCouchbaseTemplateAsyncTest {
+public class DefaultArangoDBTemplateAsyncTest {
 
     @Inject
     private DocumentEntityConverter converter;

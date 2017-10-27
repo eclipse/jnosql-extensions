@@ -37,7 +37,7 @@ import static org.mockito.Mockito.when;
 @RunWith(WeldJUnit4Runner.class)
 public class CouchbaseocumentRepositoryProxyTest {
 
-    private CouchbaseTemplate template;
+    private ArangoDBTemplate template;
 
     @Inject
     private ClassRepresentations classRepresentations;
@@ -50,7 +50,7 @@ public class CouchbaseocumentRepositoryProxyTest {
 
     @Before
     public void setUp() {
-        this.template = Mockito.mock(CouchbaseTemplate.class);
+        this.template = Mockito.mock(ArangoDBTemplate.class);
 
         CouchbaseocumentRepositoryProxy handler = new CouchbaseocumentRepositoryProxy(template,
                 classRepresentations, PersonRepository.class, reflections);
@@ -81,7 +81,7 @@ public class CouchbaseocumentRepositoryProxyTest {
         assertEquals("Ada", value.getString("name"));
     }
 
-    interface PersonRepository extends CouchbaseRepository<Person, String> {
+    interface PersonRepository extends ArangoDBRepository<Person, String> {
 
         @AQL("select * from Person")
         List<Person> findAll();

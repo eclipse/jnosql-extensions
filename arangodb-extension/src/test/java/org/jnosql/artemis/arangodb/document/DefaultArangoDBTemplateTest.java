@@ -40,7 +40,7 @@ import static org.mockito.Mockito.when;
 
 
 @RunWith(WeldJUnit4Runner.class)
-public class DefaultCouchbaseTemplateTest {
+public class DefaultArangoDBTemplateTest {
 
     @Inject
     private DocumentEntityConverter converter;
@@ -53,7 +53,7 @@ public class DefaultCouchbaseTemplateTest {
 
     private CouchbaseDocumentCollectionManager manager;
 
-    private CouchbaseTemplate template;
+    private ArangoDBTemplate template;
 
 
     @Before
@@ -61,7 +61,7 @@ public class DefaultCouchbaseTemplateTest {
         manager = Mockito.mock(CouchbaseDocumentCollectionManager.class);
         Instance instance = Mockito.mock(Instance.class);
         when(instance.get()).thenReturn(manager);
-        template = new DefaultCouchbaseTemplate(instance, converter, flow, persistManager);
+        template = new DefaultArangoDBTemplate(instance, converter, flow, persistManager);
 
         DocumentEntity entity = DocumentEntity.of("Person");
         entity.add(Document.of("_id", "Ada"));

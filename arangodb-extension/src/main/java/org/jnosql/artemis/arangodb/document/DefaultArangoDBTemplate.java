@@ -23,7 +23,7 @@ import org.jnosql.artemis.document.DocumentEntityConverter;
 import org.jnosql.artemis.document.DocumentEventPersistManager;
 import org.jnosql.artemis.document.DocumentWorkflow;
 import org.jnosql.diana.api.document.DocumentCollectionManager;
-import org.jnosql.diana.couchbase.document.CouchbaseDocumentCollectionManager;
+import org.jnosql.diana.arangodb.document.ArangoDBDocumentCollectionManager;
 
 import javax.enterprise.inject.Instance;
 import javax.enterprise.inject.Typed;
@@ -34,13 +34,13 @@ import java.util.stream.Collectors;
 import static java.util.Objects.requireNonNull;
 
 /**
- * The Default implementation of {@link CouchbaseTemplate}
+ * The Default implementation of {@link ArangoDBTemplate}
  */
-@Typed(CouchbaseTemplate.class)
-class DefaultCouchbaseTemplate extends AbstractDocumentTemplate
-        implements CouchbaseTemplate {
+@Typed(ArangoDBTemplate.class)
+class DefaultArangoDBTemplate extends AbstractDocumentTemplate
+        implements ArangoDBTemplate {
 
-    private Instance<CouchbaseDocumentCollectionManager> manager;
+    private Instance<ArangoDBDocumentCollectionManager> manager;
 
     private DocumentEntityConverter converter;
 
@@ -49,16 +49,16 @@ class DefaultCouchbaseTemplate extends AbstractDocumentTemplate
     private DocumentEventPersistManager persistManager;
 
     @Inject
-    DefaultCouchbaseTemplate(Instance<CouchbaseDocumentCollectionManager> manager,
-                             DocumentEntityConverter converter, DocumentWorkflow flow,
-                             DocumentEventPersistManager persistManager) {
+    DefaultArangoDBTemplate(Instance<ArangoDBDocumentCollectionManager> manager,
+                            DocumentEntityConverter converter, DocumentWorkflow flow,
+                            DocumentEventPersistManager persistManager) {
         this.manager = manager;
         this.converter = converter;
         this.flow = flow;
         this.persistManager = persistManager;
     }
 
-    DefaultCouchbaseTemplate() {
+    DefaultArangoDBTemplate() {
     }
 
     @Override

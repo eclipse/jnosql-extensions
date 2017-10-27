@@ -36,7 +36,7 @@ class CouchbaseocumentRepositoryProxy<T> extends AbstractDocumentRepositoryProxy
 
     private final Class<T> typeClass;
 
-    private final CouchbaseTemplate template;
+    private final ArangoDBTemplate template;
 
 
     private final DocumentCrudRepository repository;
@@ -48,7 +48,7 @@ class CouchbaseocumentRepositoryProxy<T> extends AbstractDocumentRepositoryProxy
     private final DocumentQueryDeleteParser deleteParser;
 
 
-    CouchbaseocumentRepositoryProxy(CouchbaseTemplate template, ClassRepresentations classRepresentations,
+    CouchbaseocumentRepositoryProxy(ArangoDBTemplate template, ClassRepresentations classRepresentations,
                                     Class<?> repositoryType, Reflections reflections) {
         this.template = template;
         this.typeClass = Class.class.cast(ParameterizedType.class.cast(repositoryType.getGenericInterfaces()[0])

@@ -34,7 +34,7 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verify;
 
 @RunWith(WeldJUnit4Runner.class)
-public class CouchbaseRepositoryAsyncProxyTest {
+public class ArangoDBRepositoryAsyncProxyTest {
 
 
     private CouchbaseTemplateAsync template;

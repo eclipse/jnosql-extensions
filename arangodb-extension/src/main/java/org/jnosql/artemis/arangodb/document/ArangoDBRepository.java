@@ -14,24 +14,12 @@
  */
 package org.jnosql.artemis.arangodb.document;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
 
-import javax.inject.Inject;
+import org.jnosql.artemis.Repository;
 
-@RunWith(WeldJUnit4Runner.class)
-public class CouchbaseExtensionTest {
-
-    @Inject
-    private PersonRepositoryAsync personRepositoryAsync;
-
-    @Inject
-    private PersonRepository personRepository;
-
-    @Test
-    public void shouldSaveOrientDB() {
-        Person person = new Person("Ada", 10);
-        personRepository.deleteById(person.getName());
-        personRepositoryAsync.deleteById(person.getName());
-    }
+/**
+ * The couchbase {@link Repository}
+ * @param <T>
+ */
+public interface ArangoDBRepository<T, ID> extends Repository<T, ID> {
 }

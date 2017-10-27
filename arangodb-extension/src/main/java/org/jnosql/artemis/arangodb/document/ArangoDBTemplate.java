@@ -15,11 +15,26 @@
 package org.jnosql.artemis.arangodb.document;
 
 
-import org.jnosql.artemis.Repository;
+import org.jnosql.artemis.document.DocumentTemplate;
+
+import java.util.List;
+import java.util.Map;
 
 /**
- * The couchbase {@link Repository}
- * @param <T>
+ * A {@link DocumentTemplate} to couchbase
  */
-public interface CouchbaseRepository<T, ID> extends Repository<T, ID> {
+public interface ArangoDBTemplate extends DocumentTemplate {
+
+    /**
+     * Executes ArangoDB query language, AQL.
+     * <p>FOR u IN users FILTER u.status == @status RETURN u </p>
+     *
+     * @param <T>    entity class
+     * @param query  the query
+     * @param values the named queries
+     * @return the query result
+     * @throws NullPointerException when either query or values are null
+     */
+    <T> List<T> aql(String query, Map<String, Object> values) throws NullPointerException;
+
 }

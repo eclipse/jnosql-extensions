@@ -14,6 +14,24 @@
  */
 package org.jnosql.artemis.arangodb.document;
 
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
-public interface PersonRepository extends ArangoDBRepository<Person, String> {
+import javax.inject.Inject;
+
+@RunWith(WeldJUnit4Runner.class)
+public class ArangoDBExtensionTest {
+
+    @Inject
+    private PersonRepositoryAsync personRepositoryAsync;
+
+    @Inject
+    private PersonRepository personRepository;
+
+    @Test
+    public void shouldSaveOrientDB() {
+        Person person = new Person("Ada", 10);
+        personRepository.deleteById(person.getName());
+        personRepositoryAsync.deleteById(person.getName());
+    }
 }

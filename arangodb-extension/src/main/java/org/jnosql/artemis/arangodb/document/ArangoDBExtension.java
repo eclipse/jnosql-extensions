@@ -25,23 +25,23 @@ import java.util.HashSet;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
 
-class CouchbaseExtension implements Extension {
+class ArangoDBExtension implements Extension {
 
-    private static final Logger LOGGER = Logger.getLogger(CouchbaseExtension.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(ArangoDBExtension.class.getName());
 
     private final Collection<Class<?>> crudTypes = new HashSet<>();
 
     private final Collection<Class<?>> crudAsyncTypes = new HashSet<>();
 
 
-    <T extends CouchbaseRepository> void onProcessAnnotatedType(@Observes final ProcessAnnotatedType<T> repo) {
+    <T extends ArangoDBRepository> void onProcessAnnotatedType(@Observes final ProcessAnnotatedType<T> repo) {
         Class<T> javaClass = repo.getAnnotatedType().getJavaClass();
 
-        if(CouchbaseRepository.class.equals(javaClass)) {
+        if(ArangoDBRepository.class.equals(javaClass)) {
             return;
         }
 
-        if (Stream.of(javaClass.getInterfaces()).anyMatch(c -> CouchbaseRepository.class.equals(c))
+        if (Stream.of(javaClass.getInterfaces()).anyMatch(c -> ArangoDBRepository.class.equals(c))
                 && Modifier.isInterface(javaClass.getModifiers())) {
             crudTypes.add(javaClass);
         }
