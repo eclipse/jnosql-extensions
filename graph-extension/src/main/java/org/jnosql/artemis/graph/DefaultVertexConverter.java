@@ -21,8 +21,6 @@ import org.jnosql.artemis.reflection.ClassRepresentations;
 import org.jnosql.artemis.reflection.FieldRepresentation;
 import org.jnosql.artemis.reflection.Reflections;
 import org.jnosql.diana.api.Value;
-import org.jnosql.diana.api.document.Document;
-import org.jnosql.diana.api.document.DocumentEntity;
 
 import javax.inject.Inject;
 import java.lang.reflect.Field;
@@ -106,7 +104,7 @@ class DefaultVertexConverter implements VertexConverter {
 
         Optional<Value> vertexId = vertex.getId();
         if (vertexId.isPresent() && id.isPresent()) {
-            Field fieldId = id.get().getField();
+            Field fieldId = id.get().getNativeField();
             reflections.setValue(entity, fieldId, id.get().getValue(vertexId.get()));
         }
     }
@@ -152,15 +150,15 @@ class DefaultVertexConverter implements VertexConverter {
         if (converter.isPresent()) {
             AttributeConverter attributeConverter = converters.get(converter.get());
             Object attributeConverted = attributeConverter.convertToEntityAttribute(value.get());
-            reflections.setValue(instance, field.getField(), field.getValue(Value.of(attributeConverted)));
+            reflections.setValue(instance, field.getNativeField(), field.getValue(Value.of(attributeConverted)));
         } else {
-            reflections.setValue(instance, field.getField(), field.getValue(value));
+            reflections.setValue(instance, field.getNativeField(), field.getValue(value));
         }
     }
 
     private <T> void setEmbeddedField(T instance, List<ArtemisProperty> elements,
                                       FieldRepresentation field) {
-        reflections.setValue(instance, field.getField(), toEntity(field.getField().getType(), elements));
+        reflections.setValue(instance, field.getNativeField(), toEntity(field.getNativeField().getType(), elements));
     }
 
     private <T> T toEntity(Class<T> entityClass, List<ArtemisProperty> elements) {
@@ -170,18 +168,10 @@ class DefaultVertexConverter implements VertexConverter {
     }
 
 
-    private DocumentEntity toDocumentEntity(ArtemisVertex entity) {
-        DocumentEntity documentEntity = DocumentEntity.of(entity.getLabel());
-        entity.getKeys()
-                .stream()
-                .map(k -> Document.of(k, entity.get(k).get()))
-                .forEach(documentEntity::add);
-        return documentEntity;
-    }
 
 
     private FieldGraph to(FieldRepresentation field, Object entityInstance) {
-        Object value = reflections.getValue(entityInstance, field.getField());
+        Object value = reflections.getValue(entityInstance, field.getNativeField());
         return FieldGraph.of(value, field);
     }
 
