@@ -53,7 +53,7 @@ public class ArangoDBRepositoryAsyncProxyTest {
     public void setUp() {
         this.template = Mockito.mock(ArangoDBTemplateAsync.class);
 
-        CouchbaseRepositoryAsyncProxy handler = new CouchbaseRepositoryAsyncProxy(template,
+        ArangoDBRepositoryAsyncProxy handler = new ArangoDBRepositoryAsyncProxy(template,
                 classRepresentations, PersonAsyncRepository.class, reflections);
 
 

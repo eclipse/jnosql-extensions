@@ -7,7 +7,7 @@ ArangoDB extension has implementations to use specific behavior that is beyond t
 
 ## ArangoDBRepository
 
-CouchbaseRepository is an extension of Repository that allows using AQL annotation that executes N1QL.
+ArangoDBRepository is an extension of Repository that allows using AQL annotation that executes N1QL.
 
 
 ```java

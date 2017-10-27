@@ -33,7 +33,7 @@ import java.util.function.Consumer;
 
 import static java.util.Collections.emptyMap;
 
-class CouchbaseRepositoryAsyncProxy<T> extends AbstractDocumentRepositoryAsyncProxy<T> {
+class ArangoDBRepositoryAsyncProxy<T> extends AbstractDocumentRepositoryAsyncProxy<T> {
 
     private static final Consumer NOOP = t -> {
     };
@@ -52,8 +52,8 @@ class CouchbaseRepositoryAsyncProxy<T> extends AbstractDocumentRepositoryAsyncPr
     private final DocumentQueryDeleteParser deleteParser;
 
 
-    CouchbaseRepositoryAsyncProxy(ArangoDBTemplateAsync template, ClassRepresentations classRepresentations,
-                                  Class<?> repositoryType, Reflections reflections) {
+    ArangoDBRepositoryAsyncProxy(ArangoDBTemplateAsync template, ClassRepresentations classRepresentations,
+                                 Class<?> repositoryType, Reflections reflections) {
         this.template = template;
         this.typeClass = Class.class.cast(ParameterizedType.class.cast(repositoryType.getGenericInterfaces()[0])
                 .getActualTypeArguments()[0]);

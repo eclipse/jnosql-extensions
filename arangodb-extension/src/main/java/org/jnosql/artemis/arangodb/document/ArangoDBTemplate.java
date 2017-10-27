@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * A {@link DocumentTemplate} to couchbase
+ * A {@link DocumentTemplate} to arangoDB
  */
 public interface ArangoDBTemplate extends DocumentTemplate {
 

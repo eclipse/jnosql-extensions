@@ -71,7 +71,7 @@ class ArangoDBRepositoryAsyncBean implements Bean<ArangoDBRepositoryAsync>, Pass
         ArangoDBTemplateAsync repository = getInstance(ArangoDBTemplateAsync.class);
         Reflections reflections = getInstance(Reflections.class);
 
-        CouchbaseRepositoryAsyncProxy handler = new CouchbaseRepositoryAsyncProxy(repository,
+        ArangoDBRepositoryAsyncProxy handler = new ArangoDBRepositoryAsyncProxy(repository,
                 classRepresentations, type, reflections);
         return (ArangoDBRepositoryAsync) Proxy.newProxyInstance(type.getClassLoader(),
                 new Class[]{type},
