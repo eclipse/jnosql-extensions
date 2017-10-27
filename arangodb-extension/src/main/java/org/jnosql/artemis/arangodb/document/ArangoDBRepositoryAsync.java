@@ -18,8 +18,8 @@ package org.jnosql.artemis.arangodb.document;
 import org.jnosql.artemis.RepositoryAsync;
 
 /**
- * The couchbase {@link RepositoryAsync}
+ * The arangodb {@link RepositoryAsync}
  * @param <T>
  */
-public interface CouchbaseRepositoryAsync<T, ID> extends RepositoryAsync<T, ID> {
+public interface ArangoDBRepositoryAsync<T, ID> extends RepositoryAsync<T, ID> {
 }

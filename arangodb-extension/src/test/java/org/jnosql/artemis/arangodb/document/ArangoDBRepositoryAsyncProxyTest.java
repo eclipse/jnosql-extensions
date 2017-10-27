@@ -106,7 +106,7 @@ public class ArangoDBRepositoryAsyncProxyTest {
 
     }
 
-    interface PersonAsyncRepository extends CouchbaseRepositoryAsync<Person, String> {
+    interface PersonAsyncRepository extends ArangoDBRepositoryAsync<Person, String> {
 
         Person findByName(String name);
 

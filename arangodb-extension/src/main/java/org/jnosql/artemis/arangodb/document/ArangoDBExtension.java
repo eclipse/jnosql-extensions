@@ -47,14 +47,14 @@ class ArangoDBExtension implements Extension {
         }
     }
 
-    <T extends CouchbaseRepositoryAsync> void onProcessAnnotatedTypeAsync(@Observes final ProcessAnnotatedType<T> repo) {
+    <T extends ArangoDBRepositoryAsync> void onProcessAnnotatedTypeAsync(@Observes final ProcessAnnotatedType<T> repo) {
         Class<T> javaClass = repo.getAnnotatedType().getJavaClass();
 
-        if(CouchbaseRepositoryAsync.class.equals(javaClass)) {
+        if(ArangoDBRepositoryAsync.class.equals(javaClass)) {
             return;
         }
 
-        if (Stream.of(javaClass.getInterfaces()).anyMatch(c -> CouchbaseRepositoryAsync.class.equals(c))
+        if (Stream.of(javaClass.getInterfaces()).anyMatch(c -> ArangoDBRepositoryAsync.class.equals(c))
                 && Modifier.isInterface(javaClass.getModifiers())) {
             crudAsyncTypes.add(javaClass);
         }

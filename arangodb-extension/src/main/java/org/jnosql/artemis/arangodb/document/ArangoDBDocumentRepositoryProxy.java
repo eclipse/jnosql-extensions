@@ -15,7 +15,6 @@
 package org.jnosql.artemis.arangodb.document;
 
 
-import com.couchbase.client.java.document.json.JsonObject;
 import org.jnosql.artemis.Repository;
 import org.jnosql.artemis.document.DocumentTemplate;
 import org.jnosql.artemis.document.query.AbstractDocumentRepository;
@@ -28,11 +27,14 @@ import org.jnosql.artemis.reflection.Reflections;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
-import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
-class CouchbaseocumentRepositoryProxy<T> extends AbstractDocumentRepositoryProxy<T> {
+import static java.util.Collections.emptyList;
+import static java.util.Collections.emptyMap;
+
+class ArangoDBDocumentRepositoryProxy<T> extends AbstractDocumentRepositoryProxy<T> {
 
     private final Class<T> typeClass;
 
@@ -48,7 +50,7 @@ class CouchbaseocumentRepositoryProxy<T> extends AbstractDocumentRepositoryProxy
     private final DocumentQueryDeleteParser deleteParser;
 
 
-    CouchbaseocumentRepositoryProxy(ArangoDBTemplate template, ClassRepresentations classRepresentations,
+    ArangoDBDocumentRepositoryProxy(ArangoDBTemplate template, ClassRepresentations classRepresentations,
                                     Class<?> repositoryType, Reflections reflections) {
         this.template = template;
         this.typeClass = Class.class.cast(ParameterizedType.class.cast(repositoryType.getGenericInterfaces()[0])
@@ -88,14 +90,14 @@ class CouchbaseocumentRepositoryProxy<T> extends AbstractDocumentRepositoryProxy
     @Override
     public Object invoke(Object o, Method method, Object[] args) throws Throwable {
 
-        AQL AQL = method.getAnnotation(AQL.class);
-        if (Objects.nonNull(AQL)) {
-            List<T> result = Collections.emptyList();
-            JsonObject params = JsonObjectUtil.getParams(args, method);
+        AQL aql = method.getAnnotation(AQL.class);
+        if (Objects.nonNull(aql)) {
+            List<T> result = emptyList();
+            Map<String, Object> params = JsonObjectUtil.getParams(args, method);
             if (params.isEmpty()) {
-                result = template.n1qlQuery(AQL.value());
+                result = template.aql(aql.value(), emptyMap());
             } else {
-                result = template.n1qlQuery(AQL.value(), params);
+                result = template.aql(aql.value(), params);
             }
             return ReturnTypeConverterUtil.returnObject(result, typeClass, method);
         }

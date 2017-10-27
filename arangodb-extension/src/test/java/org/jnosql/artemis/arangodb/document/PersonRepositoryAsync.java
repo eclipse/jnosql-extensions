@@ -15,5 +15,5 @@
 package org.jnosql.artemis.arangodb.document;
 
 
-public interface PersonRepositoryAsync extends CouchbaseRepositoryAsync<Person, String> {
+public interface PersonRepositoryAsync extends ArangoDBRepositoryAsync<Person, String> {
 }

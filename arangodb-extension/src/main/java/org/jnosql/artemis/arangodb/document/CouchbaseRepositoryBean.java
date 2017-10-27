@@ -72,7 +72,7 @@ class CouchbaseRepositoryBean implements Bean<ArangoDBRepository>, PassivationCa
 
         Reflections reflections = getInstance(Reflections.class);
 
-        CouchbaseocumentRepositoryProxy handler = new CouchbaseocumentRepositoryProxy(repository,
+        ArangoDBDocumentRepositoryProxy handler = new ArangoDBDocumentRepositoryProxy(repository,
                 classRepresentations, type, reflections);
         return (ArangoDBRepository) Proxy.newProxyInstance(type.getClassLoader(),
                 new Class[]{type},

@@ -35,7 +35,7 @@ import static org.mockito.Mockito.when;
 
 
 @RunWith(WeldJUnit4Runner.class)
-public class CouchbaseocumentRepositoryProxyTest {
+public class ArangoDBDocumentRepositoryProxyTest {
 
     private ArangoDBTemplate template;
 
@@ -52,7 +52,7 @@ public class CouchbaseocumentRepositoryProxyTest {
     public void setUp() {
         this.template = Mockito.mock(ArangoDBTemplate.class);
 
-        CouchbaseocumentRepositoryProxy handler = new CouchbaseocumentRepositoryProxy(template,
+        ArangoDBDocumentRepositoryProxy handler = new ArangoDBDocumentRepositoryProxy(template,
                 classRepresentations, PersonRepository.class, reflections);
 
         when(template.insert(any(Person.class))).thenReturn(new Person());

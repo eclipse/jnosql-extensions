@@ -33,7 +33,7 @@ import java.util.Collections;
 import java.util.Set;
 
 
-class CouchbaseRepositoryAsyncBean implements Bean<CouchbaseRepositoryAsync>, PassivationCapable {
+class CouchbaseRepositoryAsyncBean implements Bean<ArangoDBRepositoryAsync>, PassivationCapable {
 
     private final Class type;
 
@@ -66,14 +66,14 @@ class CouchbaseRepositoryAsyncBean implements Bean<CouchbaseRepositoryAsync>, Pa
     }
 
     @Override
-    public CouchbaseRepositoryAsync create(CreationalContext<CouchbaseRepositoryAsync> creationalContext) {
+    public ArangoDBRepositoryAsync create(CreationalContext<ArangoDBRepositoryAsync> creationalContext) {
         ClassRepresentations classRepresentations = getInstance(ClassRepresentations.class);
         ArangoDBTemplateAsync repository = getInstance(ArangoDBTemplateAsync.class);
         Reflections reflections = getInstance(Reflections.class);
 
         CouchbaseRepositoryAsyncProxy handler = new CouchbaseRepositoryAsyncProxy(repository,
                 classRepresentations, type, reflections);
-        return (CouchbaseRepositoryAsync) Proxy.newProxyInstance(type.getClassLoader(),
+        return (ArangoDBRepositoryAsync) Proxy.newProxyInstance(type.getClassLoader(),
                 new Class[]{type},
                 handler);
     }
@@ -93,7 +93,7 @@ class CouchbaseRepositoryAsyncBean implements Bean<CouchbaseRepositoryAsync>, Pa
 
 
     @Override
-    public void destroy(CouchbaseRepositoryAsync instance, CreationalContext<CouchbaseRepositoryAsync> creationalContext) {
+    public void destroy(ArangoDBRepositoryAsync instance, CreationalContext<ArangoDBRepositoryAsync> creationalContext) {
 
     }
 

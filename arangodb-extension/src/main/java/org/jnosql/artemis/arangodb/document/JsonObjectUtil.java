@@ -14,10 +14,10 @@
  */
 package org.jnosql.artemis.arangodb.document;
 
-import com.couchbase.client.java.document.json.JsonObject;
-
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -26,9 +26,9 @@ final class JsonObjectUtil {
     private JsonObjectUtil() {
     }
 
-    static JsonObject getParams(Object[] args, Method method) {
+    static Map<String, Object> getParams(Object[] args, Method method) {
 
-        JsonObject jsonObject = JsonObject.create();
+        Map<String, Object> jsonObject = new HashMap<>();
         Annotation[][] annotations = method.getParameterAnnotations();
 
         for (int index = 0; index < annotations.length; index++) {
