@@ -13,10 +13,10 @@ ArangoDBRepository is an extension of Repository that allows using AQL annotatio
 ```java
     interface PersonRepository extends ArangoDBRepository<Person, String> {
 
-        @AQL("select * from Person")
+        @AQL("FOR p IN Person RETURN p")
         List<Person> findAll();
 
-        @AQL("select * from Person where name = @name")
+        @AQL("FOR p IN Person FILTER p.name = @name RETURN p")
         List<Person> findByName(@Param("name") String name);
     }
 ```
@@ -32,10 +32,10 @@ ArangoDBRepositoryAsync is an extension of RepositoryAsync that allows using AQL
         Person findByName(String name);
 
 
-        @AQL("select * from Person where name= $name")
+        @AQL("FOR p IN Person FILTER p.name = @name RETURN p")
         void queryName(@Param("name") String name);
 
-        @AQL("select * from Person where name= $name")
+        @AQL("FOR p IN Person FILTER p.name = @name RETURN p")
         void queryName(@Param("name") String name, Consumer<List<Person>> callBack);
     }
 ```
@@ -46,12 +46,12 @@ ArangoDBRepositoryAsync is an extension of RepositoryAsync that allows using AQL
 ArangoDBTemplate is a specialization of Document Template that allows using AQL both synchronous and asynchronous.
 
 ```java
-        template.aql("select * from Person where name = @name", params);
+        template.aql("FOR p IN Person FILTER p.name = @name RETURN p", params);
 
-        String query = "select * from Person where name = ?";
+        String query = "FOR p IN Person FILTER p.name = @name RETURN p";
         Consumer<List<Person>> callBack = p -> {
         };
-        JsonObject params = JsonObject.create().put("name", "Ada");
+        Map<String,Object> params = Collections.singletonMap("name", "Ada");
         templateAsync.aql(query, params, callBack);
 
 ```
