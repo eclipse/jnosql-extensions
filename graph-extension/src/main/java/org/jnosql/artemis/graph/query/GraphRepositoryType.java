@@ -14,12 +14,7 @@
  */
 package org.jnosql.artemis.graph.query;
 
-import org.jnosql.diana.api.column.ColumnDeleteQuery;
-import org.jnosql.diana.api.column.ColumnQuery;
-
 import java.lang.reflect.Method;
-import java.util.Optional;
-import java.util.stream.Stream;
 
 public enum GraphRepositoryType {
 
@@ -47,16 +42,4 @@ public enum GraphRepositoryType {
     }
 
 
-    static Optional<ColumnQuery> getQuery(Object[] args) {
-        return Stream.of(args)
-                .filter(ColumnQuery.class::isInstance).map(ColumnQuery.class::cast)
-                .findFirst();
-    }
-
-    static Optional<ColumnDeleteQuery> getDeleteQuery(Object[] args) {
-        return Stream.of(args)
-                .filter(ColumnDeleteQuery.class::isInstance)
-                .map(ColumnDeleteQuery.class::cast)
-                .findFirst();
-    }
 }
