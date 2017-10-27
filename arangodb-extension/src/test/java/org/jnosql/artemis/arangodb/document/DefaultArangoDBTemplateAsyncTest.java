@@ -14,12 +14,10 @@
  */
 package org.jnosql.artemis.arangodb.document;
 
-import com.couchbase.client.java.document.json.JsonObject;
-import com.couchbase.client.java.query.Statement;
 import org.jnosql.artemis.document.DocumentEntityConverter;
 import org.jnosql.diana.api.document.Document;
 import org.jnosql.diana.api.document.DocumentEntity;
-import org.jnosql.diana.couchbase.document.CouchbaseDocumentCollectionManagerAsync;
+import org.jnosql.diana.arangodb.document.ArangoDBDocumentCollectionManagerAsync;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,7 +25,9 @@ import org.mockito.Mockito;
 
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
 
 import static org.mockito.Mockito.when;
@@ -38,14 +38,14 @@ public class DefaultArangoDBTemplateAsyncTest {
     @Inject
     private DocumentEntityConverter converter;
 
-    private CouchbaseDocumentCollectionManagerAsync managerAsync;
+    private ArangoDBDocumentCollectionManagerAsync managerAsync;
 
     private ArangoDBTemplateAsync templateAsync;
 
 
     @Before
     public void setUp() {
-        managerAsync = Mockito.mock(CouchbaseDocumentCollectionManagerAsync.class);
+        managerAsync = Mockito.mock(ArangoDBDocumentCollectionManagerAsync.class);
         Instance instance = Mockito.mock(Instance.class);
         when(instance.get()).thenReturn(managerAsync);
 
@@ -62,39 +62,10 @@ public class DefaultArangoDBTemplateAsyncTest {
         String query = "select * from Person where name = ?";
         Consumer<List<Person>> callBack = p -> {
         };
-        JsonObject params = JsonObject.create().put("name", "Ada");
-        templateAsync.n1qlQuery(query, params, callBack);
-        Mockito.verify(managerAsync).n1qlQuery(Mockito.eq(query), Mockito.eq(params), Mockito.any(Consumer.class));
+        Map<String, Object> params = Collections.singletonMap("name", "Ada");
+        templateAsync.aql(query, params, callBack);
+        Mockito.verify(managerAsync).aql(Mockito.eq(query), Mockito.eq(params), Mockito.any(Consumer.class));
 
-    }
-
-    @Test
-    public void shouldFindStatement() {
-        Statement query = Mockito.mock(Statement.class);
-        Consumer<List<Person>> callBack = p -> {
-        };
-        JsonObject params = JsonObject.create().put("name", "Ada");
-        templateAsync.n1qlQuery(query, params, callBack);
-        Mockito.verify(managerAsync).n1qlQuery(Mockito.eq(query), Mockito.eq(params), Mockito.any(Consumer.class));
-    }
-
-    @Test
-    public void shouldFind1() {
-        String query = "select * from Person where name = ?";
-        Consumer<List<Person>> callBack = p -> {
-        };
-        templateAsync.n1qlQuery(query, callBack);
-        Mockito.verify(managerAsync).n1qlQuery(Mockito.eq(query),  Mockito.any(Consumer.class));
-
-    }
-
-    @Test
-    public void shouldFindStatement1() {
-        Statement query = Mockito.mock(Statement.class);
-        Consumer<List<Person>> callBack = p -> {
-        };
-        templateAsync.n1qlQuery(query, callBack);
-        Mockito.verify(managerAsync).n1qlQuery(Mockito.eq(query),  Mockito.any(Consumer.class));
     }
 
 
