@@ -1,9 +1,9 @@
 # ArangoDB-extension
 
-![Couchbase Project](https://github.com/JNOSQL/jnosql-site/blob/master/assets/img/logos/arangodb.png)
+![ArangoDB Project](https://github.com/JNOSQL/jnosql-site/blob/master/assets/img/logos/arangodb.png)
 
 
-Couchbase extension has implementations to use specific behavior that is beyond the API such as N1QL.
+ArangoDB extension has implementations to use specific behavior that is beyond the API such as N1QL.
 
 ## ArangoDBRepository
 

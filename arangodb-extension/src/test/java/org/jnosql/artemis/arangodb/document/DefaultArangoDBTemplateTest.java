@@ -14,15 +14,12 @@
  */
 package org.jnosql.artemis.arangodb.document;
 
-import com.couchbase.client.java.document.json.JsonObject;
-import com.couchbase.client.java.query.Statement;
-import com.couchbase.client.java.search.SearchQuery;
 import org.jnosql.artemis.document.DocumentEntityConverter;
 import org.jnosql.artemis.document.DocumentEventPersistManager;
 import org.jnosql.artemis.document.DocumentWorkflow;
 import org.jnosql.diana.api.document.Document;
 import org.jnosql.diana.api.document.DocumentEntity;
-import org.jnosql.diana.couchbase.document.CouchbaseDocumentCollectionManager;
+import org.jnosql.diana.arangodb.document.ArangoDBDocumentCollectionManager;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,12 +27,9 @@ import org.mockito.Mockito;
 
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
-import java.util.List;
+import java.util.Collections;
+import java.util.Map;
 
-import static java.util.Collections.singletonList;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
 
 
@@ -51,14 +45,14 @@ public class DefaultArangoDBTemplateTest {
     @Inject
     private DocumentEventPersistManager persistManager;
 
-    private CouchbaseDocumentCollectionManager manager;
+    private ArangoDBDocumentCollectionManager manager;
 
     private ArangoDBTemplate template;
 
 
     @Before
     public void setup() {
-        manager = Mockito.mock(CouchbaseDocumentCollectionManager.class);
+        manager = Mockito.mock(ArangoDBDocumentCollectionManager.class);
         Instance instance = Mockito.mock(Instance.class);
         when(instance.get()).thenReturn(manager);
         template = new DefaultArangoDBTemplate(instance, converter, flow, persistManager);
@@ -67,50 +61,15 @@ public class DefaultArangoDBTemplateTest {
         entity.add(Document.of("_id", "Ada"));
         entity.add(Document.of("age", 10));
 
-        when(manager.search(any(SearchQuery.class))).thenReturn(singletonList(entity));
-
     }
 
     @Test
     public void shouldFindN1ql() {
-        JsonObject params = JsonObject.create().put("name", "Ada");
-        template.n1qlQuery("select * from Person where name = $name", params);
-        Mockito.verify(manager).n1qlQuery("select * from Person where name = $name", params);
-    }
-
-    @Test
-    public void shouldFindN1qlStatment() {
-        Statement statement = Mockito.mock(Statement.class);
-        JsonObject params = JsonObject.create().put("name", "Ada");
-        template.n1qlQuery(statement, params);
-        Mockito.verify(manager).n1qlQuery(statement, params);
+        Map<String, Object> params = Collections.singletonMap("name", "Ada");
+        template.aql("FOR p IN Person FILTER p.name = @name RETURN p", params);
+        Mockito.verify(manager).aql("select * from Person where name = $name", params);
     }
 
 
-    @Test
-    public void shouldFindN1ql2() {
-        template.n1qlQuery("select * from Person where name = $name");
-        Mockito.verify(manager).n1qlQuery("select * from Person where name = $name");
-    }
-
-    @Test
-    public void shouldFindN1qlStatment2() {
-        Statement statement = Mockito.mock(Statement.class);
-        template.n1qlQuery(statement);
-        Mockito.verify(manager).n1qlQuery(statement);
-    }
-
-    @Test
-    public void shouldSearch() {
-        SearchQuery query = Mockito.mock(SearchQuery.class);
-
-        List<Person> people = template.search(query);
-
-        assertFalse(people.isEmpty());
-        assertEquals(1, people.size());
-        Person person = people.get(0);
-
-        assertEquals("Ada", person.getName());
-    }
 
 }

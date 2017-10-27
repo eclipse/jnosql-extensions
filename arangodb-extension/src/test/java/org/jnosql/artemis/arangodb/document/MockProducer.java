@@ -17,8 +17,8 @@ package org.jnosql.artemis.arangodb.document;
 
 import org.jnosql.diana.api.document.Document;
 import org.jnosql.diana.api.document.DocumentEntity;
-import org.jnosql.diana.couchbase.document.CouchbaseDocumentCollectionManager;
-import org.jnosql.diana.couchbase.document.CouchbaseDocumentCollectionManagerAsync;
+import org.jnosql.diana.arangodb.document.ArangoDBDocumentCollectionManager;
+import org.jnosql.diana.arangodb.document.ArangoDBDocumentCollectionManagerAsync;
 import org.mockito.Mockito;
 
 import javax.enterprise.inject.Produces;
@@ -27,8 +27,8 @@ public class MockProducer {
 
 
     @Produces
-    public CouchbaseDocumentCollectionManager getManager() {
-        CouchbaseDocumentCollectionManager manager = Mockito.mock(CouchbaseDocumentCollectionManager.class);
+    public ArangoDBDocumentCollectionManager getManager() {
+        ArangoDBDocumentCollectionManager manager = Mockito.mock(ArangoDBDocumentCollectionManager.class);
         DocumentEntity entity = DocumentEntity.of("Person");
         entity.add(Document.of("name", "Ada"));
         Mockito.when(manager.insert(Mockito.any(DocumentEntity.class))).thenReturn(entity);
@@ -36,7 +36,7 @@ public class MockProducer {
     }
 
     @Produces
-    public CouchbaseDocumentCollectionManagerAsync getManagerAsync() {
-        return Mockito.mock(CouchbaseDocumentCollectionManagerAsync.class);
+    public ArangoDBDocumentCollectionManagerAsync getManagerAsync() {
+        return Mockito.mock(ArangoDBDocumentCollectionManagerAsync.class);
     }
 }

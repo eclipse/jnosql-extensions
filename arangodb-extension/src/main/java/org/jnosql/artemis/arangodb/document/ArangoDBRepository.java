@@ -18,7 +18,7 @@ package org.jnosql.artemis.arangodb.document;
 import org.jnosql.artemis.Repository;
 
 /**
- * The couchbase {@link Repository}
+ * The arangodb {@link Repository}
  * @param <T>
  */
 public interface ArangoDBRepository<T, ID> extends Repository<T, ID> {

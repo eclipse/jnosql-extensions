@@ -14,9 +14,9 @@
  */
 package org.jnosql.artemis.arangodb.document;
 
-import com.couchbase.client.java.document.json.JsonObject;
 import org.jnosql.artemis.reflection.ClassRepresentations;
 import org.jnosql.artemis.reflection.Reflections;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,9 +27,11 @@ import javax.inject.Inject;
 import java.lang.reflect.Proxy;
 import java.time.Duration;
 import java.util.List;
+import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
+import static java.util.Collections.emptyMap;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -67,26 +69,25 @@ public class ArangoDBDocumentRepositoryProxyTest {
     @Test
     public void shouldFindAll() {
         personRepository.findAll();
-        verify(template).n1qlQuery("select * from Person");
+        verify(template).aql("FOR p IN Person RETURN p", emptyMap());
     }
 
     @Test
     public void shouldFindByNameN1ql() {
-        ArgumentCaptor<JsonObject> captor = ArgumentCaptor.forClass(JsonObject.class);
+        ArgumentCaptor<Map> captor = ArgumentCaptor.forClass(Map.class);
         personRepository.findByName("Ada");
-        verify(template).n1qlQuery(Mockito.eq("select * from Person where name = $name"), captor.capture());
+        verify(template).aql(eq("FOR p IN Person FILTER p.name = @name RETURN p"), captor.capture());
 
-        JsonObject value = captor.getValue();
-
-        assertEquals("Ada", value.getString("name"));
+        Map value = captor.getValue();
+        Assert.assertEquals("Ada", value.get("name"));
     }
 
     interface PersonRepository extends ArangoDBRepository<Person, String> {
 
-        @AQL("select * from Person")
+        @AQL("FOR p IN Person RETURN p")
         List<Person> findAll();
 
-        @AQL("select * from Person where name = $name")
+        @AQL("FOR p IN Person FILTER p.name = @name RETURN p")
         List<Person> findByName(@Param("name") String name);
     }
 }

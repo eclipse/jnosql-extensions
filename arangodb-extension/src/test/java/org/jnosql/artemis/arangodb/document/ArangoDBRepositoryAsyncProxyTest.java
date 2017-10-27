@@ -14,7 +14,6 @@
  */
 package org.jnosql.artemis.arangodb.document;
 
-import com.couchbase.client.java.document.json.JsonObject;
 import org.jnosql.artemis.DynamicQueryException;
 import org.jnosql.artemis.reflection.ClassRepresentations;
 import org.jnosql.artemis.reflection.Reflections;
@@ -26,7 +25,9 @@ import org.mockito.Mockito;
 
 import javax.inject.Inject;
 import java.lang.reflect.Proxy;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
 
 import static org.junit.Assert.assertEquals;
@@ -81,17 +82,16 @@ public class ArangoDBRepositoryAsyncProxyTest {
     }
 
 
-
     @Test
     public void shouldFindNoCallback() {
-        ArgumentCaptor<JsonObject> captor = ArgumentCaptor.forClass(JsonObject.class);
-        JsonObject params = JsonObject.create().put("name", "Ada");
+        ArgumentCaptor<Map> captor = ArgumentCaptor.forClass(Map.class);
+        Map params = Collections.singletonMap("name", "Ada");
         personRepository.queryName("Ada");
-        verify(template).n1qlQuery(Mockito.eq("select * from Person where name= $name"), captor.capture(),
+        verify(template).aql(Mockito.eq("select * from Person where name= $name"), captor.capture(),
                 any(Consumer.class));
 
-        JsonObject value = captor.getValue();
-        assertEquals("Ada", value.getString("name"));
+        Map value = captor.getValue();
+        assertEquals("Ada", value.get("name"));
     }
 
     @Test
@@ -99,10 +99,10 @@ public class ArangoDBRepositoryAsyncProxyTest {
         Consumer<List<Person>> callBack = p -> {
         };
 
-        JsonObject params = JsonObject.create().put("name", "Ada");
+        Map params = Collections.singletonMap("name", "Ada");
         personRepository.queryName("Ada", callBack);
 
-        verify(template).n1qlQuery(Mockito.eq("select * from Person where name= $name"), Mockito.eq(params), Mockito.eq(callBack));
+        verify(template).aql(Mockito.eq("select * from Person where name= $name"), Mockito.eq(params), Mockito.eq(callBack));
 
     }
 
@@ -111,10 +111,10 @@ public class ArangoDBRepositoryAsyncProxyTest {
         Person findByName(String name);
 
 
-        @AQL("select * from Person where name= $name")
+        @AQL("FOR p IN Person RETURN p")
         void queryName(@Param("name") String name);
 
-        @AQL("select * from Person where name= $name")
+        @AQL("FOR p IN Person FILTER p.name = @name RETURN p")
         void queryName(@Param("name") String name, Consumer<List<Person>> callBack);
     }
 }
