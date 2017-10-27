@@ -17,7 +17,6 @@ package org.jnosql.artemis.orientdb.document;
 import org.jnosql.artemis.DynamicQueryException;
 import org.jnosql.artemis.reflection.ClassRepresentations;
 import org.jnosql.artemis.reflection.Reflections;
-import org.jnosql.diana.api.column.ColumnQuery;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -71,7 +70,6 @@ public class OrientDBRepositoryAsyncProxyTest {
 
     @Test
     public void shouldFindNoCallback() {
-        ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
         personRepository.queryName("Ada");
     }
 
