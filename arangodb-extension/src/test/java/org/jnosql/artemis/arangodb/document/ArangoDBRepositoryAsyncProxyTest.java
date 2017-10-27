@@ -95,7 +95,7 @@ public class ArangoDBRepositoryAsyncProxyTest {
     }
 
     @Test
-    public void shouldFindByNameFromN1ql() {
+    public void shouldFindByNameFromAQL() {
         Consumer<List<Person>> callBack = p -> {
         };
 

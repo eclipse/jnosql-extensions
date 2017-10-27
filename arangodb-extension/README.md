@@ -3,11 +3,11 @@
 ![ArangoDB Project](https://github.com/JNOSQL/jnosql-site/blob/master/assets/img/logos/arangodb.png)
 
 
-ArangoDB extension has implementations to use specific behavior that is beyond the API such as N1QL.
+ArangoDB extension has implementations to use specific behavior that is beyond the API such as AQL.
 
 ## ArangoDBRepository
 
-ArangoDBRepository is an extension of Repository that allows using AQL annotation that executes N1QL.
+ArangoDBRepository is an extension of Repository that allows using AQL annotation that executes AQL.
 
 
 ```java
@@ -23,7 +23,7 @@ ArangoDBRepository is an extension of Repository that allows using AQL annotatio
 
 ## ArangoDBRepositoryAsync
 
-ArangoDBRepositoryAsync is an extension of RepositoryAsync that allows using N1QL annotation that executes N1QL.
+ArangoDBRepositoryAsync is an extension of RepositoryAsync that allows using AQL annotation that executes AQL.
 
 
 ```java
@@ -32,10 +32,10 @@ ArangoDBRepositoryAsync is an extension of RepositoryAsync that allows using N1Q
         Person findByName(String name);
 
 
-        @N1QL("select * from Person where name= $name")
+        @AQL("select * from Person where name= $name")
         void queryName(@Param("name") String name);
 
-        @N1QL("select * from Person where name= $name")
+        @AQL("select * from Person where name= $name")
         void queryName(@Param("name") String name, Consumer<List<Person>> callBack);
     }
 ```
@@ -52,6 +52,6 @@ ArangoDBTemplate is a specialization of Document Template that allows using AQL 
         Consumer<List<Person>> callBack = p -> {
         };
         JsonObject params = JsonObject.create().put("name", "Ada");
-        templateAsync.n1qlQuery(query, params, callBack);
+        templateAsync.aql(query, params, callBack);
 
 ```

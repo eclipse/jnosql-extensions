@@ -73,7 +73,7 @@ public class ArangoDBDocumentRepositoryProxyTest {
     }
 
     @Test
-    public void shouldFindByNameN1ql() {
+    public void shouldFindByNameAQL() {
         ArgumentCaptor<Map> captor = ArgumentCaptor.forClass(Map.class);
         personRepository.findByName("Ada");
         verify(template).aql(eq("FOR p IN Person FILTER p.name = @name RETURN p"), captor.capture());
