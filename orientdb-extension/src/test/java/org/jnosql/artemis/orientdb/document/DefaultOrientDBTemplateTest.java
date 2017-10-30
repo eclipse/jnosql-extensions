@@ -20,7 +20,6 @@ import org.jnosql.artemis.document.DocumentWorkflow;
 import org.jnosql.diana.api.document.Document;
 import org.jnosql.diana.api.document.DocumentEntity;
 import org.jnosql.diana.api.document.DocumentQuery;
-import org.jnosql.diana.api.document.query.DocumentQueryBuilder;
 import org.jnosql.diana.orientdb.document.OrientDBDocumentCollectionManager;
 import org.junit.Before;
 import org.junit.Test;
@@ -40,7 +39,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 
-@RunWith(WeldJUnit4Runner.class)
+@RunWith(CDIJUnit4Runner.class)
 public class DefaultOrientDBTemplateTest {
 
     @Inject
