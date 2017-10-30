@@ -17,22 +17,19 @@ package org.jnosql.artemis.graph.spi;
 import org.jnosql.artemis.Database;
 import org.jnosql.artemis.graph.BookRepository;
 import org.jnosql.artemis.graph.GraphTemplate;
-import org.jnosql.artemis.graph.cdi.WeldJUnit4Runner;
+import org.jnosql.artemis.graph.cdi.CDIJUnit4Runner;
 import org.jnosql.artemis.graph.model.Book;
 import org.jnosql.artemis.graph.model.Person;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import javax.inject.Inject;
-import javax.management.openmbean.OpenDataException;
-
-import java.util.Optional;
 
 import static org.jnosql.artemis.DatabaseType.GRAPH;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-@RunWith(WeldJUnit4Runner.class)
+@RunWith(CDIJUnit4Runner.class)
 public class GraphProducerExtensionTest {
 
     @Inject

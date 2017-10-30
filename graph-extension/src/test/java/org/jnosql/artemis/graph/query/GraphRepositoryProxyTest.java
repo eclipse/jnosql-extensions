@@ -21,7 +21,7 @@ import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.jnosql.artemis.Repository;
 import org.jnosql.artemis.graph.GraphTemplate;
 import org.jnosql.artemis.graph.VertexConverter;
-import org.jnosql.artemis.graph.cdi.WeldJUnit4Runner;
+import org.jnosql.artemis.graph.cdi.CDIJUnit4Runner;
 import org.jnosql.artemis.graph.model.Person;
 import org.jnosql.artemis.reflection.ClassRepresentations;
 import org.jnosql.artemis.reflection.Reflections;
@@ -50,7 +50,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@RunWith(WeldJUnit4Runner.class)
+@RunWith(CDIJUnit4Runner.class)
 public class GraphRepositoryProxyTest {
 
 
