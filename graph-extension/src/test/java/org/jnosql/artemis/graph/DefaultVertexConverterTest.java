@@ -14,7 +14,7 @@
  */
 package org.jnosql.artemis.graph;
 
-import org.jnosql.artemis.graph.cdi.CDIJUnit4Runner;
+import org.jnosql.artemis.graph.cdi.CDIJUnitRunner;
 import org.jnosql.artemis.graph.model.Actor;
 import org.jnosql.artemis.graph.model.Director;
 import org.jnosql.artemis.graph.model.Job;
@@ -41,7 +41,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 
-@RunWith(CDIJUnit4Runner.class)
+@RunWith(CDIJUnitRunner.class)
 public class DefaultVertexConverterTest {
 
     @Inject

@@ -17,7 +17,7 @@ package org.jnosql.artemis.graph.spi;
 import org.jnosql.artemis.Database;
 import org.jnosql.artemis.graph.BookRepository;
 import org.jnosql.artemis.graph.GraphTemplate;
-import org.jnosql.artemis.graph.cdi.CDIJUnit4Runner;
+import org.jnosql.artemis.graph.cdi.CDIJUnitRunner;
 import org.jnosql.artemis.graph.model.Book;
 import org.jnosql.artemis.graph.model.Person;
 import org.junit.Test;
@@ -29,7 +29,7 @@ import static org.jnosql.artemis.DatabaseType.GRAPH;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-@RunWith(CDIJUnit4Runner.class)
+@RunWith(CDIJUnitRunner.class)
 public class GraphProducerExtensionTest {
 
     @Inject

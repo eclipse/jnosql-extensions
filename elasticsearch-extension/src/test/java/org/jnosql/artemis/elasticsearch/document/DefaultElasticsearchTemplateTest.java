@@ -38,7 +38,7 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.when;
 
 
-@RunWith(CDIJUnit4Runner.class)
+@RunWith(CDIJUnitRunner.class)
 public class DefaultElasticsearchTemplateTest {
 
     @Inject

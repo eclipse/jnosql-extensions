@@ -15,7 +15,7 @@
 package org.jnosql.artemis.graph;
 
 import org.apache.tinkerpop.gremlin.structure.Graph;
-import org.jnosql.artemis.graph.cdi.CDIJUnit4Runner;
+import org.jnosql.artemis.graph.cdi.CDIJUnitRunner;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -24,7 +24,7 @@ import javax.inject.Inject;
 
 import static org.junit.Assert.assertNotNull;
 
-@RunWith(CDIJUnit4Runner.class)
+@RunWith(CDIJUnitRunner.class)
 public class DefaultGraphTemplateProducerTest {
 
     @Inject

@@ -12,14 +12,14 @@
  *
  *   Otavio Santana
  */
-package org.jnosql.artemis.orientdb.document;
+package org.jnosql.artemis.arangodb.document;
 
 import org.junit.runners.BlockJUnit4ClassRunner;
 import org.junit.runners.model.InitializationError;
 
-public class CDIJUnit4Runner extends BlockJUnit4ClassRunner {
+public class CDIJUnitRunner extends BlockJUnit4ClassRunner {
 
-    public CDIJUnit4Runner(Class<Object> clazz) throws InitializationError {
+    public CDIJUnitRunner(Class<Object> clazz) throws InitializationError {
         super(clazz);
     }
 

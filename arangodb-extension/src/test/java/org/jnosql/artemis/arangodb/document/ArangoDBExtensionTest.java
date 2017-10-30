@@ -19,7 +19,7 @@ import org.junit.runner.RunWith;
 
 import javax.inject.Inject;
 
-@RunWith(CDIJUnit4Runner.class)
+@RunWith(CDIJUnitRunner.class)
 public class ArangoDBExtensionTest {
 
     @Inject
