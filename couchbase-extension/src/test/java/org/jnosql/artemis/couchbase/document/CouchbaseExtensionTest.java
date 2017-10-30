@@ -19,7 +19,7 @@ import org.junit.runner.RunWith;
 
 import javax.inject.Inject;
 
-@RunWith(WeldJUnit4Runner.class)
+@RunWith(CDIJUnit4Runner.class)
 public class CouchbaseExtensionTest {
 
     @Inject
