@@ -34,7 +34,7 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verify;
 
-@RunWith(WeldJUnit4Runner.class)
+@RunWith(CDIJUnit4Runner.class)
 public class ArangoDBRepositoryAsyncProxyTest {
 
 
@@ -68,7 +68,6 @@ public class ArangoDBRepositoryAsyncProxyTest {
     public void shouldUpdate() {
         ArgumentCaptor<Person> captor = ArgumentCaptor.forClass(Person.class);
         Person person = new Person("Ada", 12);
-        ;
         template.update(person);
         verify(template).update(captor.capture());
         Person value = captor.getValue();

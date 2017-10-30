@@ -17,25 +17,21 @@ package org.jnosql.artemis.arangodb.document;
 import org.jboss.weld.environment.se.Weld;
 import org.jboss.weld.environment.se.WeldContainer;
 
-public class WeldContext {
+import javax.enterprise.inject.se.SeContainer;
+import javax.enterprise.inject.se.SeContainerInitializer;
 
-    public static final WeldContext INSTANCE = new WeldContext();
+public class CDIContext {
 
-    private final Weld weld;
-    private final WeldContainer container;
+    public static final CDIContext INSTANCE = new CDIContext();
 
-    private WeldContext() {
-        this.weld = new Weld();
-        this.container = weld.initialize();
-        Runtime.getRuntime().addShutdownHook(new Thread() {
-            @Override
-            public void run() {
-                weld.shutdown();
-            }
-        });
+    private final SeContainer container;
+
+    private CDIContext() {
+        this.container = SeContainerInitializer.newInstance().initialize();
+        Runtime.getRuntime().addShutdownHook(new Thread(container::close));
     }
 
     public <T> T getBean(Class<T> type) {
-        return container.instance().select(type).get();
+        return container.select(type).get();
     }
 }
