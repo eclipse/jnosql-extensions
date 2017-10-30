@@ -14,7 +14,6 @@
  */
 package org.jnosql.artemis.cassandra.column;
 
-import org.hamcrest.Matchers;
 import org.jnosql.artemis.cassandra.column.model.Actor;
 import org.jnosql.artemis.cassandra.column.model.AppointmentBook;
 import org.jnosql.artemis.cassandra.column.model.Artist;
@@ -62,7 +61,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
-@RunWith(WeldJUnit4Runner.class)
+@RunWith(CDIJUnit4Runner.class)
 public class CassandraColumnEntityConverterTest {
 
 
