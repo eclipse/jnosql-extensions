@@ -69,6 +69,17 @@
     </properties>
     <dependencies>
         <dependency>
+            <groupId>org.jnosql.artemis</groupId>
+            <artifactId>artemis-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.tinkerpop</groupId>
+            <artifactId>gremlin-core</artifactId>
+            <version>3.3.0</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
             <groupId>org.apache.tinkerpop</groupId>
             <artifactId>neo4j-gremlin</artifactId>
             <version>3.3.0</version>
