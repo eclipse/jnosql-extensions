@@ -1,6 +1,6 @@
 # OriendtDB-extension
 
-![OriendtDB Project](https://github.com/JNOSQL/jnosql-site/blob/master/assets/img/logos/orientdb.png)
+![OriendtDB Project](https://jnosql.github.io/jnosql-site/img/logos/orientdb.png)
 
 
 OrientDB extension has implementations to use specific behavior that is beyond the API such as SQL.
