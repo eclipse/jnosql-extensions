@@ -1,6 +1,6 @@
 # Couchbase-extension
 
-![Couchbase Project](https://github.com/JNOSQL/jnosql-site/blob/master/assets/img/logos/couchbase.png)
+![Couchbase Project](https://jnosql.github.io/jnosql-site/img/logos/couchbase.svg)
 
 
 Couchbase extension has implementations to use specific behavior that is beyond the API such as N1QL.
