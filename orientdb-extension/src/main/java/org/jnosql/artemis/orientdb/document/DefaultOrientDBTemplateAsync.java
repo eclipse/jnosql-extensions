@@ -25,9 +25,10 @@ import javax.enterprise.inject.Instance;
 import javax.enterprise.inject.Typed;
 import javax.inject.Inject;
 import java.util.List;
-import java.util.Objects;
+import java.util.Map;
 import java.util.function.Consumer;
 
+import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.toList;
 
 /**
@@ -63,8 +64,8 @@ class DefaultOrientDBTemplateAsync extends AbstractDocumentTemplateAsync impleme
 
     @Override
     public <T> void sql(String query, Consumer<List<T>> callBack, Object... params) {
-        Objects.requireNonNull(query, "query is required");
-        Objects.requireNonNull(callBack, "callBack is required");
+        requireNonNull(query, "query is required");
+        requireNonNull(callBack, "callBack is required");
 
         Consumer<List<DocumentEntity>> dianaCallBack = d -> {
             callBack.accept(
@@ -76,5 +77,22 @@ class DefaultOrientDBTemplateAsync extends AbstractDocumentTemplateAsync impleme
 
         manager.get().sql(query, dianaCallBack, params);
 
+    }
+
+    @Override
+    public <T> void sql(String query, Consumer<List<T>> callBack, Map<String, Object> params) {
+        requireNonNull(query, "query is required");
+        requireNonNull(callBack, "callBack is required");
+        requireNonNull(params, "params is required");
+
+        Consumer<List<DocumentEntity>> dianaCallBack = d -> {
+            callBack.accept(
+                    d.stream()
+                            .map(getConverter()::toEntity)
+                            .map(o -> (T) o)
+                            .collect(toList()));
+        };
+
+        manager.get().sql(query, dianaCallBack, params);
     }
 }

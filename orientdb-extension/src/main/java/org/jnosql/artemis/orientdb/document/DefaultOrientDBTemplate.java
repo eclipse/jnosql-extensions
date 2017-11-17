@@ -28,6 +28,7 @@ import javax.enterprise.inject.Instance;
 import javax.enterprise.inject.Typed;
 import javax.inject.Inject;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -83,6 +84,13 @@ class DefaultOrientDBTemplate extends AbstractDocumentTemplate
 
     @Override
     public <T> List<T> sql(String query, Object... params) throws NullPointerException {
+        return manager.get().sql(query, params).stream().map(converter::toEntity)
+                .map(e -> (T) e)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public <T> List<T> sql(String query, Map<String, Object> params) throws NullPointerException {
         return manager.get().sql(query, params).stream().map(converter::toEntity)
                 .map(e -> (T) e)
                 .collect(Collectors.toList());
