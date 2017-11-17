@@ -28,7 +28,7 @@ import java.util.function.Consumer;
 public interface OrientDBTemplate extends DocumentTemplate {
 
     /**
-     * Find using query
+     * Find using OrientDB native query
      *
      * @param query  the query
      * @param params the params
@@ -38,7 +38,7 @@ public interface OrientDBTemplate extends DocumentTemplate {
     <T> List<T> sql(String query, Object... params) throws NullPointerException;
 
     /**
-     * Find using query
+     * Find using OrientDB native query with map params
      *
      * @param query  the query
      * @param params the params

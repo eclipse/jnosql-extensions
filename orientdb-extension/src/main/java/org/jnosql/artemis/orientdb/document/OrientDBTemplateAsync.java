@@ -27,7 +27,21 @@ import java.util.function.Consumer;
 public interface OrientDBTemplateAsync extends DocumentTemplateAsync {
 
 
+    /**
+     * Find using OrientDB native query with map params
+     * @param query the query
+     * @param callBack the callback
+     * @param params the params
+     * @param <T> the type
+     */
     <T> void sql(String query, Consumer<List<T>> callBack, Object... params);
 
+    /**
+     * Find using OrientDB native query with map params
+     * @param query the query
+     * @param callBack the callback
+     * @param params the params
+     * @param <T> the type
+     */
     <T> void sql(String query, Consumer<List<T>> callBack, Map<String, Object> params);
 }
