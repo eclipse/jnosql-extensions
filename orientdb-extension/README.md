@@ -18,6 +18,9 @@ OrientDBCrudRepository is an extension of Repository that allows using SQL annot
 
         @SQL("select * from Person where name = ?")
         List<Person> findByName(String name);
+        
+        @SQL("select * from Person where age = :age")
+        List<Person> findByAge(@Param("age") Integer age);
     }
 ```
 
