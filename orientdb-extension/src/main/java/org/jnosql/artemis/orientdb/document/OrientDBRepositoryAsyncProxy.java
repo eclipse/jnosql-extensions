@@ -101,10 +101,10 @@ class OrientDBRepositoryAsyncProxy<T> extends AbstractDocumentRepositoryAsyncPro
             }
 
             if (args == null || args.length == 1) {
-                template.select(sql.value(), callBack);
+                template.sql(sql.value(), callBack);
                 return Void.class;
             } else {
-                template.select(sql.value(), callBack, Stream.of(args)
+                template.sql(sql.value(), callBack, Stream.of(args)
                         .filter(IS_NOT_CONSUMER)
                         .toArray(Object[]::new));
                 return Void.class;

@@ -19,6 +19,7 @@ import org.jnosql.artemis.document.DocumentTemplate;
 import org.jnosql.diana.api.document.DocumentQuery;
 
 import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
 
 /**
@@ -35,6 +36,16 @@ public interface OrientDBTemplate extends DocumentTemplate {
      * @throws NullPointerException when either query or params are null
      */
     <T> List<T> sql(String query, Object... params) throws NullPointerException;
+
+    /**
+     * Find using query
+     *
+     * @param query  the query
+     * @param params the params
+     * @return the query result
+     * @throws NullPointerException when either query or params are null
+     */
+    <T> List<T> sql(String query, Map<String, Object> params) throws NullPointerException;
     /**
      * Execute live query
      *

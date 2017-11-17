@@ -62,7 +62,7 @@ class DefaultOrientDBTemplateAsync extends AbstractDocumentTemplateAsync impleme
     }
 
     @Override
-    public <T> void select(String query, Consumer<List<T>> callBack, Object... params) {
+    public <T> void sql(String query, Consumer<List<T>> callBack, Object... params) {
         Objects.requireNonNull(query, "query is required");
         Objects.requireNonNull(callBack, "callBack is required");
 

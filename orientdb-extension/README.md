@@ -13,10 +13,10 @@ OrientDBCrudRepository is an extension of Repository that allows using SQL annot
 ```java
     interface PersonRepository extends OrientDBCrudRepository<Person, String> {
 
-        @SQL("select * from Person")
+        @SQL(sql)
         List<Person> findAll();
 
-        @SQL("select * from Person where name = ?")
+        @SQL(sql)
         List<Person> findByName(String name);
     }
 ```

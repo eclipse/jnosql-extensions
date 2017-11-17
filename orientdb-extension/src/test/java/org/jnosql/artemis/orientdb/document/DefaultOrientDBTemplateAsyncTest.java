@@ -60,7 +60,7 @@ public class DefaultOrientDBTemplateAsyncTest {
         String query = "sql * from Person where name = ?";
         Consumer<List<Person>> callBack = p -> {};
 
-        templateAsync.select(query, callBack, "Person");
+        templateAsync.sql(query, callBack, "Person");
 
         Mockito.verify(managerAsync).sql(Mockito.eq(query), Mockito.any(Consumer.class),
                 Mockito.eq("Person"));

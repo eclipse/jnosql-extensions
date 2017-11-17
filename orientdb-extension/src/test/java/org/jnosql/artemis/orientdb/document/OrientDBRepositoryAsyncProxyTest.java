@@ -80,7 +80,7 @@ public class OrientDBRepositoryAsyncProxyTest {
         };
         personRepository.queryName("Ada", callBack);
 
-        verify(repository).select(Mockito.eq("sql * from Person where name= ?"), Mockito.eq(callBack), captor.capture());
+        verify(repository).sql(Mockito.eq("sql * from Person where name= ?"), Mockito.eq(callBack), captor.capture());
         Object value = captor.getValue();
         assertEquals("Ada", value);
 

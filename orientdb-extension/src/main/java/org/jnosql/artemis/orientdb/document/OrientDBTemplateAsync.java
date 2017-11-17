@@ -18,6 +18,7 @@ package org.jnosql.artemis.orientdb.document;
 import org.jnosql.artemis.document.DocumentTemplateAsync;
 
 import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
 
 /**
@@ -26,5 +27,7 @@ import java.util.function.Consumer;
 public interface OrientDBTemplateAsync extends DocumentTemplateAsync {
 
 
-    <T> void select(String query, Consumer<List<T>> callBack, Object... params);
+    <T> void sql(String query, Consumer<List<T>> callBack, Object... params);
+
+    <T> void sql(String query, Consumer<List<T>> callBack, Map<String, Object> params);
 }
