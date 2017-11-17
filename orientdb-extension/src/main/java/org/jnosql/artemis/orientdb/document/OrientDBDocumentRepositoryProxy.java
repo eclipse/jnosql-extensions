@@ -29,6 +29,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 class OrientDBDocumentRepositoryProxy<T> extends AbstractDocumentRepositoryProxy<T> {
@@ -89,10 +90,16 @@ class OrientDBDocumentRepositoryProxy<T> extends AbstractDocumentRepositoryProxy
         SQL sql = method.getAnnotation(SQL.class);
         if (Objects.nonNull(sql)) {
             List<T> result = Collections.emptyList();
+
             if (args == null || args.length == 0) {
                 result = template.sql(sql.value());
             } else {
-                result = template.sql(sql.value(), args);
+                Map<String, Object> params = MapTypeUtil.getParams(args, method);
+                if (params.isEmpty()) {
+                    result = template.sql(sql.value(), args);
+                } else {
+                    result = template.sql(sql.value(), params);
+                }
             }
             return ReturnTypeConverterUtil.returnObject(result, typeClass, method);
         }

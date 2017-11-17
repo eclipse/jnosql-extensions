@@ -19,13 +19,16 @@ import org.jnosql.artemis.reflection.Reflections;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
 import javax.inject.Inject;
 import java.lang.reflect.Proxy;
 import java.time.Duration;
 import java.util.List;
+import java.util.Map;
 
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -65,21 +68,33 @@ public class OrientDBDocumentRepositoryProxyTest {
     @Test
     public void shouldFindAll() {
         personRepository.findAll();
-        verify(template).sql("sql * from Person");
+        verify(template).sql("select * from Person");
     }
 
     @Test
-    public void shouldFindByNameCQL() {
+    public void shouldFindByNameSQL() {
         personRepository.findByName("Ada");
-        verify(template).sql(Mockito.eq("sql * from Person where name = ?"), Mockito.any());
+        verify(template).sql(Mockito.eq("select * from Person where name = ?"), Mockito.any(Object[].class));
+    }
+
+    @Test
+    public void shouldFindByNameSQL2() {
+        personRepository.findByAge(10);
+        ArgumentCaptor<Map> argumentCaptor = ArgumentCaptor.forClass(Map.class);
+        verify(template).sql(Mockito.eq("select * from Person where age = :age"), argumentCaptor.capture());
+        Map value = argumentCaptor.getValue();
+        assertEquals(10, value.get("age"));
     }
 
     interface PersonRepository extends OrientDBCrudRepository<Person, String> {
 
-        @SQL("sql * from Person")
+        @SQL("select * from Person")
         List<Person> findAll();
 
-        @SQL("sql * from Person where name = ?")
+        @SQL("select * from Person where name = ?")
         List<Person> findByName(String name);
+
+        @SQL("select * from Person where age = :age")
+        List<Person> findByAge(@Param("age") Integer age);
     }
 }
