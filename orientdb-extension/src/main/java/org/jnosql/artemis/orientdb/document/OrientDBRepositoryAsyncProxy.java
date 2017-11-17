@@ -27,6 +27,7 @@ import org.jnosql.artemis.reflection.Reflections;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
+import java.util.Map;
 import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
@@ -104,9 +105,14 @@ class OrientDBRepositoryAsyncProxy<T> extends AbstractDocumentRepositoryAsyncPro
                 template.sql(sql.value(), callBack);
                 return Void.class;
             } else {
-                template.sql(sql.value(), callBack, Stream.of(args)
-                        .filter(IS_NOT_CONSUMER)
-                        .toArray(Object[]::new));
+                Map<String, Object> params = MapTypeUtil.getParams(args, method);
+                if (params.isEmpty()) {
+                    template.sql(sql.value(), callBack, Stream.of(args)
+                            .filter(IS_NOT_CONSUMER)
+                            .toArray(Object[]::new));
+                } else {
+                    template.sql(sql.value(), callBack, params);
+                }
                 return Void.class;
             }
         }
@@ -120,7 +126,7 @@ class OrientDBRepositoryAsyncProxy<T> extends AbstractDocumentRepositoryAsyncPro
         private final ClassRepresentation classRepresentation;
         private final Reflections reflections;
 
-        DocumentRepositoryAsync(DocumentTemplateAsync template, ClassRepresentation classRepresentation, Reflections reflections ) {
+        DocumentRepositoryAsync(DocumentTemplateAsync template, ClassRepresentation classRepresentation, Reflections reflections) {
             this.template = template;
             this.classRepresentation = classRepresentation;
             this.reflections = reflections;

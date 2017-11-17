@@ -26,6 +26,7 @@ import org.mockito.Mockito;
 import javax.inject.Inject;
 import java.lang.reflect.Proxy;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
 
 import static org.junit.Assert.assertEquals;
@@ -74,15 +75,28 @@ public class OrientDBRepositoryAsyncProxyTest {
     }
 
     @Test
-    public void shouldFindByNameFromCQL() {
+    public void shouldFindByNameFromSQL() {
         ArgumentCaptor<Object> captor = ArgumentCaptor.forClass(Object.class);
         Consumer<List<Person>> callBack = p -> {
         };
         personRepository.queryName("Ada", callBack);
 
-        verify(repository).sql(Mockito.eq("sql * from Person where name= ?"), Mockito.eq(callBack), captor.capture());
+        verify(repository).sql(Mockito.eq("select * from Person where name= ?"), Mockito.eq(callBack), captor.capture());
         Object value = captor.getValue();
         assertEquals("Ada", value);
+
+    }
+
+    @Test
+    public void shouldFindByNameFromSQL2() {
+        ArgumentCaptor<Map> captor = ArgumentCaptor.forClass(Map.class);
+        Consumer<List<Person>> callBack = p -> {
+        };
+        personRepository.findByAge(10, callBack);
+
+        verify(repository).sql(Mockito.eq("select * from Person where age= :age"), Mockito.eq(callBack), captor.capture());
+        Map value = captor.getValue();
+        assertEquals(10, value.get("age"));
 
     }
 
@@ -91,10 +105,13 @@ public class OrientDBRepositoryAsyncProxyTest {
         Person findByName(String name);
 
 
-        @SQL("sql * from Person where name= ?")
+        @SQL("select * from Person where name= ?")
         void queryName(String name);
 
-        @SQL("sql * from Person where name= ?")
+        @SQL("select * from Person where name= ?")
         void queryName(String name, Consumer<List<Person>> callBack);
+
+        @SQL("select * from Person where age= :age")
+        void findByAge(@Param("age") Integer age, Consumer<List<Person>> callBack);
     }
 }
