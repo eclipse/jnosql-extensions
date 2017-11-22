@@ -197,6 +197,17 @@ public class GraphRepositoryProxyTest {
         assertFalse(graph.traversal().V(vertex.id()).tryNext().isPresent());
 
     }
+//
+    @Test
+    public void shouldFindByNameAndAgeGreaterThanEqual() {
+
+        graph.addVertex(T.label, "Person", "name", "name", "age", 20);
+        graph.addVertex(T.label, "Person", "name", "name", "age", 20);
+
+        Set<Person> people = personRepository.findByAgeAndName(20, "name");
+        assertEquals(2, people.size());
+
+    }
 
     @Test
     public void shouldFindById() {
@@ -264,6 +275,9 @@ public class GraphRepositoryProxyTest {
         List<Person> findByNameAndAge(String name, Integer age);
 
         Set<Person> findByAgeAndName(Integer age, String name);
+
+        Set<Person> findByNameAndAgeGreaterThanEqual(String name, Double salary);
+
 
     }
 }
