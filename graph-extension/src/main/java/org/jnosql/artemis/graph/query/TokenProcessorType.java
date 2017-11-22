@@ -66,20 +66,6 @@ enum TokenProcessorType implements TokenProcessor {
             String label = getName(token).replace(this.getType(), EMPTY);
             return traversal.both(label);
         }
-    }, LESS_THAN("LessThan") {
-        @Override
-        public GraphTraversal<?, ?> process(String token, int index, Object[] args, String methodName, ClassRepresentation representation, GraphTraversal<?, ?> traversal) {
-            checkContents(index, args.length, 1, methodName);
-            String name = getName(token, representation).replace(this.getType(), EMPTY);
-            return traversal.has(name, P.lt(args[index]));
-        }
-    }, GREATER_THAN("GreaterThan") {
-        @Override
-        public GraphTraversal<?, ?> process(String token, int index, Object[] args, String methodName, ClassRepresentation representation, GraphTraversal<?, ?> traversal) {
-            checkContents(index, args.length, 1, methodName);
-            String name = getName(token, representation).replace(this.getType(), EMPTY);
-            return traversal.has(name, P.gt(args[index]));
-        }
     }, LESSA_THAN_EQUAL("LessEqualThan") {
         @Override
         public GraphTraversal<?, ?> process(String token, int index, Object[] args, String methodName, ClassRepresentation representation, GraphTraversal<?, ?> traversal) {
@@ -93,6 +79,20 @@ enum TokenProcessorType implements TokenProcessor {
             checkContents(index, args.length, 1, methodName);
             String name = getName(token, representation).replace(this.getType(), EMPTY);
             return traversal.has(name, P.gte(args[index]));
+        }
+    }, LESS_THAN("LessThan") {
+        @Override
+        public GraphTraversal<?, ?> process(String token, int index, Object[] args, String methodName, ClassRepresentation representation, GraphTraversal<?, ?> traversal) {
+            checkContents(index, args.length, 1, methodName);
+            String name = getName(token, representation).replace(this.getType(), EMPTY);
+            return traversal.has(name, P.lt(args[index]));
+        }
+    }, GREATER_THAN("GreaterThan") {
+        @Override
+        public GraphTraversal<?, ?> process(String token, int index, Object[] args, String methodName, ClassRepresentation representation, GraphTraversal<?, ?> traversal) {
+            checkContents(index, args.length, 1, methodName);
+            String name = getName(token, representation).replace(this.getType(), EMPTY);
+            return traversal.has(name, P.gt(args[index]));
         }
     }, DEFAULT("") {
         @Override
