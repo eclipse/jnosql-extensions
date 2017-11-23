@@ -132,7 +132,7 @@ public class GraphQueryParserTest {
 
 
     @Test
-    public void shouldFindByAgeLessEqualThan() {
+    public void shouldFindByAgeLessThanEqual() {
         graph.addVertex(T.label, "Person", "name", "name", "age", 10);
         graph.addVertex(T.label, "Person", "name", "name2", "age", 9);
         graph.addVertex(T.label, "Person", "name", "name3", "age", 11);
@@ -141,7 +141,7 @@ public class GraphQueryParserTest {
 
         GraphTraversal<Vertex, Vertex> traversal = graph.traversal().V();
 
-        parser.findByParse("findByAgeLessEqualThan", new Object[]{10}, classRepresentation, traversal);
+        parser.findByParse("findByAgeLessThanEqual", new Object[]{10}, classRepresentation, traversal);
         assertEquals(2, traversal.toList().size());
 
     }
