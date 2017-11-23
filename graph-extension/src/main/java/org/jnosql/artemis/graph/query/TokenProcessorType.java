@@ -66,14 +66,14 @@ enum TokenProcessorType implements TokenProcessor {
             String label = getName(token).replace(this.getType(), EMPTY);
             return traversal.both(label);
         }
-    }, LESSA_THAN_EQUAL("LessEqualThan") {
+    }, LESSA_THAN_EQUAL("LessThanEqual") {
         @Override
         public GraphTraversal<?, ?> process(String token, int index, Object[] args, String methodName, ClassRepresentation representation, GraphTraversal<?, ?> traversal) {
             checkContents(index, args.length, 1, methodName);
             String name = getName(token, representation).replace(this.getType(), EMPTY);
             return traversal.has(name, P.lte(args[index]));
         }
-    }, GREATER_THAN_EQUAL("GreaterEqualThan") {
+    }, GREATER_THAN_EQUAL("GreaterThanEqual") {
         @Override
         public GraphTraversal<?, ?> process(String token, int index, Object[] args, String methodName, ClassRepresentation representation, GraphTraversal<?, ?> traversal) {
             checkContents(index, args.length, 1, methodName);

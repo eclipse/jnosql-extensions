@@ -204,7 +204,7 @@ public class GraphRepositoryProxyTest {
         graph.addVertex(T.label, "Person", "name", "name", "age", 20);
         graph.addVertex(T.label, "Person", "name", "name", "age", 20);
 
-        Set<Person> people = personRepository.findByNameAndAgeGreaterEqualThan("name", 20);
+        Set<Person> people = personRepository.findByNameAndAgeGreaterThanEqual("name", 20);
         assertEquals(2, people.size());
 
     }
@@ -276,7 +276,7 @@ public class GraphRepositoryProxyTest {
 
         Set<Person> findByAgeAndName(Integer age, String name);
 
-        Set<Person> findByNameAndAgeGreaterEqualThan(String name, Integer age);
+        Set<Person> findByNameAndAgeGreaterThanEqual(String name, Integer age);
 
 
     }
