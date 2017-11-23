@@ -20,6 +20,7 @@ import com.datastax.driver.core.querybuilder.QueryBuilder;
 import org.hamcrest.Matchers;
 import org.jnosql.artemis.column.ColumnEventPersistManager;
 import org.jnosql.artemis.column.ColumnWorkflow;
+import org.jnosql.artemis.reflection.ClassRepresentations;
 import org.jnosql.diana.api.column.Column;
 import org.jnosql.diana.api.column.ColumnDeleteQuery;
 import org.jnosql.diana.api.column.ColumnEntity;
@@ -59,6 +60,9 @@ public class DefaultCassandraTemplateTest {
     @Inject
     private ColumnEventPersistManager persistManager;
 
+    @Inject
+    private ClassRepresentations classRepresentations;
+
     private CassandraTemplate template;
 
     private CassandraColumnFamilyManager manager;
@@ -68,7 +72,7 @@ public class DefaultCassandraTemplateTest {
         this.manager = mock(CassandraColumnFamilyManager.class);
         Instance instance = mock(Instance.class);
         when(instance.get()).thenReturn(manager);
-        template = new DefaultCassandraTemplate(instance, converter, flow, persistManager);
+        template = new DefaultCassandraTemplate(instance, converter, flow, persistManager, classRepresentations);
     }
 
 
