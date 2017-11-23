@@ -18,6 +18,7 @@ package org.jnosql.artemis.elasticsearch.document;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.jnosql.artemis.document.AbstractDocumentTemplateAsync;
 import org.jnosql.artemis.document.DocumentEntityConverter;
+import org.jnosql.artemis.reflection.ClassRepresentations;
 import org.jnosql.diana.api.ExecuteAsyncQueryException;
 import org.jnosql.diana.api.document.DocumentCollectionManagerAsync;
 import org.jnosql.diana.api.document.DocumentEntity;
@@ -43,11 +44,15 @@ class DefaultElasticsearchTemplateAsync extends AbstractDocumentTemplateAsync im
 
     private Instance<ElasticsearchDocumentCollectionManagerAsync> manager;
 
+    private ClassRepresentations classRepresentations;
+
     @Inject
     DefaultElasticsearchTemplateAsync(DocumentEntityConverter converter,
-                                      Instance<ElasticsearchDocumentCollectionManagerAsync> manager) {
+                                      Instance<ElasticsearchDocumentCollectionManagerAsync> manager,
+                                      ClassRepresentations classRepresentations) {
         this.converter = converter;
         this.manager = manager;
+        this.classRepresentations = classRepresentations;
     }
 
     DefaultElasticsearchTemplateAsync() {
@@ -61,6 +66,11 @@ class DefaultElasticsearchTemplateAsync extends AbstractDocumentTemplateAsync im
     @Override
     protected DocumentCollectionManagerAsync getManager() {
         return manager.get();
+    }
+
+    @Override
+    protected ClassRepresentations getClassRepresentations() {
+        return classRepresentations;
     }
 
     @Override

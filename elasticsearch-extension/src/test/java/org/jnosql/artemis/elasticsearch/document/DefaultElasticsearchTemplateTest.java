@@ -18,6 +18,7 @@ import org.elasticsearch.index.query.QueryBuilder;
 import org.jnosql.artemis.document.DocumentEntityConverter;
 import org.jnosql.artemis.document.DocumentEventPersistManager;
 import org.jnosql.artemis.document.DocumentWorkflow;
+import org.jnosql.artemis.reflection.ClassRepresentations;
 import org.jnosql.diana.api.document.Document;
 import org.jnosql.diana.api.document.DocumentEntity;
 import org.jnosql.diana.elasticsearch.document.ElasticsearchDocumentCollectionManager;
@@ -50,6 +51,9 @@ public class DefaultElasticsearchTemplateTest {
     @Inject
     private DocumentEventPersistManager persistManager;
 
+    @Inject
+    private ClassRepresentations classRepresentations;
+
     private ElasticsearchDocumentCollectionManager manager;
 
     private ElasticsearchTemplate template;
@@ -60,7 +64,7 @@ public class DefaultElasticsearchTemplateTest {
         manager = Mockito.mock(ElasticsearchDocumentCollectionManager.class);
         Instance instance = Mockito.mock(Instance.class);
         when(instance.get()).thenReturn(manager);
-        template = new DefaultElasticsearchTemplate(instance, converter, flow, persistManager);
+        template = new DefaultElasticsearchTemplate(instance, converter, flow, persistManager, classRepresentations);
 
         DocumentEntity entity = DocumentEntity.of("Person");
         entity.add(Document.of("name", "Ada"));
