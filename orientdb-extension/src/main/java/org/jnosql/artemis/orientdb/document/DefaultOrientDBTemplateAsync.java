@@ -17,6 +17,7 @@ package org.jnosql.artemis.orientdb.document;
 
 import org.jnosql.artemis.document.AbstractDocumentTemplateAsync;
 import org.jnosql.artemis.document.DocumentEntityConverter;
+import org.jnosql.artemis.reflection.ClassRepresentations;
 import org.jnosql.diana.api.document.DocumentCollectionManagerAsync;
 import org.jnosql.diana.api.document.DocumentEntity;
 import org.jnosql.diana.orientdb.document.OrientDBDocumentCollectionManagerAsync;
@@ -42,11 +43,15 @@ class DefaultOrientDBTemplateAsync extends AbstractDocumentTemplateAsync impleme
 
     private Instance<OrientDBDocumentCollectionManagerAsync> manager;
 
+    private ClassRepresentations classRepresentations;
+
     @Inject
     DefaultOrientDBTemplateAsync(DocumentEntityConverter converter,
-                                 Instance<OrientDBDocumentCollectionManagerAsync> manager) {
+                                 Instance<OrientDBDocumentCollectionManagerAsync> manager,
+                                 ClassRepresentations classRepresentations) {
         this.converter = converter;
         this.manager = manager;
+        this.classRepresentations = classRepresentations;
     }
 
     DefaultOrientDBTemplateAsync() {
@@ -60,6 +65,11 @@ class DefaultOrientDBTemplateAsync extends AbstractDocumentTemplateAsync impleme
     @Override
     protected DocumentCollectionManagerAsync getManager() {
         return manager.get();
+    }
+
+    @Override
+    protected ClassRepresentations getClassRepresentations() {
+        return classRepresentations;
     }
 
     @Override

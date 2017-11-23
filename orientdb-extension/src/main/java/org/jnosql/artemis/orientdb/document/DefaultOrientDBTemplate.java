@@ -19,6 +19,7 @@ import org.jnosql.artemis.document.AbstractDocumentTemplate;
 import org.jnosql.artemis.document.DocumentEntityConverter;
 import org.jnosql.artemis.document.DocumentEventPersistManager;
 import org.jnosql.artemis.document.DocumentWorkflow;
+import org.jnosql.artemis.reflection.ClassRepresentations;
 import org.jnosql.diana.api.document.DocumentCollectionManager;
 import org.jnosql.diana.api.document.DocumentEntity;
 import org.jnosql.diana.api.document.DocumentQuery;
@@ -49,14 +50,18 @@ class DefaultOrientDBTemplate extends AbstractDocumentTemplate
 
     private DocumentEventPersistManager persistManager;
 
+    private ClassRepresentations classRepresentations;
+
     @Inject
     DefaultOrientDBTemplate(Instance<OrientDBDocumentCollectionManager> manager,
                             DocumentEntityConverter converter, DocumentWorkflow flow,
-                            DocumentEventPersistManager persistManager) {
+                            DocumentEventPersistManager persistManager,
+                            ClassRepresentations classRepresentations) {
         this.manager = manager;
         this.converter = converter;
         this.flow = flow;
         this.persistManager = persistManager;
+        this.classRepresentations = classRepresentations;
     }
 
     DefaultOrientDBTemplate() {
@@ -80,6 +85,11 @@ class DefaultOrientDBTemplate extends AbstractDocumentTemplate
     @Override
     protected DocumentEventPersistManager getPersistManager() {
         return persistManager;
+    }
+
+    @Override
+    protected ClassRepresentations getClassRepresentations() {
+        return classRepresentations;
     }
 
     @Override
