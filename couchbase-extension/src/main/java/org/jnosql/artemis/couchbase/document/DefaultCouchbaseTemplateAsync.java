@@ -19,6 +19,7 @@ import com.couchbase.client.java.document.json.JsonObject;
 import com.couchbase.client.java.query.Statement;
 import org.jnosql.artemis.document.AbstractDocumentTemplateAsync;
 import org.jnosql.artemis.document.DocumentEntityConverter;
+import org.jnosql.artemis.reflection.ClassRepresentations;
 import org.jnosql.diana.api.ExecuteAsyncQueryException;
 import org.jnosql.diana.api.document.DocumentCollectionManagerAsync;
 import org.jnosql.diana.api.document.DocumentEntity;
@@ -44,11 +45,15 @@ class DefaultCouchbaseTemplateAsync extends AbstractDocumentTemplateAsync implem
 
     private Instance<CouchbaseDocumentCollectionManagerAsync> manager;
 
+    private ClassRepresentations classRepresentations;
+
     @Inject
     DefaultCouchbaseTemplateAsync(DocumentEntityConverter converter,
-                                  Instance<CouchbaseDocumentCollectionManagerAsync> manager) {
+                                  Instance<CouchbaseDocumentCollectionManagerAsync> manager,
+                                  ClassRepresentations classRepresentations) {
         this.converter = converter;
         this.manager = manager;
+        this.classRepresentations = classRepresentations;
     }
 
     DefaultCouchbaseTemplateAsync() {
@@ -62,6 +67,11 @@ class DefaultCouchbaseTemplateAsync extends AbstractDocumentTemplateAsync implem
     @Override
     protected DocumentCollectionManagerAsync getManager() {
         return manager.get();
+    }
+
+    @Override
+    protected ClassRepresentations getClassRepresentations() {
+        return classRepresentations;
     }
 
     @Override

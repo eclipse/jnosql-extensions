@@ -20,6 +20,7 @@ import com.couchbase.client.java.search.SearchQuery;
 import org.jnosql.artemis.document.DocumentEntityConverter;
 import org.jnosql.artemis.document.DocumentEventPersistManager;
 import org.jnosql.artemis.document.DocumentWorkflow;
+import org.jnosql.artemis.reflection.ClassRepresentations;
 import org.jnosql.diana.api.document.Document;
 import org.jnosql.diana.api.document.DocumentEntity;
 import org.jnosql.diana.couchbase.document.CouchbaseDocumentCollectionManager;
@@ -51,6 +52,9 @@ public class DefaultCouchbaseTemplateTest {
     @Inject
     private DocumentEventPersistManager persistManager;
 
+    @Inject
+    private ClassRepresentations classRepresentations;
+
     private CouchbaseDocumentCollectionManager manager;
 
     private CouchbaseTemplate template;
@@ -61,7 +65,7 @@ public class DefaultCouchbaseTemplateTest {
         manager = Mockito.mock(CouchbaseDocumentCollectionManager.class);
         Instance instance = Mockito.mock(Instance.class);
         when(instance.get()).thenReturn(manager);
-        template = new DefaultCouchbaseTemplate(instance, converter, flow, persistManager);
+        template = new DefaultCouchbaseTemplate(instance, converter, flow, persistManager, classRepresentations);
 
         DocumentEntity entity = DocumentEntity.of("Person");
         entity.add(Document.of("_id", "Ada"));
