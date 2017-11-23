@@ -17,6 +17,7 @@ package org.jnosql.artemis.arangodb.document;
 import org.jnosql.artemis.document.DocumentEntityConverter;
 import org.jnosql.artemis.document.DocumentEventPersistManager;
 import org.jnosql.artemis.document.DocumentWorkflow;
+import org.jnosql.artemis.reflection.ClassRepresentations;
 import org.jnosql.diana.api.document.Document;
 import org.jnosql.diana.api.document.DocumentEntity;
 import org.jnosql.diana.arangodb.document.ArangoDBDocumentCollectionManager;
@@ -45,6 +46,9 @@ public class DefaultArangoDBTemplateTest {
     @Inject
     private DocumentEventPersistManager persistManager;
 
+    @Inject
+    private ClassRepresentations classRepresentations;
+
     private ArangoDBDocumentCollectionManager manager;
 
     private ArangoDBTemplate template;
@@ -55,7 +59,7 @@ public class DefaultArangoDBTemplateTest {
         manager = Mockito.mock(ArangoDBDocumentCollectionManager.class);
         Instance instance = Mockito.mock(Instance.class);
         when(instance.get()).thenReturn(manager);
-        template = new DefaultArangoDBTemplate(instance, converter, flow, persistManager);
+        template = new DefaultArangoDBTemplate(instance, converter, flow, persistManager, classRepresentations);
 
         DocumentEntity entity = DocumentEntity.of("Person");
         entity.add(Document.of("_id", "Ada"));

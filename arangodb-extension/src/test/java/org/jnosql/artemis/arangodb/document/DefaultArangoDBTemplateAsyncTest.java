@@ -15,6 +15,7 @@
 package org.jnosql.artemis.arangodb.document;
 
 import org.jnosql.artemis.document.DocumentEntityConverter;
+import org.jnosql.artemis.reflection.ClassRepresentations;
 import org.jnosql.diana.api.document.Document;
 import org.jnosql.diana.api.document.DocumentEntity;
 import org.jnosql.diana.arangodb.document.ArangoDBDocumentCollectionManagerAsync;
@@ -38,6 +39,9 @@ public class DefaultArangoDBTemplateAsyncTest {
     @Inject
     private DocumentEntityConverter converter;
 
+    @Inject
+    private ClassRepresentations classRepresentations;
+
     private ArangoDBDocumentCollectionManagerAsync managerAsync;
 
     private ArangoDBTemplateAsync templateAsync;
@@ -49,7 +53,7 @@ public class DefaultArangoDBTemplateAsyncTest {
         Instance instance = Mockito.mock(Instance.class);
         when(instance.get()).thenReturn(managerAsync);
 
-        templateAsync = new DefaultArangoDBTemplateAsync(converter, instance);
+        templateAsync = new DefaultArangoDBTemplateAsync(converter, instance, classRepresentations);
 
         DocumentEntity entity = DocumentEntity.of("Person");
         entity.add(Document.of("name", "Ada"));
