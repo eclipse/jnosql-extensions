@@ -18,6 +18,7 @@ import com.datastax.driver.core.ConsistencyLevel;
 import com.datastax.driver.core.Statement;
 import org.jnosql.artemis.column.AbstractColumnTemplateAsync;
 import org.jnosql.artemis.column.ColumnEntityConverter;
+import org.jnosql.artemis.reflection.ClassRepresentations;
 import org.jnosql.diana.api.ExecuteAsyncQueryException;
 import org.jnosql.diana.api.column.ColumnDeleteQuery;
 import org.jnosql.diana.api.column.ColumnEntity;
@@ -49,14 +50,18 @@ class DefaultCassandraTemplateAsync extends AbstractColumnTemplateAsync
 
     private Instance<CassandraColumnFamilyManagerAsync> managerAsync;
 
+    private ClassRepresentations classRepresentations;
+
     DefaultCassandraTemplateAsync() {
     }
 
     @Inject
     DefaultCassandraTemplateAsync(CassandraColumnEntityConverter converter,
-                                  Instance<CassandraColumnFamilyManagerAsync> managerAsync) {
+                                  Instance<CassandraColumnFamilyManagerAsync> managerAsync,
+                                  ClassRepresentations classRepresentations) {
         this.converter = converter;
         this.managerAsync = managerAsync;
+        this.classRepresentations = classRepresentations;
     }
 
     @Override
@@ -67,6 +72,11 @@ class DefaultCassandraTemplateAsync extends AbstractColumnTemplateAsync
     @Override
     protected ColumnFamilyManagerAsync getManager() {
         return managerAsync.get();
+    }
+
+    @Override
+    protected ClassRepresentations getClassRepresentations() {
+        return classRepresentations;
     }
 
     @Override
