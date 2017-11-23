@@ -17,6 +17,7 @@ package org.jnosql.artemis.arangodb.document;
 
 import org.jnosql.artemis.document.AbstractDocumentTemplateAsync;
 import org.jnosql.artemis.document.DocumentEntityConverter;
+import org.jnosql.artemis.reflection.ClassRepresentations;
 import org.jnosql.diana.api.ExecuteAsyncQueryException;
 import org.jnosql.diana.api.document.DocumentCollectionManagerAsync;
 import org.jnosql.diana.api.document.DocumentEntity;
@@ -43,11 +44,15 @@ class DefaultArangoDBTemplateAsync extends AbstractDocumentTemplateAsync impleme
 
     private Instance<ArangoDBDocumentCollectionManagerAsync> manager;
 
+    private ClassRepresentations classRepresentations;
+
     @Inject
     DefaultArangoDBTemplateAsync(DocumentEntityConverter converter,
-                                 Instance<ArangoDBDocumentCollectionManagerAsync> manager) {
+                                 Instance<ArangoDBDocumentCollectionManagerAsync> manager,
+                                 ClassRepresentations classRepresentations) {
         this.converter = converter;
         this.manager = manager;
+        this.classRepresentations = classRepresentations;
     }
 
     DefaultArangoDBTemplateAsync() {
@@ -63,6 +68,10 @@ class DefaultArangoDBTemplateAsync extends AbstractDocumentTemplateAsync impleme
         return manager.get();
     }
 
+    @Override
+    protected ClassRepresentations getClassRepresentations() {
+        return classRepresentations;
+    }
 
 
     @Override
