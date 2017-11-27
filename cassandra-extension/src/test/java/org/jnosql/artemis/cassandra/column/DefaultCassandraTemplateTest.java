@@ -19,7 +19,6 @@ import com.datastax.driver.core.Statement;
 import com.datastax.driver.core.querybuilder.QueryBuilder;
 import org.hamcrest.Matchers;
 import org.jnosql.artemis.column.ColumnEventPersistManager;
-import org.jnosql.artemis.column.ColumnWorkflow;
 import org.jnosql.artemis.reflection.ClassRepresentations;
 import org.jnosql.diana.api.column.Column;
 import org.jnosql.diana.api.column.ColumnDeleteQuery;
@@ -55,7 +54,7 @@ public class DefaultCassandraTemplateTest {
     private CassandraColumnEntityConverter converter;
 
     @Inject
-    private ColumnWorkflow flow;
+    private CassandraColumnWorkflow flow;
 
     @Inject
     private ColumnEventPersistManager persistManager;
