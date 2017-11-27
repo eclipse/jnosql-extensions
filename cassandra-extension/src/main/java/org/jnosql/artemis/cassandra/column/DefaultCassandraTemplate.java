@@ -47,7 +47,7 @@ class DefaultCassandraTemplate extends AbstractColumnTemplate implements Cassand
 
     private CassandraColumnEntityConverter converter;
 
-    private ColumnWorkflow flow;
+    private CassandraColumnWorkflow flow;
 
     private ColumnEventPersistManager persistManager;
 
@@ -56,7 +56,7 @@ class DefaultCassandraTemplate extends AbstractColumnTemplate implements Cassand
     @Inject
     DefaultCassandraTemplate(Instance<CassandraColumnFamilyManager> manager,
                              CassandraColumnEntityConverter converter,
-                             ColumnWorkflow flow,
+                             CassandraColumnWorkflow flow,
                              ColumnEventPersistManager persistManager,
                              ClassRepresentations classRepresentations) {
         this.manager = manager;
