@@ -18,6 +18,7 @@ import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Transaction;
 
 import javax.enterprise.inject.Alternative;
+import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 import javax.interceptor.AroundInvoke;
 import javax.interceptor.Interceptor;
@@ -32,11 +33,11 @@ import javax.annotation.Priority;
 class TransactionalInterceptor {
 
     @Inject
-    private Graph graph;
+    private Instance<Graph> graph;
 
     @AroundInvoke
     public Object manageTransaction(InvocationContext context) throws Exception {
-        Transaction transaction = graph.tx();
+        Transaction transaction = graph.get().tx();
         if (!transaction.isOpen()) {
             transaction.open();
         }
