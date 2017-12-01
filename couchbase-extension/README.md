@@ -29,9 +29,6 @@ CouchbaseRepositoryAsync is an extension of RepositoryAsync that allows using N1
 ```java
     interface PersonAsyncRepository extends CouchbaseRepositoryAsync<Person, String> {
 
-        Person findByName(String name);
-
-
         @N1QL("select * from Person where name= $name")
         void queryName(@Param("name") String name);
 
