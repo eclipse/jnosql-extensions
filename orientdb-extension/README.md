@@ -1,6 +1,6 @@
 # OriendtDB-extension
 
-![OriendtDB Project](https://jnosql.github.io/jnosql-site/img/logos/orientdb.png)
+![OriendtDB Project](https://jnosql.github.io/img/logos/orientdb.png)
 
 
 OrientDB extension has implementations to use specific behavior that is beyond the API such as SQL.
@@ -32,7 +32,7 @@ OrientDBCrudRepositoryAsync is an extension of RepositoryAsync that allows using
 ```java
     interface PersonAsyncRepository extends OrientDBCrudRepositoryAsync<Person, String> {
 
-        Person findByName(String name);
+        void findByName(String name, );
 
         @SQL("select * from Person where name = ?")
         void queryName(String name, Consumer<List<Person>> callBack);
