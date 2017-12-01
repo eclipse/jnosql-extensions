@@ -29,9 +29,6 @@ ArangoDBRepositoryAsync is an extension of RepositoryAsync that allows using AQL
 ```java
     interface PersonAsyncRepository extends ArangoDBRepositoryAsync<Person, String> {
 
-        Person findByName(String name);
-
-
         @AQL("FOR p IN Person FILTER p.name = @name RETURN p")
         void queryName(@Param("name") String name);
 
