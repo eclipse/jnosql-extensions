@@ -32,8 +32,6 @@ OrientDBCrudRepositoryAsync is an extension of RepositoryAsync that allows using
 ```java
     interface PersonAsyncRepository extends OrientDBCrudRepositoryAsync<Person, String> {
 
-        void findByName(String name, );
-
         @SQL("select * from Person where name = ?")
         void queryName(String name, Consumer<List<Person>> callBack);
     }
