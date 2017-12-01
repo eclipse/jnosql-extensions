@@ -1,6 +1,6 @@
 # ArangoDB-extension
 
-![ArangoDB Project](https://jnosql.github.io/jnosql-site/img/logos/ArangoDB.png)
+![ArangoDB Project](https://jnosql.github.io/img/logos/ArangoDB.png)
 
 
 ArangoDB extension has implementations to use specific behavior that is beyond the API such as AQL.
