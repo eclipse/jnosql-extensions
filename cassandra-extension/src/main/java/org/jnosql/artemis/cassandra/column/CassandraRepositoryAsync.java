@@ -42,10 +42,10 @@ public interface CassandraRepositoryAsync<T, ID> extends RepositoryAsync<T, ID> 
      * @param entity the entity
      * @param ttl    the ttl
      * @param level  {@link ConsistencyLevel}
-     * @throws ExecuteAsyncQueryException
-     * @throws UnsupportedOperationException
+     * @throws ExecuteAsyncQueryException when there is async issue
+     * @throws NullPointerException       when there are any element null
      */
-    void save(T entity, Duration ttl, ConsistencyLevel level) throws ExecuteAsyncQueryException, UnsupportedOperationException, NullPointerException;
+    void save(T entity, Duration ttl, ConsistencyLevel level) throws ExecuteAsyncQueryException, NullPointerException;
 
     /**
      * Save the entity with ConsistencyLevel
@@ -61,10 +61,10 @@ public interface CassandraRepositoryAsync<T, ID> extends RepositoryAsync<T, ID> 
      * @param entities the entities
      * @param ttl      the ttl
      * @param level    {@link ConsistencyLevel}
-     * @throws ExecuteAsyncQueryException
-     * @throws UnsupportedOperationException
+     * @throws ExecuteAsyncQueryException when there is async issue
+     * @throws NullPointerException       when there are any element null
      */
-    void save(Iterable<T> entities, Duration ttl, ConsistencyLevel level) throws ExecuteAsyncQueryException, UnsupportedOperationException, NullPointerException;
+    void save(Iterable<T> entities, Duration ttl, ConsistencyLevel level) throws ExecuteAsyncQueryException, NullPointerException;
 
     /**
      * Save the entity with ConsistencyLevel
@@ -72,8 +72,10 @@ public interface CassandraRepositoryAsync<T, ID> extends RepositoryAsync<T, ID> 
      * @param callBack the callBack
      * @param entity   the entity
      * @param level    {@link ConsistencyLevel}
+     * @throws ExecuteAsyncQueryException when there is async issue
+     * @throws NullPointerException       when there are any element null
      */
-    void save(T entity, ConsistencyLevel level, Consumer<T> callBack) throws ExecuteAsyncQueryException, UnsupportedOperationException, NullPointerException;
+    void save(T entity, ConsistencyLevel level, Consumer<T> callBack) throws ExecuteAsyncQueryException, NullPointerException;
 
     /**
      * Saves the entity with ConsistencyLevel
@@ -82,9 +84,10 @@ public interface CassandraRepositoryAsync<T, ID> extends RepositoryAsync<T, ID> 
      * @param entity   the entity
      * @param ttl      the ttl
      * @param level    {@link ConsistencyLevel}
-     * @throws ExecuteAsyncQueryException
-     * @throws UnsupportedOperationException
+     * @throws ExecuteAsyncQueryException when there is async issue
+     * @throws NullPointerException       when there are any element null
      */
-    void save(T entity, Duration ttl, ConsistencyLevel level, Consumer<T> callBack) throws ExecuteAsyncQueryException, UnsupportedOperationException, NullPointerException;
+    void save(T entity, Duration ttl, ConsistencyLevel level, Consumer<T> callBack) throws ExecuteAsyncQueryException
+            , NullPointerException;
 
 }

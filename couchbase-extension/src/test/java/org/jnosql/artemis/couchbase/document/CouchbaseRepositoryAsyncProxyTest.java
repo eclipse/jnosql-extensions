@@ -67,7 +67,6 @@ public class CouchbaseRepositoryAsyncProxyTest {
     public void shouldUpdate() {
         ArgumentCaptor<Person> captor = ArgumentCaptor.forClass(Person.class);
         Person person = new Person("Ada", 12);
-        ;
         template.update(person);
         verify(template).update(captor.capture());
         Person value = captor.getValue();

@@ -29,7 +29,7 @@ public @interface UDT {
     /**
      * The type name
      *
-     * @return
+     * @return the UDT name
      */
     String value();
 }

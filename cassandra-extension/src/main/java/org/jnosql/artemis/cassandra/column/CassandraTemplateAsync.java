@@ -48,11 +48,11 @@ public interface CassandraTemplateAsync extends ColumnTemplateAsync {
      * @param entity the entity
      * @param ttl    the ttl
      * @param level  {@link ConsistencyLevel}
-     * @throws ExecuteAsyncQueryException
-     * @throws UnsupportedOperationException
+     * @throws ExecuteAsyncQueryException when there is async issue
+     * @throws NullPointerException       when there are any element null
      */
     <T> void save(T entity, Duration ttl, ConsistencyLevel level) throws
-            ExecuteAsyncQueryException, UnsupportedOperationException, NullPointerException;
+            ExecuteAsyncQueryException, NullPointerException;
 
     /**
      * Save the entity with ConsistencyLevel
@@ -70,8 +70,8 @@ public interface CassandraTemplateAsync extends ColumnTemplateAsync {
      * @param entities the entities
      * @param ttl      the ttl
      * @param level    {@link ConsistencyLevel}
-     * @throws ExecuteAsyncQueryException
-     * @throws UnsupportedOperationException
+     * @throws ExecuteAsyncQueryException when there is async issue
+     * @throws NullPointerException       when there are any element null
      */
     <T> void save(Iterable<T> entities, Duration ttl, ConsistencyLevel level)
             throws ExecuteAsyncQueryException, UnsupportedOperationException, NullPointerException;
@@ -85,7 +85,7 @@ public interface CassandraTemplateAsync extends ColumnTemplateAsync {
      * @param level    {@link ConsistencyLevel}
      */
     <T> void save(T entity, ConsistencyLevel level, Consumer<T> callBack)
-            throws ExecuteAsyncQueryException, UnsupportedOperationException, NullPointerException;
+            throws ExecuteAsyncQueryException, NullPointerException;
 
     /**
      * Saves the entity with ConsistencyLevel
@@ -95,11 +95,11 @@ public interface CassandraTemplateAsync extends ColumnTemplateAsync {
      * @param entity   the entity
      * @param ttl      the ttl
      * @param level    {@link ConsistencyLevel}
-     * @throws ExecuteAsyncQueryException
-     * @throws UnsupportedOperationException
+     * @throws ExecuteAsyncQueryException when there is async issue
+     * @throws NullPointerException when there are any element null
      */
     <T> void save(T entity, Duration ttl, ConsistencyLevel level, Consumer<T> callBack)
-            throws ExecuteAsyncQueryException, UnsupportedOperationException, NullPointerException;
+            throws ExecuteAsyncQueryException, NullPointerException;
 
 
     /**
@@ -166,7 +166,6 @@ public interface CassandraTemplateAsync extends ColumnTemplateAsync {
      * @param <T>    type
      * @param query  the Cassandra query language
      * @param params the params
-     * @return the result of this query
      * @throws NullPointerException when query is null
      */
     <T> void cql(String query, Consumer<List<T>> consumer, Object... params) throws NullPointerException;
