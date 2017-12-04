@@ -1,6 +1,6 @@
 # Couchbase-extension
 
-![Couchbase Project](https://jnosql.github.io/jnosql-site/img/logos/couchbase.svg)
+![Couchbase Project](https://jnosql.github.io/img/logos/couchbase.svg)
 
 
 Couchbase extension has implementations to use specific behavior that is beyond the API such as N1QL.
@@ -28,9 +28,6 @@ CouchbaseRepositoryAsync is an extension of RepositoryAsync that allows using N1
 
 ```java
     interface PersonAsyncRepository extends CouchbaseRepositoryAsync<Person, String> {
-
-        Person findByName(String name);
-
 
         @N1QL("select * from Person where name= $name")
         void queryName(@Param("name") String name);

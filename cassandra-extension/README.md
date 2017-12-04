@@ -1,6 +1,6 @@
 # Cassandra-extension
 
-![Cassandra Project](https://jnosql.github.io/jnosql-site/img/logos/cassandra.png)
+![Cassandra Project](https://jnosql.github.io/img/logos/cassandra.png)
 
 
 Cassandra extension has implementations to use specific behavior that is beyond the API such as Cassandra Query Language, consistency level.
@@ -37,9 +37,7 @@ CassandraRepositoryAsync is an extension of RepositoryAsync that allows using CQ
 ```java
     interface PersonAsyncRepository extends CassandraRepositoryAsync<Person, String> {
 
-        Person findByName(String name);
-
-        Person findByName(String name, ConsistencyLevel level, Consumer<List<Person>> callBack);
+        void findByName(String name, ConsistencyLevel level, Consumer<List<Person>> callBack);
 
         void deleteByName(String name, ConsistencyLevel level, Consumer<Void> callBack);
 

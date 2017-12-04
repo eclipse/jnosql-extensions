@@ -1,6 +1,6 @@
 # Elasticsearch-extension
 
-![Elasticsearch Project](https://jnosql.github.io/jnosql-site/img/logos/elastic.svg)
+![Elasticsearch Project](https://jnosql.github.io/img/logos/elastic.svg)
 
 
 Elasticsearch extension has implementations to use specific behavior that is beyond the API such as search Engine.

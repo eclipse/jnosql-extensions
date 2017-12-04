@@ -1,6 +1,6 @@
 # ArangoDB-extension
 
-![ArangoDB Project](https://jnosql.github.io/jnosql-site/img/logos/ArangoDB.png)
+![ArangoDB Project](https://jnosql.github.io/img/logos/ArangoDB.png)
 
 
 ArangoDB extension has implementations to use specific behavior that is beyond the API such as AQL.
@@ -28,9 +28,6 @@ ArangoDBRepositoryAsync is an extension of RepositoryAsync that allows using AQL
 
 ```java
     interface PersonAsyncRepository extends ArangoDBRepositoryAsync<Person, String> {
-
-        Person findByName(String name);
-
 
         @AQL("FOR p IN Person FILTER p.name = @name RETURN p")
         void queryName(@Param("name") String name);
