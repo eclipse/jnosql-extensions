@@ -41,7 +41,7 @@ class ArangoDBExtension implements Extension {
             return;
         }
 
-        if (Stream.of(javaClass.getInterfaces()).anyMatch(c -> ArangoDBRepository.class.equals(c))
+        if (Stream.of(javaClass.getInterfaces()).anyMatch(ArangoDBRepository.class::equals)
                 && Modifier.isInterface(javaClass.getModifiers())) {
             crudTypes.add(javaClass);
         }
@@ -54,7 +54,7 @@ class ArangoDBExtension implements Extension {
             return;
         }
 
-        if (Stream.of(javaClass.getInterfaces()).anyMatch(c -> ArangoDBRepositoryAsync.class.equals(c))
+        if (Stream.of(javaClass.getInterfaces()).anyMatch(ArangoDBRepositoryAsync.class::equals)
                 && Modifier.isInterface(javaClass.getModifiers())) {
             crudAsyncTypes.add(javaClass);
         }

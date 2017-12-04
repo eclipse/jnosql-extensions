@@ -41,7 +41,7 @@ class CouchbaseExtension implements Extension {
             return;
         }
 
-        if (Stream.of(javaClass.getInterfaces()).anyMatch(c -> CouchbaseRepository.class.equals(c))
+        if (Stream.of(javaClass.getInterfaces()).anyMatch(CouchbaseRepository.class::equals)
                 && Modifier.isInterface(javaClass.getModifiers())) {
             crudTypes.add(javaClass);
         }
@@ -54,7 +54,7 @@ class CouchbaseExtension implements Extension {
             return;
         }
 
-        if (Stream.of(javaClass.getInterfaces()).anyMatch(c -> CouchbaseRepositoryAsync.class.equals(c))
+        if (Stream.of(javaClass.getInterfaces()).anyMatch(CouchbaseRepositoryAsync.class::equals)
                 && Modifier.isInterface(javaClass.getModifiers())) {
             crudAsyncTypes.add(javaClass);
         }

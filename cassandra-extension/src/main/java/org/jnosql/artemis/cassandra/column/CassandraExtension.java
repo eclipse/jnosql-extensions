@@ -42,7 +42,7 @@ class CassandraExtension implements Extension {
             return;
         }
 
-        if (Stream.of(javaClass.getInterfaces()).anyMatch(c -> CassandraRepository.class.equals(c))
+        if (Stream.of(javaClass.getInterfaces()).anyMatch(CassandraRepository.class::equals)
                 && Modifier.isInterface(javaClass.getModifiers())) {
             crudTypes.add(javaClass);
         }
@@ -55,7 +55,7 @@ class CassandraExtension implements Extension {
             return;
         }
 
-        if (Stream.of(javaClass.getInterfaces()).anyMatch(c -> CassandraRepositoryAsync.class.equals(c))
+        if (Stream.of(javaClass.getInterfaces()).anyMatch(CassandraRepositoryAsync.class::equals)
                 && Modifier.isInterface(javaClass.getModifiers())) {
             crudAsyncTypes.add(javaClass);
         }

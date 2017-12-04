@@ -160,8 +160,8 @@ class CassandraRepositoryAsyncProxy<T> implements InvocationHandler {
 
     private Optional<ConsistencyLevel> getConsistencyLevel(Object[] args) {
         return Stream.of(args)
-                .filter(a -> ConsistencyLevel.class.isInstance(a))
-                .map(c -> ConsistencyLevel.class.cast(c))
+                .filter(ConsistencyLevel.class::isInstance)
+                .map(ConsistencyLevel.class::cast)
                 .findFirst();
     }
 

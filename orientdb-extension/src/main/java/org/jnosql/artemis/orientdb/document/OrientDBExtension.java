@@ -41,7 +41,7 @@ class OrientDBExtension implements Extension {
             return;
         }
 
-        if (Stream.of(javaClass.getInterfaces()).anyMatch(c -> OrientDBCrudRepository.class.equals(c))
+        if (Stream.of(javaClass.getInterfaces()).anyMatch(OrientDBCrudRepository.class::equals)
                 && Modifier.isInterface(javaClass.getModifiers())) {
             crudTypes.add(javaClass);
         }
@@ -54,7 +54,7 @@ class OrientDBExtension implements Extension {
             return;
         }
 
-        if (Stream.of(javaClass.getInterfaces()).anyMatch(c -> OrientDBCrudRepositoryAsync.class.equals(c))
+        if (Stream.of(javaClass.getInterfaces()).anyMatch(OrientDBCrudRepositoryAsync.class::equals)
                 && Modifier.isInterface(javaClass.getModifiers())) {
             crudAsyncTypes.add(javaClass);
         }
