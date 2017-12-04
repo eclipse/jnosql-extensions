@@ -82,7 +82,7 @@ public interface GraphTemplate {
     /**
      * Either find or create an Edge between this two entities.
      * {@link org.apache.tinkerpop.gremlin.structure.Edge}
-     * <pre>entityOUT ---label---> entityIN.</pre>
+     * <pre>entityOUT ---label---&#62; entityIN.</pre>
      *
      * @param incoming  the incoming entity
      * @param label    the Edge label

@@ -30,7 +30,7 @@ import static java.util.Objects.requireNonNull;
  *
  * @param <IN>  the inbound Entity
  * @param <OUT> the outbound entity
- *              <pre>outVertex ---label---> inVertex.</pre>
+ *              <pre>outVertex ---label---&#62; inVertex.</pre>
  */
 public interface EdgeEntity<OUT, IN> {
 
