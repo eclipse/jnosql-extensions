@@ -39,9 +39,7 @@ final class MapTypeUtil {
                     .filter(Param.class::isInstance)
                     .map(Param.class::cast)
                     .findFirst();
-            param.ifPresent(p -> {
-                params.put(p.value(), arg);
-            });
+            param.ifPresent(p -> params.put(p.value(), arg));
 
         }
 

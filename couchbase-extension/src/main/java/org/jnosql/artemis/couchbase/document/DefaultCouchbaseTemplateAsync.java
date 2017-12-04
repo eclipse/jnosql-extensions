@@ -81,13 +81,11 @@ class DefaultCouchbaseTemplateAsync extends AbstractDocumentTemplateAsync implem
         Objects.requireNonNull(n1qlQuery, "n1qlQuery is required");
         Objects.requireNonNull(params, "params is required");
         Objects.requireNonNull(callback, "callback is required");
-        Consumer<List<DocumentEntity>> dianaCallBack = d -> {
-            callback.accept(
-                    d.stream()
-                            .map(getConverter()::toEntity)
-                            .map(o -> (T) o)
-                            .collect(toList()));
-        };
+        Consumer<List<DocumentEntity>> dianaCallBack = d -> callback.accept(
+                d.stream()
+                        .map(getConverter()::toEntity)
+                        .map(o -> (T) o)
+                        .collect(toList()));
         manager.get().n1qlQuery(n1qlQuery, params, dianaCallBack);
 
     }
@@ -98,13 +96,11 @@ class DefaultCouchbaseTemplateAsync extends AbstractDocumentTemplateAsync implem
         Objects.requireNonNull(n1qlQuery, "n1qlQuery is required");
         Objects.requireNonNull(params, "params is required");
         Objects.requireNonNull(callback, "callback is required");
-        Consumer<List<DocumentEntity>> dianaCallBack = d -> {
-            callback.accept(
-                    d.stream()
-                            .map(getConverter()::toEntity)
-                            .map(o -> (T) o)
-                            .collect(toList()));
-        };
+        Consumer<List<DocumentEntity>> dianaCallBack = d -> callback.accept(
+                d.stream()
+                        .map(getConverter()::toEntity)
+                        .map(o -> (T) o)
+                        .collect(toList()));
         manager.get().n1qlQuery(n1qlQuery, params, dianaCallBack);
     }
 
@@ -115,13 +111,11 @@ class DefaultCouchbaseTemplateAsync extends AbstractDocumentTemplateAsync implem
         Objects.requireNonNull(n1qlQuery, "n1qlQuery is required");
         Objects.requireNonNull(callback, "callback is required");
 
-        Consumer<List<DocumentEntity>> dianaCallBack = d -> {
-            callback.accept(
-                    d.stream()
-                            .map(getConverter()::toEntity)
-                            .map(o -> (T) o)
-                            .collect(toList()));
-        };
+        Consumer<List<DocumentEntity>> dianaCallBack = d -> callback.accept(
+                d.stream()
+                        .map(getConverter()::toEntity)
+                        .map(o -> (T) o)
+                        .collect(toList()));
         manager.get().n1qlQuery(n1qlQuery, dianaCallBack);
 
     }
@@ -132,13 +126,11 @@ class DefaultCouchbaseTemplateAsync extends AbstractDocumentTemplateAsync implem
         Objects.requireNonNull(n1qlQuery, "n1qlQuery is required");
         Objects.requireNonNull(callback, "callback is required");
 
-        Consumer<List<DocumentEntity>> dianaCallBack = d -> {
-            callback.accept(
-                    d.stream()
-                            .map(getConverter()::toEntity)
-                            .map(o -> (T) o)
-                            .collect(toList()));
-        };
+        Consumer<List<DocumentEntity>> dianaCallBack = d -> callback.accept(
+                d.stream()
+                        .map(getConverter()::toEntity)
+                        .map(o -> (T) o)
+                        .collect(toList()));
         manager.get().n1qlQuery(n1qlQuery, dianaCallBack);
     }
 }

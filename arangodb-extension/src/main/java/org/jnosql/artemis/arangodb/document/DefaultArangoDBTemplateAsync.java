@@ -82,13 +82,11 @@ class DefaultArangoDBTemplateAsync extends AbstractDocumentTemplateAsync impleme
         requireNonNull(values, "values is required");
         requireNonNull(callBack, "callback is required");
 
-        Consumer<List<DocumentEntity>> dianaCallBack = d -> {
-            callBack.accept(
-                    d.stream()
-                            .map(getConverter()::toEntity)
-                            .map(o -> (T) o)
-                            .collect(toList()));
-        };
+        Consumer<List<DocumentEntity>> dianaCallBack = d -> callBack.accept(
+                d.stream()
+                        .map(getConverter()::toEntity)
+                        .map(o -> (T) o)
+                        .collect(toList()));
         manager.get().aql(query, values, dianaCallBack);
     }
 }

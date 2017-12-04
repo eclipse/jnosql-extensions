@@ -111,9 +111,7 @@ class DefaultOrientDBTemplate extends AbstractDocumentTemplate
         Objects.requireNonNull(query, "query is required");
         Objects.requireNonNull(callBack, "callBack is required");
         Function<DocumentEntity, T> function = e -> getConverter().toEntity(e);
-        Consumer<DocumentEntity> dianaCallback = d -> {
-            callBack.accept(converter.toEntity(d));
-        };
+        Consumer<DocumentEntity> dianaCallback = d -> callBack.accept(converter.toEntity(d));
         manager.get().live(query, dianaCallback);
     }
 
@@ -122,9 +120,7 @@ class DefaultOrientDBTemplate extends AbstractDocumentTemplate
         Objects.requireNonNull(query, "query is required");
         Objects.requireNonNull(callBack, "callBack is required");
         Function<DocumentEntity, T> function = e -> getConverter().toEntity(e);
-        Consumer<DocumentEntity> dianaCallback = d -> {
-            callBack.accept(converter.toEntity(d));
-        };
+        Consumer<DocumentEntity> dianaCallback = d -> callBack.accept(converter.toEntity(d));
         manager.get().live(query, dianaCallback, params);
     }
 }

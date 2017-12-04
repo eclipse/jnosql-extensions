@@ -39,9 +39,7 @@ final class ParamUtil {
                     .filter(Param.class::isInstance)
                     .map(Param.class::cast)
                     .findFirst();
-            param.ifPresent(p -> {
-                jsonObject.put(p.value(), arg);
-            });
+            param.ifPresent(p -> jsonObject.put(p.value(), arg));
 
         }
 

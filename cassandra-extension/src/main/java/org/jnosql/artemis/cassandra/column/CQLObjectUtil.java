@@ -39,9 +39,7 @@ final class CQLObjectUtil {
                     .filter(Param.class::isInstance)
                     .map(Param.class::cast)
                     .findFirst();
-            param.ifPresent(p -> {
-                map.put(p.value(), arg);
-            });
+            param.ifPresent(p -> map.put(p.value(), arg));
 
         }
 

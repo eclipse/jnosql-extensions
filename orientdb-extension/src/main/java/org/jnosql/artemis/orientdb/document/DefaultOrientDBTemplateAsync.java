@@ -77,13 +77,11 @@ class DefaultOrientDBTemplateAsync extends AbstractDocumentTemplateAsync impleme
         requireNonNull(query, "query is required");
         requireNonNull(callBack, "callBack is required");
 
-        Consumer<List<DocumentEntity>> dianaCallBack = d -> {
-            callBack.accept(
-                    d.stream()
-                            .map(getConverter()::toEntity)
-                            .map(o -> (T) o)
-                            .collect(toList()));
-        };
+        Consumer<List<DocumentEntity>> dianaCallBack = d -> callBack.accept(
+                d.stream()
+                        .map(getConverter()::toEntity)
+                        .map(o -> (T) o)
+                        .collect(toList()));
 
         manager.get().sql(query, dianaCallBack, params);
 
@@ -95,13 +93,11 @@ class DefaultOrientDBTemplateAsync extends AbstractDocumentTemplateAsync impleme
         requireNonNull(callBack, "callBack is required");
         requireNonNull(params, "params is required");
 
-        Consumer<List<DocumentEntity>> dianaCallBack = d -> {
-            callBack.accept(
-                    d.stream()
-                            .map(getConverter()::toEntity)
-                            .map(o -> (T) o)
-                            .collect(toList()));
-        };
+        Consumer<List<DocumentEntity>> dianaCallBack = d -> callBack.accept(
+                d.stream()
+                        .map(getConverter()::toEntity)
+                        .map(o -> (T) o)
+                        .collect(toList()));
 
         manager.get().sql(query, dianaCallBack, params);
     }

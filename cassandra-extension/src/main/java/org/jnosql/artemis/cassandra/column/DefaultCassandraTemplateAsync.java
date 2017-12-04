@@ -150,13 +150,11 @@ class DefaultCassandraTemplateAsync extends AbstractColumnTemplateAsync
     public <T> void select(ColumnQuery query, ConsistencyLevel level, Consumer<List<T>> callBack)
             throws ExecuteAsyncQueryException, NullPointerException {
         requireNonNull(callBack, "callBack is required");
-        Consumer<List<ColumnEntity>> dianaCallBack = d -> {
-            callBack.accept(
-                    d.stream()
-                            .map(getConverter()::toEntity)
-                            .map(o -> (T) o)
-                            .collect(toList()));
-        };
+        Consumer<List<ColumnEntity>> dianaCallBack = d -> callBack.accept(
+                d.stream()
+                        .map(getConverter()::toEntity)
+                        .map(o -> (T) o)
+                        .collect(toList()));
 
         managerAsync.get().select(query, level, dianaCallBack);
     }
@@ -165,26 +163,22 @@ class DefaultCassandraTemplateAsync extends AbstractColumnTemplateAsync
     public <T> void cql(String query, Consumer<List<T>> callBack)
             throws ExecuteAsyncQueryException, NullPointerException {
         requireNonNull(callBack, "callBack is required");
-        Consumer<List<ColumnEntity>> dianaCallBack = d -> {
-            callBack.accept(
-                    d.stream()
-                            .map(getConverter()::toEntity)
-                            .map(o -> (T) o)
-                            .collect(toList()));
-        };
+        Consumer<List<ColumnEntity>> dianaCallBack = d -> callBack.accept(
+                d.stream()
+                        .map(getConverter()::toEntity)
+                        .map(o -> (T) o)
+                        .collect(toList()));
         managerAsync.get().cql(query, dianaCallBack);
     }
 
     @Override
     public <T> void cql(String query, Map<String, Object> values, Consumer<List<T>> callBack) throws ExecuteAsyncQueryException, NullPointerException {
         requireNonNull(callBack, "callBack is required");
-        Consumer<List<ColumnEntity>> dianaCallBack = d -> {
-            callBack.accept(
-                    d.stream()
-                            .map(getConverter()::toEntity)
-                            .map(o -> (T) o)
-                            .collect(toList()));
-        };
+        Consumer<List<ColumnEntity>> dianaCallBack = d -> callBack.accept(
+                d.stream()
+                        .map(getConverter()::toEntity)
+                        .map(o -> (T) o)
+                        .collect(toList()));
         managerAsync.get().cql(query, values, dianaCallBack);
     }
 
@@ -193,13 +187,11 @@ class DefaultCassandraTemplateAsync extends AbstractColumnTemplateAsync
         requireNonNull(query, "callBack is required");
         requireNonNull(callBack, "callBack is required");
         requireNonNull(params, "params is required");
-        Consumer<List<ColumnEntity>> dianaCallBack = d -> {
-            callBack.accept(
-                    d.stream()
-                            .map(getConverter()::toEntity)
-                            .map(o -> (T) o)
-                            .collect(toList()));
-        };
+        Consumer<List<ColumnEntity>> dianaCallBack = d -> callBack.accept(
+                d.stream()
+                        .map(getConverter()::toEntity)
+                        .map(o -> (T) o)
+                        .collect(toList()));
         managerAsync.get().nativeQueryPrepare(query).bind(params).executeQueryAsync(dianaCallBack);
     }
 
@@ -207,13 +199,11 @@ class DefaultCassandraTemplateAsync extends AbstractColumnTemplateAsync
     public <T> void execute(Statement statement, Consumer<List<T>> callBack)
             throws ExecuteAsyncQueryException, NullPointerException {
         requireNonNull(callBack, "callBack is required");
-        Consumer<List<ColumnEntity>> dianaCallBack = d -> {
-            callBack.accept(
-                    d.stream()
-                            .map(getConverter()::toEntity)
-                            .map(o -> (T) o)
-                            .collect(toList()));
-        };
+        Consumer<List<ColumnEntity>> dianaCallBack = d -> callBack.accept(
+                d.stream()
+                        .map(getConverter()::toEntity)
+                        .map(o -> (T) o)
+                        .collect(toList()));
         managerAsync.get().execute(statement, dianaCallBack);
     }
 

@@ -78,13 +78,11 @@ class DefaultElasticsearchTemplateAsync extends AbstractDocumentTemplateAsync im
         Objects.requireNonNull(query, "query is required");
         Objects.requireNonNull(callBack, "callBack is required");
 
-        Consumer<List<DocumentEntity>> dianaCallBack = d -> {
-            callBack.accept(
-                    d.stream()
-                            .map(getConverter()::toEntity)
-                            .map(o -> (T) o)
-                            .collect(toList()));
-        };
+        Consumer<List<DocumentEntity>> dianaCallBack = d -> callBack.accept(
+                d.stream()
+                        .map(getConverter()::toEntity)
+                        .map(o -> (T) o)
+                        .collect(toList()));
         manager.get().search(query, dianaCallBack, types);
     }
 }

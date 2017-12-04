@@ -64,13 +64,9 @@ class OrientDBExtension implements Extension {
     void onAfterBeanDiscovery(@Observes final AfterBeanDiscovery afterBeanDiscovery, final BeanManager beanManager) {
         LOGGER.info("Starting the onAfterBeanDiscovery with elements number: " + crudTypes.size());
 
-        crudTypes.forEach(type -> {
-            afterBeanDiscovery.addBean(new OrientDBRepositoryBean(type, beanManager));
-        });
+        crudTypes.forEach(type -> afterBeanDiscovery.addBean(new OrientDBRepositoryBean(type, beanManager)));
 
-        crudAsyncTypes.forEach(type -> {
-            afterBeanDiscovery.addBean(new OrientDBRepositoryAsyncBean(type, beanManager));
-        });
+        crudAsyncTypes.forEach(type -> afterBeanDiscovery.addBean(new OrientDBRepositoryAsyncBean(type, beanManager)));
 
         LOGGER.info("Finished the onAfterBeanDiscovery");
     }

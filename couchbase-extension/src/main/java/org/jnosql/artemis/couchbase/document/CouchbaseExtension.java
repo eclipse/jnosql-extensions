@@ -64,13 +64,9 @@ class CouchbaseExtension implements Extension {
     void onAfterBeanDiscovery(@Observes final AfterBeanDiscovery afterBeanDiscovery, final BeanManager beanManager) {
         LOGGER.info("Starting the onAfterBeanDiscovery with elements number: " + crudTypes.size());
 
-        crudTypes.forEach(type -> {
-            afterBeanDiscovery.addBean(new CouchbaseRepositoryBean(type, beanManager));
-        });
+        crudTypes.forEach(type -> afterBeanDiscovery.addBean(new CouchbaseRepositoryBean(type, beanManager)));
 
-        crudAsyncTypes.forEach(type -> {
-            afterBeanDiscovery.addBean(new CouchbaseRepositoryAsyncBean(type, beanManager));
-        });
+        crudAsyncTypes.forEach(type -> afterBeanDiscovery.addBean(new CouchbaseRepositoryAsyncBean(type, beanManager)));
 
         LOGGER.info("Finished the onAfterBeanDiscovery");
     }
