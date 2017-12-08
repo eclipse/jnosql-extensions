@@ -15,13 +15,17 @@
 package org.jnosql.artemis.hazelcast.key;
 
 
+import com.hazelcast.query.Predicate;
 import org.jnosql.diana.api.Value;
 import org.jnosql.diana.hazelcast.key.HazelcastBucketManager;
+import org.mockito.Mockito;
 
 import javax.enterprise.inject.Produces;
 import java.util.List;
+import java.util.Map;
 
 import static java.util.Arrays.asList;
+import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -36,6 +40,8 @@ public class MockProducer {
                 Value.of(new Person("Otavio", 28)));
 
         when(manager.query(anyString())).thenReturn(people);
+        when(manager.query(anyString(), any(Map.class))).thenReturn(people);
+        when(manager.query(any(Predicate.class))).thenReturn(people);
         return manager;
     }
 
