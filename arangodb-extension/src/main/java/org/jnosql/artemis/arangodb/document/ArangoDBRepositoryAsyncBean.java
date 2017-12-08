@@ -129,7 +129,7 @@ class ArangoDBRepositoryAsyncBean implements Bean<ArangoDBRepositoryAsync>, Pass
 
     @Override
     public String getId() {
-        return type.getName() + "Async@cassandra";
+        return type.getName() + "Async@arangodb";
     }
 
 }
