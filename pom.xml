@@ -80,6 +80,7 @@
         <module>couchbase-extension</module>
         <module>arangodb-extension</module>
         <module>graph-extension</module>
+        <module>hazelcast-extension</module>
     </modules>
 
     <dependencies>
