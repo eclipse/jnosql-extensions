@@ -15,10 +15,15 @@
 package org.jnosql.artemis.hazelcast.key;
 
 
+import org.jnosql.diana.api.Value;
 import org.jnosql.diana.hazelcast.key.HazelcastBucketManager;
 import org.mockito.Mockito;
 
 import javax.enterprise.inject.Produces;
+import java.util.List;
+
+import static java.util.Arrays.asList;
+import static org.mockito.Mockito.when;
 
 public class MockProducer {
 
@@ -26,6 +31,10 @@ public class MockProducer {
     @Produces
     public HazelcastBucketManager getManager() {
         HazelcastBucketManager manager = Mockito.mock(HazelcastBucketManager.class);
+        List<Value> people = asList(Value.of(new Person("Poliana", 25)),
+                Value.of(new Person("Otavio", 28)));
+
+        when(manager.query(Mockito.anyString())).thenReturn(people);
         return manager;
     }
 
