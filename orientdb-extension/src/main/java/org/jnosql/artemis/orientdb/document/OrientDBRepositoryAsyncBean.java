@@ -130,7 +130,7 @@ class OrientDBRepositoryAsyncBean implements Bean<OrientDBCrudRepositoryAsync>, 
 
     @Override
     public String getId() {
-        return type.getName() + "Async@cassandra";
+        return type.getName() + "Async@orientdb";
     }
 
 }

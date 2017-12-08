@@ -129,7 +129,7 @@ class OrientDBRepositoryBean implements Bean<OrientDBCrudRepository>, Passivatio
 
     @Override
     public String getId() {
-        return type.getName() + '@' + "orientdb";
+        return type.getName() + "@orientdb";
     }
 
 }
