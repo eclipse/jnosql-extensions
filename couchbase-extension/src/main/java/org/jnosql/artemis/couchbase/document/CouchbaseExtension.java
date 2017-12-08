@@ -25,7 +25,7 @@ import java.util.HashSet;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
 
-class CouchbaseExtension implements Extension {
+public class CouchbaseExtension implements Extension {
 
     private static final Logger LOGGER = Logger.getLogger(CouchbaseExtension.class.getName());
 

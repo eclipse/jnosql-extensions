@@ -25,7 +25,7 @@ import java.util.HashSet;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
 
-class OrientDBExtension implements Extension {
+public class OrientDBExtension implements Extension {
 
     private static final Logger LOGGER = Logger.getLogger(OrientDBExtension.class.getName());
 
