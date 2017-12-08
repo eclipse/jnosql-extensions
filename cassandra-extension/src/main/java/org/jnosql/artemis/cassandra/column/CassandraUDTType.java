@@ -22,7 +22,6 @@ import org.jnosql.diana.api.column.Column;
 import org.jnosql.diana.cassandra.column.UDT;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
