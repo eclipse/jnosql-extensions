@@ -15,5 +15,5 @@
 package org.jnosql.artemis.hazelcast.key;
 
 
-public interface PersonRepository  {
+public interface PersonRepository extends HazelcastRepository<Person, String> {
 }
