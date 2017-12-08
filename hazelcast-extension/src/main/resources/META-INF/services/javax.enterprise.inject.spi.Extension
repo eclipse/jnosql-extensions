@@ -12,4 +12,4 @@
 #
 #   Otavio Santana
 #
-org.jnosql.artemis.arangodb.document.ArangoDBExtension
+org.jnosql.artemis.hazelcast.key.HazelcastExtension
