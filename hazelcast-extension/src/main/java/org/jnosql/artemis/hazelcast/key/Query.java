@@ -12,23 +12,19 @@
  *
  *   Otavio Santana
  */
-package org.jnosql.artemis.arangodb.document;
+package org.jnosql.artemis.hazelcast.key;
 
-import javax.enterprise.inject.se.SeContainer;
-import javax.enterprise.inject.se.SeContainerInitializer;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-public class CDIContext {
+/**
+ * To a dynamic query on HazelcastRepository interfaces.
+ */
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.METHOD)
+public @interface Query {
 
-    public static final CDIContext INSTANCE = new CDIContext();
-
-    private final SeContainer container;
-
-    private CDIContext() {
-        this.container = SeContainerInitializer.newInstance().initialize();
-        Runtime.getRuntime().addShutdownHook(new Thread(container::close));
-    }
-
-    public <T> T getBean(Class<T> type) {
-        return container.select(type).get();
-    }
+    String value();
 }

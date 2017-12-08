@@ -31,4 +31,4 @@ public class CDIContext {
     public <T> T getBean(Class<T> type) {
         return container.select(type).get();
     }
-}
+}   

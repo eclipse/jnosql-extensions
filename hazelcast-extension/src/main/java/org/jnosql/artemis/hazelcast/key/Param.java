@@ -12,8 +12,20 @@
  *
  *   Otavio Santana
  */
-package org.jnosql.artemis.arangodb.document;
+package org.jnosql.artemis.hazelcast.key;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 
-public interface PersonRepository extends ArangoDBRepository<Person, String> {
+/**
+ * Defines a param to a Query query.
+ */
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.PARAMETER)
+public @interface Param {
+
+    String value();
 }

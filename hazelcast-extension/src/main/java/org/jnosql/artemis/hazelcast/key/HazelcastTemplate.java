@@ -12,8 +12,12 @@
  *
  *   Otavio Santana
  */
-package org.jnosql.artemis.arangodb.document;
+package org.jnosql.artemis.hazelcast.key;
 
+import org.jnosql.artemis.key.KeyValueTemplate;
 
-public interface PersonRepositoryAsync extends ArangoDBRepositoryAsync<Person, String> {
+/**
+ * A template layer to Hazelcast key-value type
+ */
+public interface HazelcastTemplate extends KeyValueTemplate {
 }

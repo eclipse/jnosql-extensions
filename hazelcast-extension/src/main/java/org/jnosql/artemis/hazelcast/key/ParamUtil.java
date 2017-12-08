@@ -12,7 +12,7 @@
  *
  *   Otavio Santana
  */
-package org.jnosql.artemis.arangodb.document;
+package org.jnosql.artemis.hazelcast.key;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;

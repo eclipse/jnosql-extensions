@@ -12,26 +12,8 @@
  *
  *   Otavio Santana
  */
-package org.jnosql.artemis.arangodb.document;
+package org.jnosql.artemis.hazelcast.key;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
 
-import javax.inject.Inject;
-
-@RunWith(CDIJUnitRunner.class)
-public class ArangoDBExtensionTest {
-
-    @Inject
-    private PersonRepositoryAsync personRepositoryAsync;
-
-    @Inject
-    private PersonRepository personRepository;
-
-    @Test
-    public void shouldSaveOrientDB() {
-        Person person = new Person("Ada", 10);
-        personRepository.deleteById(person.getName());
-        personRepositoryAsync.deleteById(person.getName());
-    }
+public interface PersonRepository  {
 }
