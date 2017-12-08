@@ -22,9 +22,11 @@ import org.jnosql.diana.api.column.Column;
 import org.jnosql.diana.cassandra.column.UDT;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
+import static java.util.Collections.singletonList;
 import static java.util.stream.StreamSupport.stream;
 
 class CassandraUDTType implements ColumnFieldValue {
@@ -58,18 +60,18 @@ class CassandraUDTType implements ColumnFieldValue {
     }
 
     @Override
-    public Column toColumn(ColumnEntityConverter converter, Converters converters) {
+    public List<Column> toColumn(ColumnEntityConverter converter, Converters converters) {
         if (Iterable.class.isInstance(value)) {
             List<Iterable<Column>> columns = new ArrayList<>();
             stream(Iterable.class.cast(value).spliterator(), false)
                     .forEach(c -> columns.add(converter.toColumn(c).getColumns()));
-            return UDT.builder(type).withName(field.getName()).addUDTs(columns).build();
+            return singletonList(UDT.builder(type).withName(field.getName()).addUDTs(columns).build());
 
         } else {
-            return UDT.builder(type)
+            return singletonList(UDT.builder(type)
                     .withName(field.getName())
                     .addUDT(converter.toColumn(value).getColumns())
-                    .build();
+                    .build());
         }
     }
 
