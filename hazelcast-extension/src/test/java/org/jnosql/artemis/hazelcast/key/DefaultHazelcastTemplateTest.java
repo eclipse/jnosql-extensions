@@ -14,14 +14,16 @@
  */
 package org.jnosql.artemis.hazelcast.key;
 
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import javax.inject.Inject;
 import java.util.Collection;
 
+import static com.hazelcast.query.Predicates.equal;
+import static java.util.Collections.singletonMap;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(CDIJUnitRunner.class)
 public class DefaultHazelcastTemplateTest {
@@ -34,7 +36,21 @@ public class DefaultHazelcastTemplateTest {
     public void shouldRunQuery() {
         Collection<Person> people = template.query("active");
         assertNotNull(people);
+        assertTrue(people.stream().allMatch(Person.class::isInstance));
+    }
 
+    @Test
+    public void shouldRunQuery2() {
+        Collection<Person> people = template.query("age = :age", singletonMap("age", 10));
+        assertNotNull(people);
+        assertTrue(people.stream().allMatch(Person.class::isInstance));
+    }
+
+    @Test
+    public void shouldRunQuery3() {
+        Collection<Person> people = template.query(equal("name",  "Poliana"));
+        assertNotNull(people);
+        assertTrue(people.stream().allMatch(Person.class::isInstance));
     }
 
 }
