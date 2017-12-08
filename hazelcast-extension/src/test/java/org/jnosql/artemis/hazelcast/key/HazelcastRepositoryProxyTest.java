@@ -14,22 +14,32 @@
  */
 package org.jnosql.artemis.hazelcast.key;
 
+import com.hazelcast.query.Predicate;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
-import javax.inject.Inject;
 import java.lang.reflect.Proxy;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
+import static java.util.Arrays.asList;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
-@RunWith(CDIJUnitRunner.class)
+@RunWith(MockitoJUnitRunner.class)
 public class HazelcastRepositoryProxyTest {
 
-    @Inject
+    @Mock
     private HazelcastTemplate template;
 
     private PersonRepository personRepository;
@@ -37,6 +47,14 @@ public class HazelcastRepositoryProxyTest {
 
     @Before
     public void setUp() {
+
+        Collection<Object> people = asList(new Person("Poliana", 25), new Person("Otavio", 28));
+
+        when(template.query(anyString())).thenReturn(people);
+        when(template.query(anyString(), any(Map.class))).thenReturn(people);
+        when(template.query(any(Predicate.class))).thenReturn(people);
+
+
         HazelcastRepositoryProxy handler = new HazelcastRepositoryProxy(template, PersonRepository.class);
 
         personRepository = (PersonRepository) Proxy.newProxyInstance(PersonRepository.class.getClassLoader(),
@@ -52,6 +70,17 @@ public class HazelcastRepositoryProxyTest {
         assertTrue(people.stream().allMatch(Person.class::isInstance));
     }
 
+    @Test
+    public void shouldFindByAgeAndInteger() {
+        Set<Person> people = personRepository.findByAgeAndInteger("Ada", 10);
+        Map<String, Object> params = new HashMap<>();
+        params.put("age", 10);
+        params.put("name", "Ada");
+        verify(template).query("name = :name AND age = :age", params);
+        assertNotNull(people);
+        assertTrue(people.stream().allMatch(Person.class::isInstance));
+    }
+
 
     interface PersonRepository extends HazelcastRepository<Person, String> {
 
@@ -59,6 +88,6 @@ public class HazelcastRepositoryProxyTest {
         List<Person> findActive();
 
         @Query("name = :name AND age = :age")
-        List<Person> findByAgeAndInteger(@Param("name") String name, Integer age);
+        Set<Person> findByAgeAndInteger(@Param("name") String name, @Param("age") Integer age);
     }
 }
