@@ -22,11 +22,13 @@ import org.jnosql.diana.api.key.BucketManager;
 import org.jnosql.diana.hazelcast.key.HazelcastBucketManager;
 
 import javax.enterprise.inject.Instance;
+import javax.enterprise.inject.Typed;
 import javax.inject.Inject;
 import java.util.Collection;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+@Typed(HazelcastTemplate.class)
 class DefaultHazelcastTemplate extends AbstractKeyValueTemplate implements HazelcastTemplate {
 
     @Inject
