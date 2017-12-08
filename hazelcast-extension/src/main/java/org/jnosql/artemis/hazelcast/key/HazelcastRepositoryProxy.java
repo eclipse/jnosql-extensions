@@ -19,7 +19,11 @@ import org.jnosql.artemis.key.KeyValueTemplate;
 import org.jnosql.artemis.key.query.AbstractKeyValueRepository;
 import org.jnosql.artemis.key.query.AbstractKeyValueRepositoryProxy;
 
+import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
+import java.util.Collection;
+import java.util.Map;
+import java.util.Objects;
 
 class HazelcastRepositoryProxy<T> extends AbstractKeyValueRepositoryProxy<T> {
 
@@ -38,7 +42,24 @@ class HazelcastRepositoryProxy<T> extends AbstractKeyValueRepositoryProxy<T> {
 
     @Override
     protected Repository getRepository() {
-            return repository;
+        return repository;
+    }
+
+    @Override
+    public Object invoke(Object o, Method method, Object[] args) throws Throwable {
+
+        Query query = method.getAnnotation(Query.class);
+        if (Objects.nonNull(query)) {
+            Collection<T> result;
+            Map<String, Object> params = ParamUtil.getParams(args, method);
+            if (params.isEmpty()) {
+                result = template.query(query.value());
+            } else {
+                result = template.query(query.value(), params);
+            }
+            return ReturnTypeConverterUtil.returnObject(result, method);
+        }
+        return super.invoke(o, method, args);
     }
 
     class CrudRepository extends AbstractKeyValueRepository {
