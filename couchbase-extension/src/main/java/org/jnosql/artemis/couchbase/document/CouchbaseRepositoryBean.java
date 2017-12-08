@@ -130,7 +130,7 @@ class CouchbaseRepositoryBean implements Bean<CouchbaseRepository>, PassivationC
 
     @Override
     public String getId() {
-        return type.getName() + '@' + "orientdb";
+        return type.getName() + "@couchbase";
     }
 
 }

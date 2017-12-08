@@ -129,7 +129,7 @@ class CouchbaseRepositoryAsyncBean implements Bean<CouchbaseRepositoryAsync>, Pa
 
     @Override
     public String getId() {
-        return type.getName() + "Async@cassandra";
+        return type.getName() + "Async@couchbase";
     }
 
 }

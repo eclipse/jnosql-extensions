@@ -129,7 +129,7 @@ class CassandraRepositoryBean implements Bean<CassandraRepository>, PassivationC
 
     @Override
     public String getId() {
-        return type.getName() + '@' + "cassandra";
+        return type.getName() + "@cassandra";
     }
 
 }
