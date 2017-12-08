@@ -15,8 +15,6 @@
 package org.jnosql.artemis.hazelcast.key;
 
 import org.jnosql.artemis.DatabaseQualifier;
-import org.jnosql.artemis.reflection.ClassRepresentations;
-import org.jnosql.artemis.reflection.Reflections;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.spi.CreationalContext;
@@ -67,10 +65,7 @@ class HazelcastRepositoryBean implements Bean<HazelcastRepository>, PassivationC
 
     @Override
     public HazelcastRepository create(CreationalContext<HazelcastRepository> creationalContext) {
-        ClassRepresentations classRepresentations = getInstance(ClassRepresentations.class);
         HazelcastTemplate template = getInstance(HazelcastTemplate.class);
-
-        Reflections reflections = getInstance(Reflections.class);
 
         HazelcastRepositoryProxy handler = new HazelcastRepositoryProxy(template, type);
         return (HazelcastRepository) Proxy.newProxyInstance(type.getClassLoader(),
