@@ -31,10 +31,12 @@ class HazelcastRepositoryProxy<T> extends AbstractKeyValueRepositoryProxy<T> {
 
     private final CrudRepository repository;
 
+    private final Class<T> typeClass;
+
 
     HazelcastRepositoryProxy(HazelcastTemplate template, Class<?> repositoryType) {
         this.template = template;
-        Class<T> typeClass = Class.class.cast(ParameterizedType.class.cast(repositoryType.getGenericInterfaces()[0])
+        this.typeClass = Class.class.cast(ParameterizedType.class.cast(repositoryType.getGenericInterfaces()[0])
                 .getActualTypeArguments()[0]);
         this.repository = new CrudRepository(typeClass, template);
     }
@@ -57,7 +59,7 @@ class HazelcastRepositoryProxy<T> extends AbstractKeyValueRepositoryProxy<T> {
             } else {
                 result = template.query(query.value(), params);
             }
-            return ReturnTypeConverterUtil.returnObject(result, method);
+            return ReturnTypeConverterUtil.returnObject(result, method, typeClass);
         }
         return super.invoke(o, method, args);
     }
