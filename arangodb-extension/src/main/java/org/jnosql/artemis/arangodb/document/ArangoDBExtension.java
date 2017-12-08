@@ -25,7 +25,7 @@ import java.util.HashSet;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
 
-class ArangoDBExtension implements Extension {
+public class ArangoDBExtension implements Extension {
 
     private static final Logger LOGGER = Logger.getLogger(ArangoDBExtension.class.getName());
 
