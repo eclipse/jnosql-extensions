@@ -1,6 +1,6 @@
-# ArangoDB-extension
+# Hazelcast-extension
 
-![ArangoDB Project](https://jnosql.github.io/img/logos/ArangoDB.png)
+![Hazelcast Project](https://jnosql.github.io/img/logos/hazelcast.png)
 
 
 ArangoDB extension has implementations to use specific behavior that is beyond the API such as AQL.
