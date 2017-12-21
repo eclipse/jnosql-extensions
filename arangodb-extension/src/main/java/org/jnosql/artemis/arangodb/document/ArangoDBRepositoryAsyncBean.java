@@ -14,6 +14,7 @@
  */
 package org.jnosql.artemis.arangodb.document;
 
+import org.jnosql.artemis.Converters;
 import org.jnosql.artemis.DatabaseQualifier;
 import org.jnosql.artemis.reflection.ClassRepresentations;
 import org.jnosql.artemis.reflection.Reflections;
@@ -70,9 +71,10 @@ class ArangoDBRepositoryAsyncBean implements Bean<ArangoDBRepositoryAsync>, Pass
         ClassRepresentations classRepresentations = getInstance(ClassRepresentations.class);
         ArangoDBTemplateAsync repository = getInstance(ArangoDBTemplateAsync.class);
         Reflections reflections = getInstance(Reflections.class);
+        Converters converters = getInstance(Converters.class);
 
         ArangoDBRepositoryAsyncProxy handler = new ArangoDBRepositoryAsyncProxy(repository,
-                classRepresentations, type, reflections);
+                classRepresentations, type, reflections, converters);
         return (ArangoDBRepositoryAsync) Proxy.newProxyInstance(type.getClassLoader(),
                 new Class[]{type},
                 handler);

@@ -14,6 +14,7 @@
  */
 package org.jnosql.artemis.arangodb.document;
 
+import org.jnosql.artemis.Converters;
 import org.jnosql.artemis.DynamicQueryException;
 import org.jnosql.artemis.reflection.ClassRepresentations;
 import org.jnosql.artemis.reflection.Reflections;
@@ -46,6 +47,9 @@ public class ArangoDBRepositoryAsyncProxyTest {
     @Inject
     private Reflections reflections;
 
+    @Inject
+    private Converters converters;
+
     private PersonAsyncRepository personRepository;
 
 
@@ -54,7 +58,7 @@ public class ArangoDBRepositoryAsyncProxyTest {
         this.template = Mockito.mock(ArangoDBTemplateAsync.class);
 
         ArangoDBRepositoryAsyncProxy handler = new ArangoDBRepositoryAsyncProxy(template,
-                classRepresentations, PersonAsyncRepository.class, reflections);
+                classRepresentations, PersonAsyncRepository.class, reflections, converters);
 
 
         personRepository = (PersonAsyncRepository) Proxy.newProxyInstance(PersonAsyncRepository.class.getClassLoader(),
