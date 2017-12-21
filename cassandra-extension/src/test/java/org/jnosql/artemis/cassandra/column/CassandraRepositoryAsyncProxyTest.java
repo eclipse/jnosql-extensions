@@ -15,6 +15,8 @@
 package org.jnosql.artemis.cassandra.column;
 
 import com.datastax.driver.core.ConsistencyLevel;
+import jnr.ffi.annotations.In;
+import org.jnosql.artemis.Converters;
 import org.jnosql.artemis.DynamicQueryException;
 import org.jnosql.artemis.reflection.ClassRepresentations;
 import org.jnosql.artemis.reflection.Reflections;
@@ -49,6 +51,8 @@ public class CassandraRepositoryAsyncProxyTest {
     @Inject
     private Reflections reflections;
 
+    @Inject
+    private Converters converters;
     private PersonAsyncRepository personRepository;
 
 
@@ -57,7 +61,7 @@ public class CassandraRepositoryAsyncProxyTest {
         this.template = Mockito.mock(CassandraTemplateAsync.class);
 
         CassandraRepositoryAsyncProxy handler = new CassandraRepositoryAsyncProxy(template,
-                classRepresentations, PersonAsyncRepository.class, reflections);
+                classRepresentations, PersonAsyncRepository.class, reflections, converters);
 
 
         personRepository = (PersonAsyncRepository) Proxy.newProxyInstance(PersonAsyncRepository.class.getClassLoader(),

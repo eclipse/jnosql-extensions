@@ -15,6 +15,7 @@
 package org.jnosql.artemis.cassandra.column;
 
 import com.datastax.driver.core.ConsistencyLevel;
+import org.jnosql.artemis.Converters;
 import org.jnosql.artemis.reflection.ClassRepresentations;
 import org.jnosql.artemis.reflection.Reflections;
 import org.jnosql.diana.api.column.ColumnDeleteQuery;
@@ -48,6 +49,9 @@ public class CassandraRepositoryProxyTest {
     @Inject
     private Reflections reflections;
 
+    @Inject
+    private Converters converters;
+
     private PersonRepository personRepository;
 
 
@@ -56,7 +60,7 @@ public class CassandraRepositoryProxyTest {
         this.template = Mockito.mock(CassandraTemplate.class);
 
         CassandraRepositoryProxy handler = new CassandraRepositoryProxy(template,
-                classRepresentations, PersonRepository.class, reflections);
+                classRepresentations, PersonRepository.class, reflections, converters);
 
         when(template.insert(any(Person.class))).thenReturn(new Person());
         when(template.insert(any(Person.class), any(Duration.class))).thenReturn(new Person());
