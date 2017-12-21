@@ -15,6 +15,7 @@
 package org.jnosql.artemis.elasticsearch.document;
 
 import org.elasticsearch.index.query.QueryBuilder;
+import org.jnosql.artemis.Converters;
 import org.jnosql.artemis.document.DocumentEntityConverter;
 import org.jnosql.artemis.reflection.ClassRepresentations;
 import org.jnosql.diana.api.document.Document;
@@ -47,6 +48,9 @@ public class DefaultElasticsearchTemplateAsyncTest {
     @Inject
     private ClassRepresentations classRepresentations;
 
+    @Inject
+    private Converters converters;
+
 
     @Before
     public void setUp() {
@@ -54,7 +58,7 @@ public class DefaultElasticsearchTemplateAsyncTest {
         Instance instance = Mockito.mock(Instance.class);
         when(instance.get()).thenReturn(managerAsync);
 
-        templateAsync = new DefaultElasticsearchTemplateAsync(converter, instance, classRepresentations);
+        templateAsync = new DefaultElasticsearchTemplateAsync(converter, instance, classRepresentations, converters);
 
         DocumentEntity entity = DocumentEntity.of("Person");
         entity.add(Document.of("name", "Ada"));
