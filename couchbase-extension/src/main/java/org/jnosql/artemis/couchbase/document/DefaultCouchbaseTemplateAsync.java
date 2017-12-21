@@ -17,6 +17,7 @@ package org.jnosql.artemis.couchbase.document;
 
 import com.couchbase.client.java.document.json.JsonObject;
 import com.couchbase.client.java.query.Statement;
+import org.jnosql.artemis.Converters;
 import org.jnosql.artemis.document.AbstractDocumentTemplateAsync;
 import org.jnosql.artemis.document.DocumentEntityConverter;
 import org.jnosql.artemis.reflection.ClassRepresentations;
@@ -47,13 +48,16 @@ class DefaultCouchbaseTemplateAsync extends AbstractDocumentTemplateAsync implem
 
     private ClassRepresentations classRepresentations;
 
+    private Converters converters;
+
     @Inject
     DefaultCouchbaseTemplateAsync(DocumentEntityConverter converter,
                                   Instance<CouchbaseDocumentCollectionManagerAsync> manager,
-                                  ClassRepresentations classRepresentations) {
+                                  ClassRepresentations classRepresentations, Converters converters) {
         this.converter = converter;
         this.manager = manager;
         this.classRepresentations = classRepresentations;
+        this.converters = converters;
     }
 
     DefaultCouchbaseTemplateAsync() {
@@ -72,6 +76,11 @@ class DefaultCouchbaseTemplateAsync extends AbstractDocumentTemplateAsync implem
     @Override
     protected ClassRepresentations getClassRepresentations() {
         return classRepresentations;
+    }
+
+    @Override
+    protected Converters getConverters() {
+        return converters;
     }
 
     @Override
