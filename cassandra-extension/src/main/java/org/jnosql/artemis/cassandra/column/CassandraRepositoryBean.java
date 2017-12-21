@@ -14,6 +14,7 @@
  */
 package org.jnosql.artemis.cassandra.column;
 
+import org.jnosql.artemis.Converters;
 import org.jnosql.artemis.DatabaseQualifier;
 import org.jnosql.artemis.reflection.ClassRepresentations;
 import org.jnosql.artemis.reflection.Reflections;
@@ -70,9 +71,10 @@ class CassandraRepositoryBean implements Bean<CassandraRepository>, PassivationC
         ClassRepresentations classRepresentations = getInstance(ClassRepresentations.class);
         CassandraTemplate repository = getInstance(CassandraTemplate.class);
         Reflections reflections = getInstance(Reflections.class);
+        Converters converters = getInstance(Converters.class);
 
         CassandraRepositoryProxy handler = new CassandraRepositoryProxy(repository,
-                classRepresentations, type, reflections);
+                classRepresentations, type, reflections, converters);
         return (CassandraRepository) Proxy.newProxyInstance(type.getClassLoader(),
                 new Class[]{type},
                 handler);

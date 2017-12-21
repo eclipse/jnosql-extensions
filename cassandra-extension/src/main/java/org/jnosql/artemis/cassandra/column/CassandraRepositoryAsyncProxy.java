@@ -15,6 +15,7 @@
 package org.jnosql.artemis.cassandra.column;
 
 import com.datastax.driver.core.ConsistencyLevel;
+import org.jnosql.artemis.Converters;
 import org.jnosql.artemis.DynamicQueryException;
 import org.jnosql.artemis.column.ColumnTemplateAsync;
 import org.jnosql.artemis.column.query.AbstractColumnRepositoryAsync;
@@ -65,14 +66,17 @@ class CassandraRepositoryAsyncProxy<T> implements InvocationHandler {
 
     private final ColumnQueryDeleteParser queryDeleteParser;
 
+    private final Converters converters;
+
 
     CassandraRepositoryAsyncProxy(CassandraTemplateAsync repository, ClassRepresentations classRepresentations,
-                                  Class<?> repositoryType, Reflections reflections) {
+                                  Class<?> repositoryType, Reflections reflections, Converters converters) {
         this.repository = repository;
         this.typeClass = Class.class.cast(ParameterizedType.class.cast(repositoryType.getGenericInterfaces()[0])
                 .getActualTypeArguments()[0]);
         this.classRepresentation = classRepresentations.get(typeClass);
         this.crudRepository = new ColumnRepositoryAsync(repository, classRepresentation, reflections);
+        this.converters = converters;
         this.queryParser = new ColumnQueryParser();
         this.queryDeleteParser = new ColumnQueryDeleteParser();
     }
@@ -113,7 +117,7 @@ class CassandraRepositoryAsyncProxy<T> implements InvocationHandler {
 
 
         if (methodName.startsWith(FIND_BY)) {
-            ColumnQuery query = queryParser.parse(methodName, args, classRepresentation);
+            ColumnQuery query = queryParser.parse(methodName, args, classRepresentation, converters);
             Object callBack = args[args.length - 1];
             if (Consumer.class.isInstance(callBack)) {
 
@@ -132,7 +136,7 @@ class CassandraRepositoryAsyncProxy<T> implements InvocationHandler {
 
         if (methodName.startsWith(DELETE_BY)) {
             Object callBack = args[args.length - 1];
-            ColumnDeleteQuery query = queryDeleteParser.parse(methodName, args, classRepresentation);
+            ColumnDeleteQuery query = queryDeleteParser.parse(methodName, args, classRepresentation, converters);
             Optional<ConsistencyLevel> consistencyLevel = getConsistencyLevel(args);
             if (Consumer.class.isInstance(callBack)) {
 

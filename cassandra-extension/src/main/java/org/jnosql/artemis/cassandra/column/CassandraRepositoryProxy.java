@@ -16,6 +16,7 @@ package org.jnosql.artemis.cassandra.column;
 
 
 import com.datastax.driver.core.ConsistencyLevel;
+import org.jnosql.artemis.Converters;
 import org.jnosql.artemis.column.ColumnTemplate;
 import org.jnosql.artemis.column.query.AbstractColumnRepository;
 import org.jnosql.artemis.column.query.ColumnQueryDeleteParser;
@@ -58,9 +59,13 @@ class CassandraRepositoryProxy<T> implements InvocationHandler {
 
     private final ColumnQueryDeleteParser deleteQueryParser;
 
+    private final Converters converters;
 
-    CassandraRepositoryProxy(CassandraTemplate repository, ClassRepresentations classRepresentations, Class<?> repositoryType,
-                             Reflections reflections) {
+
+    CassandraRepositoryProxy(CassandraTemplate repository, ClassRepresentations classRepresentations,
+                             Class<?> repositoryType,
+                             Reflections reflections,
+                             Converters converters) {
 
         this.repository = repository;
         this.typeClass = Class.class.cast(ParameterizedType.class.cast(repositoryType.getGenericInterfaces()[0])
@@ -69,6 +74,7 @@ class CassandraRepositoryProxy<T> implements InvocationHandler {
         this.crudRepository = new ColumnRepository(repository, classRepresentation, reflections);
         this.queryParser = new ColumnQueryParser();
         this.deleteQueryParser = new ColumnQueryDeleteParser();
+        this.converters = converters;
     }
 
 
@@ -99,7 +105,7 @@ class CassandraRepositoryProxy<T> implements InvocationHandler {
         }
 
         if (methodName.startsWith(FIND_BY)) {
-            ColumnQuery query = queryParser.parse(methodName, args, classRepresentation);
+            ColumnQuery query = queryParser.parse(methodName, args, classRepresentation, converters);
             Optional<ConsistencyLevel> consistencyLevel = getConsistencyLevel(args);
             if (consistencyLevel.isPresent()) {
                 return CassandraReturnTypeConverterUtil.returnObject(query, repository, typeClass, method,
@@ -112,7 +118,7 @@ class CassandraRepositoryProxy<T> implements InvocationHandler {
         if (methodName.startsWith(DELETE_BY)) {
             Optional<ConsistencyLevel> consistencyLevel = getConsistencyLevel(args);
 
-            ColumnDeleteQuery query = deleteQueryParser.parse(methodName, args, classRepresentation);
+            ColumnDeleteQuery query = deleteQueryParser.parse(methodName, args, classRepresentation, converters);
             if (consistencyLevel.isPresent()) {
                 repository.delete(query, consistencyLevel.get());
             } else {
