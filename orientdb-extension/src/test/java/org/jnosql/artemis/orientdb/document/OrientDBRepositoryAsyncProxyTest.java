@@ -14,6 +14,7 @@
  */
 package org.jnosql.artemis.orientdb.document;
 
+import org.jnosql.artemis.Converters;
 import org.jnosql.artemis.DynamicQueryException;
 import org.jnosql.artemis.reflection.ClassRepresentations;
 import org.jnosql.artemis.reflection.Reflections;
@@ -44,6 +45,9 @@ public class OrientDBRepositoryAsyncProxyTest {
     @Inject
     private Reflections reflections;
 
+    @Inject
+    private Converters converters;
+
     private PersonAsyncRepository personRepository;
 
 
@@ -52,7 +56,7 @@ public class OrientDBRepositoryAsyncProxyTest {
         this.repository = Mockito.mock(OrientDBTemplateAsync.class);
 
         OrientDBRepositoryAsyncProxy handler = new OrientDBRepositoryAsyncProxy(repository,
-                classRepresentations, PersonAsyncRepository.class, reflections);
+                classRepresentations, PersonAsyncRepository.class, reflections, converters);
 
 
         personRepository = (PersonAsyncRepository) Proxy.newProxyInstance(PersonAsyncRepository.class.getClassLoader(),

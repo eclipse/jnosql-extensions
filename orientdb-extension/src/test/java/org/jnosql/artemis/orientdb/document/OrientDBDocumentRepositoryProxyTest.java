@@ -14,6 +14,7 @@
  */
 package org.jnosql.artemis.orientdb.document;
 
+import org.jnosql.artemis.Converters;
 import org.jnosql.artemis.reflection.ClassRepresentations;
 import org.jnosql.artemis.reflection.Reflections;
 import org.junit.Before;
@@ -45,6 +46,9 @@ public class OrientDBDocumentRepositoryProxyTest {
     @Inject
     private Reflections reflections;
 
+    @Inject
+    private Converters converters;
+
     private PersonRepository personRepository;
 
 
@@ -53,7 +57,7 @@ public class OrientDBDocumentRepositoryProxyTest {
         this.template = Mockito.mock(OrientDBTemplate.class);
 
         OrientDBDocumentRepositoryProxy handler = new OrientDBDocumentRepositoryProxy(template,
-                classRepresentations, PersonRepository.class, reflections);
+                classRepresentations, PersonRepository.class, reflections, converters);
 
         when(template.insert(any(Person.class))).thenReturn(new Person());
         when(template.insert(any(Person.class), any(Duration.class))).thenReturn(new Person());

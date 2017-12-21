@@ -15,6 +15,7 @@
 package org.jnosql.artemis.orientdb.document;
 
 
+import org.jnosql.artemis.Converters;
 import org.jnosql.artemis.RepositoryAsync;
 import org.jnosql.artemis.document.DocumentTemplateAsync;
 import org.jnosql.artemis.document.query.AbstractDocumentRepositoryAsync;
@@ -53,9 +54,11 @@ class OrientDBRepositoryAsyncProxy<T> extends AbstractDocumentRepositoryAsyncPro
 
     private final DocumentQueryDeleteParser deleteParser;
 
+    private final Converters converters;
+
 
     OrientDBRepositoryAsyncProxy(OrientDBTemplateAsync template, ClassRepresentations classRepresentations,
-                                 Class<?> repositoryType, Reflections reflections) {
+                                 Class<?> repositoryType, Reflections reflections, Converters converters) {
         this.template = template;
         this.typeClass = Class.class.cast(ParameterizedType.class.cast(repositoryType.getGenericInterfaces()[0])
                 .getActualTypeArguments()[0]);
@@ -63,6 +66,7 @@ class OrientDBRepositoryAsyncProxy<T> extends AbstractDocumentRepositoryAsyncPro
         this.repository = new DocumentRepositoryAsync(template, classRepresentation, reflections);
         this.queryParser = new DocumentQueryParser();
         this.deleteParser = new DocumentQueryDeleteParser();
+        this.converters = converters;
     }
 
 
@@ -89,6 +93,11 @@ class OrientDBRepositoryAsyncProxy<T> extends AbstractDocumentRepositoryAsyncPro
     @Override
     protected ClassRepresentation getClassRepresentation() {
         return classRepresentation;
+    }
+
+    @Override
+    protected Converters getConverters() {
+        return converters;
     }
 
     @Override

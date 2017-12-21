@@ -15,6 +15,7 @@
 package org.jnosql.artemis.orientdb.document;
 
 
+import org.jnosql.artemis.Converters;
 import org.jnosql.artemis.Repository;
 import org.jnosql.artemis.document.DocumentTemplate;
 import org.jnosql.artemis.document.query.AbstractDocumentRepository;
@@ -46,9 +47,11 @@ class OrientDBDocumentRepositoryProxy<T> extends AbstractDocumentRepositoryProxy
 
     private final DocumentQueryDeleteParser deleteParser;
 
+    private final Converters converters;
+
 
     OrientDBDocumentRepositoryProxy(OrientDBTemplate template, ClassRepresentations classRepresentations,
-                                    Class<?> repositoryType, Reflections reflections) {
+                                    Class<?> repositoryType, Reflections reflections, Converters converters) {
         this.template = template;
         this.typeClass = Class.class.cast(ParameterizedType.class.cast(repositoryType.getGenericInterfaces()[0])
                 .getActualTypeArguments()[0]);
@@ -56,6 +59,7 @@ class OrientDBDocumentRepositoryProxy<T> extends AbstractDocumentRepositoryProxy
         this.repository = new DocumentRepository(template, classRepresentation, reflections);
         this.queryParser = new DocumentQueryParser();
         this.deleteParser = new DocumentQueryDeleteParser();
+        this.converters = converters;
     }
 
 
@@ -82,6 +86,11 @@ class OrientDBDocumentRepositoryProxy<T> extends AbstractDocumentRepositoryProxy
     @Override
     protected ClassRepresentation getClassRepresentation() {
         return classRepresentation;
+    }
+
+    @Override
+    protected Converters getConverters() {
+        return converters;
     }
 
     @Override
