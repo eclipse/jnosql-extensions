@@ -14,6 +14,7 @@
  */
 package org.jnosql.artemis.couchbase.document;
 
+import org.jnosql.artemis.Converters;
 import org.jnosql.artemis.DatabaseQualifier;
 import org.jnosql.artemis.reflection.ClassRepresentations;
 import org.jnosql.artemis.reflection.Reflections;
@@ -71,9 +72,10 @@ class CouchbaseRepositoryBean implements Bean<CouchbaseRepository>, PassivationC
         CouchbaseTemplate repository = getInstance(CouchbaseTemplate.class);
 
         Reflections reflections = getInstance(Reflections.class);
+        Converters converters = getInstance(Converters.class);
 
         CouchbaseocumentRepositoryProxy handler = new CouchbaseocumentRepositoryProxy(repository,
-                classRepresentations, type, reflections);
+                classRepresentations, type, reflections, converters);
         return (CouchbaseRepository) Proxy.newProxyInstance(type.getClassLoader(),
                 new Class[]{type},
                 handler);

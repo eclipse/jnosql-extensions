@@ -16,6 +16,7 @@ package org.jnosql.artemis.couchbase.document;
 
 
 import com.couchbase.client.java.document.json.JsonObject;
+import org.jnosql.artemis.Converters;
 import org.jnosql.artemis.RepositoryAsync;
 import org.jnosql.artemis.document.DocumentTemplateAsync;
 import org.jnosql.artemis.document.query.AbstractDocumentRepositoryAsync;
@@ -51,9 +52,11 @@ class CouchbaseRepositoryAsyncProxy<T> extends AbstractDocumentRepositoryAsyncPr
 
     private final DocumentQueryDeleteParser deleteParser;
 
+    private  final Converters converters;
+
 
     CouchbaseRepositoryAsyncProxy(CouchbaseTemplateAsync template, ClassRepresentations classRepresentations,
-                                  Class<?> repositoryType, Reflections reflections) {
+                                  Class<?> repositoryType, Reflections reflections, Converters converters) {
         this.template = template;
         this.typeClass = Class.class.cast(ParameterizedType.class.cast(repositoryType.getGenericInterfaces()[0])
                 .getActualTypeArguments()[0]);
@@ -61,6 +64,7 @@ class CouchbaseRepositoryAsyncProxy<T> extends AbstractDocumentRepositoryAsyncPr
         this.queryParser = new DocumentQueryParser();
         this.repository = new DocumentCrudRepositoryAsync(template, classRepresentation, reflections);
         this.deleteParser = new DocumentQueryDeleteParser();
+        this.converters = converters;
     }
 
 
@@ -87,6 +91,11 @@ class CouchbaseRepositoryAsyncProxy<T> extends AbstractDocumentRepositoryAsyncPr
     @Override
     protected ClassRepresentation getClassRepresentation() {
         return classRepresentation;
+    }
+
+    @Override
+    protected Converters getConverters() {
+        return converters;
     }
 
     @Override

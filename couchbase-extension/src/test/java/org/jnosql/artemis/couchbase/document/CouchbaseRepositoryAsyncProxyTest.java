@@ -15,6 +15,7 @@
 package org.jnosql.artemis.couchbase.document;
 
 import com.couchbase.client.java.document.json.JsonObject;
+import org.jnosql.artemis.Converters;
 import org.jnosql.artemis.DynamicQueryException;
 import org.jnosql.artemis.reflection.ClassRepresentations;
 import org.jnosql.artemis.reflection.Reflections;
@@ -45,6 +46,9 @@ public class CouchbaseRepositoryAsyncProxyTest {
     @Inject
     private Reflections reflections;
 
+    @Inject
+    private Converters converters;
+
     private PersonAsyncRepository personRepository;
 
 
@@ -53,7 +57,7 @@ public class CouchbaseRepositoryAsyncProxyTest {
         this.template = Mockito.mock(CouchbaseTemplateAsync.class);
 
         CouchbaseRepositoryAsyncProxy handler = new CouchbaseRepositoryAsyncProxy(template,
-                classRepresentations, PersonAsyncRepository.class, reflections);
+                classRepresentations, PersonAsyncRepository.class, reflections, converters);
 
 
         personRepository = (PersonAsyncRepository) Proxy.newProxyInstance(PersonAsyncRepository.class.getClassLoader(),
