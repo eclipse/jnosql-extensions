@@ -16,6 +16,7 @@ package org.jnosql.artemis.cassandra.column;
 
 import com.datastax.driver.core.ConsistencyLevel;
 import com.datastax.driver.core.Statement;
+import org.jnosql.artemis.Converters;
 import org.jnosql.artemis.column.AbstractColumnTemplateAsync;
 import org.jnosql.artemis.column.ColumnEntityConverter;
 import org.jnosql.artemis.reflection.ClassRepresentations;
@@ -52,16 +53,19 @@ class DefaultCassandraTemplateAsync extends AbstractColumnTemplateAsync
 
     private ClassRepresentations classRepresentations;
 
+    private Converters converters;
+
     DefaultCassandraTemplateAsync() {
     }
 
     @Inject
     DefaultCassandraTemplateAsync(CassandraColumnEntityConverter converter,
                                   Instance<CassandraColumnFamilyManagerAsync> managerAsync,
-                                  ClassRepresentations classRepresentations) {
+                                  ClassRepresentations classRepresentations, Converters converters) {
         this.converter = converter;
         this.managerAsync = managerAsync;
         this.classRepresentations = classRepresentations;
+        this.converters = converters;
     }
 
     @Override
@@ -77,6 +81,11 @@ class DefaultCassandraTemplateAsync extends AbstractColumnTemplateAsync
     @Override
     protected ClassRepresentations getClassRepresentations() {
         return classRepresentations;
+    }
+
+    @Override
+    protected Converters getConverters() {
+        return converters;
     }
 
     @Override

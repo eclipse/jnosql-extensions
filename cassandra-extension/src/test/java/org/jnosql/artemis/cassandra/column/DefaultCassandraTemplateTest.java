@@ -18,6 +18,7 @@ import com.datastax.driver.core.ConsistencyLevel;
 import com.datastax.driver.core.Statement;
 import com.datastax.driver.core.querybuilder.QueryBuilder;
 import org.hamcrest.Matchers;
+import org.jnosql.artemis.Converters;
 import org.jnosql.artemis.column.ColumnEventPersistManager;
 import org.jnosql.artemis.reflection.ClassRepresentations;
 import org.jnosql.diana.api.column.Column;
@@ -62,6 +63,9 @@ public class DefaultCassandraTemplateTest {
     @Inject
     private ClassRepresentations classRepresentations;
 
+    @Inject
+    private Converters converters;
+
     private CassandraTemplate template;
 
     private CassandraColumnFamilyManager manager;
@@ -71,7 +75,7 @@ public class DefaultCassandraTemplateTest {
         this.manager = mock(CassandraColumnFamilyManager.class);
         Instance instance = mock(Instance.class);
         when(instance.get()).thenReturn(manager);
-        template = new DefaultCassandraTemplate(instance, converter, flow, persistManager, classRepresentations);
+        template = new DefaultCassandraTemplate(instance, converter, flow, persistManager, classRepresentations, converters);
     }
 
 
