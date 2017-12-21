@@ -15,6 +15,7 @@
 package org.jnosql.artemis.orientdb.document;
 
 
+import org.jnosql.artemis.Converters;
 import org.jnosql.artemis.document.AbstractDocumentTemplate;
 import org.jnosql.artemis.document.DocumentEntityConverter;
 import org.jnosql.artemis.document.DocumentEventPersistManager;
@@ -52,16 +53,21 @@ class DefaultOrientDBTemplate extends AbstractDocumentTemplate
 
     private ClassRepresentations classRepresentations;
 
+    private Converters converters;
+
     @Inject
     DefaultOrientDBTemplate(Instance<OrientDBDocumentCollectionManager> manager,
                             DocumentEntityConverter converter, DocumentWorkflow flow,
                             DocumentEventPersistManager persistManager,
-                            ClassRepresentations classRepresentations) {
+                            ClassRepresentations classRepresentations,
+                            Converters converters) {
+
         this.manager = manager;
         this.converter = converter;
         this.flow = flow;
         this.persistManager = persistManager;
         this.classRepresentations = classRepresentations;
+        this.converters = converters;
     }
 
     DefaultOrientDBTemplate() {
@@ -90,6 +96,11 @@ class DefaultOrientDBTemplate extends AbstractDocumentTemplate
     @Override
     protected ClassRepresentations getClassRepresentations() {
         return classRepresentations;
+    }
+
+    @Override
+    protected Converters getConverters() {
+        return converters;
     }
 
     @Override

@@ -14,6 +14,7 @@
  */
 package org.jnosql.artemis.orientdb.document;
 
+import org.jnosql.artemis.Converters;
 import org.jnosql.artemis.document.DocumentEntityConverter;
 import org.jnosql.artemis.reflection.ClassRepresentations;
 import org.jnosql.diana.api.document.Document;
@@ -40,6 +41,9 @@ public class DefaultOrientDBTemplateAsyncTest {
     @Inject
     private ClassRepresentations classRepresentations;
 
+    @Inject
+    private Converters converters;
+
     private OrientDBDocumentCollectionManagerAsync managerAsync;
 
     private OrientDBTemplateAsync templateAsync;
@@ -51,7 +55,7 @@ public class DefaultOrientDBTemplateAsyncTest {
         Instance instance = Mockito.mock(Instance.class);
         when(instance.get()).thenReturn(managerAsync);
 
-        templateAsync = new DefaultOrientDBTemplateAsync(converter, instance, classRepresentations);
+        templateAsync = new DefaultOrientDBTemplateAsync(converter, instance, classRepresentations, converters);
 
         DocumentEntity entity = DocumentEntity.of("Person");
         entity.add(Document.of("name", "Ada"));
