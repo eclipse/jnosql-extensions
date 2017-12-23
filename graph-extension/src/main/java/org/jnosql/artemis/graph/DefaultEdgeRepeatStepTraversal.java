@@ -37,11 +37,11 @@ class DefaultEdgeRepeatStepTraversal implements EdgeRepeatStepTraversal {
 
     @Override
     public EdgeTraversal times(int times) {
-        return null;
+        return new DefaultEdgeTraversal(supplier, flow.andThen(g -> g.times(times)), converter);
     }
 
     @Override
     public EdgeUntilTraversal until() {
-        return null;
+        return new DefaultEdgeTraversal(supplier, flow, converter);
     }
 }

@@ -28,7 +28,7 @@ import java.util.stream.Stream;
 import static java.util.Objects.requireNonNull;
 import static org.jnosql.artemis.graph.util.TinkerPopUtil.toEdgeEntity;
 
-class DefaultEdgeTraversal implements EdgeTraversal {
+class DefaultEdgeTraversal implements EdgeTraversal, EdgeUntilTraversal {
 
     private final Supplier<GraphTraversal<?, ?>> supplier;
     private final Function<GraphTraversal<?, ?>, GraphTraversal<Vertex, Edge>> flow;
@@ -85,7 +85,7 @@ class DefaultEdgeTraversal implements EdgeTraversal {
 
     @Override
     public EdgeRepeatTraversal repeat() {
-        return null;
+        return new DefaultEdgeRepeatTraversal(supplier, flow, converter);
     }
 
 
