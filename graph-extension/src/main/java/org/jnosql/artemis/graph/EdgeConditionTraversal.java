@@ -26,6 +26,15 @@ import static java.util.Objects.requireNonNull;
  */
 public interface EdgeConditionTraversal {
 
+    /**
+     * Map the {@link org.apache.tinkerpop.gremlin.structure.Element} to the values of the associated properties given the provide property keys.
+     * If no property keys are provided, then all property values are emitted.
+     *
+     * @param propertyKey the key
+     * @return a {@link EdgeTraversal} with the new condition
+     * @throws NullPointerException when propertyKey is null
+     */
+    EdgeTraversal has(String propertyKey) throws NullPointerException;
 
     /**
      * Adds a equals condition to a query
@@ -46,7 +55,6 @@ public interface EdgeConditionTraversal {
      * @throws NullPointerException when either key or predicate condition are null
      */
     EdgeTraversal has(String propertyKey, P<?> predicate) throws NullPointerException;
-    //
 
     /**
      * Adds a equals condition to a query

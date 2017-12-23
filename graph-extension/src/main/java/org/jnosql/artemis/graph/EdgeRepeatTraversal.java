@@ -30,6 +30,16 @@ public interface EdgeRepeatTraversal {
 
 
     /**
+     * Map the {@link org.apache.tinkerpop.gremlin.structure.Element} to the values of the associated properties given the provide property keys.
+     * If no property keys are provided, then all property values are emitted.
+     *
+     * @param propertyKey the key
+     * @return a {@link EdgeRepeatStepTraversal} with the new condition
+     * @throws NullPointerException when propertyKey is null
+     */
+    EdgeRepeatStepTraversal has(String propertyKey) throws NullPointerException;
+
+    /**
      * Adds a equals condition to a query
      *
      * @param propertyKey the key

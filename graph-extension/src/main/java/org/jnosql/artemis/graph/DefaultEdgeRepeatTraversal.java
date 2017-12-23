@@ -25,12 +25,12 @@ import java.util.function.Supplier;
 
 import static java.util.Objects.requireNonNull;
 
-class DefaultEdgeRepeatTraversal  extends AbstractEdgeTraversal implements EdgeRepeatTraversal{
+class DefaultEdgeRepeatTraversal extends AbstractEdgeTraversal implements EdgeRepeatTraversal {
 
 
     DefaultEdgeRepeatTraversal(Supplier<GraphTraversal<?, ?>> supplier,
-                         Function<GraphTraversal<?, ?>, GraphTraversal<Vertex, Edge>> flow,
-                         VertexConverter converter) {
+                               Function<GraphTraversal<?, ?>, GraphTraversal<Vertex, Edge>> flow,
+                               VertexConverter converter) {
         super(supplier, flow, converter);
     }
 
