@@ -21,18 +21,12 @@ import org.apache.tinkerpop.gremlin.structure.Vertex;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-class DefaultEdgeRepeatStepTraversal implements EdgeRepeatStepTraversal {
-
-    private final Supplier<GraphTraversal<?, ?>> supplier;
-    private final Function<GraphTraversal<?, ?>, GraphTraversal<Vertex, Edge>> flow;
-    private final VertexConverter converter;
+class DefaultEdgeRepeatStepTraversal extends AbstractEdgeTraversal implements EdgeRepeatStepTraversal {
 
     DefaultEdgeRepeatStepTraversal(Supplier<GraphTraversal<?, ?>> supplier,
-                                   Function<GraphTraversal<?, ?>, GraphTraversal<Vertex, Edge>> flow,
-                                   VertexConverter converter) {
-        this.supplier = supplier;
-        this.flow = flow;
-        this.converter = converter;
+                               Function<GraphTraversal<?, ?>, GraphTraversal<Vertex, Edge>> flow,
+                               VertexConverter converter) {
+        super(supplier, flow, converter);
     }
 
     @Override

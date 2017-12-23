@@ -28,18 +28,13 @@ import java.util.stream.Stream;
 import static java.util.Objects.requireNonNull;
 import static org.jnosql.artemis.graph.util.TinkerPopUtil.toEdgeEntity;
 
-class DefaultEdgeTraversal implements EdgeTraversal, EdgeUntilTraversal {
+class DefaultEdgeTraversal extends AbstractEdgeTraversal implements EdgeTraversal, EdgeUntilTraversal {
 
-    private final Supplier<GraphTraversal<?, ?>> supplier;
-    private final Function<GraphTraversal<?, ?>, GraphTraversal<Vertex, Edge>> flow;
-    private final VertexConverter converter;
 
     DefaultEdgeTraversal(Supplier<GraphTraversal<?, ?>> supplier,
                          Function<GraphTraversal<?, ?>, GraphTraversal<Vertex, Edge>> flow,
                          VertexConverter converter) {
-        this.supplier = supplier;
-        this.flow = flow;
-        this.converter = converter;
+        super(supplier, flow, converter);
     }
 
 
