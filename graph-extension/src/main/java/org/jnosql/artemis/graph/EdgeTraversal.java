@@ -14,109 +14,14 @@
  */
 package org.jnosql.artemis.graph;
 
-import org.apache.tinkerpop.gremlin.process.traversal.P;
-import org.apache.tinkerpop.gremlin.structure.T;
-
 import java.util.Optional;
-import java.util.function.Supplier;
 import java.util.stream.Stream;
-
-import static java.util.Objects.requireNonNull;
 
 /**
  * The Graph Traversal that maps {@link org.apache.tinkerpop.gremlin.structure.Edge}.
  * This Traversal is lazy, in other words, that just run after the
  */
-public interface EdgeTraversal {
-
-
-    /**
-     * Adds a equals condition to a query
-     *
-     * @param propertyKey the key
-     * @param value       the value to the condition
-     * @return a {@link EdgeTraversal} with the new condition
-     * @throws NullPointerException when either key or value are null
-     */
-    EdgeTraversal has(String propertyKey, Object value) throws NullPointerException;
-
-    /**
-     * Adds a equals condition to a query
-     *
-     * @param propertyKey the key
-     * @param predicate   the predicate condition
-     * @return a {@link EdgeTraversal} with the new condition
-     * @throws NullPointerException when either key or predicate condition are null
-     */
-    EdgeTraversal has(String propertyKey, P<?> predicate) throws NullPointerException;
-    //
-    /**
-     * Adds a equals condition to a query
-     *
-     * @param propertyKey the key
-     * @param value       the value to the condition
-     * @return a {@link EdgeTraversal} with the new condition
-     * @throws NullPointerException when either key or value are null
-     */
-    default EdgeTraversal has(Supplier<String> propertyKey, Object value) throws NullPointerException {
-        requireNonNull(propertyKey, "the supplier is required");
-        return has(propertyKey.get(), value);
-    }
-
-    /**
-     * Adds a equals condition to a query
-     *
-     * @param propertyKey the key
-     * @param predicate   the predicate condition
-     * @return a {@link EdgeTraversal} with the new condition
-     * @throws NullPointerException when either key or predicate condition are null
-     */
-    default EdgeTraversal has(Supplier<String> propertyKey, P<?> predicate) throws NullPointerException{
-        requireNonNull(propertyKey, "the supplier is required");
-        return has(propertyKey.get(), predicate);
-    }
-
-    /**
-     * Adds a equals condition to a query
-     *
-     * @param accessor the key
-     * @param value    the value to the condition
-     * @return a {@link EdgeTraversal} with the new condition
-     * @throws NullPointerException when either key or value are null
-     */
-    EdgeTraversal has(T accessor, Object value) throws NullPointerException;
-
-    /**
-     * Adds a equals condition to a query
-     *
-     * @param accessor  the key
-     * @param predicate the predicate condition
-     * @return a {@link EdgeTraversal} with the new condition
-     * @throws NullPointerException when either key or value are null
-     */
-    EdgeTraversal has(T accessor, P<?> predicate) throws NullPointerException;
-
-
-    /**
-     * Defines Vertex has not a property
-     *
-     * @param propertyKey the property key
-     * @return a {@link VertexTraversal} with the new condition
-     * @throws NullPointerException when propertyKey is null
-     */
-    EdgeTraversal hasNot(String propertyKey) throws NullPointerException;
-
-    /**
-     * Defines Vertex has not a property
-     *
-     * @param propertyKey the property key
-     * @return a {@link VertexTraversal} with the new condition
-     * @throws NullPointerException when propertyKey is null
-     */
-    default EdgeTraversal hasNot(Supplier<String> propertyKey) throws NullPointerException{
-        requireNonNull(propertyKey, "the supplier is required");
-        return hasNot(propertyKey.get());
-    }
+public interface EdgeTraversal extends EdgeConditionTraversal {
 
 
     /**
@@ -126,6 +31,13 @@ public interface EdgeTraversal {
      * @return a {@link EdgeTraversal} with the limit
      */
     EdgeTraversal limit(long limit);
+
+
+    /**
+     * Starts the loop traversal graph
+     * @return a {@link EdgeRepeatTraversal}
+     */
+    EdgeRepeatTraversal repeat();
 
 
     /**

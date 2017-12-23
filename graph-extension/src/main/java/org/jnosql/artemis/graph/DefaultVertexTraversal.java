@@ -31,19 +31,13 @@ import static java.util.Objects.requireNonNull;
 /**
  * The default implementation of {@link VertexTraversal}
  */
-class DefaultVertexTraversal implements VertexTraversal {
+class DefaultVertexTraversal extends AbstractVertexTraversal implements VertexTraversal {
 
-
-    private final Supplier<GraphTraversal<?, ?>> supplier;
-    private final Function<GraphTraversal<?, ?>, GraphTraversal<Vertex, Vertex>> flow;
-    private final VertexConverter converter;
 
     DefaultVertexTraversal(Supplier<GraphTraversal<?, ?>> supplier,
                            Function<GraphTraversal<?, ?>, GraphTraversal<Vertex, Vertex>> flow,
                            VertexConverter converter) {
-        this.supplier = supplier;
-        this.flow = flow;
-        this.converter = converter;
+        super(supplier, flow, converter);
     }
 
 
@@ -53,6 +47,12 @@ class DefaultVertexTraversal implements VertexTraversal {
         requireNonNull(value, "value is required");
 
         return new DefaultVertexTraversal(supplier, flow.andThen(g -> g.has(propertyKey, value)), converter);
+    }
+
+    @Override
+    public VertexTraversal has(String propertyKey) throws NullPointerException {
+        requireNonNull(propertyKey, "propertyKey is required");
+        return new DefaultVertexTraversal(supplier, flow.andThen(g -> g.has(propertyKey)), converter);
     }
 
     @Override
@@ -123,6 +123,11 @@ class DefaultVertexTraversal implements VertexTraversal {
             throw new NullPointerException("The no one edgeLabels element cannot be null");
         }
         return new DefaultEdgeTraversal(supplier, flow.andThen(g -> g.bothE(edgeLabels)), converter);
+    }
+
+    @Override
+    public VertexRepeatTraversal repeat() {
+        return new DefaultVertexRepeatTraversal(supplier, flow, converter);
     }
 
     @Override

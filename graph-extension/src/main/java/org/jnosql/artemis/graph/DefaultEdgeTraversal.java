@@ -28,20 +28,22 @@ import java.util.stream.Stream;
 import static java.util.Objects.requireNonNull;
 import static org.jnosql.artemis.graph.util.TinkerPopUtil.toEdgeEntity;
 
-class DefaultEdgeTraversal implements EdgeTraversal {
+class DefaultEdgeTraversal extends AbstractEdgeTraversal implements EdgeTraversal {
 
-    private final Supplier<GraphTraversal<?, ?>> supplier;
-    private final Function<GraphTraversal<?, ?>, GraphTraversal<Vertex, Edge>> flow;
-    private final VertexConverter converter;
 
     DefaultEdgeTraversal(Supplier<GraphTraversal<?, ?>> supplier,
                          Function<GraphTraversal<?, ?>, GraphTraversal<Vertex, Edge>> flow,
                          VertexConverter converter) {
-        this.supplier = supplier;
-        this.flow = flow;
-        this.converter = converter;
+        super(supplier, flow, converter);
     }
 
+
+    @Override
+    public EdgeTraversal has(String propertyKey) throws NullPointerException {
+        requireNonNull(propertyKey, "propertyKey is required");
+        return new DefaultEdgeTraversal(supplier, flow.andThen(g -> g.has(propertyKey)), converter);
+
+    }
 
     @Override
     public EdgeTraversal has(String propertyKey, Object value) throws NullPointerException {
@@ -81,6 +83,11 @@ class DefaultEdgeTraversal implements EdgeTraversal {
     @Override
     public EdgeTraversal limit(long limit) {
         return new DefaultEdgeTraversal(supplier, flow.andThen(g -> g.limit(limit)), converter);
+    }
+
+    @Override
+    public EdgeRepeatTraversal repeat() {
+        return new DefaultEdgeRepeatTraversal(supplier, flow, converter);
     }
 
 

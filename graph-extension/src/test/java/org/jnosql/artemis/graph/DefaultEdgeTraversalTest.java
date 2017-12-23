@@ -15,6 +15,7 @@
 package org.jnosql.artemis.graph;
 
 import org.jnosql.artemis.graph.cdi.CDIJUnitRunner;
+import org.jnosql.artemis.graph.model.Animal;
 import org.jnosql.artemis.graph.model.Book;
 import org.jnosql.artemis.graph.model.Person;
 import org.junit.Test;
@@ -223,4 +224,63 @@ public class DefaultEdgeTraversalTest extends AbstractTraversalTest {
         assertNotNull(map);
         assertFalse(map.isEmpty());
     }
+
+
+    @Test
+    public void shouldReturnHas() {
+        Animal lion = graphTemplate.insert(new Animal("lion"));
+        Animal snake = graphTemplate.insert(new Animal("snake"));
+        Animal mouse = graphTemplate.insert(new Animal("mouse"));
+        Animal plant = graphTemplate.insert(new Animal("plant"));
+
+        graphTemplate.edge(lion, "eats", snake).add("when", "night");
+        graphTemplate.edge(snake, "eats", mouse);
+        graphTemplate.edge(mouse, "eats", plant);
+
+
+        Optional<EdgeEntity<Animal, Animal>> result = graphTemplate.getTraversalEdge().has("when").next();
+        assertNotNull(result);
+
+        graphTemplate.deleteEdge(lion.getId());
+    }
+
+    @Test
+    public void shouldRepeatTimesTraversal() {
+        Animal lion = graphTemplate.insert(new Animal("lion"));
+        Animal snake = graphTemplate.insert(new Animal("snake"));
+        Animal mouse = graphTemplate.insert(new Animal("mouse"));
+        Animal plant = graphTemplate.insert(new Animal("plant"));
+
+        graphTemplate.edge(lion, "eats", snake).add("when", "night");
+        graphTemplate.edge(snake, "eats", mouse);
+        graphTemplate.edge(mouse, "eats", plant);
+        Optional<EdgeEntity<Animal, Animal>> result = graphTemplate.getTraversalEdge().has("when").next();
+
+        assertNotNull(result);
+
+    }
+
+    @Test
+    public void shouldRepeatUntilTraversal() {
+        Animal lion = graphTemplate.insert(new Animal("lion"));
+        Animal snake = graphTemplate.insert(new Animal("snake"));
+        Animal mouse = graphTemplate.insert(new Animal("mouse"));
+        Animal plant = graphTemplate.insert(new Animal("plant"));
+
+        graphTemplate.edge(lion, "eats", snake).add("when", "night");
+        graphTemplate.edge(snake, "eats", mouse);
+        graphTemplate.edge(mouse, "eats", plant);
+
+        Optional<EdgeEntity<Animal, Animal>> result = graphTemplate.getTraversalEdge().repeat().has("when")
+                .until().has("when").next();
+
+        assertTrue(result.isPresent());
+
+
+        assertEquals(snake, result.get().getInbound());
+        assertEquals(lion, result.get().getOutbound());
+
+    }
+
+
 }
