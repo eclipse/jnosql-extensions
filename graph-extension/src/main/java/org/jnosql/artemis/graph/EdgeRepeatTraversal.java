@@ -17,7 +17,7 @@ package org.jnosql.artemis.graph;
 import org.apache.tinkerpop.gremlin.process.traversal.Traversal;
 
 /**
- * The step to {@link org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal#repeat(Traversal)}
+ * The wrapper step to {@link org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal#repeat(Traversal)}
  * in the Edge type.
  */
 public interface EdgeRepeatTraversal {
