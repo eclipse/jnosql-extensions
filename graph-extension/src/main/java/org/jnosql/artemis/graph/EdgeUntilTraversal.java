@@ -19,5 +19,5 @@ package org.jnosql.artemis.graph;
  * The Edge until wrapper of
  * {@link org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal#until(java.util.function.Predicate)}
  */
-public interface EdgeUntilTraversal extends EdgeConditionTraversal{
+public interface EdgeUntilTraversal extends EdgeConditionTraversal {
 }
