@@ -14,11 +14,106 @@
  */
 package org.jnosql.artemis.graph;
 
+import org.apache.tinkerpop.gremlin.process.traversal.P;
 import org.apache.tinkerpop.gremlin.process.traversal.Traversal;
+import org.apache.tinkerpop.gremlin.structure.T;
+
+import java.util.function.Supplier;
+
+import static java.util.Objects.requireNonNull;
 
 /**
  * The wrapper step to {@link org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal#repeat(Traversal)}
  * in the Edge type.
  */
 public interface EdgeRepeatTraversal {
+
+
+    /**
+     * Adds a equals condition to a query
+     *
+     * @param propertyKey the key
+     * @param value       the value to the condition
+     * @return a {@link EdgeRepeatStepTraversal} with the new condition
+     * @throws NullPointerException when either key or value are null
+     */
+    EdgeRepeatStepTraversal has(String propertyKey, Object value) throws NullPointerException;
+
+    /**
+     * Adds a equals condition to a query
+     *
+     * @param propertyKey the key
+     * @param predicate   the predicate condition
+     * @return a {@link EdgeRepeatStepTraversal} with the new condition
+     * @throws NullPointerException when either key or predicate condition are null
+     */
+    EdgeRepeatStepTraversal has(String propertyKey, P<?> predicate) throws NullPointerException;
+    //
+    /**
+     * Adds a equals condition to a query
+     *
+     * @param propertyKey the key
+     * @param value       the value to the condition
+     * @return a {@link EdgeRepeatStepTraversal} with the new condition
+     * @throws NullPointerException when either key or value are null
+     */
+    default EdgeRepeatStepTraversal has(Supplier<String> propertyKey, Object value) throws NullPointerException {
+        requireNonNull(propertyKey, "the supplier is required");
+        return has(propertyKey.get(), value);
+    }
+
+    /**
+     * Adds a equals condition to a query
+     *
+     * @param propertyKey the key
+     * @param predicate   the predicate condition
+     * @return a {@link EdgeRepeatStepTraversal} with the new condition
+     * @throws NullPointerException when either key or predicate condition are null
+     */
+    default EdgeRepeatStepTraversal has(Supplier<String> propertyKey, P<?> predicate) throws NullPointerException{
+        requireNonNull(propertyKey, "the supplier is required");
+        return has(propertyKey.get(), predicate);
+    }
+
+    /**
+     * Adds a equals condition to a query
+     *
+     * @param accessor the key
+     * @param value    the value to the condition
+     * @return a {@link EdgeRepeatStepTraversal} with the new condition
+     * @throws NullPointerException when either key or value are null
+     */
+    EdgeRepeatStepTraversal has(T accessor, Object value) throws NullPointerException;
+
+    /**
+     * Adds a equals condition to a query
+     *
+     * @param accessor  the key
+     * @param predicate the predicate condition
+     * @return a {@link EdgeRepeatStepTraversal} with the new condition
+     * @throws NullPointerException when either key or value are null
+     */
+    EdgeRepeatStepTraversal has(T accessor, P<?> predicate) throws NullPointerException;
+
+
+    /**
+     * Defines Vertex has not a property
+     *
+     * @param propertyKey the property key
+     * @return a {@link EdgeRepeatStepTraversal} with the new condition
+     * @throws NullPointerException when propertyKey is null
+     */
+    EdgeRepeatStepTraversal hasNot(String propertyKey) throws NullPointerException;
+
+    /**
+     * Defines Vertex has not a property
+     *
+     * @param propertyKey the property key
+     * @return a {@link EdgeRepeatStepTraversal} with the new condition
+     * @throws NullPointerException when propertyKey is null
+     */
+    default EdgeRepeatStepTraversal hasNot(Supplier<String> propertyKey) throws NullPointerException{
+        requireNonNull(propertyKey, "the supplier is required");
+        return hasNot(propertyKey.get());
+    }
 }
