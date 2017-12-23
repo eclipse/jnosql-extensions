@@ -31,19 +31,13 @@ import static java.util.Objects.requireNonNull;
 /**
  * The default implementation of {@link VertexTraversal}
  */
-class DefaultVertexTraversal implements VertexTraversal {
+class DefaultVertexTraversal extends AbstractVertexTraversal implements VertexTraversal {
 
-
-    private final Supplier<GraphTraversal<?, ?>> supplier;
-    private final Function<GraphTraversal<?, ?>, GraphTraversal<Vertex, Vertex>> flow;
-    private final VertexConverter converter;
 
     DefaultVertexTraversal(Supplier<GraphTraversal<?, ?>> supplier,
                            Function<GraphTraversal<?, ?>, GraphTraversal<Vertex, Vertex>> flow,
                            VertexConverter converter) {
-        this.supplier = supplier;
-        this.flow = flow;
-        this.converter = converter;
+        super(supplier, flow, converter);
     }
 
 
