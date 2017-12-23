@@ -15,7 +15,9 @@
 package org.jnosql.artemis.graph;
 
 import org.apache.tinkerpop.gremlin.process.traversal.P;
+import org.apache.tinkerpop.gremlin.process.traversal.Traversal;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
+import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__;
 import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.T;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
@@ -37,41 +39,48 @@ class DefaultEdgeRepeatTraversal extends AbstractEdgeTraversal implements EdgeRe
     @Override
     public EdgeRepeatStepTraversal has(String propertyKey) throws NullPointerException {
         requireNonNull(propertyKey, "propertyKey is required");
-        return new DefaultEdgeRepeatStepTraversal(supplier, flow.andThen(g -> g.has(propertyKey)), converter);
+
+        Traversal<?, Edge> condition = __.has(propertyKey);
+        return new DefaultEdgeRepeatStepTraversal(supplier, flow.andThen(g -> g.repeat(condition)), converter);
     }
 
     @Override
     public EdgeRepeatStepTraversal has(String propertyKey, Object value) throws NullPointerException {
         requireNonNull(propertyKey, "propertyKey is required");
         requireNonNull(value, "value is required");
-        return new DefaultEdgeRepeatStepTraversal(supplier, flow.andThen(g -> g.has(propertyKey, value)), converter);
+        Traversal<?, Edge> condition = __.has(propertyKey, value);
+        return new DefaultEdgeRepeatStepTraversal(supplier, flow.andThen(g -> g.repeat(condition)), converter);
     }
 
     @Override
     public EdgeRepeatStepTraversal has(String propertyKey, P<?> predicate) throws NullPointerException {
         requireNonNull(propertyKey, "propertyKey is required");
         requireNonNull(predicate, "predicate is required");
-        return new DefaultEdgeRepeatStepTraversal(supplier, flow.andThen(g -> g.has(propertyKey, predicate)), converter);
+        Traversal<?, Edge> condition = __.has(propertyKey, predicate);
+        return new DefaultEdgeRepeatStepTraversal(supplier, flow.andThen(g -> g.repeat(condition)), converter);
     }
 
     @Override
     public EdgeRepeatStepTraversal has(T accessor, Object value) throws NullPointerException {
         requireNonNull(accessor, "accessor is required");
         requireNonNull(value, "value is required");
-        return new DefaultEdgeRepeatStepTraversal(supplier, flow.andThen(g -> g.has(accessor, value)), converter);
+        Traversal<?, Edge> condition = __.has(accessor, value);
+        return new DefaultEdgeRepeatStepTraversal(supplier, flow.andThen(g -> g.repeat(condition)), converter);
     }
 
     @Override
     public EdgeRepeatStepTraversal has(T accessor, P<?> predicate) throws NullPointerException {
         requireNonNull(accessor, "accessor is required");
         requireNonNull(predicate, "predicate is required");
-        return new DefaultEdgeRepeatStepTraversal(supplier, flow.andThen(g -> g.has(accessor, predicate)), converter);
+        Traversal<?, Edge> condition = __.has(accessor, predicate);
+        return new DefaultEdgeRepeatStepTraversal(supplier, flow.andThen(g -> g.repeat(condition)), converter);
     }
 
     @Override
     public EdgeRepeatStepTraversal hasNot(String propertyKey) throws NullPointerException {
         requireNonNull(propertyKey, "propertyKey is required");
-        return new DefaultEdgeRepeatStepTraversal(supplier, flow.andThen(g -> g.hasNot(propertyKey)), converter);
+        Traversal<?, Edge> condition = __.hasNot(propertyKey);
+        return new DefaultEdgeRepeatStepTraversal(supplier, flow.andThen(g -> g.repeat(condition)), converter);
     }
 }
 
