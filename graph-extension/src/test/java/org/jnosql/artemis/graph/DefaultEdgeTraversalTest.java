@@ -28,7 +28,6 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toList;
-import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.has;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -228,7 +227,7 @@ public class DefaultEdgeTraversalTest extends AbstractTraversalTest {
 
 
     @Test
-    public void shouldRepeatTimesTraversal() {
+    public void shouldReturnHas() {
         Animal lion = graphTemplate.insert(new Animal("lion"));
         Animal snake = graphTemplate.insert(new Animal("snake"));
         Animal mouse = graphTemplate.insert(new Animal("mouse"));
@@ -239,7 +238,24 @@ public class DefaultEdgeTraversalTest extends AbstractTraversalTest {
         graphTemplate.edge(mouse, "eats", plant);
 
 
-        Optional<EdgeEntity<Animal, Animal>> result = graphTemplate.getTraversalEdge().repeat().has("when").times(1).next();
+        Optional<EdgeEntity<Animal, Animal>> result = graphTemplate.getTraversalEdge().has("when").next();
+        assertNotNull(result);
+
+        graphTemplate.deleteEdge(lion.getId());
+    }
+    @Test
+    public void shouldRepeatTimesTraversal() {
+        Animal lion = graphTemplate.insert(new Animal("lion"));
+        Animal snake = graphTemplate.insert(new Animal("snake"));
+        Animal mouse = graphTemplate.insert(new Animal("mouse"));
+        Animal plant = graphTemplate.insert(new Animal("plant"));
+
+        graphTemplate.edge(lion, "eats", snake).add("when", "night");
+        graphTemplate.edge(snake, "eats", mouse);
+        graphTemplate.edge(mouse, "eats", plant);
+        Optional<EdgeEntity<Animal, Animal>> result = graphTemplate.getTraversalEdge().has("when").next();
+
+        assertNotNull(result);
 
 
 
