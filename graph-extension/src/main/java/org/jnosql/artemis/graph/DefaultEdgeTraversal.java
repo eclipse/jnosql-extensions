@@ -28,7 +28,7 @@ import java.util.stream.Stream;
 import static java.util.Objects.requireNonNull;
 import static org.jnosql.artemis.graph.util.TinkerPopUtil.toEdgeEntity;
 
-class DefaultEdgeTraversal extends AbstractEdgeTraversal implements EdgeTraversal, EdgeUntilTraversal {
+class DefaultEdgeTraversal extends AbstractEdgeTraversal implements EdgeTraversal {
 
 
     DefaultEdgeTraversal(Supplier<GraphTraversal<?, ?>> supplier,
