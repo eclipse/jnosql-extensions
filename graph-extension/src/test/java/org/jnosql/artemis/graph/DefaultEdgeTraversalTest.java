@@ -14,7 +14,6 @@
  */
 package org.jnosql.artemis.graph;
 
-import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
 import org.jnosql.artemis.graph.cdi.CDIJUnitRunner;
 import org.jnosql.artemis.graph.model.Animal;
 import org.jnosql.artemis.graph.model.Book;
@@ -29,7 +28,6 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toList;
-import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.has;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -245,6 +243,7 @@ public class DefaultEdgeTraversalTest extends AbstractTraversalTest {
 
         graphTemplate.deleteEdge(lion.getId());
     }
+
     @Test
     public void shouldRepeatTimesTraversal() {
         Animal lion = graphTemplate.insert(new Animal("lion"));
@@ -271,12 +270,15 @@ public class DefaultEdgeTraversalTest extends AbstractTraversalTest {
         graphTemplate.edge(lion, "eats", snake).add("when", "night");
         graphTemplate.edge(snake, "eats", mouse);
         graphTemplate.edge(mouse, "eats", plant);
-        GraphTraversalSource g = graph.traversal();
-        System.out.printf("--->>>" + g.E().repeat(has("when")).times(1).toList());
 
         Optional<EdgeEntity<Animal, Animal>> result = graphTemplate.getTraversalEdge().repeat().has("when")
                 .times(1).next();
 
+        assertTrue(result.isPresent());
+
+
+        assertEquals(snake, result.get().getInbound());
+        assertEquals(lion, result.get().getOutbound());
 
     }
 

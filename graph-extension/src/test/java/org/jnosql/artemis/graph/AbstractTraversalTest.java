@@ -36,7 +36,7 @@ public abstract class AbstractTraversalTest {
     protected GraphTemplate graphTemplate;
 
     @Inject
-    protected Graph graph;
+    private Graph graph;
 
 
     protected Person otavio;
