@@ -17,8 +17,8 @@ package org.jnosql.artemis.graph;
 import org.jnosql.artemis.EntityNotFoundException;
 import org.jnosql.artemis.IdNotFoundException;
 import org.jnosql.artemis.graph.cdi.CDIJUnitRunner;
-import org.jnosql.artemis.graph.model.Animal;
 import org.jnosql.artemis.graph.model.Person;
+import org.jnosql.artemis.graph.model.WrongEntity;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -40,8 +40,8 @@ public class GraphTemplateTest {
 
     @Test(expected = IdNotFoundException.class)
     public void shouldReturnErrorWhenThereIsNotId() {
-        Animal lion = new Animal("lion");
-        graphTemplate.insert(lion);
+        WrongEntity entity = new WrongEntity("lion");
+        graphTemplate.insert(entity);
     }
 
     @Test(expected = NullPointerException.class)
@@ -131,6 +131,7 @@ public class GraphTemplateTest {
         assertFalse(graphTemplate.find(person.getId()).isPresent());
 
     }
+
 
 
 }

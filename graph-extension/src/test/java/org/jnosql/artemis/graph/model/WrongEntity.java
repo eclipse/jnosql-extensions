@@ -14,26 +14,16 @@
  */
 package org.jnosql.artemis.graph.model;
 
-import org.jnosql.artemis.Column;
-import org.jnosql.artemis.Entity;
-import org.jnosql.artemis.Id;
-
 import java.util.Objects;
 
-@Entity
-public class Animal {
+public class WrongEntity {
 
-
-    @Id
-    private Long id;
-
-    @Column
     private String name;
 
-    Animal() {
+    WrongEntity() {
     }
 
-    public Animal(String name) {
+    public WrongEntity(String name) {
         this.name = name;
     }
 
@@ -46,18 +36,16 @@ public class Animal {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof Animal)) {
+        if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        Animal animal = (Animal) o;
-        return Objects.equals(id, animal.id) &&
-                Objects.equals(name, animal.name);
+        WrongEntity animal = (WrongEntity) o;
+        return Objects.equals(name, animal.name);
     }
 
     @Override
     public int hashCode() {
-
-        return Objects.hash(id, name);
+        return Objects.hash(name);
     }
 
     @Override
