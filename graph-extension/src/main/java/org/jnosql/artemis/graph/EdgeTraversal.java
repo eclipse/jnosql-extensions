@@ -101,7 +101,7 @@ public interface EdgeTraversal {
      * Defines Vertex has not a property
      *
      * @param propertyKey the property key
-     * @return a {@link VertexTraversal} with the new condition
+     * @return a {@link EdgeTraversal} with the new condition
      * @throws NullPointerException when propertyKey is null
      */
     EdgeTraversal hasNot(String propertyKey) throws NullPointerException;
@@ -110,7 +110,7 @@ public interface EdgeTraversal {
      * Defines Vertex has not a property
      *
      * @param propertyKey the property key
-     * @return a {@link VertexTraversal} with the new condition
+     * @return a {@link EdgeTraversal} with the new condition
      * @throws NullPointerException when propertyKey is null
      */
     default EdgeTraversal hasNot(Supplier<String> propertyKey) throws NullPointerException{
@@ -126,6 +126,13 @@ public interface EdgeTraversal {
      * @return a {@link EdgeTraversal} with the limit
      */
     EdgeTraversal limit(long limit);
+
+
+    /**
+     * Starts the loop traversal graph
+     * @return a {@link EdgeRepeatTraversal}
+     */
+    EdgeRepeatTraversal repeat();
 
 
     /**
