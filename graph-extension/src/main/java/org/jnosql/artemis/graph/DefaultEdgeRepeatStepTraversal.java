@@ -36,6 +36,6 @@ class DefaultEdgeRepeatStepTraversal extends AbstractEdgeTraversal implements Ed
 
     @Override
     public EdgeUntilTraversal until() {
-        return new DefaultEdgeTraversal(supplier, flow, converter);
+        return new DefaultEdgeUntilTraversal(supplier, flow, converter);
     }
 }
