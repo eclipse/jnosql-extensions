@@ -272,7 +272,7 @@ public class DefaultEdgeTraversalTest extends AbstractTraversalTest {
         graphTemplate.edge(mouse, "eats", plant);
 
         Optional<EdgeEntity<Animal, Animal>> result = graphTemplate.getTraversalEdge().repeat().has("when")
-                .times(1).next();
+                .until().has("when").next();
 
         assertTrue(result.isPresent());
 
