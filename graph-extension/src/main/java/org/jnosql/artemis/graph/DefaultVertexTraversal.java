@@ -56,6 +56,12 @@ class DefaultVertexTraversal implements VertexTraversal {
     }
 
     @Override
+    public VertexTraversal has(String propertyKey) throws NullPointerException {
+        requireNonNull(propertyKey, "propertyKey is required");
+        return new DefaultVertexTraversal(supplier, flow.andThen(g -> g.has(propertyKey)), converter);
+    }
+
+    @Override
     public VertexTraversal has(String propertyKey, P<?> predicate) throws NullPointerException {
         requireNonNull(propertyKey, "propertyKey is required");
         requireNonNull(predicate, "predicate is required");
@@ -123,6 +129,11 @@ class DefaultVertexTraversal implements VertexTraversal {
             throw new NullPointerException("The no one edgeLabels element cannot be null");
         }
         return new DefaultEdgeTraversal(supplier, flow.andThen(g -> g.bothE(edgeLabels)), converter);
+    }
+
+    @Override
+    public VertexRepeatTraversal repeat() {
+        return null;
     }
 
     @Override
