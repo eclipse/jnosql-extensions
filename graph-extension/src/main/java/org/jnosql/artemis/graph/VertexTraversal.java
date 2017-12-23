@@ -173,6 +173,11 @@ public interface VertexTraversal {
     EdgeTraversal bothE(String... edgeLabels) throws NullPointerException;
 
 
+    /**
+     * Starts the loop traversal graph
+     * @return a {@link VertexRepeatTraversal}
+     */
+    VertexRepeatTraversal repeat();
 
     /**
      * Map the {@link VertexTraversal} to its outgoing adjacent vertices given the edge labels.

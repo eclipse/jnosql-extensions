@@ -14,5 +14,22 @@
  */
 package org.jnosql.artemis.graph;
 
+/**
+ * After the {@link VertexRepeatTraversal} condition the next step is
+ * {@link VertexRepeatStepTraversal#times(int)} and {@link VertexRepeatStepTraversal#until()}
+ */
 public interface VertexRepeatStepTraversal {
+
+    /**
+     * Starts a loop traversal n times
+     * @param times the repeat times that is required
+     * @return a {@link VertexTraversal} instance
+     */
+    VertexTraversal times(int times);
+
+    /**
+     * Define the loop traversal until a defined condition
+     * @return {@link VertexUntilTraversal}
+     */
+    VertexUntilTraversal until();
 }
