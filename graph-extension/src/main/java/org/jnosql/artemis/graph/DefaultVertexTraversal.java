@@ -127,7 +127,7 @@ class DefaultVertexTraversal extends AbstractVertexTraversal implements VertexTr
 
     @Override
     public VertexRepeatTraversal repeat() {
-        return null;
+        return new DefaultVertexRepeatTraversal(supplier, flow, converter);
     }
 
     @Override
