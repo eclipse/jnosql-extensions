@@ -17,6 +17,7 @@ package org.jnosql.artemis.graph;
 import org.apache.tinkerpop.gremlin.process.traversal.P;
 import org.apache.tinkerpop.gremlin.structure.T;
 import org.jnosql.artemis.graph.cdi.CDIJUnitRunner;
+import org.jnosql.artemis.graph.model.Animal;
 import org.jnosql.artemis.graph.model.Book;
 import org.jnosql.artemis.graph.model.Person;
 import org.junit.Test;
@@ -255,6 +256,81 @@ public class DefaultVertexTraversalTest extends AbstractTraversalTest {
 
         assertNotNull(map);
         assertFalse(map.isEmpty());
+    }
+
+
+    @Test
+    public void shouldRepeatTimesTraversal() {
+        Animal lion = graphTemplate.insert(new Animal("lion"));
+        Animal snake = graphTemplate.insert(new Animal("snake"));
+        Animal mouse = graphTemplate.insert(new Animal("mouse"));
+        Animal plant = graphTemplate.insert(new Animal("plant"));
+
+        graphTemplate.edge(lion, "eats", snake).add("when", "night");
+        graphTemplate.edge(snake, "eats", mouse);
+        graphTemplate.edge(mouse, "eats", plant);
+        Optional<Animal> animal = graphTemplate.getTraversalVertex().repeat().out("eats").times(3).<Animal>next();
+        assertTrue(animal.isPresent());
+        assertEquals(plant, animal.get());
+
+    }
+
+    @Test
+    public void shouldRepeatTimesTraversal2() {
+        Animal lion = graphTemplate.insert(new Animal("lion"));
+        Animal snake = graphTemplate.insert(new Animal("snake"));
+        Animal mouse = graphTemplate.insert(new Animal("mouse"));
+        Animal plant = graphTemplate.insert(new Animal("plant"));
+
+        graphTemplate.edge(lion, "eats", snake).add("when", "night");
+        graphTemplate.edge(snake, "eats", mouse);
+        graphTemplate.edge(mouse, "eats", plant);
+        Optional<Animal> animal = graphTemplate.getTraversalVertex().repeat().in("eats").times(3).<Animal>next();
+        assertTrue(animal.isPresent());
+        assertEquals(lion, animal.get());
+
+    }
+
+    @Test
+    public void shouldRepeatUntilTraversal() {
+        Animal lion = graphTemplate.insert(new Animal("lion"));
+        Animal snake = graphTemplate.insert(new Animal("snake"));
+        Animal mouse = graphTemplate.insert(new Animal("mouse"));
+        Animal plant = graphTemplate.insert(new Animal("plant"));
+
+        graphTemplate.edge(lion, "eats", snake);
+        graphTemplate.edge(snake, "eats", mouse);
+        graphTemplate.edge(mouse, "eats", plant);
+
+        Optional<Animal> animal = graphTemplate.getTraversalVertex()
+                .repeat().out("eats")
+                .until().has("name", "plant").next();
+
+        assertTrue(animal.isPresent());
+
+
+        assertEquals(plant, animal.get());
+    }
+
+    @Test
+    public void shouldRepeatUntilTraversal2() {
+        Animal lion = graphTemplate.insert(new Animal("lion"));
+        Animal snake = graphTemplate.insert(new Animal("snake"));
+        Animal mouse = graphTemplate.insert(new Animal("mouse"));
+        Animal plant = graphTemplate.insert(new Animal("plant"));
+
+        graphTemplate.edge(lion, "eats", snake);
+        graphTemplate.edge(snake, "eats", mouse);
+        graphTemplate.edge(mouse, "eats", plant);
+
+        Optional<Animal> animal = graphTemplate.getTraversalVertex()
+                .repeat().in("eats")
+                .until().has("name", "lion").next();
+
+        assertTrue(animal.isPresent());
+
+
+        assertEquals(lion, animal.get());
     }
 
 
