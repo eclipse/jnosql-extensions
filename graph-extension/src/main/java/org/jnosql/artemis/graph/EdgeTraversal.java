@@ -14,14 +14,8 @@
  */
 package org.jnosql.artemis.graph;
 
-import org.apache.tinkerpop.gremlin.process.traversal.P;
-import org.apache.tinkerpop.gremlin.structure.T;
-
 import java.util.Optional;
-import java.util.function.Supplier;
 import java.util.stream.Stream;
-
-import static java.util.Objects.requireNonNull;
 
 /**
  * The Graph Traversal that maps {@link org.apache.tinkerpop.gremlin.structure.Edge}.
