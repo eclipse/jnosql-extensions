@@ -39,6 +39,13 @@ class DefaultEdgeTraversal extends AbstractEdgeTraversal implements EdgeTraversa
 
 
     @Override
+    public EdgeTraversal has(String propertyKey) throws NullPointerException {
+        requireNonNull(propertyKey, "propertyKey is required");
+        return new DefaultEdgeTraversal(supplier, flow.andThen(g -> g.has(propertyKey)), converter);
+
+    }
+
+    @Override
     public EdgeTraversal has(String propertyKey, Object value) throws NullPointerException {
         requireNonNull(propertyKey, "propertyKey is required");
         requireNonNull(value, "value is required");

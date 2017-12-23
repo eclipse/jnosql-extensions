@@ -35,6 +35,12 @@ class DefaultEdgeRepeatTraversal extends AbstractEdgeTraversal implements EdgeRe
     }
 
     @Override
+    public EdgeRepeatStepTraversal has(String propertyKey) throws NullPointerException {
+        requireNonNull(propertyKey, "propertyKey is required");
+        return new DefaultEdgeRepeatStepTraversal(supplier, flow.andThen(g -> g.has(propertyKey)), converter);
+    }
+
+    @Override
     public EdgeRepeatStepTraversal has(String propertyKey, Object value) throws NullPointerException {
         requireNonNull(propertyKey, "propertyKey is required");
         requireNonNull(value, "value is required");
