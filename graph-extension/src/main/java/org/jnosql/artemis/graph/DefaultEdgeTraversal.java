@@ -83,6 +83,11 @@ class DefaultEdgeTraversal implements EdgeTraversal {
         return new DefaultEdgeTraversal(supplier, flow.andThen(g -> g.limit(limit)), converter);
     }
 
+    @Override
+    public EdgeRepeatTraversal repeat() {
+        return null;
+    }
+
 
     @Override
     public VertexTraversal inV() {
