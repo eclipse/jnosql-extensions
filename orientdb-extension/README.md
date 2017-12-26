@@ -5,6 +5,44 @@
 
 OrientDB extension has implementations to use specific behavior that is beyond the API such as SQL.
 
+
+## Set dependency
+
+
+```xml
+
+  <dependency>
+     <groupId>org.jnosql.artemis</groupId>
+     <artifactId>orientdb-extension</artifactId>
+     <version>${jnosql.version}</version>
+  </dependency>
+```
+
+
+## Make OrientDB manager available to container
+
+```java
+
+public class OrientDBProducer {
+
+
+    @Produces
+    public OrientDBDocumentCollectionManager getManager() {
+        OrientDBDocumentCollectionManager manager = ...;
+        return manager;
+    }
+
+    @Produces
+    public OrientDBDocumentCollectionManagerAsync getManagerAsync() {
+        OrientDBDocumentCollectionManagerAsync managerAsync = ...;
+        return managerAsync;
+    }
+}
+
+
+```
+
+
 ## OrientDBCrudRepository
 
 OrientDBCrudRepository is an extension of Repository that allows using SQL annotation that executes SQL Query.
