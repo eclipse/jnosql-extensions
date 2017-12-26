@@ -82,6 +82,10 @@ CouchbaseTemplate is a specialization of Document Template that allows using N1Q
 ```java
         List<Person> people = template.n1qlQuery("select * from Person where name = $name", params);
 
+        MatchQuery match = SearchQuery.match("Ada");
+        SearchQuery query = new SearchQuery("index-person", match);
+        List<Person> resultl = template.search(query);
+
         String query = "select * from Person where name = ?";
         Consumer<List<Person>> callBack = p -> {
         };
