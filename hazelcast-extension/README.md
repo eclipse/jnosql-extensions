@@ -9,6 +9,34 @@ Hazelcast extension has implementations to use specific behavior that is beyond 
 
 HazelcastRepository is an extension of Repository that allows using Query annotation that executes Hazelcast query.
 
+## Set dependency
+
+
+```xml
+
+  <dependency>
+     <groupId>org.jnosql.artemis</groupId>
+     <artifactId>hazelcast-extension</artifactId>
+     <version>${jnosql.version}</version>
+  </dependency>
+```
+
+## Make Hazelcast manager available to container
+
+```java
+
+public class HazelcastProducer {
+
+
+    @Produces
+    public HazelcastBucketManager getManager() {
+        HazelcastBucketManager manager = ...;
+        return manager;
+    }
+}
+
+
+```
 
 ```java
 interface PersonRepository extends HazelcastRepository<Person, String> {
