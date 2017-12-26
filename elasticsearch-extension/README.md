@@ -6,6 +6,41 @@
 Elasticsearch extension has implementations to use specific behavior that is beyond the API such as search Engine.
 
 
+## Set dependency
+
+
+```xml
+
+  <dependency>
+     <groupId>org.jnosql.artemis</groupId>
+     <artifactId>elasticsearch-extension</artifactId>
+     <version>${jnosql.version}</version>
+  </dependency>
+```
+
+## Make Elasticsearch manager available to container
+
+```java
+
+public class ElasticsearchProducer {
+
+
+    @Produces
+    public ElasticsearchDocumentCollectionManager getManager() {
+        ElasticsearchDocumentCollectionManager manager = ...;
+        return manager;
+    }
+
+    @Produces
+    public ElasticsearchDocumentCollectionManagerAsync getManagerAsync() {
+        ElasticsearchDocumentCollectionManagerAsync managerAsync = ...;
+        return managerAsync;
+    }
+}
+
+
+```
+
 ## ElasticsearchTemplate and ElasticsearchTemplateAsync
 
 ElasticsearchTemplate and ElasticsearchTemplateAsync are a specialization of Document Template that allows using search engine on both synchronous and asynchronous.
