@@ -5,6 +5,41 @@
 
 ArangoDB extension has implementations to use specific behavior that is beyond the API such as AQL.
 
+## Set dependency
+
+
+```xml
+
+  <dependency>
+     <groupId>org.jnosql.artemis</groupId>
+     <artifactId>aragangodb-extension</artifactId>
+     <version>${jnosql.version}</version>
+  </dependency>
+```
+
+## Make ArangoDB available to container
+
+```java
+
+public class ArangoDBProducer {
+
+
+    @Produces
+    public ArangoDBDocumentCollectionManager getManager() {
+        ArangoDBDocumentCollectionManager manager = ...;
+        return manager;
+    }
+
+    @Produces
+    public ArangoDBDocumentCollectionManagerAsync getManagerAsync() {
+        ArangoDBDocumentCollectionManagerAsync managerAsync = ...;
+        return managerAsync;
+    }
+}
+
+
+```
+
 ## ArangoDBRepository
 
 ArangoDBRepository is an extension of Repository that allows using AQL annotation that executes AQL.
