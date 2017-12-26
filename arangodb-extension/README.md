@@ -78,7 +78,7 @@ ArangoDBRepositoryAsync is an extension of RepositoryAsync that allows using AQL
 ArangoDBTemplate is a specialization of Document Template that allows using AQL both synchronous and asynchronous.
 
 ```java
-        template.aql("FOR p IN Person FILTER p.name = @name RETURN p", params);
+        List<Person> people = template.aql("FOR p IN Person FILTER p.name = @name RETURN p", params);
 
         String query = "FOR p IN Person FILTER p.name = @name RETURN p";
         Consumer<List<Person>> callBack = p -> {
