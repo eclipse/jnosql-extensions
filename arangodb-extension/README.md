@@ -17,7 +17,7 @@ ArangoDB extension has implementations to use specific behavior that is beyond t
   </dependency>
 ```
 
-## Make ArangoDB available to container
+## Make ArangoDB manager available to container
 
 ```java
 
