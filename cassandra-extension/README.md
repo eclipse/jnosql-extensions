@@ -5,6 +5,42 @@
 
 Cassandra extension has implementations to use specific behavior that is beyond the API such as Cassandra Query Language, consistency level.
 
+## Set dependency
+
+
+```xml
+
+  <dependency>
+     <groupId>org.jnosql.artemis</groupId>
+     <artifactId>cassandra-extension</artifactId>
+     <version>${jnosql.version}</version>
+  </dependency>
+```
+
+## Make Cassandra manager available to container
+
+```java
+
+public class CassandraProducer {
+
+
+    @Produces
+    public CassandraColumnFamilyManager getManager() {
+        CassandraColumnFamilyManager manager = ...;
+        return manager;
+    }
+
+    @Produces
+    public CassandraColumnFamilyManagerAsync getManagerAsync() {
+        CassandraColumnFamilyManagerAsync managerAsync = ...;
+        return managerAsync;
+    }
+}
+
+
+```
+
+
 ## CassandraRepository
 
 CassandraRepository is an extension of Repository that allows using CQL annotation that executes Cassandra Query Language and also Consistency Level.
