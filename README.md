@@ -1,2 +1,2 @@
 # artemis-driver
-This project contains all specialization to Artemis
+This project contains all specialization to Eclipse JNoSQL Artemis. The specific behavior in a NoSQL database matters, that's why there are Eclipse JNoSQL Artemis specializations.
