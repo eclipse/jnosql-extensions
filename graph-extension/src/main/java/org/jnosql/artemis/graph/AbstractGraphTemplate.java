@@ -142,9 +142,8 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
         };
 
         Optional<Edge> edge = getGraph()
-                .traversal().V()
-                .has(id, outboundId).out(label)
-                .has(id, inboundId).inE(label).filter(predicate).tryNext();
+                .traversal().V(outboundId)
+                .out(label).has(id, inboundId).inE(label).filter(predicate).tryNext();
 
         if (edge.isPresent()) {
             return new DefaultEdgeEntity<>(edge.get(), incoming, outbound);
