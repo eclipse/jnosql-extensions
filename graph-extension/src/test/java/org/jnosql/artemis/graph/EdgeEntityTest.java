@@ -116,6 +116,26 @@ public class EdgeEntityTest {
         assertEquals(edge, sameEdge);
     }
 
+    @Test
+    public void shouldUseAnEdge2() {
+        Person poliana = graphTemplate.insert(Person.builder().withName("Poliana").withAge().build());
+        Person nilzete = graphTemplate.insert(Person.builder().withName("Nilzete").withAge().build());
+
+        Book book = graphTemplate.insert(Book.builder().withAge(2007).withName("The Shack").build());
+        EdgeEntity<Person, Book> edge = graphTemplate.edge(poliana, "reads", book);
+        EdgeEntity<Person, Book> edge1 = graphTemplate.edge(nilzete, "reads", book);
+
+        EdgeEntity<Person, Book> sameEdge = graphTemplate.edge(poliana, "reads", book);
+        EdgeEntity<Person, Book> sameEdge1 = graphTemplate.edge(nilzete, "reads", book);
+
+        assertEquals(edge.getId(), sameEdge.getId());
+        assertEquals(edge, sameEdge);
+
+        assertEquals(edge1.getId(), sameEdge1.getId());
+        assertEquals(edge1, sameEdge1);
+
+    }
+
     @Test(expected = NullPointerException.class)
     public void shouldReturnErrorWhenAddKeyIsNull() {
         Person person = graphTemplate.insert(Person.builder().withName("Poliana").withAge().build());
