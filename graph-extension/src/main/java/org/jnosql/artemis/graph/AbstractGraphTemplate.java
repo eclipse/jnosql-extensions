@@ -138,9 +138,9 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
         final Predicate<Traverser<Edge>> predicate = t -> {
             Edge e = t.get();
             return e.inVertex().id().equals(inboundId)
-                    && e.outVertex().id().equals(outbound);
+                    && e.outVertex().id().equals(outboundId);
         };
-        
+
         Optional<Edge> edge = getGraph()
                 .traversal().V()
                 .has(id, outboundId).out(label)
