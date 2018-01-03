@@ -24,7 +24,7 @@ import java.util.Objects;
 public class Book {
 
     @Id
-    private String id;
+    private Long id;
 
     @Column
     private String name;
@@ -36,13 +36,13 @@ public class Book {
     Book() {
     }
 
-    Book(String id, String name, Integer age) {
+    Book(Long id, String name, Integer age) {
         this.id = id;
         this.name = name;
         this.age = age;
     }
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
@@ -89,7 +89,7 @@ public class Book {
     public static class BookBuilder {
         private String name;
         private Integer age;
-        private String id;
+        private Long id;
 
         private BookBuilder() {
         }
@@ -104,7 +104,7 @@ public class Book {
             return this;
         }
 
-        public BookBuilder withId(String id) {
+        public BookBuilder withId(Long id) {
             this.id = id;
             return this;
         }
