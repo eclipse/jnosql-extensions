@@ -150,7 +150,7 @@ public class EdgeEntityTest {
         assertNotEquals(edge.getId(), edge1.getId());
         assertNotEquals(edge.getId(), sameEdge1.getId());
 
-        assertEquals(sameEdge1.getId(), sameEdge.getId());
+        assertNotEquals(sameEdge1.getId(), sameEdge.getId());
     }
 
     @Test(expected = NullPointerException.class)
