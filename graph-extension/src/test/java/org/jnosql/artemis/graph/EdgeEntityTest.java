@@ -87,7 +87,7 @@ public class EdgeEntityTest {
     @Test(expected = EntityNotFoundException.class)
     public void shouldReturnEntityNotFoundWhenInBoundDidNotFound() {
         Person person = graphTemplate.insert(Person.builder().withName("Poliana").withAge().build());
-        Book book = Book.builder().withId("10").withAge(2007).withName("The Shack").build();
+        Book book = Book.builder().withId(10L).withAge(2007).withName("The Shack").build();
         graphTemplate.edge(person, "reads", book);
     }
 
