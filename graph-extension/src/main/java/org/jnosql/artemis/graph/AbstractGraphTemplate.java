@@ -14,6 +14,7 @@
  */
 package org.jnosql.artemis.graph;
 
+import org.apache.tinkerpop.gremlin.process.traversal.Traverser;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Graph;
@@ -28,6 +29,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
 import java.util.stream.Stream;
 
@@ -133,10 +135,16 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
                 .orElseThrow(() -> new NullPointerException("inbound Id field is required"));
 
 
+        final Predicate<Traverser<Edge>> predicate = t -> {
+            Edge e = t.get();
+            return e.inVertex().id().equals(inboundId)
+                    && e.outVertex().id().equals(outbound);
+        };
+        
         Optional<Edge> edge = getGraph()
                 .traversal().V()
                 .has(id, outboundId).out(label)
-                .has(id, inboundId).inE(label).tryNext();
+                .has(id, inboundId).inE(label).filter(predicate).tryNext();
 
         if (edge.isPresent()) {
             return new DefaultEdgeEntity<>(edge.get(), incoming, outbound);
