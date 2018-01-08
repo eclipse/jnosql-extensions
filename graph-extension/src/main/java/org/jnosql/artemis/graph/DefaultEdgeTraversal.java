@@ -31,12 +31,13 @@ import static org.jnosql.artemis.graph.util.TinkerPopUtil.toEdgeEntity;
 class DefaultEdgeTraversal extends AbstractEdgeTraversal implements EdgeTraversal {
 
 
+    private String property;
+
     DefaultEdgeTraversal(Supplier<GraphTraversal<?, ?>> supplier,
                          Function<GraphTraversal<?, ?>, GraphTraversal<Vertex, Edge>> flow,
                          VertexConverter converter) {
         super(supplier, flow, converter);
     }
-
 
     @Override
     public EdgeTraversal has(String propertyKey) throws NullPointerException {
@@ -136,6 +137,12 @@ class DefaultEdgeTraversal extends AbstractEdgeTraversal implements EdgeTraversa
     @Override
     public ValueMapTraversal valueMap(String... propertyKeys) {
         return new DefaultValueMapTraversal(supplier, flow.andThen(g -> g.valueMap(propertyKeys)));
+    }
+
+    @Override
+    public EdgeTraversalOrder orderBy(String property) throws NullPointerException, IllegalStateException {
+        requireNonNull(property, "property is required");
+        return new DefaultEdgeTraversalOrder(supplier, flow, converter, property);
     }
 
     @Override
