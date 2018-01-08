@@ -86,6 +86,11 @@ class DefaultEdgeTraversal extends AbstractEdgeTraversal implements EdgeTraversa
     }
 
     @Override
+    public EdgeTraversal range(long start, long end) {
+        return new DefaultEdgeTraversal(supplier, flow.andThen(g -> g.range(start, end)), converter);
+    }
+
+    @Override
     public EdgeRepeatTraversal repeat() {
         return new DefaultEdgeRepeatTraversal(supplier, flow, converter);
     }
