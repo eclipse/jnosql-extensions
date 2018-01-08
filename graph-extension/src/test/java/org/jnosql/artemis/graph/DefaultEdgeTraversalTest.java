@@ -18,7 +18,6 @@ import org.jnosql.artemis.graph.cdi.CDIJUnitRunner;
 import org.jnosql.artemis.graph.model.Animal;
 import org.jnosql.artemis.graph.model.Book;
 import org.jnosql.artemis.graph.model.Person;
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -32,6 +31,7 @@ import static java.util.stream.Collectors.toList;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
@@ -188,15 +188,15 @@ public class DefaultEdgeTraversalTest extends AbstractTraversalTest {
     @Test
     public void shouldDefinesLimit() {
         long count = graphTemplate.getTraversalEdge().limit(1L).count();
-        Assert.assertEquals(1L, count);
-        Assert.assertNotEquals(graphTemplate.getTraversalVertex().count(), count);
+        assertEquals(1L, count);
+        assertNotEquals(graphTemplate.getTraversalVertex().count(), count);
     }
 
     @Test
     public void shouldDefinesRange() {
         long count = graphTemplate.getTraversalEdge().range(1, 3).count();
-        Assert.assertEquals(2L, count);
-        Assert.assertNotEquals(graphTemplate.getTraversalVertex().count(), count);
+        assertEquals(2L, count);
+        assertNotEquals(graphTemplate.getTraversalVertex().count(), count);
     }
 
     @Test
