@@ -112,6 +112,14 @@ public interface VertexTraversal extends VertexConditionTraversal {
      */
     VertexTraversal limit(long limit);
 
+    /**
+     * Returns a VertexTraversal with range defined
+     * @param start the start inclusive
+     * @param end the end inclusive
+     * @return a {@link VertexTraversal} with the range setted
+     */
+    VertexTraversal range(long start, long end);
+
 
     /**
      * Returns the next elements in the traversal.
