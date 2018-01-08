@@ -115,8 +115,8 @@ public interface VertexTraversal extends VertexConditionTraversal {
     /**
      * Returns a VertexTraversal with range defined
      * @param start the start inclusive
-     * @param end the end inclusive
-     * @return a {@link VertexTraversal} with the range setted
+     * @param end the end exclusive
+     * @return a {@link VertexTraversal} with the range set
      */
     VertexTraversal range(long start, long end);
 
