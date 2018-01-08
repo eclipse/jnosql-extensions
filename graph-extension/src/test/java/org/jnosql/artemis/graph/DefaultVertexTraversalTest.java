@@ -33,6 +33,7 @@ import static java.util.stream.Collectors.toList;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
@@ -217,6 +218,19 @@ public class DefaultVertexTraversalTest extends AbstractTraversalTest {
         assertEquals(0L, count);
     }
 
+    @Test
+    public void shouldDefinesLimit() {
+        long count = graphTemplate.getTraversalVertex().limit(1L).count();
+        assertEquals(1L, count);
+        assertNotEquals(graphTemplate.getTraversalVertex().count(), count);
+    }
+
+    @Test
+    public void shouldDefinesRange() {
+        long count = graphTemplate.getTraversalVertex().range(1, 3).count();
+        assertEquals(2L, count);
+        assertNotEquals(graphTemplate.getTraversalVertex().count(), count);
+    }
     @Test
     public void shouldMapValuesAsStream() {
         List<Map<String, Object>> maps = graphTemplate.getTraversalVertex().hasLabel("Person")

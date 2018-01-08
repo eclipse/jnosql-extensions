@@ -189,14 +189,14 @@ public class DefaultEdgeTraversalTest extends AbstractTraversalTest {
     public void shouldDefinesLimit() {
         long count = graphTemplate.getTraversalEdge().limit(1L).count();
         assertEquals(1L, count);
-        assertNotEquals(graphTemplate.getTraversalVertex().count(), count);
+        assertNotEquals(graphTemplate.getTraversalEdge().count(), count);
     }
 
     @Test
     public void shouldDefinesRange() {
         long count = graphTemplate.getTraversalEdge().range(1, 3).count();
         assertEquals(2L, count);
-        assertNotEquals(graphTemplate.getTraversalVertex().count(), count);
+        assertNotEquals(graphTemplate.getTraversalEdge().count(), count);
     }
 
     @Test
