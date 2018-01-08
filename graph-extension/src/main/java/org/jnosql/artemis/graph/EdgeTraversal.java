@@ -36,7 +36,7 @@ public interface EdgeTraversal extends EdgeConditionTraversal {
      * Returns an EdgeTraversal with range defined
      * @param start the start inclusive
      * @param end the end inclusive
-     * @return a {@link EdgeTraversal} with the range setted
+     * @return a {@link EdgeTraversal} with the range set
      */
     EdgeTraversal range(long start, long end);
 
