@@ -18,6 +18,7 @@ import org.jnosql.artemis.graph.cdi.CDIJUnitRunner;
 import org.jnosql.artemis.graph.model.Animal;
 import org.jnosql.artemis.graph.model.Book;
 import org.jnosql.artemis.graph.model.Person;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -183,6 +184,13 @@ public class DefaultEdgeTraversalTest extends AbstractTraversalTest {
         graphTemplate.getTraversalVertex().outE(READS).hasNot((String) null);
     }
 
+
+    @Test
+    public void shouldDefinesLimit() {
+        long count = graphTemplate.getTraversalVertex().limit(1L).count();
+        Assert.assertEquals(1L, count);
+        Assert.assertNotEquals(graphTemplate.getTraversalVertex().count(), count);
+    }
 
     @Test
     public void shouldMapValuesAsStream() {
