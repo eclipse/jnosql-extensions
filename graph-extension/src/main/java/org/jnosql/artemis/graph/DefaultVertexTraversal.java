@@ -135,6 +135,11 @@ class DefaultVertexTraversal extends AbstractVertexTraversal implements VertexTr
         return new DefaultVertexTraversal(supplier, flow.andThen(g -> g.limit(limit)), converter);
     }
 
+    @Override
+    public VertexTraversal range(long start, long end) {
+        return new DefaultVertexTraversal(supplier, flow.andThen(g -> g.range(start, end)), converter);
+    }
+
 
     @Override
     public VertexTraversal hasLabel(String label) throws NullPointerException {
