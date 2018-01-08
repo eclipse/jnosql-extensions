@@ -109,6 +109,16 @@ public interface EdgeTraversal extends EdgeConditionTraversal {
      */
     ValueMapTraversal valueMap(final String... propertyKeys);
 
+    /**
+     *Defines the order of the Edge, the property must have in all elements.
+     * Otherwise, it'll return an exception. {@link EdgeTraversal}, as recommendation use
+     * {@link EdgeTraversal#has(String)} before this method
+     * @param property the property to be order
+     * @return the {@link EdgeTraversalOrder} to define the order way
+     * @throws NullPointerException when the property is null
+     * @throws IllegalStateException when there any Edge that does not have the property
+     */
+    EdgeTraversalOrder orderBy(String property) throws NullPointerException, IllegalStateException;
 
     /**
      * Map the traversal next to its reduction as a sum of the elements
