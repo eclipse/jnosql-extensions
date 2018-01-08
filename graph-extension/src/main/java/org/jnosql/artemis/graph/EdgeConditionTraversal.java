@@ -113,18 +113,19 @@ public interface EdgeConditionTraversal {
     EdgeTraversal hasNot(String propertyKey) throws NullPointerException;
 
     /**
-     * Returns an EdgeTraversal consisting of the elements of this traversal, truncated to be no longer than limit in length.
+     * Returns an EdgeTraversal truncated to be no longer than limit in length.
      * @param limit the limit
      * @return a {@link EdgeTraversal} with the new limit
      */
     EdgeTraversal limit(long limit);
 
     /**
-     * 
-     * @param limit
-     * @return
+     * Returns an EdgeTraversal with range defined
+     * @param start the start inclusive
+     * @param end the end inclusive
+     * @return a {@link EdgeTraversal} with the range setted
      */
-    EdgeTraversal range(long limit);
+    EdgeTraversal range(long start, long end);
 
     /**
      * Defines Vertex has not a property
