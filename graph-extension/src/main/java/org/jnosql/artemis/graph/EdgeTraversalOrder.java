@@ -20,13 +20,13 @@ package org.jnosql.artemis.graph;
 public interface EdgeTraversalOrder {
 
     /**
-     * Define the ascending order
+     * Defines the ascending order
      * @return the {@link EdgeTraversal} ordered ascending
      */
     EdgeTraversal asc();
 
     /**
-     * Define the descending order
+     * Defines the descending order
      * @return the {@link EdgeTraversal} ordered descending
      */
     EdgeTraversal desc();
