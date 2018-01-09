@@ -28,6 +28,7 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toList;
+import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -306,6 +307,23 @@ public class DefaultEdgeTraversalTest extends AbstractTraversalTest {
     @Test(expected = IllegalStateException.class)
     public void shouldReturnErrorWhenThePropertyDoesNotExist() {
         graphTemplate.getTraversalEdge().orderBy("wrong property").asc().next();
+    }
+
+    @Test
+    public void shouldOrderAsc() {
+        String property = "motivation";
+
+        List<String> properties = graphTemplate.getTraversalEdge()
+                .has(property)
+                .orderBy(property)
+                .asc().stream()
+                .map(e -> e.get(property))
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .map(v -> v.get(String.class))
+                .collect(toList());
+
+        assertThat(properties, contains("hobby", "job", "love"));
     }
 
 
