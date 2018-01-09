@@ -27,6 +27,7 @@ public interface EdgeTraversal extends EdgeConditionTraversal {
     /**
      * Filter the objects in the traversal by the number of them to pass through the next, where only the first
      * {@code n} objects are allowed as defined by the {@code limit} argument.
+     *
      * @param limit the number at which to end the next
      * @return a {@link EdgeTraversal} with the limit
      */
@@ -34,8 +35,9 @@ public interface EdgeTraversal extends EdgeConditionTraversal {
 
     /**
      * Returns an EdgeTraversal with range defined
+     *
      * @param start the start inclusive
-     * @param end the end exclusive
+     * @param end   the end exclusive
      * @return a {@link EdgeTraversal} with the range set
      */
     EdgeTraversal range(long start, long end);
@@ -43,6 +45,7 @@ public interface EdgeTraversal extends EdgeConditionTraversal {
 
     /**
      * Starts the loop traversal graph
+     *
      * @return a {@link EdgeRepeatTraversal}
      */
     EdgeRepeatTraversal repeat();
@@ -110,12 +113,13 @@ public interface EdgeTraversal extends EdgeConditionTraversal {
     ValueMapTraversal valueMap(final String... propertyKeys);
 
     /**
-     *Defines the order of the Edge, the property must have in all elements.
+     * Defines the order of the Edge, the property must have in all elements.
      * Otherwise, it'll return an exception. {@link EdgeTraversal}, as recommendation use
      * {@link EdgeTraversal#has(String)} before this method
+     *
      * @param property the property to be order
      * @return the {@link EdgeTraversalOrder} to define the order way
-     * @throws NullPointerException when the property is null
+     * @throws NullPointerException  when the property is null
      * @throws IllegalStateException when there any Edge that does not have the property
      */
     EdgeTraversalOrder orderBy(String property) throws NullPointerException, IllegalStateException;
