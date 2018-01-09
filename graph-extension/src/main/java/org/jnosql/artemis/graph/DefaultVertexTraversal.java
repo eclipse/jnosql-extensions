@@ -189,4 +189,10 @@ class DefaultVertexTraversal extends AbstractVertexTraversal implements VertexTr
     public long count() {
         return flow.apply(supplier.get()).count().tryNext().orElse(0L);
     }
+
+    @Override
+    public VertexTraversalOrder orderBy(String property) throws NullPointerException, IllegalStateException {
+        requireNonNull(property, "property is required");
+        return new DefaultVertexTraversalOrder(supplier, flow, converter, property);
+    }
 }
