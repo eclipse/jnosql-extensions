@@ -296,6 +296,17 @@ public class DefaultEdgeTraversalTest extends AbstractTraversalTest {
         assertEquals(lion, result.get().getOutbound());
 
     }
+    
+
+    @Test(expected = NullPointerException.class)
+    public void shouldReturnErrorWhenTheOrderIsNull() {
+        graphTemplate.getTraversalEdge().orderBy(null);
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void shouldReturnErrorWhenThePropertyDoesNotExist() {
+        graphTemplate.getTraversalEdge().orderBy("wrong property");
+    }
 
 
 }
