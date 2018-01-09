@@ -30,6 +30,7 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toList;
+import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -231,6 +232,7 @@ public class DefaultVertexTraversalTest extends AbstractTraversalTest {
         assertEquals(2L, count);
         assertNotEquals(graphTemplate.getTraversalVertex().count(), count);
     }
+
     @Test
     public void shouldMapValuesAsStream() {
         List<Map<String, Object>> maps = graphTemplate.getTraversalVertex().hasLabel("Person")
@@ -345,6 +347,47 @@ public class DefaultVertexTraversalTest extends AbstractTraversalTest {
 
 
         assertEquals(lion, animal.get());
+    }
+
+
+    @Test(expected = NullPointerException.class)
+    public void shouldReturnErrorWhenTheOrderIsNull() {
+        graphTemplate.getTraversalVertex().orderBy(null);
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void shouldReturnErrorWhenThePropertyDoesNotExist() {
+        graphTemplate.getTraversalVertex().orderBy("wrong property").asc().next();
+    }
+
+    @Test
+    public void shouldOrderAsc() {
+        String property = "name";
+
+        List<String> properties = graphTemplate.getTraversalVertex()
+                .hasLabel("Book")
+                .has(property)
+                .orderBy(property)
+                .asc().<Book>stream()
+                .map(Book::getName)
+                .collect(toList());
+
+        assertThat(properties, contains("Effective Java", "Software License", "The Shack"));
+    }
+
+    @Test
+    public void shouldOrderDesc() {
+        String property = "name";
+
+        List<String> properties = graphTemplate.getTraversalVertex()
+                .hasLabel("Book")
+                .has(property)
+                .orderBy(property)
+                .desc().<Book>stream()
+                .map(Book::getName)
+                .collect(toList());
+
+        assertThat(properties, contains("The Shack", "Software License", "Effective Java"));
     }
 
 
