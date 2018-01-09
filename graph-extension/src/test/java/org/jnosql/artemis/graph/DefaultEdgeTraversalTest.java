@@ -326,5 +326,21 @@ public class DefaultEdgeTraversalTest extends AbstractTraversalTest {
         assertThat(properties, contains("hobby", "job", "love"));
     }
 
+    @Test
+    public void shouldOrderDesc() {
+        String property = "motivation";
+
+        List<String> properties = graphTemplate.getTraversalEdge()
+                .has(property)
+                .orderBy(property)
+                .desc().stream()
+                .map(e -> e.get(property))
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .map(v -> v.get(String.class))
+                .collect(toList());
+
+        assertThat(properties, contains("love", "job", "hobby"));
+    }
 
 }
