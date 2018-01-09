@@ -164,4 +164,16 @@ public interface VertexTraversal extends VertexConditionTraversal {
      * @return the sum
      */
     long count();
+
+    /**
+     * Defines the order of the Vertex, the property must have in all elements.
+     * Otherwise, it'll return an exception, as recommendation use
+     * {@link VertexTraversal#has(String)} before this method
+     *
+     * @param property the property to be order
+     * @return the {@link VertexTraversalOrder} to define the order way
+     * @throws NullPointerException  when the property is null
+     * @throws IllegalStateException when there any Edge that does not have the property
+     */
+    VertexTraversalOrder orderBy(String property) throws NullPointerException, IllegalStateException;
 }
