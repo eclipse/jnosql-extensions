@@ -114,7 +114,7 @@ public interface EdgeTraversal extends EdgeConditionTraversal {
 
     /**
      * Defines the order of the Edge, the property must have in all elements.
-     * Otherwise, it'll return an exception.As recommendation use
+     * Otherwise, it'll return an exception. As recommendation use
      * {@link EdgeTraversal#has(String)} before this method
      *
      * @param property the property to be order
