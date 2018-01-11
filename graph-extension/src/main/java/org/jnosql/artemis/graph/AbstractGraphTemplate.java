@@ -188,36 +188,46 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
         return Optional.empty();
     }
 
+
+    @Override
+    public <T> Collection<EdgeEntity> getEdges(T entity, Direction direction) throws NullPointerException {
+        return getEdgesImpl(entity, direction);
+    }
+
+    @Override
+    public <T> Collection<EdgeEntity> getEdges(T entity, Direction direction, String... labels)
+            throws NullPointerException {
+        return getEdgesImpl(entity, direction, labels);
+    }
+
+
+    @Override
+    public <T> Collection<EdgeEntity> getEdges(T entity, Direction direction, Supplier<String>... labels)
+            throws NullPointerException {
+
+        checkLabelsSupplier(labels);
+        return getEdgesImpl(entity, direction, Stream.of(labels).map(Supplier::get).toArray(String[]::new));
+    }
+
+
     @Override
     public <ID> Collection<EdgeEntity> getEdgesById(ID id, Direction direction, String... labels)
             throws NullPointerException {
         return getEdgesByIdImpl(id, direction, labels);
     }
 
+    @Override
     public <ID> Collection<EdgeEntity> getEdgesById(ID id, Direction direction)
             throws NullPointerException {
         return getEdgesByIdImpl(id, direction);
     }
 
-
     @Override
     public <ID> Collection<EdgeEntity> getEdgesById(ID id, Direction direction, Supplier<String>... labels)
             throws NullPointerException {
+
+        checkLabelsSupplier(labels);
         return getEdgesByIdImpl(id, direction, Stream.of(labels).map(Supplier::get).toArray(String[]::new));
-    }
-
-    private <ID> Collection<EdgeEntity> getEdgesByIdImpl(ID id, Direction direction, String... labels) {
-
-        requireNonNull(id, "id is required");
-        requireNonNull(direction, "direction is required");
-
-        Iterator<Vertex> vertices = getGraph().vertices(id);
-        if (vertices.hasNext()) {
-            List<Edge> edges = new ArrayList<>();
-            vertices.next().edges(direction, labels).forEachRemaining(edges::add);
-            return edges.stream().map(e -> toEdgeEntity(e, getVertex())).collect(Collectors.toList());
-        }
-        return Collections.emptyList();
     }
 
 
@@ -237,6 +247,34 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
         return new DefaultEdgeTraversal(() -> getGraph().traversal().E(edgeIds), INITIAL_EDGE, getVertex());
     }
 
+    private <ID> Collection<EdgeEntity> getEdgesByIdImpl(ID id, Direction direction, String... labels) {
+
+        requireNonNull(id, "id is required");
+        requireNonNull(direction, "direction is required");
+
+        Iterator<Vertex> vertices = getGraph().vertices(id);
+        if (vertices.hasNext()) {
+            List<Edge> edges = new ArrayList<>();
+            vertices.next().edges(direction, labels).forEachRemaining(edges::add);
+            return edges.stream().map(e -> toEdgeEntity(e, getVertex())).collect(Collectors.toList());
+        }
+        return Collections.emptyList();
+    }
+
+    private <T> Collection<EdgeEntity> getEdgesImpl(T entity, Direction direction, String... labels) {
+        requireNonNull(entity, "entity is required");
+
+        Object id = getVertex().toVertex(entity).getId()
+                .orElseThrow(() -> new NullPointerException("Entity is required")).get();
+
+        return getEdgesByIdImpl(id, direction, labels);
+    }
+
+    private void checkLabelsSupplier(Supplier<String>[] labels) {
+        if (Stream.of(labels).anyMatch(Objects::isNull)) {
+            throw new NullPointerException("Item cannot be null");
+        }
+    }
 
     private <T> void checkId(T entity) {
         ClassRepresentation classRepresentation = getClassRepresentations().get(entity.getClass());
