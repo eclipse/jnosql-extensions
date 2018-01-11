@@ -114,7 +114,7 @@ class DefaultEdgeTraversal extends AbstractEdgeTraversal implements EdgeTraversa
 
 
     @Override
-    public <OUT, IN> Optional<EdgeEntity<OUT, IN>> next() {
+    public Optional<EdgeEntity> next() {
         Optional<Edge> edgeOptional = flow.apply(supplier.get()).tryNext();
         if (edgeOptional.isPresent()) {
             Edge edge = edgeOptional.get();
@@ -125,12 +125,12 @@ class DefaultEdgeTraversal extends AbstractEdgeTraversal implements EdgeTraversa
     }
 
     @Override
-    public <OUT, IN> Stream<EdgeEntity<OUT, IN>> stream() {
+    public Stream<EdgeEntity> stream() {
         return flow.apply(supplier.get()).toList().stream().map(this::toEdge);
     }
 
     @Override
-    public <OUT, IN> Stream<EdgeEntity<OUT, IN>> next(int limit) {
+    public Stream<EdgeEntity> next(int limit) {
         return flow.apply(supplier.get()).next(limit).stream().map(this::toEdge);
     }
 
@@ -151,7 +151,7 @@ class DefaultEdgeTraversal extends AbstractEdgeTraversal implements EdgeTraversa
     }
 
 
-    <OUT, IN> EdgeEntity<OUT, IN> toEdge(Edge edge) {
+    <OUT, IN> EdgeEntity toEdge(Edge edge) {
         return toEdgeEntity(edge, converter);
     }
 

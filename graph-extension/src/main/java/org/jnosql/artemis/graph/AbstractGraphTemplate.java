@@ -117,7 +117,7 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
     }
 
     @Override
-    public <OUT, IN> EdgeEntity<OUT, IN> edge(OUT outbound, String label, IN incoming) throws NullPointerException,
+    public <OUT, IN> EdgeEntity edge(OUT outbound, String label, IN incoming) throws NullPointerException,
             IdNotFoundException, EntityNotFoundException {
 
         requireNonNull(incoming, "inbound is required");
@@ -168,7 +168,7 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
     }
 
     @Override
-    public <OUT, IN, E> Optional<EdgeEntity<OUT, IN>> edge(E edgeId) throws NullPointerException {
+    public <E> Optional<EdgeEntity> edge(E edgeId) throws NullPointerException {
         requireNonNull(edgeId, "edgeId is required");
 
         Optional<Edge> edgeOptional = getGraph().traversal().E(edgeId).tryNext();

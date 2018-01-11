@@ -55,11 +55,9 @@ public interface EdgeTraversal extends EdgeConditionTraversal {
      * Returns the next elements in the traversal.
      * If the traversal is empty, then an {@link Optional#empty()} is returned.
      *
-     * @param <IN>  inbound
-     * @param <OUT> outbound
      * @return the EdgeEntity result otherwise {@link Optional#empty()}
      */
-    <OUT, IN> Optional<EdgeEntity<OUT, IN>> next();
+    Optional<EdgeEntity> next();
 
 
     /**
@@ -86,21 +84,17 @@ public interface EdgeTraversal extends EdgeConditionTraversal {
     /**
      * Get all the result in the traversal as Stream
      *
-     * @param <IN>  inbound
-     * @param <OUT> outbound
      * @return the entity result as {@link Stream}
      */
-    <OUT, IN> Stream<EdgeEntity<OUT, IN>> stream();
+     Stream<EdgeEntity> stream();
 
     /**
      * Get the next n elements result as next, the number of elements is limit based
      *
-     * @param <IN>  inbound
-     * @param <OUT> outbound
      * @param limit the limit to result
      * @return the entity result as {@link Stream}
      */
-    <OUT, IN> Stream<EdgeEntity<OUT, IN>> next(int limit);
+     Stream<EdgeEntity> next(int limit);
 
     /**
      * Map the {@link org.apache.tinkerpop.gremlin.structure.Element} to a {@link java.util.Map} of the properties key'd according
