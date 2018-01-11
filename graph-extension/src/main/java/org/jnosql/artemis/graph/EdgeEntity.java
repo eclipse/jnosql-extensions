@@ -27,12 +27,10 @@ import static java.util.Objects.requireNonNull;
  * Along with its Property objects, an Edge has both a Direction and a label.
  * Any Change at the Edge is automatically continued in the database. However, any, change in the Entity will be ignored.
  * {@link GraphTemplate#update(Object)}
- *
- * @param <IN>  the inbound Entity
- * @param <OUT> the outbound entity
- *              <pre>outVertex ---label---&#62; inVertex.</pre>
+ * <p>
+ * <pre>outVertex ---label---&#62; inVertex.</pre>
  */
-public interface EdgeEntity<OUT, IN> {
+public interface EdgeEntity {
 
     /**
      * Returns the id
@@ -51,16 +49,18 @@ public interface EdgeEntity<OUT, IN> {
     /**
      * Gets the inbound entity
      *
+     * @param <T> the type
      * @return the inbound entity
      */
-    IN getInbound();
+    <T> T getInbound();
 
     /**
      * Gets the outbound entity
      *
+     * @param <T> the type
      * @return the outbound entity
      */
-    OUT getOutbound();
+    <T> T getOutbound();
 
     /**
      * Returns the properties of this vertex
