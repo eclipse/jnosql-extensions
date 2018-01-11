@@ -82,11 +82,9 @@ public final class TinkerPopUtil {
      *
      * @param edge      the edge TinkerPop structure
      * @param converter the converts
-     * @param <OUT>     the outgoing type
-     * @param <IN>      the incoming type
      * @return the {@link EdgeEntity} instance
      */
-    public static <OUT, IN> EdgeEntity toEdgeEntity(Edge edge, VertexConverter converter) {
+    public static  EdgeEntity toEdgeEntity(Edge edge, VertexConverter converter) {
 
         requireNonNull(edge, "edge is required");
         requireNonNull(converter, "converter is required");
