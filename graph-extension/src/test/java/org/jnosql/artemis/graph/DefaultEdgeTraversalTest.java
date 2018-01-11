@@ -49,7 +49,7 @@ public class DefaultEdgeTraversalTest extends AbstractTraversalTest {
 
     @Test
     public void shouldReturnEdgeId() {
-        Optional<EdgeEntity<Object, Object>> edgeEntity = graphTemplate.getTraversalEdge(reads.getId().get())
+        Optional<EdgeEntity> edgeEntity = graphTemplate.getTraversalEdge(reads.getId().get())
                 .next();
 
         assertTrue(edgeEntity.isPresent());
@@ -58,7 +58,7 @@ public class DefaultEdgeTraversalTest extends AbstractTraversalTest {
 
     @Test
     public void shouldReturnOutE() {
-        List<EdgeEntity<Person, Book>> edges = graphTemplate.getTraversalVertex().outE(READS)
+        List<EdgeEntity> edges = graphTemplate.getTraversalVertex().outE(READS)
                 .<Person, Book>stream()
                 .collect(toList());
 
@@ -77,7 +77,7 @@ public class DefaultEdgeTraversalTest extends AbstractTraversalTest {
 
     @Test
     public void shouldReturnInE() {
-        List<EdgeEntity<Person, Book>> edges = graphTemplate.getTraversalVertex().inE(READS)
+        List<EdgeEntity> edges = graphTemplate.getTraversalVertex().inE(READS)
                 .<Person, Book>stream()
                 .collect(toList());
 
@@ -96,7 +96,7 @@ public class DefaultEdgeTraversalTest extends AbstractTraversalTest {
 
     @Test
     public void shouldReturnBothE() {
-        List<EdgeEntity<Person, Book>> edges = graphTemplate.getTraversalVertex().bothE(READS)
+        List<EdgeEntity> edges = graphTemplate.getTraversalVertex().bothE(READS)
                 .<Person, Book>stream()
                 .collect(toList());
 
@@ -136,7 +136,7 @@ public class DefaultEdgeTraversalTest extends AbstractTraversalTest {
 
     @Test
     public void shouldHasProperty() {
-        Optional<EdgeEntity<Person, Book>> edgeEntity = graphTemplate.getTraversalVertex()
+        Optional<EdgeEntity> edgeEntity = graphTemplate.getTraversalVertex()
                 .outE(READS)
                 .has("motivation", "hobby").next();
 
@@ -160,7 +160,7 @@ public class DefaultEdgeTraversalTest extends AbstractTraversalTest {
 
     @Test
     public void shouldHasNot() {
-        List<EdgeEntity<Person, Book>> edgeEntities = graphTemplate.getTraversalVertex()
+        List<EdgeEntity> edgeEntities = graphTemplate.getTraversalVertex()
                 .outE(READS).hasNot("language")
                 .<Person, Book>stream()
                 .collect(toList());
@@ -254,7 +254,7 @@ public class DefaultEdgeTraversalTest extends AbstractTraversalTest {
         graphTemplate.edge(mouse, "eats", plant);
 
 
-        Optional<EdgeEntity<Animal, Animal>> result = graphTemplate.getTraversalEdge().has("when").next();
+        Optional<EdgeEntity> result = graphTemplate.getTraversalEdge().has("when").next();
         assertNotNull(result);
 
         graphTemplate.deleteEdge(lion.getId());
@@ -270,8 +270,7 @@ public class DefaultEdgeTraversalTest extends AbstractTraversalTest {
         graphTemplate.edge(lion, "eats", snake).add("when", "night");
         graphTemplate.edge(snake, "eats", mouse);
         graphTemplate.edge(mouse, "eats", plant);
-        Optional<EdgeEntity<Animal, Animal>> result = graphTemplate.getTraversalEdge().has("when").next();
-
+        Optional<EdgeEntity> result = graphTemplate.getTraversalEdge().has("when").next();
         assertNotNull(result);
 
     }
@@ -287,7 +286,7 @@ public class DefaultEdgeTraversalTest extends AbstractTraversalTest {
         graphTemplate.edge(snake, "eats", mouse);
         graphTemplate.edge(mouse, "eats", plant);
 
-        Optional<EdgeEntity<Animal, Animal>> result = graphTemplate.getTraversalEdge().repeat().has("when")
+        Optional<EdgeEntity> result = graphTemplate.getTraversalEdge().repeat().has("when")
                 .until().has("when").next();
 
         assertTrue(result.isPresent());

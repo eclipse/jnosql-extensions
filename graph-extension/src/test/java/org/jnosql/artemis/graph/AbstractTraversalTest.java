@@ -47,9 +47,9 @@ public abstract class AbstractTraversalTest {
     protected Book license;
     protected Book effectiveJava;
 
-    protected EdgeEntity<Person, Book> reads;
-    protected EdgeEntity<Person, Book> reads2;
-    protected EdgeEntity<Person, Book> reads3;
+    protected EdgeEntity reads;
+    protected EdgeEntity reads2;
+    protected EdgeEntity reads3;
 
     @Before
     public void setUp() {
