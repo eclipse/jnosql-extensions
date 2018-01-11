@@ -27,7 +27,7 @@ import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.collectingAndThen;
 import static java.util.stream.Collectors.toList;
 
-class DefaultEdgeEntity<OUT, IN> implements EdgeEntity<OUT, IN> {
+class DefaultEdgeEntity<OUT, IN> implements EdgeEntity {
 
     private final OUT outbound;
 
