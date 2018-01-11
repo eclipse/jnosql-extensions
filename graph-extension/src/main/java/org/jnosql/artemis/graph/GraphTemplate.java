@@ -128,6 +128,17 @@ public interface GraphTemplate {
     <ID> Collection<EdgeEntity> getEdgesById(ID id, Direction direction, Supplier<String>... labels)
             throws NullPointerException;
 
+    /**
+     * returns the edges of from a vertex id
+     *
+     * @param id        the id
+     * @param direction the direction
+     * @param <ID>      the ID type
+     * @return the Edges
+     * @throws NullPointerException where there is any parameter null
+     */
+    <ID> Collection<EdgeEntity> getEdgesById(ID id, Direction direction) throws NullPointerException;
+
 
     /**
      * returns the edges of from an entity
@@ -153,6 +164,18 @@ public interface GraphTemplate {
      * @throws NullPointerException where there is any parameter null
      */
     <T> Collection<EdgeEntity> getEdges(T entity, Direction direction, Supplier<String>... labels)
+            throws NullPointerException;
+
+    /**
+     * returns the edges of from an entity
+     *
+     * @param entity    the entity
+     * @param direction the direction
+     * @param <T>       the entity type
+     * @return the Edges
+     * @throws NullPointerException where there is any parameter null
+     */
+    <T> Collection<EdgeEntity> getEdges(T entity, Direction direction)
             throws NullPointerException;
 
 
