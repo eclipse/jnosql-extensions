@@ -16,6 +16,7 @@ package org.jnosql.artemis.graph;
 
 import org.apache.tinkerpop.gremlin.process.traversal.Traverser;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
+import org.apache.tinkerpop.gremlin.structure.Direction;
 import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
@@ -25,12 +26,18 @@ import org.jnosql.artemis.reflection.ClassRepresentation;
 import org.jnosql.artemis.reflection.ClassRepresentations;
 import org.jnosql.diana.api.Value;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 import java.util.function.UnaryOperator;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static java.lang.String.format;
@@ -180,6 +187,42 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
 
         return Optional.empty();
     }
+
+    @Override
+    public <ID> Collection<EdgeEntity> getEdgesById(ID id, Direction direction, String... labels)
+            throws NullPointerException {
+
+        return getEdgesByIdImpl(id, direction, labels);
+    }
+
+    public <ID> Collection<EdgeEntity> getEdgesById(ID id, Direction direction)
+            throws NullPointerException {
+
+        return getEdgesByIdImpl(id, direction);
+    }
+
+
+    @Override
+    public <ID> Collection<EdgeEntity> getEdgesById(ID id, Direction direction, Supplier<String>... labels)
+            throws NullPointerException {
+
+        return getEdgesByIdImpl(id, direction, Stream.of(labels).map(Supplier::get).toArray(String[]::new));
+    }
+
+    private <ID> Collection<EdgeEntity> getEdgesByIdImpl(ID id, Direction direction, String... labels) {
+
+        requireNonNull(id, "id is required");
+        requireNonNull(direction, "direction is required");
+
+        Iterator<Vertex> vertices = getGraph().vertices(id);
+        if (vertices.hasNext()) {
+            List<Edge> edges = new ArrayList<>();
+            vertices.next().edges(direction, labels).forEachRemaining(edges::add);
+            return edges.stream().map(e -> toEdgeEntity(e, getVertex())).collect(Collectors.toList());
+        }
+        return Collections.emptyList();
+    }
+
 
     @Override
     public VertexTraversal getTraversalVertex(Object... vertexIds) throws NullPointerException {
