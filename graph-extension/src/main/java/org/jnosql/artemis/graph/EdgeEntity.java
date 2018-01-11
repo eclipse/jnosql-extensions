@@ -126,7 +126,18 @@ public interface EdgeEntity {
     void delete();
 
 
-    static <OUT, IN> EdgeEntity<OUT, IN> of(OUT outgoing, Edge edge, IN incoming) throws NullPointerException {
+    /**
+     * Creates a new {@link EdgeEntity} instance
+     *
+     * @param outgoing the outgoing
+     * @param edge     the Tinkerpop edge representation
+     * @param incoming the incoming object
+     * @param <OUT>    the outgoing type
+     * @param <IN>     the incoming type
+     * @return an {@link EdgeEntity} instance
+     * @throws NullPointerException if any parameters is null
+     */
+    static <OUT, IN> EdgeEntity of(OUT outgoing, Edge edge, IN incoming) throws NullPointerException {
         requireNonNull(outgoing, "outgoing is required");
         requireNonNull(edge, "edge is required");
         requireNonNull(incoming, "incoming is required");
