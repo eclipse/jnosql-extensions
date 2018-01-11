@@ -191,13 +191,11 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
     @Override
     public <ID> Collection<EdgeEntity> getEdgesById(ID id, Direction direction, String... labels)
             throws NullPointerException {
-
         return getEdgesByIdImpl(id, direction, labels);
     }
 
     public <ID> Collection<EdgeEntity> getEdgesById(ID id, Direction direction)
             throws NullPointerException {
-
         return getEdgesByIdImpl(id, direction);
     }
 
@@ -205,7 +203,6 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
     @Override
     public <ID> Collection<EdgeEntity> getEdgesById(ID id, Direction direction, Supplier<String>... labels)
             throws NullPointerException {
-
         return getEdgesByIdImpl(id, direction, Stream.of(labels).map(Supplier::get).toArray(String[]::new));
     }
 
