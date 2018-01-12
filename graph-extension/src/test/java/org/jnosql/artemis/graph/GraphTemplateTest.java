@@ -14,6 +14,7 @@
  */
 package org.jnosql.artemis.graph;
 
+import org.apache.tinkerpop.gremlin.structure.Direction;
 import org.jnosql.artemis.EntityNotFoundException;
 import org.jnosql.artemis.IdNotFoundException;
 import org.jnosql.artemis.graph.cdi.CDIJUnitRunner;
@@ -23,6 +24,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import javax.inject.Inject;
+import java.util.Collection;
 import java.util.Optional;
 
 import static org.jnosql.artemis.graph.model.Person.builder;
@@ -129,9 +131,23 @@ public class GraphTemplateTest {
         assertTrue(graphTemplate.find(person.getId()).isPresent());
         graphTemplate.delete(person.getId());
         assertFalse(graphTemplate.find(person.getId()).isPresent());
-
     }
 
+    @Test(expected = NullPointerException.class)
+    public void shouldReturnErrorWhenGetEdgesIdHasNullId() {
+        graphTemplate.getEdgesById(null, Direction.BOTH);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void shouldReturnErrorWhenGetEdgesIdHasNullDirection() {
+        graphTemplate.getEdgesById(10, null);
+    }
+
+    @Test
+    public void shouldReturnEmptyWhenVertexDoesNotExist() {
+        Collection<EdgeEntity> edges = graphTemplate.getEdgesById(10, Direction.BOTH);
+        assertTrue(edges.isEmpty());
+    }
 
 
 }
