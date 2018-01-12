@@ -189,9 +189,56 @@ public class GraphTemplateTest  {
         assertThat(edgesById2, containsInAnyOrder(likes));
         assertThat(edgesById4, containsInAnyOrder(reads));
 
-
-
     }
 
+    @Test(expected = NullPointerException.class)
+    public void shouldReturnErrorWhenGetEdgesHasNullId() {
+        graphTemplate.getEdges(null, Direction.BOTH);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void shouldReturnErrorWhenGetEdgesHasNullId2() {
+        Person otavio = builder().withAge().withName("Otavio").build();
+        graphTemplate.getEdges(otavio, Direction.BOTH);
+    }
+    @Test(expected = NullPointerException.class)
+    public void shouldReturnErrorWhenGetEdgesHasNullDirection() {
+        Person otavio = graphTemplate.insert(builder().withAge()
+                .withName("Otavio").build());
+        graphTemplate.getEdges(otavio, null);
+    }
+
+    @Test
+    public void shouldReturnEmptyWhenEntityDoesNotExist() {
+        Person otavio = builder().withAge().withName("Otavio").withId(10L).build();
+        Collection<EdgeEntity> edges = graphTemplate.getEdges(otavio, Direction.BOTH);
+        assertTrue(edges.isEmpty());
+    }
+
+
+    @Test
+    public void shouldReturnEdges() {
+        Person otavio = graphTemplate.insert(builder().withAge()
+                .withName("Otavio").build());
+
+        Animal dog = graphTemplate.insert(new Animal("dog"));
+        Book cleanCode = graphTemplate.insert(Book.builder().withName("Clean code").build());
+
+        EdgeEntity likes = graphTemplate.edge(otavio, "likes", dog);
+        EdgeEntity reads = graphTemplate.edge(otavio, "reads", cleanCode);
+
+        Collection<EdgeEntity> edgesById = graphTemplate.getEdges(otavio, Direction.BOTH);
+        Collection<EdgeEntity> edgesById1 = graphTemplate.getEdges(otavio, Direction.BOTH, "reads");
+        Collection<EdgeEntity> edgesById2 = graphTemplate.getEdges(otavio, Direction.BOTH, () -> "likes");
+        Collection<EdgeEntity> edgesById3 = graphTemplate.getEdges(otavio, Direction.OUT);
+        Collection<EdgeEntity> edgesById4 = graphTemplate.getEdges(cleanCode, Direction.IN);
+
+        assertEquals(edgesById, edgesById3);
+        assertThat(edgesById, containsInAnyOrder(likes, reads));
+        assertThat(edgesById1, containsInAnyOrder(reads));
+        assertThat(edgesById2, containsInAnyOrder(likes));
+        assertThat(edgesById4, containsInAnyOrder(reads));
+
+    }
 
 }
