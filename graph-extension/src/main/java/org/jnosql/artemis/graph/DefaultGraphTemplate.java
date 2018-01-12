@@ -50,7 +50,7 @@ class DefaultGraphTemplate extends AbstractGraphTemplate {
     }
 
     @Override
-    protected VertexConverter getVertex() {
+    protected VertexConverter getConverter() {
         return converter;
     }
 
