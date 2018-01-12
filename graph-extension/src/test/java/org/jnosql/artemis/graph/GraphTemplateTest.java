@@ -15,11 +15,17 @@
 package org.jnosql.artemis.graph;
 
 import org.apache.tinkerpop.gremlin.structure.Direction;
+import org.apache.tinkerpop.gremlin.structure.Edge;
+import org.apache.tinkerpop.gremlin.structure.Graph;
+import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.jnosql.artemis.EntityNotFoundException;
 import org.jnosql.artemis.IdNotFoundException;
 import org.jnosql.artemis.graph.cdi.CDIJUnitRunner;
+import org.jnosql.artemis.graph.model.Animal;
+import org.jnosql.artemis.graph.model.Book;
 import org.jnosql.artemis.graph.model.Person;
 import org.jnosql.artemis.graph.model.WrongEntity;
+import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -27,17 +33,28 @@ import javax.inject.Inject;
 import java.util.Collection;
 import java.util.Optional;
 
+import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.jnosql.artemis.graph.model.Person.builder;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(CDIJUnitRunner.class)
-public class GraphTemplateTest {
+public class GraphTemplateTest  {
 
     @Inject
     private GraphTemplate graphTemplate;
+
+    @Inject
+    private Graph graph;
+
+    @After
+    public void after() {
+        graph.traversal().V().toList().forEach(Vertex::remove);
+        graph.traversal().E().toList().forEach(Edge::remove);
+    }
 
 
     @Test(expected = IdNotFoundException.class)
@@ -147,6 +164,33 @@ public class GraphTemplateTest {
     public void shouldReturnEmptyWhenVertexDoesNotExist() {
         Collection<EdgeEntity> edges = graphTemplate.getEdgesById(10, Direction.BOTH);
         assertTrue(edges.isEmpty());
+    }
+
+    @Test
+    public void shouldReturnEdgesById() {
+        Person otavio = graphTemplate.insert(builder().withAge()
+                .withName("Otavio").build());
+
+        Animal dog = graphTemplate.insert(new Animal("dog"));
+        Book cleanCode = graphTemplate.insert(Book.builder().withName("Clean code").build());
+
+        EdgeEntity likes = graphTemplate.edge(otavio, "likes", dog);
+        EdgeEntity reads = graphTemplate.edge(otavio, "reads", cleanCode);
+
+        Collection<EdgeEntity> edgesById = graphTemplate.getEdgesById(otavio.getId(), Direction.BOTH);
+        Collection<EdgeEntity> edgesById1 = graphTemplate.getEdgesById(otavio.getId(), Direction.BOTH, "reads");
+        Collection<EdgeEntity> edgesById2 = graphTemplate.getEdgesById(otavio.getId(), Direction.BOTH, () -> "likes");
+        Collection<EdgeEntity> edgesById3 = graphTemplate.getEdgesById(otavio.getId(), Direction.OUT);
+        Collection<EdgeEntity> edgesById4 = graphTemplate.getEdgesById(cleanCode.getId(), Direction.IN);
+
+        assertEquals(edgesById, edgesById3);
+        assertThat(edgesById, containsInAnyOrder(likes, reads));
+        assertThat(edgesById1, containsInAnyOrder(reads));
+        assertThat(edgesById2, containsInAnyOrder(likes));
+        assertThat(edgesById4, containsInAnyOrder(reads));
+
+
+
     }
 
 
