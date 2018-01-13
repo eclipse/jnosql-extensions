@@ -20,8 +20,10 @@ import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__;
 import org.apache.tinkerpop.gremlin.structure.T;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
+import org.jnosql.artemis.Entity;
 
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
@@ -115,5 +117,13 @@ class DefaultVertexUntilTraversal extends AbstractVertexTraversal implements Ver
         requireNonNull(label, "label is required");
         Traversal<?, Vertex> condition = __.hasLabel(label);
         return new DefaultVertexTraversal(supplier, flow.andThen(g -> g.until(condition)), converter);
+    }
+
+    @Override
+    public <T> VertexTraversal hasLabel(Class<T> entityClass) throws NullPointerException {
+        requireNonNull(entityClass, "entityClass is required");
+        Entity entity = entityClass.getAnnotation(Entity.class);
+        String label = Optional.ofNullable(entity).map(Entity::value).orElse(entityClass.getName());
+        return new DefaultVertexTraversal(supplier, flow.andThen(g -> g.hasLabel(label)), converter);
     }
 }
