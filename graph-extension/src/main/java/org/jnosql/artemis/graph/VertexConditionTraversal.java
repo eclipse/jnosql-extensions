@@ -218,7 +218,7 @@ public interface VertexConditionTraversal {
      */
     default VertexTraversal hasLabel(Supplier<String> label) throws NullPointerException{
         requireNonNull(label, "the supplier is required");
-        return hasNot(label.get());
+        return hasLabel(label.get());
     }
 
 
