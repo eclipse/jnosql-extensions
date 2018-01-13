@@ -412,4 +412,16 @@ public class DefaultVertexTraversalTest extends AbstractTraversalTest {
         assertTrue(graphTemplate.getTraversalVertex().hasLabel(Animal.class).stream().allMatch(Animal.class::isInstance));
     }
 
+    @Test(expected = NullPointerException.class)
+    public void shouldReturnErrorWhenPredicateIsNull() {
+        graphTemplate.getTraversalVertex().filter(null);
+    }
+
+    @Test
+    public void shouldPredicate() {
+        long count = graphTemplate.getTraversalVertex()
+                .hasLabel(Person.class)
+                .filter(Person::isAdult).count();
+        assertEquals(3L, count);
+    }
 }
