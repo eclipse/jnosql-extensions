@@ -76,6 +76,20 @@ public final class TinkerPopUtil {
         return vertex;
     }
 
+    /**
+     * Converts Vertex to an entity
+     *
+     * @param vertex    the TinkerPop entity
+     * @param converter the converter
+     * @param <T>       the entity type
+     * @return the Entity
+     * @throws NullPointerException when either vertex and converter are null
+     */
+    public static <T> T toEntity(Vertex vertex, VertexConverter converter) throws NullPointerException {
+        requireNonNull(vertex, "vertex is required");
+        requireNonNull(converter, "converter is required");
+        return converter.toEntity(toArtemisVertex(vertex));
+    }
 
     /**
      * Converts Edge to EdgeEntity
@@ -84,7 +98,7 @@ public final class TinkerPopUtil {
      * @param converter the converts
      * @return the {@link EdgeEntity} instance
      */
-    public static  EdgeEntity toEdgeEntity(Edge edge, VertexConverter converter) {
+    public static EdgeEntity toEdgeEntity(Edge edge, VertexConverter converter) {
 
         requireNonNull(edge, "edge is required");
         requireNonNull(converter, "converter is required");
