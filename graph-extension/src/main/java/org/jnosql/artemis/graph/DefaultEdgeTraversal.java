@@ -15,13 +15,16 @@
 package org.jnosql.artemis.graph;
 
 import org.apache.tinkerpop.gremlin.process.traversal.P;
+import org.apache.tinkerpop.gremlin.process.traversal.Traverser;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.T;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
+import org.jnosql.artemis.graph.util.TinkerPopUtil;
 
 import java.util.Optional;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
@@ -79,6 +82,13 @@ class DefaultEdgeTraversal extends AbstractEdgeTraversal implements EdgeTraversa
     public EdgeTraversal hasNot(String propertyKey) throws NullPointerException {
         requireNonNull(propertyKey, "propertyKey is required");
         return new DefaultEdgeTraversal(supplier, flow.andThen(g -> g.hasNot(propertyKey)), converter);
+    }
+
+    @Override
+    public EdgeTraversal filter(Predicate<EdgeEntity> predicate) throws NullPointerException {
+        requireNonNull(predicate, "predicat is required");
+        Predicate<Traverser<Edge>> p = e -> predicate.test(TinkerPopUtil.toEdgeEntity(e.get(), converter));
+        return new DefaultEdgeTraversal(supplier, flow.andThen(g -> g.filter(p)), converter);
     }
 
     @Override
