@@ -33,7 +33,7 @@ public interface VertexTraversal extends VertexConditionTraversal {
      * @param predicate a predicate to apply to each element to determine if it should be included
      * @param <T> the type
      * @return a {@link EdgeTraversal} with the Vertex predicate
-     * @throws NullPointerException
+     * @throws NullPointerException when predicate is null
      */
     <T> VertexTraversal filter(Predicate<T> predicate)throws NullPointerException;
 
