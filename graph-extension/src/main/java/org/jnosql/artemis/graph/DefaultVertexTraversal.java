@@ -93,7 +93,7 @@ class DefaultVertexTraversal extends AbstractVertexTraversal implements VertexTr
         requireNonNull(predicate, "predicate is required");
 
         Predicate<Traverser<Vertex>> p = v -> predicate.test(TinkerPopUtil.toEntity(v.get(), converter));
-        return new DefaultVertexTraversal(supplier, flow.andThen(g -> g.filter()), converter);
+        return new DefaultVertexTraversal(supplier, flow.andThen(g -> g.filter(p)), converter);
     }
 
     @Override
