@@ -15,6 +15,7 @@
 package org.jnosql.artemis.graph;
 
 import java.util.Optional;
+import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 /**
@@ -23,6 +24,14 @@ import java.util.stream.Stream;
  */
 public interface EdgeTraversal extends EdgeConditionTraversal {
 
+
+    /**
+     * Does a filter predicate based
+     * @param predicate a predicate to apply to each element to determine if it should be included
+     * @return a {@link EdgeTraversal} with the Vertex predicate
+     * @throws NullPointerException when predicate is null
+     */
+     EdgeTraversal filter(Predicate<EdgeEntity> predicate)throws NullPointerException;
 
     /**
      * Filter the objects in the traversal by the number of them to pass through the next, where only the first
