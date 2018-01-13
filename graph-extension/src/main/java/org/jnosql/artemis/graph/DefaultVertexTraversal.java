@@ -38,6 +38,9 @@ import static java.util.Objects.requireNonNull;
 class DefaultVertexTraversal extends AbstractVertexTraversal implements VertexTraversal {
 
 
+    private static final Predicate<String> IS_EMPTY = String::isEmpty;
+    private static final Predicate<String> NOT_EMPTY = IS_EMPTY.negate();
+
     DefaultVertexTraversal(Supplier<GraphTraversal<?, ?>> supplier,
                            Function<GraphTraversal<?, ?>, GraphTraversal<Vertex, Vertex>> flow,
                            VertexConverter converter) {
@@ -163,7 +166,9 @@ class DefaultVertexTraversal extends AbstractVertexTraversal implements VertexTr
     public <T> VertexTraversal hasLabel(Class<T> entityClass) throws NullPointerException {
         requireNonNull(entityClass, "entityClass is required");
         Entity entity = entityClass.getAnnotation(Entity.class);
-        String label = Optional.ofNullable(entity).map(Entity::value).orElse(entityClass.getName());
+        String label = Optional.ofNullable(entity).map(Entity::value)
+                .filter(NOT_EMPTY)
+                .orElse(entityClass.getSimpleName());
         return new DefaultVertexTraversal(supplier, flow.andThen(g -> g.hasLabel(label)), converter);
     }
 
