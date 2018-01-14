@@ -14,10 +14,13 @@
  */
 package org.jnosql.artemis.graph;
 
+import org.apache.tinkerpop.gremlin.structure.Direction;
 import org.jnosql.artemis.EntityNotFoundException;
 import org.jnosql.artemis.IdNotFoundException;
 
+import java.util.Collection;
 import java.util.Optional;
+import java.util.function.Supplier;
 
 /**
  * This interface that represents the common operation between an entity
@@ -84,7 +87,7 @@ public interface GraphTemplate {
      * {@link org.apache.tinkerpop.gremlin.structure.Edge}
      * <pre>entityOUT ---label---&#62; entityIN.</pre>
      *
-     * @param incoming  the incoming entity
+     * @param incoming the incoming entity
      * @param label    the Edge label
      * @param outbound the outbound entity
      * @param <IN>     the incoming type
@@ -94,21 +97,96 @@ public interface GraphTemplate {
      * @throws IdNotFoundException     when {@link org.jnosql.artemis.Id} annotation is missing in the entities
      * @throws EntityNotFoundException when neither outbound or incoming is found
      */
-    <OUT, IN> EdgeEntity<OUT, IN> edge(OUT outbound, String label, IN incoming) throws NullPointerException,
+    <OUT, IN> EdgeEntity edge(OUT outbound, String label, IN incoming) throws NullPointerException,
             IdNotFoundException, EntityNotFoundException;
+
+
+    /**
+     * returns the edges of from a vertex id
+     *
+     * @param id        the id
+     * @param direction the direction
+     * @param labels    the edge labels
+     * @param <ID>      the ID type
+     * @return the Edges
+     * @throws NullPointerException where there is any parameter null
+     */
+    <ID> Collection<EdgeEntity> getEdgesById(ID id, Direction direction, String... labels)
+            throws NullPointerException;
+
+    /**
+     * returns the edges of from a vertex id
+     *
+     * @param id        the id
+     * @param direction the direction
+     * @param labels    the edge labels
+     * @param <ID>      the ID type
+     * @return the Edges
+     * @throws NullPointerException where there is any parameter null
+     */
+    <ID> Collection<EdgeEntity> getEdgesById(ID id, Direction direction, Supplier<String>... labels)
+            throws NullPointerException;
+
+    /**
+     * returns the edges of from a vertex id
+     *
+     * @param id        the id
+     * @param direction the direction
+     * @param <ID>      the ID type
+     * @return the Edges
+     * @throws NullPointerException where there is any parameter null
+     */
+    <ID> Collection<EdgeEntity> getEdgesById(ID id, Direction direction) throws NullPointerException;
+
+
+    /**
+     * returns the edges of from an entity
+     *
+     * @param entity    the entity
+     * @param direction the direction
+     * @param labels    the edge labels
+     * @param <T>       the entity type
+     * @return the Edges
+     * @throws NullPointerException where there is any parameter null
+     */
+    <T> Collection<EdgeEntity> getEdges(T entity, Direction direction, String... labels)
+            throws NullPointerException;
+
+    /**
+     * returns the edges of from an entity
+     *
+     * @param entity    the entity
+     * @param direction the direction
+     * @param labels    the edge labels
+     * @param <T>       the entity type
+     * @return the Edges
+     * @throws NullPointerException where there is any parameter null
+     */
+    <T> Collection<EdgeEntity> getEdges(T entity, Direction direction, Supplier<String>... labels)
+            throws NullPointerException;
+
+    /**
+     * returns the edges of from an entity
+     *
+     * @param entity    the entity
+     * @param direction the direction
+     * @param <T>       the entity type
+     * @return the Edges
+     * @throws NullPointerException where there is any parameter null
+     */
+    <T> Collection<EdgeEntity> getEdges(T entity, Direction direction)
+            throws NullPointerException;
 
 
     /**
      * Finds an {@link EdgeEntity} from the Edge Id
      *
      * @param edgeId the edge id
-     * @param <OUT>  the outbound type
-     * @param <IN>   the incoming type
      * @param <E>    the edge id type
      * @return the {@link EdgeEntity} otherwise {@link Optional#empty()}
      * @throws NullPointerException when edgeId is null
      */
-    <OUT, IN, E> Optional<EdgeEntity<OUT, IN>> edge(E edgeId) throws NullPointerException;
+    <E> Optional<EdgeEntity> edge(E edgeId) throws NullPointerException;
 
 
     /**

@@ -15,6 +15,7 @@
 package org.jnosql.artemis.graph;
 
 import java.util.Optional;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
@@ -26,6 +27,15 @@ import static java.util.Objects.requireNonNull;
  */
 public interface VertexTraversal extends VertexConditionTraversal {
 
+
+    /**
+     * Does a filter predicate based
+     * @param predicate a predicate to apply to each element to determine if it should be included
+     * @param <T> the type
+     * @return a {@link EdgeTraversal} with the Vertex predicate
+     * @throws NullPointerException when predicate is null
+     */
+    <T> VertexTraversal filter(Predicate<T> predicate)throws NullPointerException;
 
     /**
      * Map the {@link EdgeTraversal} to its outgoing incident edges given the edge labels.

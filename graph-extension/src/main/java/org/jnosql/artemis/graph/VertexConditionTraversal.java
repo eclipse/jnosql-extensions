@@ -196,9 +196,18 @@ public interface VertexConditionTraversal {
      *
      * @param label the labels in the condition
      * @return a {@link VertexTraversal} with the new condition
-     * @throws NullPointerException when has any null element
+     * @throws NullPointerException when label is null
      */
     VertexTraversal hasLabel(String label) throws NullPointerException;
+
+    /**
+     * Defines Vertex as label condition
+     *
+     * @param entityClass reads the {@link org.jnosql.artemis.Entity} annotation otherwise the {@link Class#getSimpleName()}
+     * @return a {@link VertexTraversal} with the new condition
+     * @throws NullPointerException when entityClazz is null
+     */
+    <T> VertexTraversal hasLabel(Class<T> entityClass) throws NullPointerException;
 
     /**
      * Defines Vertex as label condition
@@ -209,7 +218,7 @@ public interface VertexConditionTraversal {
      */
     default VertexTraversal hasLabel(Supplier<String> label) throws NullPointerException{
         requireNonNull(label, "the supplier is required");
-        return hasNot(label.get());
+        return hasLabel(label.get());
     }
 
 

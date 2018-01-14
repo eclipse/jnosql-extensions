@@ -16,6 +16,7 @@ package org.jnosql.artemis.graph;
 
 import org.apache.tinkerpop.gremlin.process.traversal.Traverser;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
+import org.apache.tinkerpop.gremlin.structure.Direction;
 import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
@@ -25,12 +26,18 @@ import org.jnosql.artemis.reflection.ClassRepresentation;
 import org.jnosql.artemis.reflection.ClassRepresentations;
 import org.jnosql.diana.api.Value;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 import java.util.function.UnaryOperator;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static java.lang.String.format;
@@ -52,7 +59,7 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
 
     protected abstract ClassRepresentations getClassRepresentations();
 
-    protected abstract VertexConverter getVertex();
+    protected abstract VertexConverter getConverter();
 
     protected abstract GraphWorkflow getFlow();
 
@@ -62,7 +69,7 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
         checkId(entity);
 
         UnaryOperator<ArtemisVertex> save = e -> {
-            ArtemisVertex artemisVertex = getVertex().toVertex(entity);
+            ArtemisVertex artemisVertex = getConverter().toVertex(entity);
             Vertex vertex = toVertex(artemisVertex, getGraph());
             return toArtemisVertex(vertex);
         };
@@ -76,7 +83,7 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
         checkId(entity);
 
         UnaryOperator<ArtemisVertex> update = e -> {
-            ArtemisVertex artemisVertex = getVertex().toVertex(entity);
+            ArtemisVertex artemisVertex = getConverter().toVertex(entity);
             Object idValue = artemisVertex.getId()
                     .map(Value::get)
                     .orElseThrow(() -> new NullPointerException("Id field is required"));
@@ -113,19 +120,19 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
     public <T, ID> Optional<T> find(ID idValue) throws NullPointerException {
         requireNonNull(idValue, "id is required");
         Optional<Vertex> vertex = getGraph().traversal().V(idValue).tryNext();
-        return vertex.map(vertex1 -> getVertex().toEntity(toArtemisVertex(vertex1)));
+        return vertex.map(vertex1 -> getConverter().toEntity(toArtemisVertex(vertex1)));
     }
 
     @Override
-    public <OUT, IN> EdgeEntity<OUT, IN> edge(OUT outbound, String label, IN incoming) throws NullPointerException,
+    public <OUT, IN> EdgeEntity edge(OUT outbound, String label, IN incoming) throws NullPointerException,
             IdNotFoundException, EntityNotFoundException {
 
         requireNonNull(incoming, "inbound is required");
         requireNonNull(label, "label is required");
         requireNonNull(outbound, "outbound is required");
 
-        ArtemisVertex inboundVertex = getVertex().toVertex(incoming);
-        ArtemisVertex outboundVertex = getVertex().toVertex(outbound);
+        ArtemisVertex inboundVertex = getConverter().toVertex(incoming);
+        ArtemisVertex outboundVertex = getConverter().toVertex(outbound);
 
         Object outboundId = outboundVertex.getId()
                 .map(Value::get)
@@ -168,25 +175,68 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
     }
 
     @Override
-    public <OUT, IN, E> Optional<EdgeEntity<OUT, IN>> edge(E edgeId) throws NullPointerException {
+    public <E> Optional<EdgeEntity> edge(E edgeId) throws NullPointerException {
         requireNonNull(edgeId, "edgeId is required");
 
         Optional<Edge> edgeOptional = getGraph().traversal().E(edgeId).tryNext();
 
         if (edgeOptional.isPresent()) {
             Edge edge = edgeOptional.get();
-            return Optional.of(toEdgeEntity(edge, getVertex()));
+            return Optional.of(toEdgeEntity(edge, getConverter()));
         }
 
         return Optional.empty();
     }
+
+
+    @Override
+    public <T> Collection<EdgeEntity> getEdges(T entity, Direction direction) throws NullPointerException {
+        return getEdgesImpl(entity, direction);
+    }
+
+    @Override
+    public <T> Collection<EdgeEntity> getEdges(T entity, Direction direction, String... labels)
+            throws NullPointerException {
+        return getEdgesImpl(entity, direction, labels);
+    }
+
+
+    @Override
+    public <T> Collection<EdgeEntity> getEdges(T entity, Direction direction, Supplier<String>... labels)
+            throws NullPointerException {
+
+        checkLabelsSupplier(labels);
+        return getEdgesImpl(entity, direction, Stream.of(labels).map(Supplier::get).toArray(String[]::new));
+    }
+
+
+    @Override
+    public <ID> Collection<EdgeEntity> getEdgesById(ID id, Direction direction, String... labels)
+            throws NullPointerException {
+        return getEdgesByIdImpl(id, direction, labels);
+    }
+
+    @Override
+    public <ID> Collection<EdgeEntity> getEdgesById(ID id, Direction direction)
+            throws NullPointerException {
+        return getEdgesByIdImpl(id, direction);
+    }
+
+    @Override
+    public <ID> Collection<EdgeEntity> getEdgesById(ID id, Direction direction, Supplier<String>... labels)
+            throws NullPointerException {
+
+        checkLabelsSupplier(labels);
+        return getEdgesByIdImpl(id, direction, Stream.of(labels).map(Supplier::get).toArray(String[]::new));
+    }
+
 
     @Override
     public VertexTraversal getTraversalVertex(Object... vertexIds) throws NullPointerException {
         if (Stream.of(vertexIds).anyMatch(Objects::isNull)) {
             throw new NullPointerException("No one vertexId element cannot be null");
         }
-        return new DefaultVertexTraversal(() -> getGraph().traversal().V(vertexIds), INITIAL_VERTEX, getVertex());
+        return new DefaultVertexTraversal(() -> getGraph().traversal().V(vertexIds), INITIAL_VERTEX, getConverter());
     }
 
     @Override
@@ -194,9 +244,37 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
         if (Stream.of(edgeIds).anyMatch(Objects::isNull)) {
             throw new NullPointerException("No one edgeId element cannot be null");
         }
-        return new DefaultEdgeTraversal(() -> getGraph().traversal().E(edgeIds), INITIAL_EDGE, getVertex());
+        return new DefaultEdgeTraversal(() -> getGraph().traversal().E(edgeIds), INITIAL_EDGE, getConverter());
     }
 
+    private <ID> Collection<EdgeEntity> getEdgesByIdImpl(ID id, Direction direction, String... labels) {
+
+        requireNonNull(id, "id is required");
+        requireNonNull(direction, "direction is required");
+
+        Iterator<Vertex> vertices = getGraph().vertices(id);
+        if (vertices.hasNext()) {
+            List<Edge> edges = new ArrayList<>();
+            vertices.next().edges(direction, labels).forEachRemaining(edges::add);
+            return edges.stream().map(e -> toEdgeEntity(e, getConverter())).collect(Collectors.toList());
+        }
+        return Collections.emptyList();
+    }
+
+    private <T> Collection<EdgeEntity> getEdgesImpl(T entity, Direction direction, String... labels) {
+        requireNonNull(entity, "entity is required");
+
+        Object id = getConverter().toVertex(entity).getId()
+                .orElseThrow(() -> new NullPointerException("Entity is required")).get();
+
+        return getEdgesByIdImpl(id, direction, labels);
+    }
+
+    private void checkLabelsSupplier(Supplier<String>[] labels) {
+        if (Stream.of(labels).anyMatch(Objects::isNull)) {
+            throw new NullPointerException("Item cannot be null");
+        }
+    }
 
     private <T> void checkId(T entity) {
         ClassRepresentation classRepresentation = getClassRepresentations().get(entity.getClass());

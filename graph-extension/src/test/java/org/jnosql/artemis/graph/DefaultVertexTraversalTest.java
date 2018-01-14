@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toList;
@@ -47,7 +48,6 @@ public class DefaultVertexTraversalTest extends AbstractTraversalTest {
     public void shouldReturnErrorWhenVertexIdIsNull() {
         graphTemplate.getTraversalVertex(null);
     }
-
 
     @Test
     public void shouldGetVertexFromId() {
@@ -390,5 +390,38 @@ public class DefaultVertexTraversalTest extends AbstractTraversalTest {
         assertThat(properties, contains("The Shack", "Software License", "Effective Java"));
     }
 
+    @Test(expected = NullPointerException.class)
+    public void shouldReturnErrorWhenHasLabelStringNull() {
+        graphTemplate.getTraversalVertex().hasLabel((String) null);
+    }
 
+    @Test(expected = NullPointerException.class)
+    public void shouldReturnErrorWhenHasLabelSupplierNull() {
+        graphTemplate.getTraversalVertex().hasLabel((Supplier<String>) null);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void shouldReturnErrorWhenHasLabelEntityClassNull() {
+        graphTemplate.getTraversalVertex().hasLabel((Class<? extends Object>) null);
+    }
+
+    @Test
+    public void shouldReturnHasLabel() {
+        assertTrue(graphTemplate.getTraversalVertex().hasLabel("Person").stream().allMatch(Person.class::isInstance));
+        assertTrue(graphTemplate.getTraversalVertex().hasLabel(() -> "Book").stream().allMatch(Book.class::isInstance));
+        assertTrue(graphTemplate.getTraversalVertex().hasLabel(Animal.class).stream().allMatch(Animal.class::isInstance));
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void shouldReturnErrorWhenPredicateIsNull() {
+        graphTemplate.getTraversalVertex().filter(null);
+    }
+
+    @Test
+    public void shouldPredicate() {
+        long count = graphTemplate.getTraversalVertex()
+                .hasLabel(Person.class)
+                .filter(Person::isAdult).count();
+        assertEquals(3L, count);
+    }
 }

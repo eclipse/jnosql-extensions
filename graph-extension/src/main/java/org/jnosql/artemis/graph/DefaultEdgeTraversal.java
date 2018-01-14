@@ -15,13 +15,16 @@
 package org.jnosql.artemis.graph;
 
 import org.apache.tinkerpop.gremlin.process.traversal.P;
+import org.apache.tinkerpop.gremlin.process.traversal.Traverser;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.T;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
+import org.jnosql.artemis.graph.util.TinkerPopUtil;
 
 import java.util.Optional;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
@@ -82,6 +85,13 @@ class DefaultEdgeTraversal extends AbstractEdgeTraversal implements EdgeTraversa
     }
 
     @Override
+    public EdgeTraversal filter(Predicate<EdgeEntity> predicate) throws NullPointerException {
+        requireNonNull(predicate, "predicat is required");
+        Predicate<Traverser<Edge>> p = e -> predicate.test(TinkerPopUtil.toEdgeEntity(e.get(), converter));
+        return new DefaultEdgeTraversal(supplier, flow.andThen(g -> g.filter(p)), converter);
+    }
+
+    @Override
     public EdgeTraversal limit(long limit) {
         return new DefaultEdgeTraversal(supplier, flow.andThen(g -> g.limit(limit)), converter);
     }
@@ -114,7 +124,7 @@ class DefaultEdgeTraversal extends AbstractEdgeTraversal implements EdgeTraversa
 
 
     @Override
-    public <OUT, IN> Optional<EdgeEntity<OUT, IN>> next() {
+    public Optional<EdgeEntity> next() {
         Optional<Edge> edgeOptional = flow.apply(supplier.get()).tryNext();
         if (edgeOptional.isPresent()) {
             Edge edge = edgeOptional.get();
@@ -125,12 +135,12 @@ class DefaultEdgeTraversal extends AbstractEdgeTraversal implements EdgeTraversa
     }
 
     @Override
-    public <OUT, IN> Stream<EdgeEntity<OUT, IN>> stream() {
+    public Stream<EdgeEntity> stream() {
         return flow.apply(supplier.get()).toList().stream().map(this::toEdge);
     }
 
     @Override
-    public <OUT, IN> Stream<EdgeEntity<OUT, IN>> next(int limit) {
+    public Stream<EdgeEntity> next(int limit) {
         return flow.apply(supplier.get()).next(limit).stream().map(this::toEdge);
     }
 
@@ -151,7 +161,7 @@ class DefaultEdgeTraversal extends AbstractEdgeTraversal implements EdgeTraversa
     }
 
 
-    <OUT, IN> EdgeEntity<OUT, IN> toEdge(Edge edge) {
+    <OUT, IN> EdgeEntity toEdge(Edge edge) {
         return toEdgeEntity(edge, converter);
     }
 

@@ -79,7 +79,7 @@ class DefaultGraphTemplateProducer implements GraphTemplateProducer {
         }
 
         @Override
-        protected VertexConverter getVertex() {
+        protected VertexConverter getConverter() {
             return vertexConverter;
         }
 

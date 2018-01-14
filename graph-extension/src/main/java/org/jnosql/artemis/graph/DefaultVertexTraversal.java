@@ -15,14 +15,17 @@
 package org.jnosql.artemis.graph;
 
 import org.apache.tinkerpop.gremlin.process.traversal.P;
+import org.apache.tinkerpop.gremlin.process.traversal.Traverser;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import org.apache.tinkerpop.gremlin.structure.T;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
+import org.jnosql.artemis.Entity;
 import org.jnosql.artemis.graph.util.TinkerPopUtil;
 
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
@@ -33,6 +36,9 @@ import static java.util.Objects.requireNonNull;
  */
 class DefaultVertexTraversal extends AbstractVertexTraversal implements VertexTraversal {
 
+
+    private static final Predicate<String> IS_EMPTY = String::isEmpty;
+    private static final Predicate<String> NOT_EMPTY = IS_EMPTY.negate();
 
     DefaultVertexTraversal(Supplier<GraphTraversal<?, ?>> supplier,
                            Function<GraphTraversal<?, ?>, GraphTraversal<Vertex, Vertex>> flow,
@@ -82,6 +88,14 @@ class DefaultVertexTraversal extends AbstractVertexTraversal implements VertexTr
             throw new NullPointerException("The no one label element cannot be null");
         }
         return new DefaultVertexTraversal(supplier, flow.andThen(g -> g.out(labels)), converter);
+    }
+
+    @Override
+    public <T> VertexTraversal filter(Predicate<T> predicate) throws NullPointerException {
+        requireNonNull(predicate, "predicate is required");
+
+        Predicate<Traverser<Vertex>> p = v -> predicate.test(TinkerPopUtil.toEntity(v.get(), converter));
+        return new DefaultVertexTraversal(supplier, flow.andThen(g -> g.filter(p)), converter);
     }
 
     @Override
@@ -144,6 +158,16 @@ class DefaultVertexTraversal extends AbstractVertexTraversal implements VertexTr
     @Override
     public VertexTraversal hasLabel(String label) throws NullPointerException {
       Objects.requireNonNull(label, "label is required");
+        return new DefaultVertexTraversal(supplier, flow.andThen(g -> g.hasLabel(label)), converter);
+    }
+
+    @Override
+    public <T> VertexTraversal hasLabel(Class<T> entityClass) throws NullPointerException {
+        requireNonNull(entityClass, "entityClass is required");
+        Entity entity = entityClass.getAnnotation(Entity.class);
+        String label = Optional.ofNullable(entity).map(Entity::value)
+                .filter(NOT_EMPTY)
+                .orElse(entityClass.getSimpleName());
         return new DefaultVertexTraversal(supplier, flow.andThen(g -> g.hasLabel(label)), converter);
     }
 
