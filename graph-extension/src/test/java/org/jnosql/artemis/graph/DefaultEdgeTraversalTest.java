@@ -342,4 +342,15 @@ public class DefaultEdgeTraversalTest extends AbstractTraversalTest {
         assertThat(properties, contains("love", "job", "hobby"));
     }
 
+    @Test(expected = NullPointerException.class)
+    public void shouldReturnErrorWhenPredicateIsNull() {
+        graphTemplate.getTraversalEdge().filter(null);
+    }
+
+    @Test
+    public void shouldReturnFromPredicate() {
+        long count = graphTemplate.getTraversalEdge().filter(reads::equals).count();
+        assertEquals(1L, count);
+    }
+
 }
