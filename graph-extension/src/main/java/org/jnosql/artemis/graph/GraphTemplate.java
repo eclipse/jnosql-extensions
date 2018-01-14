@@ -21,7 +21,6 @@ import org.jnosql.artemis.IdNotFoundException;
 import java.util.Collection;
 import java.util.Optional;
 import java.util.function.Supplier;
-import java.util.stream.Stream;
 
 /**
  * This interface that represents the common operation between an entity
