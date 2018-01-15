@@ -156,6 +156,16 @@ public class DefaultVertexTraversalTest extends AbstractTraversalTest {
         assertThat(books, containsInAnyOrder(shack, license, effectiveJava));
     }
 
+    @Test
+    public void shouldHasLabel2() {
+
+        List<Book> books = graphTemplate.getTraversalVertex()
+                .hasLabel(P.eq("Book").or(P.eq("Person")))
+                .<Book>stream().collect(toList());
+        assertEquals(6, books.size());
+        assertThat(books, containsInAnyOrder(shack, license, effectiveJava, otavio, poliana, paulo));
+    }
+
     @Test(expected = NullPointerException.class)
     public void shouldReturnErrorWhenHasLabelHasNull() {
         graphTemplate.getTraversalVertex().hasLabel((String) null).<Book>stream().collect(toList());
