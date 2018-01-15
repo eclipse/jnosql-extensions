@@ -126,4 +126,10 @@ class DefaultVertexUntilTraversal extends AbstractVertexTraversal implements Ver
         String label = Optional.ofNullable(entity).map(Entity::value).orElse(entityClass.getName());
         return new DefaultVertexTraversal(supplier, flow.andThen(g -> g.hasLabel(label)), converter);
     }
+
+    @Override
+    public <T> VertexTraversal hasLabel(P<String> predicate) throws NullPointerException {
+        requireNonNull(predicate, "predicate is required");
+        return new DefaultVertexTraversal(supplier, flow.andThen(g -> g.hasLabel(predicate)), converter);
+    }
 }

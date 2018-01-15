@@ -88,7 +88,7 @@ abstract class AbstractGraphRepositoryProxy<T, ID> implements InvocationHandler 
         GraphTraversal<Vertex, Vertex> traversal = getGraph().traversal().V();
         getQueryParser().findByParse(methodName, args, getClassRepresentation(), traversal);
 
-        List<Vertex> vertices = traversal.toList();
+        List<Vertex> vertices = traversal.hasLabel(getClassRepresentation().getName()).toList();
 
         Stream<T> stream = vertices.stream().map(TinkerPopUtil::toArtemisVertex)
                 .map(getVertexConverter()::toEntity);

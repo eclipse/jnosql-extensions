@@ -212,6 +212,15 @@ public interface VertexConditionTraversal {
     /**
      * Defines Vertex as label condition
      *
+     * @param predicate the predicate
+     * @return a {@link VertexTraversal} with the new condition
+     * @throws NullPointerException when predicate is null
+     */
+    <T> VertexTraversal hasLabel(P<String> predicate) throws NullPointerException;
+
+    /**
+     * Defines Vertex as label condition
+     *
      * @param label the labels in the condition
      * @return a {@link VertexTraversal} with the new condition
      * @throws NullPointerException when has any null element
