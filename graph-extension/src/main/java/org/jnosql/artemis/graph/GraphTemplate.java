@@ -19,6 +19,7 @@ import org.jnosql.artemis.EntityNotFoundException;
 import org.jnosql.artemis.IdNotFoundException;
 
 import java.util.Collection;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Supplier;
 
@@ -99,6 +100,27 @@ public interface GraphTemplate {
      */
     <OUT, IN> EdgeEntity edge(OUT outbound, String label, IN incoming) throws NullPointerException,
             IdNotFoundException, EntityNotFoundException;
+
+    /**
+     * Either find or create an Edge between this two entities.
+     * {@link org.apache.tinkerpop.gremlin.structure.Edge}
+     * <pre>entityOUT ---label---&#62; entityIN.</pre>
+     *
+     * @param incoming the incoming entity
+     * @param label    the Edge label
+     * @param outbound the outbound entity
+     * @param <IN>     the incoming type
+     * @param <OUT>    the outgoing type
+     * @return the {@link EdgeEntity} of these two entities
+     * @throws NullPointerException    Either when any elements are null or the entity is null
+     * @throws IdNotFoundException     when {@link org.jnosql.artemis.Id} annotation is missing in the entities
+     * @throws EntityNotFoundException when neither outbound or incoming is found
+     */
+    default <OUT, IN> EdgeEntity edge(OUT outbound, Supplier<String> label, IN incoming) throws NullPointerException,
+            IdNotFoundException, EntityNotFoundException {
+        Objects.requireNonNull(label,"supplier is required");
+        return edge(outbound, label.get(), incoming);
+    }
 
 
     /**
