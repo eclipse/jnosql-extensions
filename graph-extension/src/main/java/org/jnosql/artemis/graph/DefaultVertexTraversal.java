@@ -171,6 +171,12 @@ class DefaultVertexTraversal extends AbstractVertexTraversal implements VertexTr
         return new DefaultVertexTraversal(supplier, flow.andThen(g -> g.hasLabel(label)), converter);
     }
 
+    @Override
+    public <T> VertexTraversal hasLabel(P<String> predicate) throws NullPointerException {
+        requireNonNull(predicate, "predicate is required");
+        return new DefaultVertexTraversal(supplier, flow.andThen(g -> g.hasLabel(predicate)), converter);
+    }
+
 
     @Override
     public VertexTraversal hasNot(String propertyKey) throws NullPointerException {
