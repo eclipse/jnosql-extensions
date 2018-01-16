@@ -59,7 +59,7 @@ public class EdgeEntityTest {
     public void shouldReturnErrorWhenLabelIsNull() {
         Person person = Person.builder().withName("Poliana").withAge().build();
         Book book = Book.builder().withAge(2007).withName("The Shack").build();
-        graphTemplate.edge(person, null, book);
+        graphTemplate.edge(person, (String) null, book);
     }
 
     @Test(expected = NullPointerException.class)

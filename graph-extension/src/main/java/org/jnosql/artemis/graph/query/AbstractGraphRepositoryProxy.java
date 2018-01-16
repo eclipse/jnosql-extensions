@@ -62,6 +62,8 @@ abstract class AbstractGraphRepositoryProxy<T, ID> implements InvocationHandler 
                 return executeFindByMethod(method, args, methodName);
             case DELETE_BY:
                 return executeDeleteMethod(args, methodName);
+            case OBJECT_METHOD:
+                return method.invoke(this, args);
             case UNKNOWN:
             default:
                 return Void.class;

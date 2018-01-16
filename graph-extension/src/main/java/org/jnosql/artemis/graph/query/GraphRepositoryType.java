@@ -15,13 +15,21 @@
 package org.jnosql.artemis.graph.query;
 
 import java.lang.reflect.Method;
+import java.util.stream.Stream;
 
 public enum GraphRepositoryType {
 
-    DEFAULT, FIND_BY, DELETE_BY, UNKNOWN;
+    DEFAULT, FIND_BY, DELETE_BY, UNKNOWN, OBJECT_METHOD;
+
+    private static final Method[] METHODS = Object.class.getMethods();
 
 
     static GraphRepositoryType of(Method method, Object[] args) {
+
+        if (Stream.of(METHODS).anyMatch(method::equals)) {
+            return OBJECT_METHOD;
+        }
+
         String methodName = method.getName();
         switch (methodName) {
             case "save":

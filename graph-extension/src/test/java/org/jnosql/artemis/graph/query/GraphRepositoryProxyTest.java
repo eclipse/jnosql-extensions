@@ -263,6 +263,16 @@ public class GraphRepositoryProxyTest {
 
     }
 
+    @Test
+    public void shouldReturnToString() {
+        assertNotNull(personRepository.toString());
+    }
+
+    @Test
+    public void shouldReturnHasCode() {
+        assertNotNull(personRepository.hashCode());
+        assertEquals(personRepository.hashCode(), personRepository.hashCode());
+    }
 
     interface PersonRepository extends Repository<Person, Long> {
 
