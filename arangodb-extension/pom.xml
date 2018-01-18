@@ -17,6 +17,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
+      <parent>
+        <groupId>org.jnosql.artemis</groupId>
+        <artifactId>artemis-extension</artifactId>
+        <version>0.0.5-SNAPSHOT</version>
+    </parent>
+
     <artifactId>aragangodb-extension</artifactId>
 
     <name>${project.groupId}:${project.artifactId}</name>
@@ -55,12 +62,6 @@
             <organizationUrl>https://dev.eclipse.org/mailman/listinfo/jnosql-dev</organizationUrl>
         </developer>
     </developers>
-
-    <parent>
-        <groupId>org.jnosql.artemis</groupId>
-        <artifactId>artemis-extension</artifactId>
-        <version>0.0.4</version>
-    </parent>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
