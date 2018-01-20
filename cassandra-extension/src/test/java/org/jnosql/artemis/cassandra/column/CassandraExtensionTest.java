@@ -14,12 +14,12 @@
  */
 package org.jnosql.artemis.cassandra.column;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import javax.inject.Inject;
 
-@RunWith(CDIJUnitRunner.class)
+@ExtendWith(CDIExtension.class)
 public class CassandraExtensionTest {
 
     @Inject
