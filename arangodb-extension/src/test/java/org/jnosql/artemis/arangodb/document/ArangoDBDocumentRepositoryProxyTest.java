@@ -17,10 +17,9 @@ package org.jnosql.artemis.arangodb.document;
 import org.jnosql.artemis.Converters;
 import org.jnosql.artemis.reflection.ClassRepresentations;
 import org.jnosql.artemis.reflection.Reflections;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
@@ -31,13 +30,14 @@ import java.util.List;
 import java.util.Map;
 
 import static java.util.Collections.emptyMap;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 
-@RunWith(CDIJUnitRunner.class)
+@ExtendWith(CDIExtension.class)
 public class ArangoDBDocumentRepositoryProxyTest {
 
     private ArangoDBTemplate template;
@@ -54,7 +54,7 @@ public class ArangoDBDocumentRepositoryProxyTest {
     private PersonRepository personRepository;
 
 
-    @Before
+    @BeforeEach
     public void setUp() {
         this.template = Mockito.mock(ArangoDBTemplate.class);
 
@@ -83,7 +83,7 @@ public class ArangoDBDocumentRepositoryProxyTest {
         verify(template).aql(eq("FOR p IN Person FILTER p.name = @name RETURN p"), captor.capture());
 
         Map value = captor.getValue();
-        Assert.assertEquals("Ada", value.get("name"));
+        assertEquals("Ada", value.get("name"));
     }
 
     interface PersonRepository extends ArangoDBRepository<Person, String> {
