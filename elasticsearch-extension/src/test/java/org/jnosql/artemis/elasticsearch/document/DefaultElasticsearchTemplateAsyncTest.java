@@ -21,9 +21,9 @@ import org.jnosql.artemis.reflection.ClassRepresentations;
 import org.jnosql.diana.api.document.Document;
 import org.jnosql.diana.api.document.DocumentEntity;
 import org.jnosql.diana.elasticsearch.document.ElasticsearchDocumentCollectionManagerAsync;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 
 import javax.enterprise.inject.Instance;
@@ -35,7 +35,7 @@ import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
 import static org.elasticsearch.index.query.QueryBuilders.termQuery;
 import static org.mockito.Mockito.when;
 
-@RunWith(CDIJUnitRunner.class)
+@ExtendWith(CDIExtension.class)
 public class DefaultElasticsearchTemplateAsyncTest {
 
     @Inject
@@ -52,7 +52,7 @@ public class DefaultElasticsearchTemplateAsyncTest {
     private Converters converters;
 
 
-    @Before
+    @BeforeEach
     public void setUp() {
         managerAsync = Mockito.mock(ElasticsearchDocumentCollectionManagerAsync.class);
         Instance instance = Mockito.mock(Instance.class);
