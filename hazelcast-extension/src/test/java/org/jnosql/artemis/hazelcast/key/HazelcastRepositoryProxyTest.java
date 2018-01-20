@@ -15,11 +15,10 @@
 package org.jnosql.artemis.hazelcast.key;
 
 import com.hazelcast.query.Predicate;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
 
 import java.lang.reflect.Proxy;
 import java.util.Collection;
@@ -29,14 +28,14 @@ import java.util.Map;
 import java.util.Set;
 
 import static java.util.Arrays.asList;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class HazelcastRepositoryProxyTest {
 
     @Mock
@@ -45,7 +44,7 @@ public class HazelcastRepositoryProxyTest {
     private PersonRepository personRepository;
 
 
-    @Before
+    @BeforeEach
     public void setUp() {
 
         Collection<Object> people = asList(new Person("Poliana", 25), new Person("Otavio", 28));
