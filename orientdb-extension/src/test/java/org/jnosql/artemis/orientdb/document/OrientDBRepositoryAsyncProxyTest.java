@@ -18,9 +18,9 @@ import org.jnosql.artemis.Converters;
 import org.jnosql.artemis.DynamicQueryException;
 import org.jnosql.artemis.reflection.ClassRepresentations;
 import org.jnosql.artemis.reflection.Reflections;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
@@ -30,10 +30,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.verify;
 
-@RunWith(CDIJUnitRunner.class)
+@ExtendWith(CDIExtension.class)
 public class OrientDBRepositoryAsyncProxyTest {
 
 
@@ -51,7 +52,7 @@ public class OrientDBRepositoryAsyncProxyTest {
     private PersonAsyncRepository personRepository;
 
 
-    @Before
+    @BeforeEach
     public void setUp() {
         this.repository = Mockito.mock(OrientDBTemplateAsync.class);
 
@@ -66,9 +67,9 @@ public class OrientDBRepositoryAsyncProxyTest {
 
 
 
-    @Test(expected = DynamicQueryException.class)
+    @Test
     public void shouldReturnError() {
-        personRepository.findByName("Ada");
+        assertThrows(DynamicQueryException.class, () -> personRepository.findByName("Ada"));
     }
 
 
