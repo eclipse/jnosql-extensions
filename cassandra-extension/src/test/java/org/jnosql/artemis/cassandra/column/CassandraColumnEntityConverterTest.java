@@ -31,11 +31,10 @@ import org.jnosql.diana.api.Value;
 import org.jnosql.diana.api.column.Column;
 import org.jnosql.diana.api.column.ColumnEntity;
 import org.jnosql.diana.cassandra.column.UDT;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import javax.inject.Inject;
 import java.math.BigDecimal;
@@ -55,13 +54,13 @@ import java.util.stream.Stream;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.singleton;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@RunWith(CDIJUnitRunner.class)
+@ExtendWith(CDIExtension.class)
 public class CassandraColumnEntityConverterTest {
 
 
@@ -81,7 +80,7 @@ public class CassandraColumnEntityConverterTest {
             .withMovierRating(Collections.singletonMap("JavaZone", 10))
             .build();
 
-    @Before
+    @BeforeEach
     public void init() {
 
         columns = new Column[]{Column.of("_id", 12L),
@@ -273,13 +272,13 @@ public class CassandraColumnEntityConverterTest {
         worker.setJob(job);
         ColumnEntity entity = converter.toColumn(worker);
         Worker worker1 = converter.toEntity(entity);
-        Assert.assertEquals(worker.getSalary(), worker1.getSalary());
+        assertEquals(worker.getSalary(), worker1.getSalary());
         assertEquals(job.getCity(), worker1.getJob().getCity());
         assertEquals(job.getDescription(), worker1.getJob().getDescription());
     }
 
     @Test
-    @Ignore
+    @Disabled
     public void shouldSupportLocalDateConverter() {
         History history = new History();
         history.setCalendar(Calendar.getInstance());

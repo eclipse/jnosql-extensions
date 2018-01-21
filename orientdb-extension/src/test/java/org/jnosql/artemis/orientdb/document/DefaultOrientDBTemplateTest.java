@@ -23,9 +23,9 @@ import org.jnosql.diana.api.document.Document;
 import org.jnosql.diana.api.document.DocumentEntity;
 import org.jnosql.diana.api.document.DocumentQuery;
 import org.jnosql.diana.orientdb.document.OrientDBDocumentCollectionManager;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 
 import javax.enterprise.inject.Instance;
@@ -34,14 +34,14 @@ import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
 import static org.jnosql.diana.api.document.query.DocumentQueryBuilder.select;
-import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 
-@RunWith(CDIJUnitRunner.class)
+@ExtendWith(CDIExtension.class)
 public class DefaultOrientDBTemplateTest {
 
     @Inject
@@ -64,7 +64,7 @@ public class DefaultOrientDBTemplateTest {
     private OrientDBTemplate template;
 
 
-    @Before
+    @BeforeEach
     public void setup() {
         manager = Mockito.mock(OrientDBDocumentCollectionManager.class);
         Instance instance = Mockito.mock(Instance.class);
@@ -74,7 +74,7 @@ public class DefaultOrientDBTemplateTest {
         DocumentEntity entity = DocumentEntity.of("Person");
         entity.add(Document.of("name", "Ada"));
         entity.add(Document.of("age", 10));
-        when(manager.sql(Mockito.anyString(), Mockito.any(String[].class)))
+        when(manager.sql(Mockito.anyString(), Mockito.any(String.class)))
                 .thenReturn(Collections.singletonList(entity));
     }
 

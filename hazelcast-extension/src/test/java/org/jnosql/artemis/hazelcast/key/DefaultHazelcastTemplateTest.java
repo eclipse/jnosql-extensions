@@ -14,18 +14,18 @@
  */
 package org.jnosql.artemis.hazelcast.key;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import javax.inject.Inject;
 import java.util.Collection;
 
 import static com.hazelcast.query.Predicates.equal;
 import static java.util.Collections.singletonMap;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@RunWith(CDIJUnitRunner.class)
+@ExtendWith(CDIExtension.class)
 public class DefaultHazelcastTemplateTest {
 
     @Inject

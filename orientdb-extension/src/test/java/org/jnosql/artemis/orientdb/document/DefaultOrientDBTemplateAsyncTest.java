@@ -20,9 +20,9 @@ import org.jnosql.artemis.reflection.ClassRepresentations;
 import org.jnosql.diana.api.document.Document;
 import org.jnosql.diana.api.document.DocumentEntity;
 import org.jnosql.diana.orientdb.document.OrientDBDocumentCollectionManagerAsync;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 
 import javax.enterprise.inject.Instance;
@@ -32,7 +32,7 @@ import java.util.function.Consumer;
 
 import static org.mockito.Mockito.when;
 
-@RunWith(CDIJUnitRunner.class)
+@ExtendWith(CDIExtension.class)
 public class DefaultOrientDBTemplateAsyncTest {
 
     @Inject
@@ -49,7 +49,7 @@ public class DefaultOrientDBTemplateAsyncTest {
     private OrientDBTemplateAsync templateAsync;
 
 
-    @Before
+    @BeforeEach
     public void setUp() {
         managerAsync = Mockito.mock(OrientDBDocumentCollectionManagerAsync.class);
         Instance instance = Mockito.mock(Instance.class);

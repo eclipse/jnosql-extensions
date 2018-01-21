@@ -26,10 +26,9 @@ import org.jnosql.diana.api.column.ColumnDeleteQuery;
 import org.jnosql.diana.api.column.ColumnEntity;
 import org.jnosql.diana.api.column.ColumnQuery;
 import org.jnosql.diana.cassandra.column.CassandraColumnFamilyManager;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
@@ -40,15 +39,15 @@ import java.util.Collections;
 import java.util.List;
 
 import static java.util.Arrays.asList;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.jnosql.diana.api.column.query.ColumnQueryBuilder.delete;
 import static org.jnosql.diana.api.column.query.ColumnQueryBuilder.select;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@RunWith(CDIJUnitRunner.class)
+@ExtendWith(CDIExtension.class)
 public class DefaultCassandraTemplateTest {
 
     @Inject
@@ -70,7 +69,7 @@ public class DefaultCassandraTemplateTest {
 
     private CassandraColumnFamilyManager manager;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         this.manager = mock(CassandraColumnFamilyManager.class);
         Instance instance = mock(Instance.class);
@@ -188,7 +187,7 @@ public class DefaultCassandraTemplateTest {
         when(manager.select(query, level)).thenReturn(Collections.singletonList(entity));
 
         List<Person> people = template.find(query, level);
-        Assert.assertThat(people, Matchers.contains(person));
+        assertThat(people, Matchers.contains(person));
     }
 
     @Test
@@ -202,7 +201,7 @@ public class DefaultCassandraTemplateTest {
         when(manager.cql(cql)).thenReturn(Collections.singletonList(entity));
 
         List<Person> people = template.cql(cql);
-        Assert.assertThat(people, Matchers.contains(person));
+        assertThat(people, Matchers.contains(person));
     }
     
     @Test
@@ -216,7 +215,7 @@ public class DefaultCassandraTemplateTest {
         when(manager.execute(statement)).thenReturn(Collections.singletonList(entity));
 
         List<Person> people = template.execute(statement);
-        Assert.assertThat(people, Matchers.contains(person));
+        assertThat(people, Matchers.contains(person));
     }
 
 }

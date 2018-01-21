@@ -17,9 +17,9 @@ package org.jnosql.artemis.orientdb.document;
 import org.jnosql.artemis.Converters;
 import org.jnosql.artemis.reflection.ClassRepresentations;
 import org.jnosql.artemis.reflection.Reflections;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
@@ -29,13 +29,13 @@ import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 
-@RunWith(CDIJUnitRunner.class)
+@ExtendWith(CDIExtension.class)
 public class OrientDBDocumentRepositoryProxyTest {
 
     private OrientDBTemplate template;
@@ -52,7 +52,7 @@ public class OrientDBDocumentRepositoryProxyTest {
     private PersonRepository personRepository;
 
 
-    @Before
+    @BeforeEach
     public void setUp() {
         this.template = Mockito.mock(OrientDBTemplate.class);
 
@@ -78,7 +78,7 @@ public class OrientDBDocumentRepositoryProxyTest {
     @Test
     public void shouldFindByNameSQL() {
         personRepository.findByName("Ada");
-        verify(template).sql(Mockito.eq("select * from Person where name = ?"), Mockito.any(Object[].class));
+        verify(template).sql(Mockito.eq("select * from Person where name = ?"), Mockito.any(Object.class));
     }
 
     @Test

@@ -23,9 +23,9 @@ import org.jnosql.artemis.reflection.ClassRepresentations;
 import org.jnosql.diana.api.document.Document;
 import org.jnosql.diana.api.document.DocumentEntity;
 import org.jnosql.diana.elasticsearch.document.ElasticsearchDocumentCollectionManager;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 
 import javax.enterprise.inject.Instance;
@@ -35,12 +35,12 @@ import java.util.List;
 
 import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
 import static org.elasticsearch.index.query.QueryBuilders.termQuery;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
-import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.when;
 
 
-@RunWith(CDIJUnitRunner.class)
+@ExtendWith(CDIExtension.class)
 public class DefaultElasticsearchTemplateTest {
 
     @Inject
@@ -63,7 +63,7 @@ public class DefaultElasticsearchTemplateTest {
     private ElasticsearchTemplate template;
 
 
-    @Before
+    @BeforeEach
     public void setup() {
         manager = Mockito.mock(ElasticsearchDocumentCollectionManager.class);
         Instance instance = Mockito.mock(Instance.class);
@@ -73,7 +73,7 @@ public class DefaultElasticsearchTemplateTest {
         DocumentEntity entity = DocumentEntity.of("Person");
         entity.add(Document.of("name", "Ada"));
         entity.add(Document.of("age", 10));
-        when(manager.search(Mockito.any(QueryBuilder.class), Mockito.any(String[].class)))
+        when(manager.search(Mockito.any(QueryBuilder.class), Mockito.any(String.class)))
                 .thenReturn(Collections.singletonList(entity));
     }
 

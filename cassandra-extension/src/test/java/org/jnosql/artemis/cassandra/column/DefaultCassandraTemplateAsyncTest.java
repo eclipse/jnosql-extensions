@@ -24,9 +24,9 @@ import org.jnosql.diana.api.column.ColumnDeleteQuery;
 import org.jnosql.diana.api.column.ColumnEntity;
 import org.jnosql.diana.api.column.ColumnQuery;
 import org.jnosql.diana.cassandra.column.CassandraColumnFamilyManagerAsync;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
@@ -39,12 +39,12 @@ import java.util.function.Consumer;
 import static java.util.Arrays.asList;
 import static org.jnosql.diana.api.column.query.ColumnQueryBuilder.delete;
 import static org.jnosql.diana.api.column.query.ColumnQueryBuilder.select;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
 
-@RunWith(CDIJUnitRunner.class)
+@ExtendWith(CDIExtension.class)
 public class DefaultCassandraTemplateAsyncTest {
 
     @Inject
@@ -60,7 +60,7 @@ public class DefaultCassandraTemplateAsyncTest {
 
     private CassandraTemplateAsync templateAsync;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         managerAsync = Mockito.mock(CassandraColumnFamilyManagerAsync.class);
         Instance instance = Mockito.mock(Instance.class);
