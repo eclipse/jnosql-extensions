@@ -23,8 +23,13 @@ import javax.inject.Inject;
 import javax.inject.Qualifier;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
+
+import static java.util.Arrays.asList;
 
 public class CDIExtension implements TestInstancePostProcessor {
 
@@ -35,8 +40,8 @@ public class CDIExtension implements TestInstancePostProcessor {
     @Override
     public void postProcessTestInstance(Object testInstance, ExtensionContext context) throws IllegalAccessException {
 
-        for (Field field : testInstance.getClass().getDeclaredFields()) {
-            if(field.getAnnotation(Inject.class) != null) {
+        for (Field field : getFields(testInstance.getClass())) {
+            if (field.getAnnotation(Inject.class) != null) {
                 Annotation[] qualifiers = Stream.of(field.getAnnotations())
                         .filter(FILTER)
                         .toArray(Annotation[]::new);
@@ -45,6 +50,16 @@ public class CDIExtension implements TestInstancePostProcessor {
                 field.set(testInstance, injected);
             }
         }
+    }
+
+    private List<Field> getFields(Class<?> clazzInstance) {
+        List<Field> fields = new ArrayList<>();
+        if (!clazzInstance.getSuperclass().equals(Object.class)) {
+            fields.addAll(getFields(clazzInstance.getSuperclass()));
+        } else {
+            fields.addAll(asList(clazzInstance.getDeclaredFields()));
+        }
+        return fields;
     }
 
 }
