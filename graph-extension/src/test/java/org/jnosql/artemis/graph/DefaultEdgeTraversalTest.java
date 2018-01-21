@@ -323,7 +323,7 @@ public class DefaultEdgeTraversalTest extends AbstractTraversalTest {
 
     @Test
     public void shouldReturnErrorWhenThePropertyDoesNotExist() {
-        assertThrows(NullPointerException.class, () -> {
+        assertThrows(IllegalStateException.class, () -> {
             graphTemplate.getTraversalEdge().orderBy("wrong property").asc().next();
         });
     }

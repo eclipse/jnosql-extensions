@@ -182,10 +182,13 @@ public class EdgeEntityTest {
 
     @Test
     public void shouldReturnErrorWhenAddValueIsNull() {
-        Person person = graphTemplate.insert(Person.builder().withName("Poliana").withAge().build());
-        Book book = graphTemplate.insert(Book.builder().withAge(2007).withName("The Shack").build());
-        EdgeEntity edge = graphTemplate.edge(person, "reads", book);
-        edge.add("where", null);
+
+        assertThrows(NullPointerException.class, () -> {
+            Person person = graphTemplate.insert(Person.builder().withName("Poliana").withAge().build());
+            Book book = graphTemplate.insert(Book.builder().withAge(2007).withName("The Shack").build());
+            EdgeEntity edge = graphTemplate.edge(person, "reads", book);
+            edge.add("where", null);
+        });
     }
 
     @Test
