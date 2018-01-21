@@ -17,6 +17,7 @@ package org.jnosql.artemis.graph;
 import org.jnosql.artemis.EntityPostPersit;
 import org.jnosql.artemis.EntityPrePersist;
 import org.jnosql.artemis.graph.cdi.CDIExtension;
+import org.jnosql.artemis.graph.cdi.MockitoExtension;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -28,7 +29,7 @@ import javax.enterprise.event.Event;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.verify;
 
-@ExtendWith(CDIExtension.class)
+@ExtendWith(MockitoExtension.class)
 public class DefaultGraphEventPersistManagerTest {
 
     @InjectMocks
