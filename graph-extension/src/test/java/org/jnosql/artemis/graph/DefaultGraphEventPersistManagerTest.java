@@ -16,7 +16,6 @@ package org.jnosql.artemis.graph;
 
 import org.jnosql.artemis.EntityPostPersit;
 import org.jnosql.artemis.EntityPrePersist;
-import org.jnosql.artemis.graph.cdi.CDIExtension;
 import org.jnosql.artemis.graph.cdi.MockitoExtension;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
