@@ -16,7 +16,7 @@ package org.jnosql.artemis.graph;
 
 import org.jnosql.artemis.EntityPostPersit;
 import org.jnosql.artemis.EntityPrePersist;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
@@ -25,7 +25,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import javax.enterprise.event.Event;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)

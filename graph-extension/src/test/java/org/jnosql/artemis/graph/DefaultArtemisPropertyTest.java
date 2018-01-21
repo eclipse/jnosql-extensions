@@ -15,22 +15,27 @@
 package org.jnosql.artemis.graph;
 
 import org.jnosql.diana.api.Value;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 
 public class DefaultArtemisPropertyTest {
 
 
-
-    @Test(expected = NullPointerException.class)
+    @Test
     public void shouldReturnErrorWhenKeyINull() {
-        ArtemisProperty.of(null, 10L);
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            ArtemisProperty.of(null, 10L);
+        });
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void shouldReturnErrorWhenValueINull() {
-        ArtemisProperty.of("key", null);
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            ArtemisProperty.of("key", null);
+        });
     }
 
     @Test

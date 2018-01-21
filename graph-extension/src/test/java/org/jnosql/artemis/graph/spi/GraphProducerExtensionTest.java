@@ -20,14 +20,14 @@ import org.jnosql.artemis.graph.GraphTemplate;
 import org.jnosql.artemis.graph.cdi.CDIJUnitRunner;
 import org.jnosql.artemis.graph.model.Book;
 import org.jnosql.artemis.graph.model.Person;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 
 import javax.inject.Inject;
 
 import static org.jnosql.artemis.DatabaseType.GRAPH;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @RunWith(CDIJUnitRunner.class)
 public class GraphProducerExtensionTest {
