@@ -21,8 +21,8 @@ import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.jnosql.artemis.graph.model.Book;
 import org.jnosql.artemis.graph.model.Person;
-import org.junit.After;
-import org.junit.Before;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 
 import javax.inject.Inject;
 
@@ -51,7 +51,7 @@ public abstract class AbstractTraversalTest {
     protected EdgeEntity reads2;
     protected EdgeEntity reads3;
 
-    @Before
+    @BeforeEach
     public void setUp() {
 
         graph.traversal().V().toList().forEach(Vertex::remove);
@@ -79,7 +79,7 @@ public abstract class AbstractTraversalTest {
         reads3.add("motivation", "job");
     }
 
-    @After
+    @AfterEach
     public void after() {
         graphTemplate.delete(otavio.getId());
         graphTemplate.delete(poliana.getId());

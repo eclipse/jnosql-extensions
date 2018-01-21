@@ -14,20 +14,21 @@
  */
 package org.jnosql.artemis.graph;
 
-import org.junit.Before;
+import org.jnosql.artemis.graph.cdi.CDIExtension;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.function.UnaryOperator;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(CDIExtension.class)
 public class DefaultGraphWorkflowTest {
 
 
@@ -44,22 +45,26 @@ public class DefaultGraphWorkflowTest {
     private ArtemisVertex artemisVertex;
 
 
-    @Before
+    @BeforeEach
     public void setUp() {
         when(converter.toVertex(any(Object.class)))
                 .thenReturn(artemisVertex);
 
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void shouldReturnErrorWhenEntityIsNull() {
-        UnaryOperator<ArtemisVertex> action = t -> t;
-        subject.flow(null, action);
+        assertThrows(NullPointerException.class, () -> {
+            UnaryOperator<ArtemisVertex> action = t -> t;
+            subject.flow(null, action);
+        });
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void shouldReturnErrorWhenActionIsNull() {
-        subject.flow("", null);
+        assertThrows(NullPointerException.class, () -> {
+            subject.flow("", null);
+        });
     }
 
     @Test

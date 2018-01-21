@@ -19,17 +19,20 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class DefaultArtemisVertexTest {
 
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void shouldRequireLabel() {
-        new DefaultArtemisVertex(null);
+        assertThrows(NullPointerException.class, () -> {
+            new DefaultArtemisVertex(null);
+        });
     }
 
     @Test

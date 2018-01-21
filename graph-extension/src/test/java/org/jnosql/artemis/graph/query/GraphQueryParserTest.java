@@ -21,26 +21,27 @@ import org.apache.tinkerpop.gremlin.structure.T;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.apache.tinkerpop.gremlin.structure.VertexProperty;
 import org.jnosql.artemis.DynamicQueryException;
-import org.jnosql.artemis.graph.cdi.CDIJUnitRunner;
+import org.jnosql.artemis.graph.cdi.CDIExtension;
 import org.jnosql.artemis.graph.model.Person;
 import org.jnosql.artemis.reflection.ClassRepresentation;
 import org.jnosql.artemis.reflection.ClassRepresentations;
-import org.junit.After;
-import org.junit.Before;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import javax.inject.Inject;
 import java.util.List;
 import java.util.Optional;
 
 import static java.util.stream.Collectors.toList;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@RunWith(CDIJUnitRunner.class)
+@ExtendWith(CDIExtension.class)
 public class GraphQueryParserTest {
 
     @Inject
@@ -53,7 +54,7 @@ public class GraphQueryParserTest {
     @Inject
     private Graph graph;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         graph.traversal().V().toList().forEach(Vertex::remove);
         graph.traversal().E().toList().forEach(Edge::remove);
@@ -63,7 +64,7 @@ public class GraphQueryParserTest {
         classRepresentation = classRepresentations.get(Person.class);
     }
 
-    @After
+    @AfterEach
     public void after() {
         graph.traversal().V().toList().forEach(Vertex::remove);
         graph.traversal().E().toList().forEach(Edge::remove);
@@ -263,7 +264,7 @@ public class GraphQueryParserTest {
         List<Vertex> vertices = traversal.toList();
 
         List<Object> ids = vertices.stream().map(Vertex::id).collect(toList());
-        assertThat(ids,  containsInAnyOrder(poliana.id(), otavio.id()));
+        assertThat(ids, containsInAnyOrder(poliana.id(), otavio.id()));
     }
 
     @Test
@@ -281,7 +282,7 @@ public class GraphQueryParserTest {
         List<Vertex> vertices = traversal.toList();
 
         List<Object> ids = vertices.stream().map(Vertex::id).collect(toList());
-        assertThat(ids,  containsInAnyOrder(poliana.id(), otavio.id()));
+        assertThat(ids, containsInAnyOrder(poliana.id(), otavio.id()));
     }
 
     @Test
@@ -320,20 +321,23 @@ public class GraphQueryParserTest {
 
     }
 
-    @Test(expected = DynamicQueryException.class)
+    @Test
     public void shouldReturnErrorWhenIsMissedArgument() {
-        GraphTraversal<Vertex, Vertex> traversal = graph.traversal().V();
+        assertThrows(DynamicQueryException.class, () -> {
+            GraphTraversal<Vertex, Vertex> traversal = graph.traversal().V();
 
-        parser.findByParse("findByNameAndAgeBetween", new Object[]{"name", 10},
-                classRepresentation, traversal);
+            parser.findByParse("findByNameAndAgeBetween", new Object[]{"name", 10},
+                    classRepresentation, traversal);
+        });
     }
 
-    @Test(expected = DynamicQueryException.class)
+    @Test
     public void shouldReturnErrorWhenIsMissedArgument2() {
-
-        GraphTraversal<Vertex, Vertex> traversal = graph.traversal().V();
-        parser.findByParse("findByName", new Object[]{},
-                classRepresentation, traversal);
+        assertThrows(DynamicQueryException.class, () -> {
+            GraphTraversal<Vertex, Vertex> traversal = graph.traversal().V();
+            parser.findByParse("findByName", new Object[]{},
+                    classRepresentation, traversal);
+        });
 
     }
 

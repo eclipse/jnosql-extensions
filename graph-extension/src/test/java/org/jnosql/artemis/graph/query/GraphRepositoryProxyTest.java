@@ -21,14 +21,14 @@ import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.jnosql.artemis.Repository;
 import org.jnosql.artemis.graph.GraphTemplate;
 import org.jnosql.artemis.graph.VertexConverter;
-import org.jnosql.artemis.graph.cdi.CDIJUnitRunner;
+import org.jnosql.artemis.graph.cdi.CDIExtension;
 import org.jnosql.artemis.graph.model.Person;
 import org.jnosql.artemis.reflection.ClassRepresentations;
 import org.jnosql.artemis.reflection.Reflections;
-import org.junit.After;
-import org.junit.Before;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
@@ -43,14 +43,14 @@ import static java.util.Collections.singletonList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@RunWith(CDIJUnitRunner.class)
+@ExtendWith(CDIExtension.class)
 public class GraphRepositoryProxyTest {
 
 
@@ -70,7 +70,7 @@ public class GraphRepositoryProxyTest {
     @Inject
     private VertexConverter vertexConverter;
 
-    @Before
+    @BeforeEach
     public void setUp() {
 
         graph.traversal().V().toList().forEach(Vertex::remove);
@@ -89,7 +89,7 @@ public class GraphRepositoryProxyTest {
                 handler);
     }
 
-    @After
+    @AfterEach
     public void after() {
         graph.traversal().V().toList().forEach(Vertex::remove);
         graph.traversal().E().toList().forEach(Edge::remove);

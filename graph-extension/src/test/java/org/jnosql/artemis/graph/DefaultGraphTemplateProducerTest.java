@@ -15,24 +15,27 @@
 package org.jnosql.artemis.graph;
 
 import org.apache.tinkerpop.gremlin.structure.Graph;
-import org.jnosql.artemis.graph.cdi.CDIJUnitRunner;
+import org.jnosql.artemis.graph.cdi.CDIExtension;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 
 import javax.inject.Inject;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@RunWith(CDIJUnitRunner.class)
+@ExtendWith(CDIExtension.class)
 public class DefaultGraphTemplateProducerTest {
 
     @Inject
     private GraphTemplateProducer producer;
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void shouldReturnErrorWhenManagerNull() {
-        producer.get(null);
+        assertThrows(NullPointerException.class, () -> {
+            producer.get(null);
+        });
     }
 
     @Test

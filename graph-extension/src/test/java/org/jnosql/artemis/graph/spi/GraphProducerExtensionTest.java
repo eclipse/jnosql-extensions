@@ -17,11 +17,11 @@ package org.jnosql.artemis.graph.spi;
 import org.jnosql.artemis.Database;
 import org.jnosql.artemis.graph.BookRepository;
 import org.jnosql.artemis.graph.GraphTemplate;
-import org.jnosql.artemis.graph.cdi.CDIJUnitRunner;
+import org.jnosql.artemis.graph.cdi.CDIExtension;
 import org.jnosql.artemis.graph.model.Book;
 import org.jnosql.artemis.graph.model.Person;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import javax.inject.Inject;
 
@@ -29,7 +29,7 @@ import static org.jnosql.artemis.DatabaseType.GRAPH;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@RunWith(CDIJUnitRunner.class)
+@ExtendWith(CDIExtension.class)
 public class GraphProducerExtensionTest {
 
     @Inject

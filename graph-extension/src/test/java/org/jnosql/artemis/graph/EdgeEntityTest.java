@@ -16,24 +16,26 @@ package org.jnosql.artemis.graph;
 
 import org.hamcrest.Matchers;
 import org.jnosql.artemis.EntityNotFoundException;
-import org.jnosql.artemis.graph.cdi.CDIJUnitRunner;
+import org.jnosql.artemis.graph.cdi.CDIExtension;
 import org.jnosql.artemis.graph.model.Book;
 import org.jnosql.artemis.graph.model.Person;
 import org.jnosql.diana.api.Value;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import javax.inject.Inject;
 import java.util.Optional;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@RunWith(CDIJUnitRunner.class)
+@ExtendWith(CDIExtension.class)
 public class EdgeEntityTest {
 
 
@@ -41,54 +43,68 @@ public class EdgeEntityTest {
     private GraphTemplate graphTemplate;
 
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void shouldReturnErrorWhenInboudIsNull() {
-        Person person = Person.builder().withName("Poliana").withAge().build();
-        Book book = null;
-        graphTemplate.edge(person, "reads", book);
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            Person person = Person.builder().withName("Poliana").withAge().build();
+            Book book = null;
+            graphTemplate.edge(person, "reads", book);
+        });
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void shouldReturnErrorWhenOutboudIsNull() {
-        Person person = Person.builder().withName("Poliana").withAge().build();
-        Book book = Book.builder().withAge(2007).withName("The Shack").build();
-        graphTemplate.edge(person, "reads", book);
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            Person person = Person.builder().withName("Poliana").withAge().build();
+            Book book = Book.builder().withAge(2007).withName("The Shack").build();
+            graphTemplate.edge(person, "reads", book);
+        });
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void shouldReturnErrorWhenLabelIsNull() {
-        Person person = Person.builder().withName("Poliana").withAge().build();
-        Book book = Book.builder().withAge(2007).withName("The Shack").build();
-        graphTemplate.edge(person, (String) null, book);
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            Person person = Person.builder().withName("Poliana").withAge().build();
+            Book book = Book.builder().withAge(2007).withName("The Shack").build();
+            graphTemplate.edge(person, (String) null, book);
+        });
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void shouldReturnNullWhenInboundIdIsNull() {
-        Person person = Person.builder().withName("Poliana").withAge().build();
-        Book book = graphTemplate.insert(Book.builder().withAge(2007).withName("The Shack").build());
-        graphTemplate.edge(person, "reads", book);
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            Person person = Person.builder().withName("Poliana").withAge().build();
+            Book book = graphTemplate.insert(Book.builder().withAge(2007).withName("The Shack").build());
+            graphTemplate.edge(person, "reads", book);
+        });
 
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void shouldReturnNullWhenOutboundIdIsNull() {
-        Person person = graphTemplate.insert(Person.builder().withName("Poliana").withAge().build());
-        Book book = Book.builder().withAge(2007).withName("The Shack").build();
-        graphTemplate.edge(person, "reads", book);
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            Person person = graphTemplate.insert(Person.builder().withName("Poliana").withAge().build());
+            Book book = Book.builder().withAge(2007).withName("The Shack").build();
+            graphTemplate.edge(person, "reads", book);
+        });
     }
 
-    @Test(expected = EntityNotFoundException.class)
+    @Test
     public void shouldReturnEntityNotFoundWhenOutBoundDidNotFound() {
-        Person person = Person.builder().withId(-10L).withName("Poliana").withAge().build();
-        Book book = graphTemplate.insert(Book.builder().withAge(2007).withName("The Shack").build());
-        graphTemplate.edge(person, "reads", book);
+        Assertions.assertThrows(EntityNotFoundException.class, () -> {
+            Person person = Person.builder().withId(-10L).withName("Poliana").withAge().build();
+            Book book = graphTemplate.insert(Book.builder().withAge(2007).withName("The Shack").build());
+            graphTemplate.edge(person, "reads", book);
+        });
     }
 
-    @Test(expected = EntityNotFoundException.class)
+    @Test
     public void shouldReturnEntityNotFoundWhenInBoundDidNotFound() {
-        Person person = graphTemplate.insert(Person.builder().withName("Poliana").withAge().build());
-        Book book = Book.builder().withId(10L).withAge(2007).withName("The Shack").build();
-        graphTemplate.edge(person, "reads", book);
+        Assertions.assertThrows(EntityNotFoundException.class, () -> {
+            Person person = graphTemplate.insert(Person.builder().withName("Poliana").withAge().build());
+            Book book = Book.builder().withId(10L).withAge(2007).withName("The Shack").build();
+            graphTemplate.edge(person, "reads", book);
+        });
     }
 
     @Test
@@ -135,6 +151,7 @@ public class EdgeEntityTest {
         assertEquals(edge1, sameEdge1);
 
     }
+
     @Test
     public void shouldUseADifferentEdge() {
         Person poliana = graphTemplate.insert(Person.builder().withName("Poliana").withAge().build());
@@ -153,15 +170,17 @@ public class EdgeEntityTest {
         assertNotEquals(sameEdge1.getId(), sameEdge.getId());
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void shouldReturnErrorWhenAddKeyIsNull() {
-        Person person = graphTemplate.insert(Person.builder().withName("Poliana").withAge().build());
-        Book book = graphTemplate.insert(Book.builder().withAge(2007).withName("The Shack").build());
-        EdgeEntity edge = graphTemplate.edge(person, "reads", book);
-        edge.add(null, "Brazil");
+        assertThrows(NullPointerException.class, () -> {
+            Person person = graphTemplate.insert(Person.builder().withName("Poliana").withAge().build());
+            Book book = graphTemplate.insert(Book.builder().withAge(2007).withName("The Shack").build());
+            EdgeEntity edge = graphTemplate.edge(person, "reads", book);
+            edge.add(null, "Brazil");
+        });
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void shouldReturnErrorWhenAddValueIsNull() {
         Person person = graphTemplate.insert(Person.builder().withName("Poliana").withAge().build());
         Book book = graphTemplate.insert(Book.builder().withAge(2007).withName("The Shack").build());
@@ -181,15 +200,18 @@ public class EdgeEntityTest {
         assertThat(edge.getProperties(), Matchers.contains(ArtemisProperty.of("where", "Brazil")));
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void shouldReturnErrorWhenRemoveNullKeyProperty() {
-        Person person = graphTemplate.insert(Person.builder().withName("Poliana").withAge().build());
-        Book book = graphTemplate.insert(Book.builder().withAge(2007).withName("The Shack").build());
-        EdgeEntity edge = graphTemplate.edge(person, "reads", book);
-        edge.add("where", "Brazil");
+        assertThrows(NullPointerException.class, () -> {
+            Person person = graphTemplate.insert(Person.builder().withName("Poliana").withAge().build());
+            Book book = graphTemplate.insert(Book.builder().withAge(2007).withName("The Shack").build());
+            EdgeEntity edge = graphTemplate.edge(person, "reads", book);
+            edge.add("where", "Brazil");
 
-        assertFalse(edge.isEmpty());
-        edge.remove(null);
+
+            assertFalse(edge.isEmpty());
+            edge.remove(null);
+        });
     }
 
     @Test
@@ -231,9 +253,11 @@ public class EdgeEntityTest {
         graphTemplate.deleteEdge(newEdge.getId().get());
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void shouldReturnErrorWhenDeleteAnEdgeWithNull() {
-        graphTemplate.delete(null);
+        assertThrows(NullPointerException.class, () -> {
+            graphTemplate.delete(null);
+        });
     }
 
     @Test
@@ -250,9 +274,11 @@ public class EdgeEntityTest {
     }
 
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void shouldReturnErrorWhenFindEdgeWithNull() {
-        graphTemplate.edge(null);
+        assertThrows(NullPointerException.class, () -> {
+            graphTemplate.edge(null);
+        });
     }
 
 

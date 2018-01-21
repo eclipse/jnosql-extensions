@@ -14,7 +14,7 @@
  */
 package org.jnosql.artemis.graph;
 
-import org.jnosql.artemis.graph.cdi.CDIJUnitRunner;
+import org.jnosql.artemis.graph.cdi.CDIExtension;
 import org.jnosql.artemis.graph.model.Actor;
 import org.jnosql.artemis.graph.model.Director;
 import org.jnosql.artemis.graph.model.Job;
@@ -23,10 +23,9 @@ import org.jnosql.artemis.graph.model.Movie;
 import org.jnosql.artemis.graph.model.Person;
 import org.jnosql.artemis.graph.model.Worker;
 import org.jnosql.diana.api.Value;
-import org.junit.Assert;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import javax.inject.Inject;
 import java.math.BigDecimal;
@@ -36,12 +35,12 @@ import java.util.stream.Stream;
 import static java.util.Arrays.asList;
 import static java.util.Collections.singleton;
 import static java.util.Collections.singletonMap;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.hamcrest.MatcherAssert.assertThat;
 
-@RunWith(CDIJUnitRunner.class)
+@ExtendWith(CDIExtension.class)
 public class DefaultVertexConverterTest {
 
     @Inject
@@ -57,7 +56,7 @@ public class DefaultVertexConverterTest {
             .withMovierRating(singletonMap("JavaZone", 10))
             .build();
 
-    @Before
+    @BeforeEach
     public void init() {
 
         elements = new ArtemisProperty[]{
@@ -241,7 +240,7 @@ public class DefaultVertexConverterTest {
         worker.setJob(job);
         ArtemisVertex entity = converter.toVertex(worker);
         Worker worker1 = converter.toEntity(entity);
-        Assert.assertEquals(worker.getSalary(), worker1.getSalary());
+        assertEquals(worker.getSalary(), worker1.getSalary());
         assertEquals(job.getCity(), worker1.getJob().getCity());
         assertEquals(job.getDescription(), worker1.getJob().getDescription());
     }
