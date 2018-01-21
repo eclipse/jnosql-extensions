@@ -90,7 +90,7 @@
         <dependency>
             <groupId>org.neo4j</groupId>
             <artifactId>neo4j-tinkerpop-api-impl</artifactId>
-            <version>0.6-3.2.2</version>
+            <version>0.7-3.2.3</version>
             <scope>test</scope>
         </dependency>
         <dependency>
