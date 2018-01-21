@@ -16,9 +16,11 @@ package org.jnosql.artemis.graph;
 
 import org.apache.tinkerpop.gremlin.process.traversal.P;
 import org.apache.tinkerpop.gremlin.structure.T;
+import org.jnosql.artemis.graph.cdi.CDIExtension;
 import org.jnosql.artemis.graph.model.Animal;
 import org.jnosql.artemis.graph.model.Book;
 import org.jnosql.artemis.graph.model.Person;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
@@ -44,9 +46,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class DefaultVertexTraversalTest extends AbstractTraversalTest {
 
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void shouldReturnErrorWhenVertexIdIsNull() {
-        graphTemplate.getTraversalVertex(null);
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            graphTemplate.getTraversalVertex(null);
+        });
+
     }
 
     @Test
