@@ -474,7 +474,7 @@ public class DefaultVertexTraversalTest extends AbstractTraversalTest {
     }
 
     @Test
-    public void shouldReturnOptionaEmptyWhenThereIsNotResultInSingleResult() {
+    public void shouldReturnOptionalEmptyWhenThereIsNotResultInSingleResult() {
         Optional<Object> entity = graphTemplate.getTraversalVertex().hasLabel("NoEntity").getSingleResult();
         assertFalse(entity.isPresent());
     }
@@ -486,7 +486,7 @@ public class DefaultVertexTraversalTest extends AbstractTraversalTest {
                 has("name", name).getSingleResult();
         assertEquals(name, poliana.map(Person::getName).orElse(""));
     }
-    
+
     @Test
     public void shouldReturnErrorWhenPredicateIsNull() {
         assertThrows(NullPointerException.class, () -> {
