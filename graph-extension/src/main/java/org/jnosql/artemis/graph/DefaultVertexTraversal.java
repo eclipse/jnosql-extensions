@@ -160,7 +160,7 @@ class DefaultVertexTraversal extends AbstractVertexTraversal implements VertexTr
 
     @Override
     public VertexTraversal hasLabel(String label) throws NullPointerException {
-      Objects.requireNonNull(label, "label is required");
+        Objects.requireNonNull(label, "label is required");
         return new DefaultVertexTraversal(supplier, flow.andThen(g -> g.hasLabel(label)), converter);
     }
 
@@ -209,13 +209,12 @@ class DefaultVertexTraversal extends AbstractVertexTraversal implements VertexTr
     public <T> Optional<T> getSingleResult() throws NonUniqueResultException {
         List<T> result = getResultList();
 
-        if(result.isEmpty()) {
+        if (result.isEmpty()) {
             return Optional.empty();
+        } else if (result.size() == 1) {
+            return Optional.of(result.get(0));
         }
-        else if(result.size() == 1) {
-
-        }
-        throw new NonUniqueResultException("");
+        throw new NonUniqueResultException("The Vertex traversal query returns more than one result");
     }
 
     @Override
