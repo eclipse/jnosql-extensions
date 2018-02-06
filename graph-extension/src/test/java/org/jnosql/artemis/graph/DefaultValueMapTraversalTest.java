@@ -17,18 +17,21 @@ package org.jnosql.artemis.graph;
 import org.hamcrest.Matchers;
 import org.jnosql.artemis.graph.cdi.CDIExtension;
 import org.jnosql.artemis.graph.model.Person;
+import org.jnosql.diana.api.NonUniqueResultException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ExtendWith(CDIExtension.class)
 class DefaultValueMapTraversalTest extends AbstractTraversalTest {
@@ -62,4 +65,36 @@ class DefaultValueMapTraversalTest extends AbstractTraversalTest {
         assertEquals(3L, stream.count());
     }
 
+
+    @Test
+    public void shouldReturnResultAsList() {
+        List<Map<String, Object>> maps = graphTemplate.getTraversalVertex()
+                .hasLabel(Person.class).valueMap("name")
+                .getResultList();
+        assertEquals(3, maps.size());
+    }
+
+    @Test
+    public void shouldReturnErrorWhenThereAreMoreThanOneInGetSingleResult() {
+        assertThrows(NonUniqueResultException.class, () -> {
+            graphTemplate.getTraversalVertex()
+                    .hasLabel(Person.class).valueMap("name")
+                    .getSingleResult();
+        });
+    }
+
+    @Test
+    public void shouldReturnOptionalEmptyWhenThereIsNotResultInSingleResult() {
+        Optional<Map<String, Object>> entity =   graphTemplate.getTraversalVertex()
+                .hasLabel("not_found").valueMap("name").getSingleResult();
+        assertFalse(entity.isPresent());
+    }
+
+    @Test
+    public void shouldReturnSingleResult() {
+        String name = "Poliana";
+        Optional<Map<String, Object>> poliana = graphTemplate.getTraversalVertex().hasLabel("Person").
+                has("name", name).valueMap("name").getSingleResult();
+        assertEquals(name, poliana.map(m -> List.class.cast(m.get("name")).get(0)).orElse(""));
+    }
 }
