@@ -16,18 +16,23 @@ package org.jnosql.artemis.graph;
 
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
+import org.jnosql.diana.api.NonUniqueResultException;
 
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static java.util.Collections.emptyMap;
+import static java.util.stream.Collectors.toList;
 
 /**
  * The default implementation of {@link ValueMapTraversal}
  */
-class DefaultValueMapTraversal implements ValueMapTraversal{
+class DefaultValueMapTraversal implements ValueMapTraversal {
 
     private final Supplier<GraphTraversal<?, ?>> supplier;
     private final Function<GraphTraversal<?, ?>, GraphTraversal<Vertex, Map<String, Object>>> flow;
@@ -52,6 +57,23 @@ class DefaultValueMapTraversal implements ValueMapTraversal{
     @Override
     public Map<String, Object> next() {
         return flow.apply(supplier.get()).tryNext().orElse(emptyMap());
+    }
+
+    @Override
+    public Optional<Map<String, Object>> getSingleResult() throws NonUniqueResultException {
+        List<Map<String, Object>> result = getResultList();
+        if (result.isEmpty()) {
+            return Optional.empty();
+        }
+        if (result.size() == 1) {
+            return Optional.of(result.get(0));
+        }
+        throw new NonUniqueResultException("The Edge traversal query returns more than one result");
+    }
+
+    @Override
+    public List<Map<String, Object>> getResultList() {
+        return stream().collect(toList());
     }
 
     @Override
