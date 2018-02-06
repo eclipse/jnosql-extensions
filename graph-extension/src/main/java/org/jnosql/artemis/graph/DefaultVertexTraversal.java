@@ -21,12 +21,15 @@ import org.apache.tinkerpop.gremlin.structure.T;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.jnosql.artemis.Entity;
 import org.jnosql.artemis.graph.util.TinkerPopUtil;
+import org.jnosql.diana.api.NonUniqueResultException;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static java.util.Objects.requireNonNull;
@@ -200,6 +203,25 @@ class DefaultVertexTraversal extends AbstractVertexTraversal implements VertexTr
         return flow.apply(supplier.get()).toList().stream()
                 .map(TinkerPopUtil::toArtemisVertex)
                 .map(converter::toEntity);
+    }
+
+    @Override
+    public <T> Optional<T> getSingleResult() throws NonUniqueResultException {
+        List<T> result = getResultList();
+
+        if(result.isEmpty()) {
+            return Optional.empty();
+        }
+        else if(result.size() == 1) {
+
+        }
+        throw new NonUniqueResultException("");
+    }
+
+    @Override
+    public <T> List<T> getResultList() {
+        Stream<T> stream = stream();
+        return stream.collect(Collectors.toList());
     }
 
     @Override
