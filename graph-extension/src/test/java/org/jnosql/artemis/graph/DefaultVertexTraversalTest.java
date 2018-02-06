@@ -20,6 +20,7 @@ import org.jnosql.artemis.graph.cdi.CDIExtension;
 import org.jnosql.artemis.graph.model.Animal;
 import org.jnosql.artemis.graph.model.Book;
 import org.jnosql.artemis.graph.model.Person;
+import org.jnosql.diana.api.NonUniqueResultException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
@@ -459,6 +460,32 @@ public class DefaultVertexTraversalTest extends AbstractTraversalTest {
         assertTrue(graphTemplate.getTraversalVertex().hasLabel(Animal.class).stream().allMatch(Animal.class::isInstance));
     }
 
+    @Test
+    public void shouldReturnResultAsList() {
+        List<Person> people = graphTemplate.getTraversalVertex().hasLabel("Person").getResultList();
+        assertEquals(3, people.size());
+    }
+
+    @Test
+    public void shouldReturnErrorWhenThereAreMoreThanOneInGetSingleResult() {
+        assertThrows(NonUniqueResultException.class, () -> {
+            graphTemplate.getTraversalVertex().hasLabel("Person").getSingleResult();
+        });
+    }
+
+    @Test
+    public void shouldReturnOptionaEmptyWhenThereIsNotResultInSingleResult() {
+        Optional<Object> entity = graphTemplate.getTraversalVertex().hasLabel("NoEntity").getSingleResult();
+        assertFalse(entity.isPresent());
+    }
+
+    @Test
+    public void shouldReturnSingleResult() {
+        String name = "Poliana";
+        Optional<Person> poliana = graphTemplate.getTraversalVertex().hasLabel("Person").
+                has("name", name).getSingleResult();
+        assertEquals(name, poliana.map(Person::getName).orElse(""));
+    }
     @Test
     public void shouldReturnErrorWhenPredicateIsNull() {
         assertThrows(NullPointerException.class, () -> {
