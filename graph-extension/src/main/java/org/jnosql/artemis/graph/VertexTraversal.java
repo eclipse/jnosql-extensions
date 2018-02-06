@@ -157,7 +157,7 @@ public interface VertexTraversal extends VertexConditionTraversal {
      * @return the entity result otherwise {@link Optional#empty()}
      * @throws NonUniqueResultException when there is more than one result
      */
-    <T> T getSingleResult() throws NonUniqueResultException;
+    <T> Optional<T> getSingleResult() throws NonUniqueResultException;
 
     /**
      * Concludes the traversal that returns a single.
