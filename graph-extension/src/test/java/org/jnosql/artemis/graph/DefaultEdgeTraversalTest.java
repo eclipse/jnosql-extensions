@@ -18,6 +18,7 @@ import org.jnosql.artemis.graph.cdi.CDIExtension;
 import org.jnosql.artemis.graph.model.Animal;
 import org.jnosql.artemis.graph.model.Book;
 import org.jnosql.artemis.graph.model.Person;
+import org.jnosql.diana.api.NonUniqueResultException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
@@ -362,6 +363,33 @@ public class DefaultEdgeTraversalTest extends AbstractTraversalTest {
         assertThat(properties, contains("love", "job", "hobby"));
     }
 
+
+    @Test
+    public void shouldReturnResultAsList() {
+        List<EdgeEntity> entities = graphTemplate.getTraversalEdge().getResultList();
+        assertEquals(3, entities.size());
+    }
+
+    @Test
+    public void shouldReturnErrorWhenThereAreMoreThanOneInGetSingleResult() {
+        assertThrows(NonUniqueResultException.class, () -> {
+            graphTemplate.getTraversalEdge().getSingleResult();
+        });
+    }
+
+    @Test
+    public void shouldReturnOptionalEmptyWhenThereIsNotResultInSingleResult() {
+        Optional<EdgeEntity> entity = graphTemplate.getTraversalEdge(Long.valueOf(-1L)).getSingleResult();
+        assertFalse(entity.isPresent());
+    }
+
+    @Test
+    public void shouldReturnSingleResult() {
+        String name = "Poliana";
+        Optional<EdgeEntity> entity = graphTemplate.getTraversalEdge(reads.getId().get()).getSingleResult();
+        assertEquals(reads, entity.get());
+    }
+
     @Test
     public void shouldReturnErrorWhenPredicateIsNull() {
         assertThrows(NullPointerException.class, () -> {
@@ -374,5 +402,6 @@ public class DefaultEdgeTraversalTest extends AbstractTraversalTest {
         long count = graphTemplate.getTraversalEdge().filter(reads::equals).count();
         assertEquals(1L, count);
     }
+
 
 }
