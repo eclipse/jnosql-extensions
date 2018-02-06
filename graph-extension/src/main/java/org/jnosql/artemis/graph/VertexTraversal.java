@@ -16,6 +16,7 @@ package org.jnosql.artemis.graph;
 
 import org.jnosql.diana.api.NonUniqueResultException;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
@@ -151,13 +152,19 @@ public interface VertexTraversal extends VertexConditionTraversal {
     <T> Stream<T> stream();
 
     /**
-     * Execute a SELECT query that returns a single untyped result.
+     * Concludes the traversal that returns a single result
      * @param <T> the type
      * @return the entity result otherwise {@link Optional#empty()}
      * @throws NonUniqueResultException when there is more than one result
      */
     <T> T getSingleResult() throws NonUniqueResultException;
 
+    /**
+     * Concludes the traversal that returns a single.
+     * @param <T> the type
+     * @return the entities result
+     */
+    <T> List<T> getResultList();
 
     /**
      * Get the next n-number of results from the traversal.
