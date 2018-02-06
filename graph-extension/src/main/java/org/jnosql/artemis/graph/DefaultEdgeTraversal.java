@@ -21,7 +21,9 @@ import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.T;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.jnosql.artemis.graph.util.TinkerPopUtil;
+import org.jnosql.diana.api.NonUniqueResultException;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -29,6 +31,7 @@ import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 import static java.util.Objects.requireNonNull;
+import static java.util.stream.Collectors.toList;
 import static org.jnosql.artemis.graph.util.TinkerPopUtil.toEdgeEntity;
 
 class DefaultEdgeTraversal extends AbstractEdgeTraversal implements EdgeTraversal {
@@ -132,6 +135,23 @@ class DefaultEdgeTraversal extends AbstractEdgeTraversal implements EdgeTraversa
 
         }
         return Optional.empty();
+    }
+
+    @Override
+    public Optional<EdgeEntity> getSingleResult() throws NonUniqueResultException {
+        List<EdgeEntity> result = getResultList();
+
+        if(result.isEmpty()) {
+            return Optional.empty();
+        }else if(result.size() == 1) {
+            return Optional.of(result.get(0));
+        }
+        throw new NonUniqueResultException("The Edge traversal query returns more than one result");
+    }
+
+    @Override
+    public List<EdgeEntity> getResultList() {
+        return stream().collect(toList());
     }
 
     @Override
