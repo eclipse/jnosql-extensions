@@ -486,6 +486,7 @@ public class DefaultVertexTraversalTest extends AbstractTraversalTest {
                 has("name", name).getSingleResult();
         assertEquals(name, poliana.map(Person::getName).orElse(""));
     }
+    
     @Test
     public void shouldReturnErrorWhenPredicateIsNull() {
         assertThrows(NullPointerException.class, () -> {
