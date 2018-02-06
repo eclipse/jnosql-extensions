@@ -160,7 +160,7 @@ public interface VertexTraversal extends VertexConditionTraversal {
     <T> Optional<T> getSingleResult() throws NonUniqueResultException;
 
     /**
-     * Concludes the traversal that returns a single.
+     * Concludes the traversal then returns the result as list.
      * @param <T> the type
      * @return the entities result
      */
