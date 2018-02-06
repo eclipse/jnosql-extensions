@@ -21,10 +21,14 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import static org.hamcrest.MatcherAssert.assertThat;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @ExtendWith(CDIExtension.class)
 class DefaultValueMapTraversalTest extends AbstractTraversalTest {
@@ -46,7 +50,16 @@ class DefaultValueMapTraversalTest extends AbstractTraversalTest {
                 .map(m -> m.getOrDefault("name", "").toString()).collect(Collectors.toList());
 
 
-        assertThat(names, Matchers.containsInAnyOrder("Poliana", "Otavio", "Paulo"));
+        assertThat(names, Matchers.containsInAnyOrder("[Poliana]", "[Otavio]", "[Paulo]"));
+    }
+
+    @Test
+    public void shouldReturnStream() {
+        Stream<Map<String, Object>> stream = graphTemplate.getTraversalVertex()
+                .hasLabel(Person.class).valueMap("name")
+                .stream();
+        assertNotNull(stream);
+        assertEquals(3L, stream.count());
     }
 
 }
