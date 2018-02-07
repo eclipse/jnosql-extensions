@@ -66,9 +66,7 @@ public class DefaultGraphWorkflowTest {
 
     @Test
     public void shouldReturnErrorWhenActionIsNull() {
-        assertThrows(NullPointerException.class, () -> {
-            subject.flow("", null);
-        });
+        assertThrows(NullPointerException.class, () -> subject.flow("", null));
     }
 
     @Test

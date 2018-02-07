@@ -76,11 +76,9 @@ class DefaultValueMapTraversalTest extends AbstractTraversalTest {
 
     @Test
     public void shouldReturnErrorWhenThereAreMoreThanOneInGetSingleResult() {
-        assertThrows(NonUniqueResultException.class, () -> {
-            graphTemplate.getTraversalVertex()
-                    .hasLabel(Person.class).valueMap("name")
-                    .getSingleResult();
-        });
+        assertThrows(NonUniqueResultException.class, () -> graphTemplate.getTraversalVertex()
+                .hasLabel(Person.class).valueMap("name")
+                .getSingleResult());
     }
 
     @Test

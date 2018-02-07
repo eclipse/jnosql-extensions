@@ -68,9 +68,7 @@ public class GraphTemplateTest {
 
     @Test
     public void shouldReturnErrorWhenEntityIsNull() {
-        assertThrows(NullPointerException.class, () -> {
-            graphTemplate.insert(null);
-        });
+        assertThrows(NullPointerException.class, () -> graphTemplate.insert(null));
     }
 
 
@@ -126,9 +124,7 @@ public class GraphTemplateTest {
 
     @Test
     public void shouldReturnErrorInFindWhenIdIsNull() {
-        assertThrows(NullPointerException.class, () -> {
-            graphTemplate.find(null);
-        });
+        assertThrows(NullPointerException.class, () -> graphTemplate.find(null));
     }
 
     @Test
@@ -163,16 +159,12 @@ public class GraphTemplateTest {
 
     @Test
     public void shouldReturnErrorWhenGetEdgesIdHasNullId() {
-        assertThrows(NullPointerException.class, () -> {
-            graphTemplate.getEdgesById(null, Direction.BOTH);
-        });
+        assertThrows(NullPointerException.class, () -> graphTemplate.getEdgesById(null, Direction.BOTH));
     }
 
     @Test
     public void shouldReturnErrorWhenGetEdgesIdHasNullDirection() {
-        assertThrows(NullPointerException.class, () -> {
-            graphTemplate.getEdgesById(10, null);
-        });
+        assertThrows(NullPointerException.class, () -> graphTemplate.getEdgesById(10, null));
     }
 
     @Test
@@ -208,9 +200,7 @@ public class GraphTemplateTest {
 
     @Test
     public void shouldReturnErrorWhenGetEdgesHasNullId() {
-        assertThrows(NullPointerException.class, () -> {
-            graphTemplate.getEdges(null, Direction.BOTH);
-        });
+        assertThrows(NullPointerException.class, () -> graphTemplate.getEdges(null, Direction.BOTH));
     }
 
     @Test

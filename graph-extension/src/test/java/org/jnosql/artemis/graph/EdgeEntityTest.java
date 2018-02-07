@@ -258,9 +258,7 @@ public class EdgeEntityTest {
 
     @Test
     public void shouldReturnErrorWhenDeleteAnEdgeWithNull() {
-        assertThrows(NullPointerException.class, () -> {
-            graphTemplate.delete(null);
-        });
+        assertThrows(NullPointerException.class, () -> graphTemplate.delete(null));
     }
 
     @Test
@@ -279,9 +277,7 @@ public class EdgeEntityTest {
 
     @Test
     public void shouldReturnErrorWhenFindEdgeWithNull() {
-        assertThrows(NullPointerException.class, () -> {
-            graphTemplate.edge(null);
-        });
+        assertThrows(NullPointerException.class, () -> graphTemplate.edge(null));
     }
 
 

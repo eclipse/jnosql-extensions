@@ -30,9 +30,7 @@ public class DefaultArtemisVertexTest {
 
     @Test
     public void shouldRequireLabel() {
-        assertThrows(NullPointerException.class, () -> {
-            new DefaultArtemisVertex(null);
-        });
+        assertThrows(NullPointerException.class, () -> new DefaultArtemisVertex(null));
     }
 
     @Test

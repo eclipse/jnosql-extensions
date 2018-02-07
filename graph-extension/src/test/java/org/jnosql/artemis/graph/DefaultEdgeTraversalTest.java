@@ -45,9 +45,7 @@ public class DefaultEdgeTraversalTest extends AbstractTraversalTest {
 
     @Test
     public void shouldReturnErrorWhenEdgeIdIsNull() {
-        assertThrows(NullPointerException.class, () -> {
-            graphTemplate.getTraversalEdge(null);
-        });
+        assertThrows(NullPointerException.class, () -> graphTemplate.getTraversalEdge(null));
 
     }
 
@@ -73,11 +71,9 @@ public class DefaultEdgeTraversalTest extends AbstractTraversalTest {
 
     @Test
     public void shouldReturnErrorOutEWhenIsNull() {
-        assertThrows(NullPointerException.class, () -> {
-            graphTemplate.getTraversalVertex().outE((String) null)
-                    .<Person, Book>stream()
-                    .collect(toList());
-        });
+        assertThrows(NullPointerException.class, () -> graphTemplate.getTraversalVertex().outE((String) null)
+                .<Person, Book>stream()
+                .collect(toList()));
 
 
     }
@@ -95,11 +91,9 @@ public class DefaultEdgeTraversalTest extends AbstractTraversalTest {
 
     @Test
     public void shouldReturnErrorWhenInEIsNull() {
-        assertThrows(NullPointerException.class, () -> {
-            graphTemplate.getTraversalVertex().inE((String) null)
-                    .<Person, Book>stream()
-                    .collect(toList());
-        });
+        assertThrows(NullPointerException.class, () -> graphTemplate.getTraversalVertex().inE((String) null)
+                .<Person, Book>stream()
+                .collect(toList()));
 
     }
 
@@ -114,11 +108,9 @@ public class DefaultEdgeTraversalTest extends AbstractTraversalTest {
 
     @Test
     public void shouldReturErrorWhennBothEIsNull() {
-        assertThrows(NullPointerException.class, () -> {
-            graphTemplate.getTraversalVertex().bothE((String) null)
-                    .<Person, Book>stream()
-                    .collect(toList());
-        });
+        assertThrows(NullPointerException.class, () -> graphTemplate.getTraversalVertex().bothE((String) null)
+                .<Person, Book>stream()
+                .collect(toList()));
     }
 
 
@@ -157,20 +149,16 @@ public class DefaultEdgeTraversalTest extends AbstractTraversalTest {
 
     @Test
     public void shouldReturnErrorWhenHasPropertyWhenKeyIsNull() {
-        assertThrows(NullPointerException.class, () -> {
-            graphTemplate.getTraversalVertex()
-                    .outE(READS)
-                    .has((String) null, "hobby").next();
-        });
+        assertThrows(NullPointerException.class, () -> graphTemplate.getTraversalVertex()
+                .outE(READS)
+                .has((String) null, "hobby").next());
     }
 
     @Test
     public void shouldReturnErrorWhenHasPropertyWhenValueIsNull() {
-        assertThrows(NullPointerException.class, () -> {
-            graphTemplate.getTraversalVertex()
-                    .outE(READS)
-                    .has("motivation", null).next();
-        });
+        assertThrows(NullPointerException.class, () -> graphTemplate.getTraversalVertex()
+                .outE(READS)
+                .has("motivation", null).next());
     }
 
     @Test
@@ -197,9 +185,7 @@ public class DefaultEdgeTraversalTest extends AbstractTraversalTest {
 
     @Test
     public void shouldReturnErrorWhenHasNotIsNull() {
-        assertThrows(NullPointerException.class, () -> {
-            graphTemplate.getTraversalVertex().outE(READS).hasNot((String) null);
-        });
+        assertThrows(NullPointerException.class, () -> graphTemplate.getTraversalVertex().outE(READS).hasNot((String) null));
     }
 
 
@@ -317,16 +303,12 @@ public class DefaultEdgeTraversalTest extends AbstractTraversalTest {
 
     @Test
     public void shouldReturnErrorWhenTheOrderIsNull() {
-        assertThrows(NullPointerException.class, () -> {
-            graphTemplate.getTraversalEdge().orderBy(null);
-        });
+        assertThrows(NullPointerException.class, () -> graphTemplate.getTraversalEdge().orderBy(null));
     }
 
     @Test
     public void shouldReturnErrorWhenThePropertyDoesNotExist() {
-        assertThrows(IllegalStateException.class, () -> {
-            graphTemplate.getTraversalEdge().orderBy("wrong property").asc().next();
-        });
+        assertThrows(IllegalStateException.class, () -> graphTemplate.getTraversalEdge().orderBy("wrong property").asc().next());
     }
 
     @Test
@@ -372,9 +354,7 @@ public class DefaultEdgeTraversalTest extends AbstractTraversalTest {
 
     @Test
     public void shouldReturnErrorWhenThereAreMoreThanOneInGetSingleResult() {
-        assertThrows(NonUniqueResultException.class, () -> {
-            graphTemplate.getTraversalEdge().getSingleResult();
-        });
+        assertThrows(NonUniqueResultException.class, () -> graphTemplate.getTraversalEdge().getSingleResult());
     }
 
     @Test
@@ -392,9 +372,7 @@ public class DefaultEdgeTraversalTest extends AbstractTraversalTest {
 
     @Test
     public void shouldReturnErrorWhenPredicateIsNull() {
-        assertThrows(NullPointerException.class, () -> {
-            graphTemplate.getTraversalEdge().filter(null);
-        });
+        assertThrows(NullPointerException.class, () -> graphTemplate.getTraversalEdge().filter(null));
     }
 
     @Test

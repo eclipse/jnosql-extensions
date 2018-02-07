@@ -26,16 +26,12 @@ public class DefaultArtemisPropertyTest {
 
     @Test
     public void shouldReturnErrorWhenKeyINull() {
-        Assertions.assertThrows(NullPointerException.class, () -> {
-            ArtemisProperty.of(null, 10L);
-        });
+        Assertions.assertThrows(NullPointerException.class, () -> ArtemisProperty.of(null, 10L));
     }
 
     @Test
     public void shouldReturnErrorWhenValueINull() {
-        Assertions.assertThrows(NullPointerException.class, () -> {
-            ArtemisProperty.of("key", null);
-        });
+        Assertions.assertThrows(NullPointerException.class, () -> ArtemisProperty.of("key", null));
     }
 
     @Test

@@ -33,9 +33,7 @@ public class DefaultGraphTemplateProducerTest {
 
     @Test
     public void shouldReturnErrorWhenManagerNull() {
-        assertThrows(NullPointerException.class, () -> {
-            producer.get(null);
-        });
+        assertThrows(NullPointerException.class, () -> producer.get(null));
     }
 
     @Test
