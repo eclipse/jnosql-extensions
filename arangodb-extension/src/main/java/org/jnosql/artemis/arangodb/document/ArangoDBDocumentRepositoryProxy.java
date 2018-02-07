@@ -32,7 +32,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import static java.util.Collections.emptyList;
 import static java.util.Collections.emptyMap;
 
 class ArangoDBDocumentRepositoryProxy<T> extends AbstractDocumentRepositoryProxy<T> {
