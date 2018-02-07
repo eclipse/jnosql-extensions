@@ -29,7 +29,6 @@ import org.jnosql.artemis.reflection.Reflections;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
