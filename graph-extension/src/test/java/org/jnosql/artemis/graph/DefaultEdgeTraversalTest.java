@@ -379,7 +379,7 @@ public class DefaultEdgeTraversalTest extends AbstractTraversalTest {
 
     @Test
     public void shouldReturnOptionalEmptyWhenThereIsNotResultInSingleResult() {
-        Optional<EdgeEntity> entity = graphTemplate.getTraversalEdge(Long.valueOf(-1L)).getSingleResult();
+        Optional<EdgeEntity> entity = graphTemplate.getTraversalEdge(-1L).getSingleResult();
         assertFalse(entity.isPresent());
     }
 
