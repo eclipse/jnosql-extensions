@@ -201,8 +201,9 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
     }
 
 
+    @SafeVarargs
     @Override
-    public <T> Collection<EdgeEntity> getEdges(T entity, Direction direction, Supplier<String>... labels)
+    public final <T> Collection<EdgeEntity> getEdges(T entity, Direction direction, Supplier<String>... labels)
             throws NullPointerException {
 
         checkLabelsSupplier(labels);
@@ -222,8 +223,9 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
         return getEdgesByIdImpl(id, direction);
     }
 
+    @SafeVarargs
     @Override
-    public <ID> Collection<EdgeEntity> getEdgesById(ID id, Direction direction, Supplier<String>... labels)
+    public final <ID> Collection<EdgeEntity> getEdgesById(ID id, Direction direction, Supplier<String>... labels)
             throws NullPointerException {
 
         checkLabelsSupplier(labels);
