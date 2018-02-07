@@ -305,7 +305,7 @@ public class DefaultVertexTraversalTest extends AbstractTraversalTest {
         graphTemplate.edge(lion, "eats", snake).add("when", "night");
         graphTemplate.edge(snake, "eats", mouse);
         graphTemplate.edge(mouse, "eats", plant);
-        Optional<Animal> animal = graphTemplate.getTraversalVertex().repeat().out("eats").times(3).<Animal>next();
+        Optional<Animal> animal = graphTemplate.getTraversalVertex().repeat().out("eats").times(3).next();
         assertTrue(animal.isPresent());
         assertEquals(plant, animal.get());
 
@@ -321,7 +321,7 @@ public class DefaultVertexTraversalTest extends AbstractTraversalTest {
         graphTemplate.edge(lion, "eats", snake).add("when", "night");
         graphTemplate.edge(snake, "eats", mouse);
         graphTemplate.edge(mouse, "eats", plant);
-        Optional<Animal> animal = graphTemplate.getTraversalVertex().repeat().in("eats").times(3).<Animal>next();
+        Optional<Animal> animal = graphTemplate.getTraversalVertex().repeat().in("eats").times(3).next();
         assertTrue(animal.isPresent());
         assertEquals(lion, animal.get());
 
