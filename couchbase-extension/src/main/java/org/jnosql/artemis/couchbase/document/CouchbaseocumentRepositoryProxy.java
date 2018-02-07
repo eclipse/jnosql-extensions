@@ -101,7 +101,7 @@ class CouchbaseocumentRepositoryProxy<T> extends AbstractDocumentRepositoryProxy
 
         N1QL n1QL = method.getAnnotation(N1QL.class);
         if (Objects.nonNull(n1QL)) {
-            List<T> result = Collections.emptyList();
+            List<T> result;
             JsonObject params = getParams(args, method);
             if (params.isEmpty()) {
                 result = template.n1qlQuery(n1QL.value());

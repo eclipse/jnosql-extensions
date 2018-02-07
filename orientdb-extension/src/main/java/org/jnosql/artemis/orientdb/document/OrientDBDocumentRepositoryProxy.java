@@ -98,7 +98,7 @@ class OrientDBDocumentRepositoryProxy<T> extends AbstractDocumentRepositoryProxy
 
         SQL sql = method.getAnnotation(SQL.class);
         if (Objects.nonNull(sql)) {
-            List<T> result = Collections.emptyList();
+            List<T> result;
 
             if (args == null || args.length == 0) {
                 result = template.sql(sql.value());

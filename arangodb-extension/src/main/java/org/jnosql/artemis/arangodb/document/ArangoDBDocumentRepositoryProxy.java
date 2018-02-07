@@ -101,7 +101,7 @@ class ArangoDBDocumentRepositoryProxy<T> extends AbstractDocumentRepositoryProxy
 
         AQL aql = method.getAnnotation(AQL.class);
         if (Objects.nonNull(aql)) {
-            List<T> result = emptyList();
+            List<T> result;
             Map<String, Object> params = ParamUtil.getParams(args, method);
             if (params.isEmpty()) {
                 result = template.aql(aql.value(), emptyMap());
