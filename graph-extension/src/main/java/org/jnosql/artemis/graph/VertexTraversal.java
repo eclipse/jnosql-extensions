@@ -14,8 +14,6 @@
  */
 package org.jnosql.artemis.graph;
 
-import org.jnosql.diana.api.NonUniqueResultException;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
@@ -38,7 +36,7 @@ public interface VertexTraversal extends VertexConditionTraversal {
      * @return a {@link EdgeTraversal} with the Vertex predicate
      * @throws NullPointerException when predicate is null
      */
-    <T> VertexTraversal filter(Predicate<T> predicate)throws NullPointerException;
+    <T> VertexTraversal filter(Predicate<T> predicate);
 
     /**
      * Map the {@link EdgeTraversal} to its outgoing incident edges given the edge labels.
@@ -47,7 +45,7 @@ public interface VertexTraversal extends VertexConditionTraversal {
      * @return a {@link EdgeTraversal} with the new condition
      * @throws NullPointerException when has any null element
      */
-    EdgeTraversal outE(String... edgeLabels) throws NullPointerException;
+    EdgeTraversal outE(String... edgeLabels);
 
 
     /**
@@ -57,7 +55,7 @@ public interface VertexTraversal extends VertexConditionTraversal {
      * @return a {@link EdgeTraversal} with the new condition
      * @throws NullPointerException when has any null element
      */
-    EdgeTraversal inE(String... edgeLabels) throws NullPointerException;
+    EdgeTraversal inE(String... edgeLabels);
 
     /**
      * Map the {@link EdgeTraversal} to its either incoming or outgoing incident edges given the edge labels.
@@ -66,7 +64,7 @@ public interface VertexTraversal extends VertexConditionTraversal {
      * @return a {@link EdgeTraversal} with the new condition
      * @throws NullPointerException when has any null element
      */
-    EdgeTraversal bothE(String... edgeLabels) throws NullPointerException;
+    EdgeTraversal bothE(String... edgeLabels);
 
 
     /**
@@ -84,7 +82,7 @@ public interface VertexTraversal extends VertexConditionTraversal {
      * @return a {@link EdgeTraversal} with the new condition
      * @throws NullPointerException when has any null element
      */
-    default EdgeTraversal outE(Supplier<String> label) throws NullPointerException {
+    default EdgeTraversal outE(Supplier<String> label) {
         requireNonNull(label, "the supplier is required");
         return outE(label.get());
     }
@@ -97,7 +95,7 @@ public interface VertexTraversal extends VertexConditionTraversal {
      * @return a {@link EdgeTraversal} with the new condition
      * @throws NullPointerException when has any null element
      */
-    default EdgeTraversal inE(Supplier<String> label) throws NullPointerException {
+    default EdgeTraversal inE(Supplier<String> label) {
         requireNonNull(label, "the supplier is required");
         return inE(label.get());
     }
@@ -110,7 +108,7 @@ public interface VertexTraversal extends VertexConditionTraversal {
      * @return a {@link EdgeTraversal} with the new condition
      * @throws NullPointerException when has any null element
      */
-    default EdgeTraversal bothE(Supplier<String> label) throws NullPointerException {
+    default EdgeTraversal bothE(Supplier<String> label) {
         requireNonNull(label, "the supplier is required");
         return bothE(label.get());
     }
@@ -155,9 +153,9 @@ public interface VertexTraversal extends VertexConditionTraversal {
      * Concludes the traversal that returns a single result
      * @param <T> the type
      * @return the entity result otherwise {@link Optional#empty()}
-     * @throws NonUniqueResultException when there is more than one result
+     * @throws org.jnosql.diana.api.NonUniqueResultException when there is more than one result
      */
-    <T> Optional<T> getSingleResult() throws NonUniqueResultException;
+    <T> Optional<T> getSingleResult();
 
     /**
      * Concludes the traversal then returns the result as list.
@@ -203,5 +201,5 @@ public interface VertexTraversal extends VertexConditionTraversal {
      * @throws NullPointerException  when the property is null
      * @throws IllegalStateException when there any Edge that does not have the property
      */
-    VertexTraversalOrder orderBy(String property) throws NullPointerException, IllegalStateException;
+    VertexTraversalOrder orderBy(String property);
 }

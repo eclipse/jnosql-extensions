@@ -35,7 +35,7 @@ public interface OrientDBTemplate extends DocumentTemplate {
      * @return the query result
      * @throws NullPointerException when either query or params are null
      */
-    <T> List<T> sql(String query, Object... params) throws NullPointerException;
+    <T> List<T> sql(String query, Object... params);
 
     /**
      * Find using OrientDB native query with map params
@@ -45,7 +45,7 @@ public interface OrientDBTemplate extends DocumentTemplate {
      * @return the query result
      * @throws NullPointerException when either query or params are null
      */
-    <T> List<T> sql(String query, Map<String, Object> params) throws NullPointerException;
+    <T> List<T> sql(String query, Map<String, Object> params);
     /**
      * Execute live query
      *
@@ -53,7 +53,7 @@ public interface OrientDBTemplate extends DocumentTemplate {
      * @param callBack when a new callback is coming
      * @throws NullPointerException when both query and callBack are null
      */
-    <T> void live(DocumentQuery query, Consumer<T> callBack) throws NullPointerException;
+    <T> void live(DocumentQuery query, Consumer<T> callBack);
 
     /**
      * Execute live query

@@ -43,7 +43,7 @@ public final class TinkerPopUtil {
      * @return the Artemis Vertex
      * @throws NullPointerException when vertex is null
      */
-    public static ArtemisVertex toArtemisVertex(Vertex vertex) throws NullPointerException {
+    public static ArtemisVertex toArtemisVertex(Vertex vertex) {
         requireNonNull(vertex, "vertex is required");
 
 
@@ -63,7 +63,7 @@ public final class TinkerPopUtil {
      * @return the {@link Vertex} with {@link ArtemisVertex} information
      * @throws NullPointerException when either vertex or graph are null
      */
-    public static Vertex toVertex(ArtemisVertex artemisVertex, Graph graph) throws NullPointerException {
+    public static Vertex toVertex(ArtemisVertex artemisVertex, Graph graph) {
 
         requireNonNull(artemisVertex, "artemisVertex is required");
         requireNonNull(graph, "graph is required");
@@ -85,7 +85,7 @@ public final class TinkerPopUtil {
      * @return the Entity
      * @throws NullPointerException when either vertex and converter are null
      */
-    public static <T> T toEntity(Vertex vertex, VertexConverter converter) throws NullPointerException {
+    public static <T> T toEntity(Vertex vertex, VertexConverter converter) {
         requireNonNull(vertex, "vertex is required");
         requireNonNull(converter, "converter is required");
         return converter.toEntity(toArtemisVertex(vertex));

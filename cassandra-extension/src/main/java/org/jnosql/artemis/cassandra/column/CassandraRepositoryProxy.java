@@ -167,22 +167,22 @@ class CassandraRepositoryProxy<T> implements InvocationHandler {
         }
 
         @Override
-        public Object save(Object entity, ConsistencyLevel level) throws NullPointerException {
+        public Object save(Object entity, ConsistencyLevel level) {
             return template.save(entity, level);
         }
 
         @Override
-        public Object save(Object entity, Duration ttl, ConsistencyLevel level) throws NullPointerException {
+        public Object save(Object entity, Duration ttl, ConsistencyLevel level) {
             return template.save(entity, ttl, level);
         }
 
         @Override
-        public Iterable save(Iterable entities, ConsistencyLevel level) throws NullPointerException {
+        public Iterable save(Iterable entities, ConsistencyLevel level) {
             return template.save(entities, level);
         }
 
         @Override
-        public Iterable save(Iterable entities, Duration ttl, ConsistencyLevel level) throws NullPointerException {
+        public Iterable save(Iterable entities, Duration ttl, ConsistencyLevel level) {
             return template.save(entities, ttl, level);
         }
 

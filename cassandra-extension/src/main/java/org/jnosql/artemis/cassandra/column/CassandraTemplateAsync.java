@@ -18,7 +18,6 @@ package org.jnosql.artemis.cassandra.column;
 import com.datastax.driver.core.ConsistencyLevel;
 import com.datastax.driver.core.Statement;
 import org.jnosql.artemis.column.ColumnTemplateAsync;
-import org.jnosql.diana.api.ExecuteAsyncQueryException;
 import org.jnosql.diana.api.column.ColumnDeleteQuery;
 import org.jnosql.diana.api.column.ColumnQuery;
 
@@ -48,11 +47,10 @@ public interface CassandraTemplateAsync extends ColumnTemplateAsync {
      * @param entity the entity
      * @param ttl    the ttl
      * @param level  {@link ConsistencyLevel}
-     * @throws ExecuteAsyncQueryException when there is async issue
+     * @throws org.jnosql.diana.api.ExecuteAsyncQueryException when there is async issue
      * @throws NullPointerException       when there are any element null
      */
-    <T> void save(T entity, Duration ttl, ConsistencyLevel level) throws
-            ExecuteAsyncQueryException, NullPointerException;
+    <T> void save(T entity, Duration ttl, ConsistencyLevel level);
 
     /**
      * Save the entity with ConsistencyLevel
@@ -70,11 +68,10 @@ public interface CassandraTemplateAsync extends ColumnTemplateAsync {
      * @param entities the entities
      * @param ttl      the ttl
      * @param level    {@link ConsistencyLevel}
-     * @throws ExecuteAsyncQueryException when there is async issue
+     * @throws org.jnosql.diana.api.ExecuteAsyncQueryException when there is async issue
      * @throws NullPointerException       when there are any element null
      */
-    <T> void save(Iterable<T> entities, Duration ttl, ConsistencyLevel level)
-            throws ExecuteAsyncQueryException, UnsupportedOperationException, NullPointerException;
+    <T> void save(Iterable<T> entities, Duration ttl, ConsistencyLevel level);
 
     /**
      * Save the entity with ConsistencyLevel
@@ -84,8 +81,7 @@ public interface CassandraTemplateAsync extends ColumnTemplateAsync {
      * @param entity   the entity
      * @param level    {@link ConsistencyLevel}
      */
-    <T> void save(T entity, ConsistencyLevel level, Consumer<T> callBack)
-            throws ExecuteAsyncQueryException, NullPointerException;
+    <T> void save(T entity, ConsistencyLevel level, Consumer<T> callBack);
 
     /**
      * Saves the entity with ConsistencyLevel
@@ -95,11 +91,10 @@ public interface CassandraTemplateAsync extends ColumnTemplateAsync {
      * @param entity   the entity
      * @param ttl      the ttl
      * @param level    {@link ConsistencyLevel}
-     * @throws ExecuteAsyncQueryException when there is async issue
+     * @throws org.jnosql.diana.api.ExecuteAsyncQueryException when there is async issue
      * @throws NullPointerException when there are any element null
      */
-    <T> void save(T entity, Duration ttl, ConsistencyLevel level, Consumer<T> callBack)
-            throws ExecuteAsyncQueryException, NullPointerException;
+    <T> void save(T entity, Duration ttl, ConsistencyLevel level, Consumer<T> callBack);
 
 
     /**
@@ -110,7 +105,7 @@ public interface CassandraTemplateAsync extends ColumnTemplateAsync {
      * @param level {@link ConsistencyLevel}
      * @throws NullPointerException when both query or level are null
      */
-    <T> void delete(ColumnDeleteQuery query, ConsistencyLevel level) throws NullPointerException;
+    <T> void delete(ColumnDeleteQuery query, ConsistencyLevel level);
 
     /**
      * Deletes an entity with consistencyLeel and consumter
@@ -129,11 +124,10 @@ public interface CassandraTemplateAsync extends ColumnTemplateAsync {
      * @param query    the query
      * @param level    {@link ConsistencyLevel}
      * @param consumer the callBack
-     * @throws ExecuteAsyncQueryException a thread exception
+     * @throws org.jnosql.diana.api.ExecuteAsyncQueryException a thread exception
      * @throws NullPointerException       when any arguments are null
      */
-    <T> void select(ColumnQuery query, ConsistencyLevel level, Consumer<List<T>> consumer)
-            throws ExecuteAsyncQueryException, NullPointerException;
+    <T> void select(ColumnQuery query, ConsistencyLevel level, Consumer<List<T>> consumer);
 
     /**
      * Executes CQL
@@ -141,10 +135,9 @@ public interface CassandraTemplateAsync extends ColumnTemplateAsync {
      * @param <T>      the type
      * @param query    the query
      * @param consumer the callback
-     * @throws ExecuteAsyncQueryException a thread exception
+     * @throws org.jnosql.diana.api.ExecuteAsyncQueryException a thread exception
      */
-    <T> void cql(String query, Consumer<List<T>> consumer)
-            throws ExecuteAsyncQueryException, NullPointerException;
+    <T> void cql(String query, Consumer<List<T>> consumer);
 
     /**
      * Executes CQL using the provided named values.
@@ -154,10 +147,9 @@ public interface CassandraTemplateAsync extends ColumnTemplateAsync {
      * @param query    the query
      * @param values   values required for the execution of {@code query}
      * @param consumer the callback
-     * @throws ExecuteAsyncQueryException a thread exception
+     * @throws org.jnosql.diana.api.ExecuteAsyncQueryException a thread exception
      */
-    <T> void cql(String query, Map<String, Object> values, Consumer<List<T>> consumer)
-            throws ExecuteAsyncQueryException, NullPointerException;
+    <T> void cql(String query, Map<String, Object> values, Consumer<List<T>> consumer);
 
 
     /**
@@ -168,7 +160,7 @@ public interface CassandraTemplateAsync extends ColumnTemplateAsync {
      * @param params the params
      * @throws NullPointerException when query is null
      */
-    <T> void cql(String query, Consumer<List<T>> consumer, Object... params) throws NullPointerException;
+    <T> void cql(String query, Consumer<List<T>> consumer, Object... params);
 
     /**
      * Executes statement
@@ -176,11 +168,10 @@ public interface CassandraTemplateAsync extends ColumnTemplateAsync {
      * @param <T>       the type
      * @param statement the query
      * @param consumer  the callback
-     * @throws ExecuteAsyncQueryException a thread exception
+     * @throws org.jnosql.diana.api.ExecuteAsyncQueryException a thread exception
      * @throws NullPointerException       when either statment and callback is null
      */
-    <T> void execute(Statement statement, Consumer<List<T>> consumer)
-            throws ExecuteAsyncQueryException, NullPointerException;
+    <T> void execute(Statement statement, Consumer<List<T>> consumer);
 
 
 }

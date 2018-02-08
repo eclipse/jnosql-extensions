@@ -102,7 +102,7 @@ class DefaultCouchbaseTemplate extends AbstractDocumentTemplate
     }
 
     @Override
-    public <T> List<T> n1qlQuery(String n1qlQuery, JsonObject params) throws NullPointerException {
+    public <T> List<T> n1qlQuery(String n1qlQuery, JsonObject params) {
         requireNonNull(n1qlQuery, "n1qlQuery is required");
         requireNonNull(params, "params is required");
         return manager.get().n1qlQuery(n1qlQuery, params).stream()
@@ -112,7 +112,7 @@ class DefaultCouchbaseTemplate extends AbstractDocumentTemplate
     }
 
     @Override
-    public <T> List<T> n1qlQuery(Statement n1qlQuery, JsonObject params) throws NullPointerException {
+    public <T> List<T> n1qlQuery(Statement n1qlQuery, JsonObject params) {
         requireNonNull(n1qlQuery, "n1qlQuery is required");
         requireNonNull(params, "params is required");
         return manager.get().n1qlQuery(n1qlQuery, params).stream()
@@ -122,7 +122,7 @@ class DefaultCouchbaseTemplate extends AbstractDocumentTemplate
     }
 
     @Override
-    public <T> List<T> n1qlQuery(String n1qlQuery) throws NullPointerException {
+    public <T> List<T> n1qlQuery(String n1qlQuery) {
         requireNonNull(n1qlQuery, "n1qlQuery is required");
         return manager.get().n1qlQuery(n1qlQuery).stream()
                 .map(converter::toEntity)
@@ -131,7 +131,7 @@ class DefaultCouchbaseTemplate extends AbstractDocumentTemplate
     }
 
     @Override
-    public <T> List<T> search(SearchQuery query) throws NullPointerException {
+    public <T> List<T> search(SearchQuery query) {
         requireNonNull(query, "query is required");
         return manager.get().search(query).stream()
                 .map(converter::toEntity)
@@ -140,7 +140,7 @@ class DefaultCouchbaseTemplate extends AbstractDocumentTemplate
     }
 
     @Override
-    public <T> List<T> n1qlQuery(Statement n1qlQuery) throws NullPointerException {
+    public <T> List<T> n1qlQuery(Statement n1qlQuery) {
         requireNonNull(n1qlQuery, "n1qlQuery is required");
         return manager.get().n1qlQuery(n1qlQuery).stream()
                 .map(converter::toEntity)

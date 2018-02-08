@@ -33,7 +33,7 @@ public interface HazelcastTemplate extends KeyValueTemplate {
      * @return the result query
      * @throws NullPointerException when there is null query
      */
-    <T> Collection<T> query(String query) throws NullPointerException;
+    <T> Collection<T> query(String query);
 
     /**
      * Executes hazelcast query with named query.
@@ -45,7 +45,7 @@ public interface HazelcastTemplate extends KeyValueTemplate {
      * @return the result query
      * @throws NullPointerException when there is null query
      */
-    <T> Collection<T> query(String query, Map<String, Object> params) throws NullPointerException;
+    <T> Collection<T> query(String query, Map<String, Object> params);
 
     /**
      * Executes hazelcast query
@@ -56,6 +56,6 @@ public interface HazelcastTemplate extends KeyValueTemplate {
      * @return the result query
      * @throws NullPointerException when there is null predicate
      */
-    <K, V> Collection<V> query(Predicate<K, V> predicate) throws NullPointerException;
+    <K, V> Collection<V> query(Predicate<K, V> predicate);
 
 }

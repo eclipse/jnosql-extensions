@@ -101,7 +101,7 @@ class DefaultArangoDBTemplate extends AbstractDocumentTemplate
 
 
     @Override
-    public <T> List<T> aql(String query, Map<String, Object> values) throws NullPointerException {
+    public <T> List<T> aql(String query, Map<String, Object> values) {
         requireNonNull(query, "query is required");
         requireNonNull(values, "values is required");
         return manager.get().aql(query, values).stream().map(converter::toEntity).map(d -> (T) d)

@@ -41,7 +41,7 @@ public interface CassandraTemplate extends ColumnTemplate {
      * @throws NullPointerException when both entity or level are null
      */
 
-    <T> T save(T entity, ConsistencyLevel level) throws NullPointerException;
+    <T> T save(T entity, ConsistencyLevel level);
 
 
     /**
@@ -54,7 +54,7 @@ public interface CassandraTemplate extends ColumnTemplate {
      * @return the entity saved
      * @throws NullPointerException when either entity or ttl or level are null
      */
-    <T> Iterable<T> save(Iterable<T> entities, Duration ttl, ConsistencyLevel level) throws NullPointerException;
+    <T> Iterable<T> save(Iterable<T> entities, Duration ttl, ConsistencyLevel level);
 
     /**
      * Saves a ColumnEntity with a defined ConsistencyLevel
@@ -66,7 +66,7 @@ public interface CassandraTemplate extends ColumnTemplate {
      * @throws NullPointerException when both entity or level are null
      */
 
-    <T> Iterable<T> save(Iterable<T> entities, ConsistencyLevel level) throws NullPointerException;
+    <T> Iterable<T> save(Iterable<T> entities, ConsistencyLevel level);
 
 
     /**
@@ -79,7 +79,7 @@ public interface CassandraTemplate extends ColumnTemplate {
      * @return the entity saved
      * @throws NullPointerException when either entity or ttl or level are null
      */
-    <T> T save(T entity, Duration ttl, ConsistencyLevel level) throws NullPointerException;
+    <T> T save(T entity, Duration ttl, ConsistencyLevel level);
 
 
     /**
@@ -89,7 +89,7 @@ public interface CassandraTemplate extends ColumnTemplate {
      * @param level the level
      * @throws NullPointerException when either query or level are null
      */
-    void delete(ColumnDeleteQuery query, ConsistencyLevel level) throws NullPointerException;
+    void delete(ColumnDeleteQuery query, ConsistencyLevel level);
 
     /**
      * Finds using a consistency level
@@ -99,7 +99,7 @@ public interface CassandraTemplate extends ColumnTemplate {
      * @param level the consistency level
      * @return the query using a consistency level
      */
-    <T> List<T> find(ColumnQuery query, ConsistencyLevel level) throws NullPointerException;
+    <T> List<T> find(ColumnQuery query, ConsistencyLevel level);
 
     /**
      * Executes CQL
@@ -109,7 +109,7 @@ public interface CassandraTemplate extends ColumnTemplate {
      * @return the result of this query
      * @throws NullPointerException when query is null
      */
-    <T> List<T> cql(String query) throws NullPointerException;
+    <T> List<T> cql(String query);
 
     /**
      * Executes CQL using the provided named values.
@@ -121,7 +121,7 @@ public interface CassandraTemplate extends ColumnTemplate {
      * @return the result of this query
      * @throws NullPointerException when query is null
      */
-    <T> List<T> cql(String query, Map<String, Object> values) throws NullPointerException;
+    <T> List<T> cql(String query, Map<String, Object> values);
 
     /**
      * Executes CQL
@@ -132,7 +132,7 @@ public interface CassandraTemplate extends ColumnTemplate {
      * @return the result of this query
      * @throws NullPointerException when query is null
      */
-    <T> List<T> cql(String query, Object... params) throws NullPointerException;
+    <T> List<T> cql(String query, Object... params);
 
     /**
      * Executes a statement
@@ -142,6 +142,6 @@ public interface CassandraTemplate extends ColumnTemplate {
      * @return the result of this query
      * @throws NullPointerException when statement is null
      */
-    <T> List<T> execute(Statement statement) throws NullPointerException;
+    <T> List<T> execute(Statement statement);
 
 }

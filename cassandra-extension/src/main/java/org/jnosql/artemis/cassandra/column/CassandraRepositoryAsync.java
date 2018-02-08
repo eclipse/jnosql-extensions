@@ -17,7 +17,6 @@ package org.jnosql.artemis.cassandra.column;
 
 import com.datastax.driver.core.ConsistencyLevel;
 import org.jnosql.artemis.RepositoryAsync;
-import org.jnosql.diana.api.ExecuteAsyncQueryException;
 
 import java.time.Duration;
 import java.util.function.Consumer;
@@ -42,10 +41,10 @@ public interface CassandraRepositoryAsync<T, ID> extends RepositoryAsync<T, ID> 
      * @param entity the entity
      * @param ttl    the ttl
      * @param level  {@link ConsistencyLevel}
-     * @throws ExecuteAsyncQueryException when there is async issue
+     * @throws org.jnosql.diana.api.ExecuteAsyncQueryException when there is async issue
      * @throws NullPointerException       when there are any element null
      */
-    void save(T entity, Duration ttl, ConsistencyLevel level) throws ExecuteAsyncQueryException, NullPointerException;
+    void save(T entity, Duration ttl, ConsistencyLevel level);
 
     /**
      * Save the entity with ConsistencyLevel
@@ -61,10 +60,10 @@ public interface CassandraRepositoryAsync<T, ID> extends RepositoryAsync<T, ID> 
      * @param entities the entities
      * @param ttl      the ttl
      * @param level    {@link ConsistencyLevel}
-     * @throws ExecuteAsyncQueryException when there is async issue
+     * @throws org.jnosql.diana.api.ExecuteAsyncQueryException when there is async issue
      * @throws NullPointerException       when there are any element null
      */
-    void save(Iterable<T> entities, Duration ttl, ConsistencyLevel level) throws ExecuteAsyncQueryException, NullPointerException;
+    void save(Iterable<T> entities, Duration ttl, ConsistencyLevel level);
 
     /**
      * Save the entity with ConsistencyLevel
@@ -72,10 +71,10 @@ public interface CassandraRepositoryAsync<T, ID> extends RepositoryAsync<T, ID> 
      * @param callBack the callBack
      * @param entity   the entity
      * @param level    {@link ConsistencyLevel}
-     * @throws ExecuteAsyncQueryException when there is async issue
+     * @throws org.jnosql.diana.api.ExecuteAsyncQueryException when there is async issue
      * @throws NullPointerException       when there are any element null
      */
-    void save(T entity, ConsistencyLevel level, Consumer<T> callBack) throws ExecuteAsyncQueryException, NullPointerException;
+    void save(T entity, ConsistencyLevel level, Consumer<T> callBack);
 
     /**
      * Saves the entity with ConsistencyLevel
@@ -84,10 +83,9 @@ public interface CassandraRepositoryAsync<T, ID> extends RepositoryAsync<T, ID> 
      * @param entity   the entity
      * @param ttl      the ttl
      * @param level    {@link ConsistencyLevel}
-     * @throws ExecuteAsyncQueryException when there is async issue
+     * @throws org.jnosql.diana.api.ExecuteAsyncQueryException when there is async issue
      * @throws NullPointerException       when there are any element null
      */
-    void save(T entity, Duration ttl, ConsistencyLevel level, Consumer<T> callBack) throws ExecuteAsyncQueryException
-            , NullPointerException;
+    void save(T entity, Duration ttl, ConsistencyLevel level, Consumer<T> callBack);
 
 }

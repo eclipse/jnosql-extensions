@@ -33,7 +33,7 @@ public interface ArtemisVertex {
      * @return the property to the respective key otherwise {@link Optional#empty()}
      * @throws NullPointerException when key is null
      */
-    Optional<Value> get(String key) throws NullPointerException;
+    Optional<Value> get(String key);
 
     /**
      * Add a new element in the Vertex
@@ -42,7 +42,7 @@ public interface ArtemisVertex {
      * @param value the information
      * @throws NullPointerException when either key or value are null
      */
-    void add(String key, Object value) throws NullPointerException;
+    void add(String key, Object value);
 
     /**
      * Add a new element in the Vertex
@@ -51,7 +51,7 @@ public interface ArtemisVertex {
      * @param value the information
      * @throws NullPointerException when either key or value are null
      */
-    void add(String key, Value value) throws NullPointerException;
+    void add(String key, Value value);
 
     /**
      * Add a new element in the Vertex
@@ -59,7 +59,7 @@ public interface ArtemisVertex {
      * @param artemisProperty the element
      * @throws NullPointerException when either key or value are null
      */
-    void add(ArtemisProperty artemisProperty) throws NullPointerException;
+    void add(ArtemisProperty artemisProperty);
 
     /**
      * Returns a Set view of the keys contained in this instance
@@ -103,7 +103,7 @@ public interface ArtemisVertex {
      * @return a new Vertex instance
      * @throws NullPointerException when label is null
      */
-    static ArtemisVertex of(String label) throws NullPointerException {
+    static ArtemisVertex of(String label) {
         return new DefaultArtemisVertex(label);
     }
 
@@ -115,7 +115,7 @@ public interface ArtemisVertex {
      * @return a new Vertex instance
      * @throws NullPointerException when either label or id are null
      */
-    static ArtemisVertex of(String label, Object id) throws NullPointerException {
+    static ArtemisVertex of(String label, Object id) {
         return new DefaultArtemisVertex(label, id);
     }
 
@@ -134,7 +134,7 @@ public interface ArtemisVertex {
      * @return the value
      * @throws NullPointerException when the key is null
      */
-    Optional<ArtemisProperty> find(String key) throws NullPointerException;
+    Optional<ArtemisProperty> find(String key);
 
     /**
      * Removes the mapping for a key from this map if it is present (optional operation).
@@ -142,5 +142,5 @@ public interface ArtemisVertex {
      * @param key the key
      * @throws NullPointerException when key is null
      */
-    void remove(String key) throws NullPointerException;
+    void remove(String key);
 }

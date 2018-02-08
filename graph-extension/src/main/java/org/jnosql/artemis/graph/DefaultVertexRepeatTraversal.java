@@ -37,7 +37,7 @@ class DefaultVertexRepeatTraversal extends AbstractVertexTraversal implements Ve
     }
 
     @Override
-    public VertexRepeatStepTraversal has(String propertyKey, Object value) throws NullPointerException {
+    public VertexRepeatStepTraversal has(String propertyKey, Object value) {
         requireNonNull(propertyKey, "propertyKey is required");
         requireNonNull(value, "value is required");
         Traversal<?, Vertex> condition = __.has(propertyKey, value);
@@ -45,7 +45,7 @@ class DefaultVertexRepeatTraversal extends AbstractVertexTraversal implements Ve
     }
 
     @Override
-    public VertexRepeatStepTraversal has(String propertyKey, P<?> predicate) throws NullPointerException {
+    public VertexRepeatStepTraversal has(String propertyKey, P<?> predicate) {
         requireNonNull(propertyKey, "propertyKey is required");
         requireNonNull(predicate, "predicate is required");
         Traversal<?, Vertex> condition = __.has(propertyKey, predicate);
@@ -53,7 +53,7 @@ class DefaultVertexRepeatTraversal extends AbstractVertexTraversal implements Ve
     }
 
     @Override
-    public VertexRepeatStepTraversal has(T accessor, Object value) throws NullPointerException {
+    public VertexRepeatStepTraversal has(T accessor, Object value) {
         requireNonNull(accessor, "accessor is required");
         requireNonNull(value, "value is required");
         Traversal<?, Vertex> condition = __.has(accessor, value);
@@ -61,7 +61,7 @@ class DefaultVertexRepeatTraversal extends AbstractVertexTraversal implements Ve
     }
 
     @Override
-    public VertexRepeatStepTraversal has(T accessor, P<?> predicate) throws NullPointerException {
+    public VertexRepeatStepTraversal has(T accessor, P<?> predicate) {
         requireNonNull(accessor, "accessor is required");
         requireNonNull(predicate, "predicate is required");
         Traversal<?, Vertex> condition = __.has(accessor, predicate);
@@ -69,14 +69,14 @@ class DefaultVertexRepeatTraversal extends AbstractVertexTraversal implements Ve
     }
 
     @Override
-    public VertexRepeatStepTraversal hasNot(String propertyKey) throws NullPointerException {
+    public VertexRepeatStepTraversal hasNot(String propertyKey) {
         requireNonNull(propertyKey, "propertyKey is required");
         Traversal<?, Vertex> condition = __.hasNot(propertyKey);
         return new DefaultVertexRepeatStepTraversal(supplier, flow.andThen(g -> g.repeat(condition)), converter);
     }
 
     @Override
-    public VertexRepeatStepTraversal out(String... labels) throws NullPointerException {
+    public VertexRepeatStepTraversal out(String... labels) {
         if (Stream.of(labels).anyMatch(Objects::isNull)) {
             throw new NullPointerException("The no one label element cannot be null");
         }
@@ -85,7 +85,7 @@ class DefaultVertexRepeatTraversal extends AbstractVertexTraversal implements Ve
     }
 
     @Override
-    public VertexRepeatStepTraversal in(String... labels) throws NullPointerException {
+    public VertexRepeatStepTraversal in(String... labels) {
         if (Stream.of(labels).anyMatch(Objects::isNull)) {
             throw new NullPointerException("The no one label element cannot be null");
         }
@@ -94,7 +94,7 @@ class DefaultVertexRepeatTraversal extends AbstractVertexTraversal implements Ve
     }
 
     @Override
-    public VertexRepeatStepTraversal both(String... labels) throws NullPointerException {
+    public VertexRepeatStepTraversal both(String... labels) {
         if (Stream.of(labels).anyMatch(Objects::isNull)) {
             throw new NullPointerException("The no one label element cannot be null");
         }

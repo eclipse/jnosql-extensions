@@ -103,21 +103,21 @@ class DefaultOrientDBTemplate extends AbstractDocumentTemplate
     }
 
     @Override
-    public <T> List<T> sql(String query, Object... params) throws NullPointerException {
+    public <T> List<T> sql(String query, Object... params) {
         return manager.get().sql(query, params).stream().map(converter::toEntity)
                 .map(e -> (T) e)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public <T> List<T> sql(String query, Map<String, Object> params) throws NullPointerException {
+    public <T> List<T> sql(String query, Map<String, Object> params) {
         return manager.get().sql(query, params).stream().map(converter::toEntity)
                 .map(e -> (T) e)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public <T> void live(DocumentQuery query, Consumer<T> callBack) throws NullPointerException {
+    public <T> void live(DocumentQuery query, Consumer<T> callBack) {
         Objects.requireNonNull(query, "query is required");
         Objects.requireNonNull(callBack, "callBack is required");
         Consumer<DocumentEntity> dianaCallback = d -> callBack.accept(converter.toEntity(d));

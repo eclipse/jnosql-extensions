@@ -17,7 +17,6 @@ package org.jnosql.artemis.elasticsearch.document;
 
 import org.elasticsearch.index.query.QueryBuilder;
 import org.jnosql.artemis.document.DocumentTemplateAsync;
-import org.jnosql.diana.api.ExecuteAsyncQueryException;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -35,6 +34,5 @@ public interface ElasticsearchTemplateAsync extends DocumentTemplateAsync {
      * @param callBack the callback
      * @throws NullPointerException when query is null
      */
-    <T> void search(QueryBuilder query, Consumer<List<T>> callBack, String... types)
-            throws NullPointerException, ExecuteAsyncQueryException;
+    <T> void search(QueryBuilder query, Consumer<List<T>> callBack, String... types);
 }

@@ -54,7 +54,7 @@ class DefaultArtemisVertex implements ArtemisVertex {
     }
 
     @Override
-    public Optional<Value> get(String key) throws NullPointerException {
+    public Optional<Value> get(String key) {
         requireNonNull(key, "key is required");
         Object value = properties.get(key);
         if (value == null) {
@@ -64,21 +64,21 @@ class DefaultArtemisVertex implements ArtemisVertex {
     }
 
     @Override
-    public void add(String key, Object value) throws NullPointerException {
+    public void add(String key, Object value) {
         requireNonNull(key, "key is required");
         requireNonNull(value, "value is required");
         properties.put(key, value);
     }
 
     @Override
-    public void add(String key, Value value) throws NullPointerException {
+    public void add(String key, Value value) {
         requireNonNull(key, "key is required");
         requireNonNull(value, "value is required");
         properties.put(key, value.get());
     }
 
     @Override
-    public void add(ArtemisProperty element) throws NullPointerException {
+    public void add(ArtemisProperty element) {
         requireNonNull(element, "element is required");
         properties.put(element.getKey(), element.get());
     }
@@ -126,7 +126,7 @@ class DefaultArtemisVertex implements ArtemisVertex {
     }
 
     @Override
-    public Optional<ArtemisProperty> find(String key) throws NullPointerException {
+    public Optional<ArtemisProperty> find(String key) {
         requireNonNull(key, "key is required");
         Object value = properties.get(key);
         if (value == null) {
@@ -136,7 +136,7 @@ class DefaultArtemisVertex implements ArtemisVertex {
     }
 
     @Override
-    public void remove(String key) throws NullPointerException {
+    public void remove(String key) {
         requireNonNull(key, "key is required");
         properties.remove(key);
     }

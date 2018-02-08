@@ -36,7 +36,7 @@ public interface VertexRepeatTraversal {
      * @return a {@link VertexRepeatStepTraversal} with the new condition
      * @throws NullPointerException when either key or value are null
      */
-    VertexRepeatStepTraversal has(String propertyKey, Object value) throws NullPointerException;
+    VertexRepeatStepTraversal has(String propertyKey, Object value);
 
     /**
      * Adds a equals condition to a query
@@ -46,7 +46,7 @@ public interface VertexRepeatTraversal {
      * @return a {@link VertexRepeatStepTraversal} with the new condition
      * @throws NullPointerException when either key or predicate condition are null
      */
-    VertexRepeatStepTraversal has(String propertyKey, P<?> predicate) throws NullPointerException;
+    VertexRepeatStepTraversal has(String propertyKey, P<?> predicate);
 
     /**
      * Adds a equals condition to a query
@@ -56,7 +56,7 @@ public interface VertexRepeatTraversal {
      * @return a {@link VertexRepeatStepTraversal} with the new condition
      * @throws NullPointerException when either key or value are null
      */
-    default VertexRepeatStepTraversal has(Supplier<String> propertyKey, Object value) throws NullPointerException{
+    default VertexRepeatStepTraversal has(Supplier<String> propertyKey, Object value){
         requireNonNull(propertyKey, "the supplier is required");
         return has(propertyKey.get(), value);
     }
@@ -69,7 +69,7 @@ public interface VertexRepeatTraversal {
      * @return a {@link VertexRepeatStepTraversal} with the new condition
      * @throws NullPointerException when either key or predicate condition are null
      */
-    default VertexRepeatStepTraversal has(Supplier<String> propertyKey, P<?> predicate) throws NullPointerException{
+    default VertexRepeatStepTraversal has(Supplier<String> propertyKey, P<?> predicate){
         requireNonNull(propertyKey, "the supplier is required");
         return has(propertyKey.get(), predicate);
     }
@@ -82,7 +82,7 @@ public interface VertexRepeatTraversal {
      * @return a {@link VertexRepeatStepTraversal} with the new condition
      * @throws NullPointerException when either key or value are null
      */
-    VertexRepeatStepTraversal has(T accessor, Object value) throws NullPointerException;
+    VertexRepeatStepTraversal has(T accessor, Object value);
 
     /**
      * Adds a equals condition to a query
@@ -92,7 +92,7 @@ public interface VertexRepeatTraversal {
      * @return a {@link VertexRepeatStepTraversal} with the new condition
      * @throws NullPointerException when either key or value are null
      */
-    VertexRepeatStepTraversal has(T accessor, P<?> predicate) throws NullPointerException;
+    VertexRepeatStepTraversal has(T accessor, P<?> predicate);
 
 
     /**
@@ -102,7 +102,7 @@ public interface VertexRepeatTraversal {
      * @return a {@link VertexRepeatStepTraversal} with the new condition
      * @throws NullPointerException when propertyKey is null
      */
-    VertexRepeatStepTraversal hasNot(String propertyKey) throws NullPointerException;
+    VertexRepeatStepTraversal hasNot(String propertyKey);
 
     /**
      * Defines Vertex has not a property
@@ -111,7 +111,7 @@ public interface VertexRepeatTraversal {
      * @return a {@link VertexRepeatStepTraversal} with the new condition
      * @throws NullPointerException when propertyKey is null
      */
-    default VertexRepeatStepTraversal hasNot(Supplier<String> propertyKey) throws NullPointerException{
+    default VertexRepeatStepTraversal hasNot(Supplier<String> propertyKey){
         requireNonNull(propertyKey, "the supplier is required");
         return hasNot(propertyKey.get());
     }
@@ -123,7 +123,7 @@ public interface VertexRepeatTraversal {
      * @return a {@link VertexRepeatStepTraversal} with the new condition
      * @throws NullPointerException when has any null element
      */
-    VertexRepeatStepTraversal out(String... labels) throws NullPointerException;
+    VertexRepeatStepTraversal out(String... labels);
 
 
     /**
@@ -133,7 +133,7 @@ public interface VertexRepeatTraversal {
      * @return a {@link VertexRepeatStepTraversal} with the new condition
      * @throws NullPointerException when has any null element
      */
-    VertexRepeatStepTraversal in(String... labels) throws NullPointerException;
+    VertexRepeatStepTraversal in(String... labels);
 
 
     /**
@@ -143,6 +143,6 @@ public interface VertexRepeatTraversal {
      * @return a {@link VertexRepeatStepTraversal} with the new condition
      * @throws NullPointerException when has any null element
      */
-    VertexRepeatStepTraversal both(String... labels) throws NullPointerException;
+    VertexRepeatStepTraversal both(String... labels);
 
 }

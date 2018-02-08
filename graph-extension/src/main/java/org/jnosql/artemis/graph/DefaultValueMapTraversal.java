@@ -59,7 +59,7 @@ class DefaultValueMapTraversal implements ValueMapTraversal {
     }
 
     @Override
-    public Optional<Map<String, Object>> getSingleResult() throws NonUniqueResultException {
+    public Optional<Map<String, Object>> getSingleResult() {
         List<Map<String, Object>> result = getResultList();
         if (result.isEmpty()) {
             return Optional.empty();

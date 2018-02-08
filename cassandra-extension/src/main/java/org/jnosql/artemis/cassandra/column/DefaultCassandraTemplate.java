@@ -106,7 +106,7 @@ class DefaultCassandraTemplate extends AbstractColumnTemplate implements Cassand
     }
 
     @Override
-    public <T> T save(T entity, ConsistencyLevel level) throws NullPointerException {
+    public <T> T save(T entity, ConsistencyLevel level) {
         Objects.requireNonNull(entity, "entity is required");
         Objects.requireNonNull(level, "level is required");
         UnaryOperator<ColumnEntity> save = e -> manager.get().save(e, level);
@@ -114,7 +114,7 @@ class DefaultCassandraTemplate extends AbstractColumnTemplate implements Cassand
     }
 
     @Override
-    public <T> Iterable<T> save(Iterable<T> entities, Duration ttl, ConsistencyLevel level) throws NullPointerException {
+    public <T> Iterable<T> save(Iterable<T> entities, Duration ttl, ConsistencyLevel level) {
         Objects.requireNonNull(entities, "entities is required");
         Objects.requireNonNull(ttl, "ttl is required");
         Objects.requireNonNull(level, "level is required");
@@ -128,7 +128,7 @@ class DefaultCassandraTemplate extends AbstractColumnTemplate implements Cassand
     }
 
     @Override
-    public <T> Iterable<T> save(Iterable<T> entities, ConsistencyLevel level) throws NullPointerException {
+    public <T> Iterable<T> save(Iterable<T> entities, ConsistencyLevel level) {
         Objects.requireNonNull(entities, "entities is required");
         Objects.requireNonNull(level, "level is required");
         return StreamSupport.stream(entities.spliterator(), false)
@@ -140,7 +140,7 @@ class DefaultCassandraTemplate extends AbstractColumnTemplate implements Cassand
     }
 
     @Override
-    public <T> T save(T entity, Duration ttl, ConsistencyLevel level) throws NullPointerException {
+    public <T> T save(T entity, Duration ttl, ConsistencyLevel level) {
         Objects.requireNonNull(entity, "entity is required");
         Objects.requireNonNull(ttl, "ttl is required");
         Objects.requireNonNull(level, "level is required");
@@ -149,7 +149,7 @@ class DefaultCassandraTemplate extends AbstractColumnTemplate implements Cassand
     }
 
     @Override
-    public void delete(ColumnDeleteQuery query, ConsistencyLevel level) throws NullPointerException {
+    public void delete(ColumnDeleteQuery query, ConsistencyLevel level) {
         Objects.requireNonNull(query, "query is required");
         Objects.requireNonNull(level, "level is required");
         persistManager.firePreDeleteQuery(query);
@@ -157,7 +157,7 @@ class DefaultCassandraTemplate extends AbstractColumnTemplate implements Cassand
     }
 
     @Override
-    public <T> List<T> find(ColumnQuery query, ConsistencyLevel level) throws NullPointerException {
+    public <T> List<T> find(ColumnQuery query, ConsistencyLevel level) {
         Objects.requireNonNull(query, "query is required");
         Objects.requireNonNull(level, "level is required");
         persistManager.firePreQuery(query);
@@ -168,21 +168,21 @@ class DefaultCassandraTemplate extends AbstractColumnTemplate implements Cassand
     }
 
     @Override
-    public <T> List<T> cql(String query) throws NullPointerException {
+    public <T> List<T> cql(String query) {
         return manager.get().cql(query).stream()
                 .map(c -> (T) converter.toEntity(c))
                 .collect(Collectors.toList());
     }
 
     @Override
-    public <T> List<T> cql(String query, Map<String, Object> values) throws NullPointerException {
+    public <T> List<T> cql(String query, Map<String, Object> values) {
         return manager.get().cql(query, values).stream()
                 .map(c -> (T) converter.toEntity(c))
                 .collect(Collectors.toList());
     }
 
     @Override
-    public <T> List<T> cql(String query, Object... params) throws NullPointerException {
+    public <T> List<T> cql(String query, Object... params) {
         Objects.requireNonNull(query, "query is required");
         CassandraPrepareStatment cassandraPrepareStatment = manager.get().nativeQueryPrepare(query);
         List<ColumnEntity> entities = cassandraPrepareStatment.bind(params).executeQuery();
@@ -190,7 +190,7 @@ class DefaultCassandraTemplate extends AbstractColumnTemplate implements Cassand
     }
 
     @Override
-    public <T> List<T> execute(Statement statement) throws NullPointerException {
+    public <T> List<T> execute(Statement statement) {
         return manager.get().execute(statement).stream()
                 .map(c -> (T) converter.toEntity(c))
                 .collect(Collectors.toList());

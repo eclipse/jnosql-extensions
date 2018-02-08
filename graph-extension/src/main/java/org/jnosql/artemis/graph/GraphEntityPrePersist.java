@@ -36,7 +36,7 @@ public interface GraphEntityPrePersist {
      * @return {@link GraphEntityPrePersist} instance
      * @throws NullPointerException when the entity is null
      */
-    static GraphEntityPrePersist of(ArtemisVertex entity) throws NullPointerException {
+    static GraphEntityPrePersist of(ArtemisVertex entity) {
         requireNonNull(entity, "Entity is required");
         return new DefaultGraphEntityPrePersist(entity);
     }

@@ -31,7 +31,7 @@ public interface CassandraRepository<T, ID> extends Repository<T, ID> {
      * @throws NullPointerException when both entity or level are null
      */
 
-    T save(T entity, ConsistencyLevel level) throws NullPointerException;
+    T save(T entity, ConsistencyLevel level);
 
 
     /**
@@ -43,7 +43,7 @@ public interface CassandraRepository<T, ID> extends Repository<T, ID> {
      * @return the entity saved
      * @throws NullPointerException when either entity or ttl or level are null
      */
-    T save(T entity, Duration ttl, ConsistencyLevel level) throws NullPointerException;
+    T save(T entity, Duration ttl, ConsistencyLevel level);
     /**
      * Saves a ColumnEntity with a defined ConsistencyLevel
      *
@@ -53,7 +53,7 @@ public interface CassandraRepository<T, ID> extends Repository<T, ID> {
      * @throws NullPointerException when both entity or level are null
      */
 
-    Iterable<T> save(Iterable<T> entities, ConsistencyLevel level) throws NullPointerException;
+    Iterable<T> save(Iterable<T> entities, ConsistencyLevel level);
 
 
     /**
@@ -65,5 +65,5 @@ public interface CassandraRepository<T, ID> extends Repository<T, ID> {
      * @return the entity saved
      * @throws NullPointerException when either entity or ttl or level are null
      */
-    Iterable<T> save(Iterable<T> entities, Duration ttl, ConsistencyLevel level) throws NullPointerException;
+    Iterable<T> save(Iterable<T> entities, Duration ttl, ConsistencyLevel level);
 }

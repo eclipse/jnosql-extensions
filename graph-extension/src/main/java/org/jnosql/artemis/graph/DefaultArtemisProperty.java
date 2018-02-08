@@ -44,7 +44,7 @@ class DefaultArtemisProperty implements ArtemisProperty {
     }
 
     @Override
-    public <T> T get(TypeSupplier<T> typeSupplier) throws NullPointerException, UnsupportedOperationException {
+    public <T> T get(TypeSupplier<T> typeSupplier) {
         requireNonNull(typeSupplier, "typeSupplier is required");
         return Value.of(value).get(typeSupplier);
     }
