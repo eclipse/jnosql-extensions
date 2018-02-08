@@ -24,7 +24,6 @@ import org.jnosql.artemis.column.query.ColumnQueryParser;
 import org.jnosql.artemis.reflection.ClassRepresentation;
 import org.jnosql.artemis.reflection.ClassRepresentations;
 import org.jnosql.artemis.reflection.Reflections;
-import org.jnosql.diana.api.ExecuteAsyncQueryException;
 import org.jnosql.diana.api.column.ColumnDeleteQuery;
 import org.jnosql.diana.api.column.ColumnQuery;
 
@@ -205,8 +204,7 @@ class CassandraRepositoryAsyncProxy<T> implements InvocationHandler {
         }
 
         @Override
-        public void save(Object entity, Duration ttl, ConsistencyLevel level)
-                throws ExecuteAsyncQueryException, UnsupportedOperationException, NullPointerException {
+        public void save(Object entity, Duration ttl, ConsistencyLevel level) {
             template.save(entity, ttl, level);
         }
 
@@ -216,20 +214,17 @@ class CassandraRepositoryAsyncProxy<T> implements InvocationHandler {
         }
 
         @Override
-        public void save(Iterable entities, Duration ttl, ConsistencyLevel level)
-                throws ExecuteAsyncQueryException, UnsupportedOperationException, NullPointerException {
+        public void save(Iterable entities, Duration ttl, ConsistencyLevel level) {
             template.save(entities, ttl, level);
         }
 
         @Override
-        public void save(Object entity, ConsistencyLevel level, Consumer callBack)
-                throws ExecuteAsyncQueryException, UnsupportedOperationException, NullPointerException {
+        public void save(Object entity, ConsistencyLevel level, Consumer callBack) {
             template.save(entity, level, callBack);
         }
 
         @Override
-        public void save(Object entity, Duration ttl, ConsistencyLevel level, Consumer callBack)
-                throws ExecuteAsyncQueryException, UnsupportedOperationException, NullPointerException {
+        public void save(Object entity, Duration ttl, ConsistencyLevel level, Consumer callBack) {
             template.save(entity, ttl, level, callBack);
         }
 
