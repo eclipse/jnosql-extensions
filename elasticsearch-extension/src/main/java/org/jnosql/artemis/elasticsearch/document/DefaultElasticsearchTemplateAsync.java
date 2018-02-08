@@ -20,7 +20,6 @@ import org.jnosql.artemis.Converters;
 import org.jnosql.artemis.document.AbstractDocumentTemplateAsync;
 import org.jnosql.artemis.document.DocumentEntityConverter;
 import org.jnosql.artemis.reflection.ClassRepresentations;
-import org.jnosql.diana.api.ExecuteAsyncQueryException;
 import org.jnosql.diana.api.document.DocumentCollectionManagerAsync;
 import org.jnosql.diana.api.document.DocumentEntity;
 import org.jnosql.diana.elasticsearch.document.ElasticsearchDocumentCollectionManagerAsync;
@@ -83,7 +82,7 @@ class DefaultElasticsearchTemplateAsync extends AbstractDocumentTemplateAsync im
     }
 
     @Override
-    public <T> void search(QueryBuilder query, Consumer<List<T>> callBack, String... types) throws NullPointerException, ExecuteAsyncQueryException {
+    public <T> void search(QueryBuilder query, Consumer<List<T>> callBack, String... types) {
         Objects.requireNonNull(query, "query is required");
         Objects.requireNonNull(callBack, "callBack is required");
 
