@@ -37,7 +37,7 @@ class DefaultGraphTemplateProducer implements GraphTemplateProducer {
     private GraphWorkflow workflow;
 
     @Override
-    public GraphTemplate get(Graph graph) throws NullPointerException {
+    public GraphTemplate get(Graph graph) {
         requireNonNull(graph, "graph is required");
         return new ProducerGraphTemplate(classRepresentations, vertexConverter, workflow, graph);
     }

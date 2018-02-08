@@ -44,14 +44,14 @@ class DefaultEdgeTraversal extends AbstractEdgeTraversal implements EdgeTraversa
     }
 
     @Override
-    public EdgeTraversal has(String propertyKey) throws NullPointerException {
+    public EdgeTraversal has(String propertyKey) {
         requireNonNull(propertyKey, "propertyKey is required");
         return new DefaultEdgeTraversal(supplier, flow.andThen(g -> g.has(propertyKey)), converter);
 
     }
 
     @Override
-    public EdgeTraversal has(String propertyKey, Object value) throws NullPointerException {
+    public EdgeTraversal has(String propertyKey, Object value) {
         requireNonNull(propertyKey, "propertyKey is required");
         requireNonNull(value, "value is required");
 
@@ -59,34 +59,34 @@ class DefaultEdgeTraversal extends AbstractEdgeTraversal implements EdgeTraversa
     }
 
     @Override
-    public EdgeTraversal has(String propertyKey, P<?> predicate) throws NullPointerException {
+    public EdgeTraversal has(String propertyKey, P<?> predicate) {
         requireNonNull(propertyKey, "propertyKey is required");
         requireNonNull(predicate, "predicate is required");
         return new DefaultEdgeTraversal(supplier, flow.andThen(g -> g.has(propertyKey, predicate)), converter);
     }
 
     @Override
-    public EdgeTraversal has(T accessor, Object value) throws NullPointerException {
+    public EdgeTraversal has(T accessor, Object value) {
         requireNonNull(accessor, "accessor is required");
         requireNonNull(value, "value is required");
         return new DefaultEdgeTraversal(supplier, flow.andThen(g -> g.has(accessor, value)), converter);
     }
 
     @Override
-    public EdgeTraversal has(T accessor, P<?> predicate) throws NullPointerException {
+    public EdgeTraversal has(T accessor, P<?> predicate) {
         requireNonNull(accessor, "accessor is required");
         requireNonNull(predicate, "predicate is required");
         return new DefaultEdgeTraversal(supplier, flow.andThen(g -> g.has(accessor, predicate)), converter);
     }
 
     @Override
-    public EdgeTraversal hasNot(String propertyKey) throws NullPointerException {
+    public EdgeTraversal hasNot(String propertyKey) {
         requireNonNull(propertyKey, "propertyKey is required");
         return new DefaultEdgeTraversal(supplier, flow.andThen(g -> g.hasNot(propertyKey)), converter);
     }
 
     @Override
-    public EdgeTraversal filter(Predicate<EdgeEntity> predicate) throws NullPointerException {
+    public EdgeTraversal filter(Predicate<EdgeEntity> predicate) {
         requireNonNull(predicate, "predicat is required");
         Predicate<Traverser<Edge>> p = e -> predicate.test(TinkerPopUtil.toEdgeEntity(e.get(), converter));
         return new DefaultEdgeTraversal(supplier, flow.andThen(g -> g.filter(p)), converter);
@@ -136,7 +136,7 @@ class DefaultEdgeTraversal extends AbstractEdgeTraversal implements EdgeTraversa
     }
 
     @Override
-    public Optional<EdgeEntity> getSingleResult() throws NonUniqueResultException {
+    public Optional<EdgeEntity> getSingleResult() {
         List<EdgeEntity> result = getResultList();
 
         if(result.isEmpty()) {
@@ -168,7 +168,7 @@ class DefaultEdgeTraversal extends AbstractEdgeTraversal implements EdgeTraversa
     }
 
     @Override
-    public EdgeTraversalOrder orderBy(String property) throws NullPointerException, IllegalStateException {
+    public EdgeTraversalOrder orderBy(String property) {
         requireNonNull(property, "property is required");
         return new DefaultEdgeTraversalOrder(supplier, flow, converter, property);
     }

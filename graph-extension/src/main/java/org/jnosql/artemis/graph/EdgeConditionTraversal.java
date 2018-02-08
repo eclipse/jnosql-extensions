@@ -34,7 +34,7 @@ public interface EdgeConditionTraversal {
      * @return a {@link EdgeTraversal} with the new condition
      * @throws NullPointerException when propertyKey is null
      */
-    EdgeTraversal has(String propertyKey) throws NullPointerException;
+    EdgeTraversal has(String propertyKey);
 
     /**
      * Adds a equals condition to a query
@@ -44,7 +44,7 @@ public interface EdgeConditionTraversal {
      * @return a {@link EdgeTraversal} with the new condition
      * @throws NullPointerException when either key or value are null
      */
-    EdgeTraversal has(String propertyKey, Object value) throws NullPointerException;
+    EdgeTraversal has(String propertyKey, Object value);
 
     /**
      * Adds a equals condition to a query
@@ -54,7 +54,7 @@ public interface EdgeConditionTraversal {
      * @return a {@link EdgeTraversal} with the new condition
      * @throws NullPointerException when either key or predicate condition are null
      */
-    EdgeTraversal has(String propertyKey, P<?> predicate) throws NullPointerException;
+    EdgeTraversal has(String propertyKey, P<?> predicate);
 
     /**
      * Adds a equals condition to a query
@@ -64,7 +64,7 @@ public interface EdgeConditionTraversal {
      * @return a {@link EdgeTraversal} with the new condition
      * @throws NullPointerException when either key or value are null
      */
-    default EdgeTraversal has(Supplier<String> propertyKey, Object value) throws NullPointerException {
+    default EdgeTraversal has(Supplier<String> propertyKey, Object value) {
         requireNonNull(propertyKey, "the supplier is required");
         return has(propertyKey.get(), value);
     }
@@ -77,7 +77,7 @@ public interface EdgeConditionTraversal {
      * @return a {@link EdgeTraversal} with the new condition
      * @throws NullPointerException when either key or predicate condition are null
      */
-    default EdgeTraversal has(Supplier<String> propertyKey, P<?> predicate) throws NullPointerException {
+    default EdgeTraversal has(Supplier<String> propertyKey, P<?> predicate) {
         requireNonNull(propertyKey, "the supplier is required");
         return has(propertyKey.get(), predicate);
     }
@@ -90,7 +90,7 @@ public interface EdgeConditionTraversal {
      * @return a {@link EdgeTraversal} with the new condition
      * @throws NullPointerException when either key or value are null
      */
-    EdgeTraversal has(T accessor, Object value) throws NullPointerException;
+    EdgeTraversal has(T accessor, Object value);
 
     /**
      * Adds a equals condition to a query
@@ -100,7 +100,7 @@ public interface EdgeConditionTraversal {
      * @return a {@link EdgeTraversal} with the new condition
      * @throws NullPointerException when either key or value are null
      */
-    EdgeTraversal has(T accessor, P<?> predicate) throws NullPointerException;
+    EdgeTraversal has(T accessor, P<?> predicate);
 
 
     /**
@@ -110,7 +110,7 @@ public interface EdgeConditionTraversal {
      * @return a {@link EdgeTraversal} with the new condition
      * @throws NullPointerException when propertyKey is null
      */
-    EdgeTraversal hasNot(String propertyKey) throws NullPointerException;
+    EdgeTraversal hasNot(String propertyKey);
 
 
     /**
@@ -120,7 +120,7 @@ public interface EdgeConditionTraversal {
      * @return a {@link EdgeTraversal} with the new condition
      * @throws NullPointerException when propertyKey is null
      */
-    default EdgeTraversal hasNot(Supplier<String> propertyKey) throws NullPointerException {
+    default EdgeTraversal hasNot(Supplier<String> propertyKey) {
         requireNonNull(propertyKey, "the supplier is required");
         return hasNot(propertyKey.get());
     }

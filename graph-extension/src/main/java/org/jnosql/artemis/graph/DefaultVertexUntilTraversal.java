@@ -39,7 +39,7 @@ class DefaultVertexUntilTraversal extends AbstractVertexTraversal implements Ver
     }
 
     @Override
-    public VertexTraversal has(String propertyKey, Object value) throws NullPointerException {
+    public VertexTraversal has(String propertyKey, Object value) {
 
         requireNonNull(propertyKey, "propertyKey is required");
         requireNonNull(value, "value is required");
@@ -48,14 +48,14 @@ class DefaultVertexUntilTraversal extends AbstractVertexTraversal implements Ver
     }
 
     @Override
-    public VertexTraversal has(String propertyKey) throws NullPointerException {
+    public VertexTraversal has(String propertyKey) {
         requireNonNull(propertyKey, "propertyKey is required");
         Traversal<?, Vertex> condition = __.has(propertyKey);
         return new DefaultVertexTraversal(supplier, flow.andThen(g -> g.until(condition)), converter);
     }
 
     @Override
-    public VertexTraversal has(String propertyKey, P<?> predicate) throws NullPointerException {
+    public VertexTraversal has(String propertyKey, P<?> predicate) {
         requireNonNull(propertyKey, "propertyKey is required");
         requireNonNull(predicate, "predicate is required");
         Traversal<?, Vertex> condition = __.has(propertyKey, predicate);
@@ -63,7 +63,7 @@ class DefaultVertexUntilTraversal extends AbstractVertexTraversal implements Ver
     }
 
     @Override
-    public VertexTraversal has(T accessor, Object value) throws NullPointerException {
+    public VertexTraversal has(T accessor, Object value) {
         requireNonNull(accessor, "accessor is required");
         requireNonNull(value, "value is required");
         Traversal<?, Vertex> condition = __.has(accessor, value);
@@ -71,7 +71,7 @@ class DefaultVertexUntilTraversal extends AbstractVertexTraversal implements Ver
     }
 
     @Override
-    public VertexTraversal has(T accessor, P<?> predicate) throws NullPointerException {
+    public VertexTraversal has(T accessor, P<?> predicate) {
         requireNonNull(accessor, "accessor is required");
         requireNonNull(predicate, "predicate is required");
         Traversal<?, Vertex> condition = __.has(accessor, predicate);
@@ -79,14 +79,14 @@ class DefaultVertexUntilTraversal extends AbstractVertexTraversal implements Ver
     }
 
     @Override
-    public VertexTraversal hasNot(String propertyKey) throws NullPointerException {
+    public VertexTraversal hasNot(String propertyKey) {
         requireNonNull(propertyKey, "propertyKey is required");
         Traversal<?, Vertex> condition = __.hasNot(propertyKey);
         return new DefaultVertexTraversal(supplier, flow.andThen(g -> g.until(condition)), converter);
     }
 
     @Override
-    public VertexTraversal out(String... labels) throws NullPointerException {
+    public VertexTraversal out(String... labels) {
         if (Stream.of(labels).anyMatch(Objects::isNull)) {
             throw new NullPointerException("The no one label element cannot be null");
         }
@@ -95,7 +95,7 @@ class DefaultVertexUntilTraversal extends AbstractVertexTraversal implements Ver
     }
 
     @Override
-    public VertexTraversal in(String... labels) throws NullPointerException {
+    public VertexTraversal in(String... labels) {
         if (Stream.of(labels).anyMatch(Objects::isNull)) {
             throw new NullPointerException("The no one label element cannot be null");
         }
@@ -104,7 +104,7 @@ class DefaultVertexUntilTraversal extends AbstractVertexTraversal implements Ver
     }
 
     @Override
-    public VertexTraversal both(String... labels) throws NullPointerException {
+    public VertexTraversal both(String... labels) {
         if (Stream.of(labels).anyMatch(Objects::isNull)) {
             throw new NullPointerException("The no one label element cannot be null");
         }
@@ -113,14 +113,14 @@ class DefaultVertexUntilTraversal extends AbstractVertexTraversal implements Ver
     }
 
     @Override
-    public VertexTraversal hasLabel(String label) throws NullPointerException {
+    public VertexTraversal hasLabel(String label) {
         requireNonNull(label, "label is required");
         Traversal<?, Vertex> condition = __.hasLabel(label);
         return new DefaultVertexTraversal(supplier, flow.andThen(g -> g.until(condition)), converter);
     }
 
     @Override
-    public <T> VertexTraversal hasLabel(Class<T> entityClass) throws NullPointerException {
+    public <T> VertexTraversal hasLabel(Class<T> entityClass) {
         requireNonNull(entityClass, "entityClass is required");
         Entity entity = entityClass.getAnnotation(Entity.class);
         String label = Optional.ofNullable(entity).map(Entity::value).orElse(entityClass.getName());
@@ -128,7 +128,7 @@ class DefaultVertexUntilTraversal extends AbstractVertexTraversal implements Ver
     }
 
     @Override
-    public <T> VertexTraversal hasLabel(P<String> predicate) throws NullPointerException {
+    public <T> VertexTraversal hasLabel(P<String> predicate) {
         requireNonNull(predicate, "predicate is required");
         return new DefaultVertexTraversal(supplier, flow.andThen(g -> g.hasLabel(predicate)), converter);
     }

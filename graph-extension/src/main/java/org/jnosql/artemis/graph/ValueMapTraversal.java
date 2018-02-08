@@ -14,8 +14,6 @@
  */
 package org.jnosql.artemis.graph;
 
-import org.jnosql.diana.api.NonUniqueResultException;
-
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -54,9 +52,9 @@ public interface ValueMapTraversal {
      * Concludes the traversal that returns a single result
      *
      * @return the entity result otherwise {@link Optional#empty()}
-     * @throws NonUniqueResultException when there is more than one result
+     * @throws org.jnosql.diana.api.NonUniqueResultException when there is more than one result
      */
-    Optional<Map<String, Object>> getSingleResult() throws NonUniqueResultException;
+    Optional<Map<String, Object>> getSingleResult();
 
     /**
      * Concludes the traversal then returns the result as list.

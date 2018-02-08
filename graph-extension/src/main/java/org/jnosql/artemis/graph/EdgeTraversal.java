@@ -14,8 +14,6 @@
  */
 package org.jnosql.artemis.graph;
 
-import org.jnosql.diana.api.NonUniqueResultException;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
@@ -34,7 +32,7 @@ public interface EdgeTraversal extends EdgeConditionTraversal {
      * @return a {@link EdgeTraversal} with the Vertex predicate
      * @throws NullPointerException when predicate is null
      */
-     EdgeTraversal filter(Predicate<EdgeEntity> predicate)throws NullPointerException;
+     EdgeTraversal filter(Predicate<EdgeEntity> predicate);
 
     /**
      * Filter the objects in the traversal by the number of them to pass through the next, where only the first
@@ -74,9 +72,9 @@ public interface EdgeTraversal extends EdgeConditionTraversal {
     /**
      * Concludes the traversal that returns a single {@link EdgeEntity} result
      * @return the EdgeEntity result otherwise {@link Optional#empty()}
-     * @throws NonUniqueResultException when there is more than one result
+     * @throws org.jnosql.diana.api.NonUniqueResultException when there is more than one result
      */
-    Optional<EdgeEntity> getSingleResult() throws NonUniqueResultException;
+    Optional<EdgeEntity> getSingleResult();
 
     /**
      * Concludes the traversal then returns the result as list.
@@ -141,7 +139,7 @@ public interface EdgeTraversal extends EdgeConditionTraversal {
      * @throws NullPointerException  when the property is null
      * @throws IllegalStateException when there any Edge that does not have the property
      */
-    EdgeTraversalOrder orderBy(String property) throws NullPointerException, IllegalStateException;
+    EdgeTraversalOrder orderBy(String property);
 
     /**
      * Map the traversal next to its reduction as a sum of the elements

@@ -35,7 +35,7 @@ public interface VertexConditionTraversal {
      * @return a {@link VertexTraversal} with the new condition
      * @throws NullPointerException when either key or value are null
      */
-    VertexTraversal has(String propertyKey, Object value) throws NullPointerException;
+    VertexTraversal has(String propertyKey, Object value);
 
     /**
      * Adds a equals condition to a query
@@ -44,7 +44,7 @@ public interface VertexConditionTraversal {
      * @return a {@link VertexTraversal} with the new condition
      * @throws NullPointerException when the propertyKey is null
      */
-    VertexTraversal has(String propertyKey) throws NullPointerException;
+    VertexTraversal has(String propertyKey);
 
 
     /**
@@ -55,7 +55,7 @@ public interface VertexConditionTraversal {
      * @return a {@link VertexTraversal} with the new condition
      * @throws NullPointerException when either key or predicate condition are null
      */
-    VertexTraversal has(String propertyKey, P<?> predicate) throws NullPointerException;
+    VertexTraversal has(String propertyKey, P<?> predicate);
 
     /**
      * Adds a equals condition to a query
@@ -65,7 +65,7 @@ public interface VertexConditionTraversal {
      * @return a {@link VertexTraversal} with the new condition
      * @throws NullPointerException when either key or value are null
      */
-    default VertexTraversal has(Supplier<String> propertyKey, Object value) throws NullPointerException{
+    default VertexTraversal has(Supplier<String> propertyKey, Object value){
         requireNonNull(propertyKey, "the supplier is required");
         return has(propertyKey.get(), value);
     }
@@ -78,7 +78,7 @@ public interface VertexConditionTraversal {
      * @return a {@link VertexTraversal} with the new condition
      * @throws NullPointerException when either key or predicate condition are null
      */
-    default VertexTraversal has(Supplier<String> propertyKey, P<?> predicate) throws NullPointerException{
+    default VertexTraversal has(Supplier<String> propertyKey, P<?> predicate){
         requireNonNull(propertyKey, "the supplier is required");
         return has(propertyKey.get(), predicate);
     }
@@ -91,7 +91,7 @@ public interface VertexConditionTraversal {
      * @return a {@link VertexTraversal} with the new condition
      * @throws NullPointerException when either key or value are null
      */
-    VertexTraversal has(T accessor, Object value) throws NullPointerException;
+    VertexTraversal has(T accessor, Object value);
 
     /**
      * Adds a equals condition to a query
@@ -101,7 +101,7 @@ public interface VertexConditionTraversal {
      * @return a {@link VertexTraversal} with the new condition
      * @throws NullPointerException when either key or value are null
      */
-    VertexTraversal has(T accessor, P<?> predicate) throws NullPointerException;
+    VertexTraversal has(T accessor, P<?> predicate);
 
 
     /**
@@ -111,7 +111,7 @@ public interface VertexConditionTraversal {
      * @return a {@link VertexTraversal} with the new condition
      * @throws NullPointerException when propertyKey is null
      */
-    VertexTraversal hasNot(String propertyKey) throws NullPointerException;
+    VertexTraversal hasNot(String propertyKey);
 
     /**
      * Defines Vertex has not a property
@@ -120,7 +120,7 @@ public interface VertexConditionTraversal {
      * @return a {@link VertexTraversal} with the new condition
      * @throws NullPointerException when propertyKey is null
      */
-    default VertexTraversal hasNot(Supplier<String> propertyKey) throws NullPointerException{
+    default VertexTraversal hasNot(Supplier<String> propertyKey){
         requireNonNull(propertyKey, "the supplier is required");
         return hasNot(propertyKey.get());
     }
@@ -132,7 +132,7 @@ public interface VertexConditionTraversal {
      * @return a {@link VertexTraversal} with the new condition
      * @throws NullPointerException when has any null element
      */
-    VertexTraversal out(String... labels) throws NullPointerException;
+    VertexTraversal out(String... labels);
 
 
     /**
@@ -142,7 +142,7 @@ public interface VertexConditionTraversal {
      * @return a {@link VertexTraversal} with the new condition
      * @throws NullPointerException when has any null element
      */
-    VertexTraversal in(String... labels) throws NullPointerException;
+    VertexTraversal in(String... labels);
 
 
     /**
@@ -152,7 +152,7 @@ public interface VertexConditionTraversal {
      * @return a {@link VertexTraversal} with the new condition
      * @throws NullPointerException when has any null element
      */
-    VertexTraversal both(String... labels) throws NullPointerException;
+    VertexTraversal both(String... labels);
 
     /**
      * Map the {@link VertexTraversal} to its outgoing adjacent vertices given the edge labels.
@@ -161,7 +161,7 @@ public interface VertexConditionTraversal {
      * @return a {@link VertexTraversal} with the new condition
      * @throws NullPointerException when has any null element
      */
-    default VertexTraversal out(Supplier<String> label) throws NullPointerException{
+    default VertexTraversal out(Supplier<String> label){
         requireNonNull(label, "the supplier is required");
         return out(label.get());
     }
@@ -173,7 +173,7 @@ public interface VertexConditionTraversal {
      * @return a {@link VertexTraversal} with the new condition
      * @throws NullPointerException when has any null element
      */
-    default VertexTraversal in(Supplier<String> label) throws NullPointerException{
+    default VertexTraversal in(Supplier<String> label){
         requireNonNull(label, "the supplier is required");
         return in(label.get());
     }
@@ -186,7 +186,7 @@ public interface VertexConditionTraversal {
      * @return a {@link VertexTraversal} with the new condition
      * @throws NullPointerException when has any null element
      */
-    default VertexTraversal both(Supplier<String> label) throws NullPointerException{
+    default VertexTraversal both(Supplier<String> label){
         requireNonNull(label, "the supplier is required");
         return both(label.get());
     }
@@ -198,7 +198,7 @@ public interface VertexConditionTraversal {
      * @return a {@link VertexTraversal} with the new condition
      * @throws NullPointerException when label is null
      */
-    VertexTraversal hasLabel(String label) throws NullPointerException;
+    VertexTraversal hasLabel(String label);
 
     /**
      * Defines Vertex as label condition
@@ -207,7 +207,7 @@ public interface VertexConditionTraversal {
      * @return a {@link VertexTraversal} with the new condition
      * @throws NullPointerException when entityClazz is null
      */
-    <T> VertexTraversal hasLabel(Class<T> entityClass) throws NullPointerException;
+    <T> VertexTraversal hasLabel(Class<T> entityClass);
 
     /**
      * Defines Vertex as label condition
@@ -216,7 +216,7 @@ public interface VertexConditionTraversal {
      * @return a {@link VertexTraversal} with the new condition
      * @throws NullPointerException when predicate is null
      */
-    <T> VertexTraversal hasLabel(P<String> predicate) throws NullPointerException;
+    <T> VertexTraversal hasLabel(P<String> predicate);
 
     /**
      * Defines Vertex as label condition
@@ -225,7 +225,7 @@ public interface VertexConditionTraversal {
      * @return a {@link VertexTraversal} with the new condition
      * @throws NullPointerException when has any null element
      */
-    default VertexTraversal hasLabel(Supplier<String> label) throws NullPointerException{
+    default VertexTraversal hasLabel(Supplier<String> label){
         requireNonNull(label, "the supplier is required");
         return hasLabel(label.get());
     }

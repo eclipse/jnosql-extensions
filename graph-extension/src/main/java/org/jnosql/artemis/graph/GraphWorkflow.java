@@ -38,5 +38,5 @@ public interface GraphWorkflow {
      * @param <T>    the entity type
      * @return after the workflow the the entity response
      */
-    <T> T flow(T entity, UnaryOperator<ArtemisVertex> action) throws NullPointerException;
+    <T> T flow(T entity, UnaryOperator<ArtemisVertex> action);
 }

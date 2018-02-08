@@ -36,7 +36,7 @@ public interface EntityGraphPrePersist {
      * @return the new instance of {@link EntityGraphPrePersist}
      * @throws NullPointerException when value is null
      */
-    static EntityGraphPrePersist of(Object value) throws NullPointerException {
+    static EntityGraphPrePersist of(Object value) {
         Objects.requireNonNull(value, "value is required");
         return new DefaultEntityGraphPrePersist(value);
     }

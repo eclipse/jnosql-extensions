@@ -39,11 +39,11 @@ public interface ArtemisProperty {
     Value getValue();
 
 
-    static ArtemisProperty of(String key, Object value) throws NullPointerException {
+    static ArtemisProperty of(String key, Object value) {
         return new DefaultArtemisProperty(key, value);
     }
 
-    static ArtemisProperty of(String key, Value value) throws NullPointerException {
+    static ArtemisProperty of(String key, Value value) {
         requireNonNull(value, "value is required");
         return new DefaultArtemisProperty(key, value.get());
     }
@@ -57,7 +57,7 @@ public interface ArtemisProperty {
      * @throws NullPointerException          when type is null
      * @throws UnsupportedOperationException when {@link org.jnosql.diana.api.Value#get(TypeSupplier)} has not support
      */
-    <T> T get(TypeSupplier<T> typeSupplier) throws NullPointerException, UnsupportedOperationException;
+    <T> T get(TypeSupplier<T> typeSupplier);
 
 
     /**

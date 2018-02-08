@@ -35,7 +35,7 @@ class DefaultEdgeUntilTraversal  extends AbstractEdgeTraversal implements EdgeUn
     }
 
     @Override
-    public EdgeTraversal has(String propertyKey) throws NullPointerException {
+    public EdgeTraversal has(String propertyKey) {
 
         requireNonNull(propertyKey, "propertyKey is required");
         Traversal<?, Edge> condition = __.has(propertyKey);
@@ -43,7 +43,7 @@ class DefaultEdgeUntilTraversal  extends AbstractEdgeTraversal implements EdgeUn
     }
 
     @Override
-    public EdgeTraversal has(String propertyKey, Object value) throws NullPointerException {
+    public EdgeTraversal has(String propertyKey, Object value) {
         requireNonNull(propertyKey, "propertyKey is required");
         requireNonNull(value, "value is required");
         Traversal<?, Edge> condition = __.has(propertyKey, value);
@@ -51,7 +51,7 @@ class DefaultEdgeUntilTraversal  extends AbstractEdgeTraversal implements EdgeUn
     }
 
     @Override
-    public EdgeTraversal has(String propertyKey, P<?> predicate) throws NullPointerException {
+    public EdgeTraversal has(String propertyKey, P<?> predicate) {
         requireNonNull(propertyKey, "propertyKey is required");
         requireNonNull(predicate, "predicate is required");
         Traversal<?, Edge> condition = __.has(propertyKey, predicate);
@@ -59,7 +59,7 @@ class DefaultEdgeUntilTraversal  extends AbstractEdgeTraversal implements EdgeUn
     }
 
     @Override
-    public EdgeTraversal has(T accessor, Object value) throws NullPointerException {
+    public EdgeTraversal has(T accessor, Object value) {
         requireNonNull(accessor, "accessor is required");
         requireNonNull(value, "value is required");
         Traversal<?, Edge> condition = __.has(accessor, value);
@@ -67,7 +67,7 @@ class DefaultEdgeUntilTraversal  extends AbstractEdgeTraversal implements EdgeUn
     }
 
     @Override
-    public EdgeTraversal has(T accessor, P<?> predicate) throws NullPointerException {
+    public EdgeTraversal has(T accessor, P<?> predicate) {
         requireNonNull(accessor, "accessor is required");
         requireNonNull(predicate, "predicate is required");
         Traversal<?, Edge> condition = __.has(accessor, predicate);
@@ -75,7 +75,7 @@ class DefaultEdgeUntilTraversal  extends AbstractEdgeTraversal implements EdgeUn
     }
 
     @Override
-    public EdgeTraversal hasNot(String propertyKey) throws NullPointerException {
+    public EdgeTraversal hasNot(String propertyKey) {
         requireNonNull(propertyKey, "propertyKey is required");
         Traversal<?, Edge> condition = __.hasNot(propertyKey);
         return new DefaultEdgeTraversal(supplier, flow.andThen(g -> g.until(condition)), converter);

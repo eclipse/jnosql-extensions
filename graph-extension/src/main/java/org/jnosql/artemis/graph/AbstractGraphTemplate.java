@@ -64,7 +64,7 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
     protected abstract GraphWorkflow getFlow();
 
     @Override
-    public <T> T insert(T entity) throws NullPointerException, IdNotFoundException {
+    public <T> T insert(T entity) {
         requireNonNull(entity, "entity is required");
         checkId(entity);
 
@@ -78,7 +78,7 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
     }
 
     @Override
-    public <T> T update(T entity) throws NullPointerException, IdNotFoundException {
+    public <T> T update(T entity) {
         requireNonNull(entity, "entity is required");
         checkId(entity);
 
@@ -102,7 +102,7 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
     }
 
     @Override
-    public <T> void delete(T idValue) throws NullPointerException {
+    public <T> void delete(T idValue) {
         requireNonNull(idValue, "id is required");
         List<Vertex> vertices = getGraph().traversal().V(idValue).toList();
         vertices.forEach(Vertex::remove);
@@ -110,22 +110,21 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
     }
 
     @Override
-    public <T> void deleteEdge(T idEdge) throws NullPointerException {
+    public <T> void deleteEdge(T idEdge) {
         requireNonNull(idEdge, "idEdge is required");
         List<Edge> edges = getGraph().traversal().E(idEdge).toList();
         edges.forEach(Edge::remove);
     }
 
     @Override
-    public <T, ID> Optional<T> find(ID idValue) throws NullPointerException {
+    public <T, ID> Optional<T> find(ID idValue) {
         requireNonNull(idValue, "id is required");
         Optional<Vertex> vertex = getGraph().traversal().V(idValue).tryNext();
         return vertex.map(vertex1 -> getConverter().toEntity(toArtemisVertex(vertex1)));
     }
 
     @Override
-    public <OUT, IN> EdgeEntity edge(OUT outbound, String label, IN incoming) throws NullPointerException,
-            IdNotFoundException, EntityNotFoundException {
+    public <OUT, IN> EdgeEntity edge(OUT outbound, String label, IN incoming) {
 
         requireNonNull(incoming, "inbound is required");
         requireNonNull(label, "label is required");
@@ -175,7 +174,7 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
     }
 
     @Override
-    public <E> Optional<EdgeEntity> edge(E edgeId) throws NullPointerException {
+    public <E> Optional<EdgeEntity> edge(E edgeId) {
         requireNonNull(edgeId, "edgeId is required");
 
         Optional<Edge> edgeOptional = getGraph().traversal().E(edgeId).tryNext();
@@ -190,51 +189,44 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
 
 
     @Override
-    public <T> Collection<EdgeEntity> getEdges(T entity, Direction direction) throws NullPointerException {
+    public <T> Collection<EdgeEntity> getEdges(T entity, Direction direction) {
         return getEdgesImpl(entity, direction);
     }
 
     @Override
-    public <T> Collection<EdgeEntity> getEdges(T entity, Direction direction, String... labels)
-            throws NullPointerException {
+    public <T> Collection<EdgeEntity> getEdges(T entity, Direction direction, String... labels) {
         return getEdgesImpl(entity, direction, labels);
     }
 
 
     @SafeVarargs
     @Override
-    public final <T> Collection<EdgeEntity> getEdges(T entity, Direction direction, Supplier<String>... labels)
-            throws NullPointerException {
-
+    public final <T> Collection<EdgeEntity> getEdges(T entity, Direction direction, Supplier<String>... labels) {
         checkLabelsSupplier(labels);
         return getEdgesImpl(entity, direction, Stream.of(labels).map(Supplier::get).toArray(String[]::new));
     }
 
 
     @Override
-    public <ID> Collection<EdgeEntity> getEdgesById(ID id, Direction direction, String... labels)
-            throws NullPointerException {
+    public <ID> Collection<EdgeEntity> getEdgesById(ID id, Direction direction, String... labels) {
         return getEdgesByIdImpl(id, direction, labels);
     }
 
     @Override
-    public <ID> Collection<EdgeEntity> getEdgesById(ID id, Direction direction)
-            throws NullPointerException {
+    public <ID> Collection<EdgeEntity> getEdgesById(ID id, Direction direction) {
         return getEdgesByIdImpl(id, direction);
     }
 
     @SafeVarargs
     @Override
-    public final <ID> Collection<EdgeEntity> getEdgesById(ID id, Direction direction, Supplier<String>... labels)
-            throws NullPointerException {
-
+    public final <ID> Collection<EdgeEntity> getEdgesById(ID id, Direction direction, Supplier<String>... labels) {
         checkLabelsSupplier(labels);
         return getEdgesByIdImpl(id, direction, Stream.of(labels).map(Supplier::get).toArray(String[]::new));
     }
 
 
     @Override
-    public VertexTraversal getTraversalVertex(Object... vertexIds) throws NullPointerException {
+    public VertexTraversal getTraversalVertex(Object... vertexIds) {
         if (Stream.of(vertexIds).anyMatch(Objects::isNull)) {
             throw new NullPointerException("No one vertexId element cannot be null");
         }
@@ -242,7 +234,7 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
     }
 
     @Override
-    public EdgeTraversal getTraversalEdge(Object... edgeIds) throws NullPointerException {
+    public EdgeTraversal getTraversalEdge(Object... edgeIds) {
         if (Stream.of(edgeIds).anyMatch(Objects::isNull)) {
             throw new NullPointerException("No one edgeId element cannot be null");
         }

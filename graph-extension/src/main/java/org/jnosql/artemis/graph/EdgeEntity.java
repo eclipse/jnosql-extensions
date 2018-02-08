@@ -77,7 +77,7 @@ public interface EdgeEntity {
      * @param value the information
      * @throws NullPointerException when either key or value are null
      */
-    void add(String key, Object value) throws NullPointerException;
+    void add(String key, Object value);
 
     /**
      * Add a new element in the Vertex
@@ -86,7 +86,7 @@ public interface EdgeEntity {
      * @param value the information
      * @throws NullPointerException when either key or value are null
      */
-    void add(String key, Value value) throws NullPointerException;
+    void add(String key, Value value);
 
     /**
      * Removes an property
@@ -94,7 +94,7 @@ public interface EdgeEntity {
      * @param key the key
      * @throws NullPointerException whe key is null
      */
-    void remove(String key) throws NullPointerException;
+    void remove(String key);
 
     /**
      * Returns the property from the key
@@ -103,7 +103,7 @@ public interface EdgeEntity {
      * @return the property to the respective key otherwise {@link Optional#empty()}
      * @throws NullPointerException when key is null
      */
-    Optional<Value> get(String key) throws NullPointerException;
+    Optional<Value> get(String key);
 
     /**
      * Returns true if this Edge contains no elements.
@@ -137,7 +137,7 @@ public interface EdgeEntity {
      * @return an {@link EdgeEntity} instance
      * @throws NullPointerException if any parameters is null
      */
-    static <OUT, IN> EdgeEntity of(OUT outgoing, Edge edge, IN incoming) throws NullPointerException {
+    static <OUT, IN> EdgeEntity of(OUT outgoing, Edge edge, IN incoming) {
         requireNonNull(outgoing, "outgoing is required");
         requireNonNull(edge, "edge is required");
         requireNonNull(incoming, "incoming is required");

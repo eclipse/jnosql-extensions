@@ -39,7 +39,7 @@ class DefaultGraphWorkflow implements GraphWorkflow {
     }
 
     @Override
-    public <T> T flow(T entity, UnaryOperator<ArtemisVertex> action) throws NullPointerException {
+    public <T> T flow(T entity, UnaryOperator<ArtemisVertex> action) {
         Function<T, T> flow = getFlow(entity, action);
         return flow.apply(entity);
     }

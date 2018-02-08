@@ -30,5 +30,5 @@ public interface GraphTemplateProducer <T extends GraphTemplate> {
      * @return a new instance
      * @throws NullPointerException when collectionManager is null
      */
-    T get(Graph graph) throws NullPointerException;
+    T get(Graph graph);
 }

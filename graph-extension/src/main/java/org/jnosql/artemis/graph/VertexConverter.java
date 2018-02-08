@@ -28,7 +28,7 @@ public interface VertexConverter {
      * @return a {@link ArtemisVertex} instance
      * @throws NullPointerException when entityInstance is null
      */
-    ArtemisVertex toVertex(Object entityInstance) throws NullPointerException;
+    ArtemisVertex toVertex(Object entityInstance);
 
     /**
      * Converts a {@link ArtemisVertex} to entity
@@ -39,7 +39,7 @@ public interface VertexConverter {
      * @return the instance from {@link ArtemisVertex}
      * @throws NullPointerException when either entityClass or entity are null
      */
-    <T> T toEntity(Class<T> entityClass, ArtemisVertex entity) throws NullPointerException;
+    <T> T toEntity(Class<T> entityClass, ArtemisVertex entity);
 
     /**
      * Similar to {@link VertexConverter#toEntity(Class, ArtemisVertex)}, but
@@ -50,5 +50,5 @@ public interface VertexConverter {
      * @return the instance from {@link ArtemisVertex}
      * @throws NullPointerException when entity is null
      */
-    <T> T toEntity(ArtemisVertex entity) throws NullPointerException;
+    <T> T toEntity(ArtemisVertex entity);
 }

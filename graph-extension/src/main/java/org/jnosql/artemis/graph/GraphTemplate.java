@@ -15,8 +15,6 @@
 package org.jnosql.artemis.graph;
 
 import org.apache.tinkerpop.gremlin.structure.Direction;
-import org.jnosql.artemis.EntityNotFoundException;
-import org.jnosql.artemis.IdNotFoundException;
 
 import java.util.Collection;
 import java.util.Objects;
@@ -36,9 +34,9 @@ public interface GraphTemplate {
      * @param <T>    the instance type
      * @return the entity saved
      * @throws NullPointerException when document is null
-     * @throws IdNotFoundException  when entity has not {@link org.jnosql.artemis.Id}
+     * @throws org.jnosql.artemis.IdNotFoundException  when entity has not {@link org.jnosql.artemis.Id}
      */
-    <T> T insert(T entity) throws NullPointerException, IdNotFoundException;
+    <T> T insert(T entity);
 
     /**
      * Updates entity
@@ -47,9 +45,9 @@ public interface GraphTemplate {
      * @param <T>    the instance type
      * @return the entity saved
      * @throws NullPointerException when document is null
-     * @throws IdNotFoundException  when an entity is null
+     * @throws org.jnosql.artemis.IdNotFoundException  when an entity is null
      */
-    <T> T update(T entity) throws NullPointerException, IdNotFoundException;
+    <T> T update(T entity);
 
 
     /**
@@ -59,7 +57,7 @@ public interface GraphTemplate {
      * @param <T> the id type
      * @throws NullPointerException when id is null
      */
-    <T> void delete(T id) throws NullPointerException;
+    <T> void delete(T id);
 
     /**
      * Deletes a {@link org.apache.tinkerpop.gremlin.structure.Edge}
@@ -68,7 +66,7 @@ public interface GraphTemplate {
      * @param <T> the id type
      * @throws NullPointerException when either label and id are null
      */
-    <T> void deleteEdge(T id) throws NullPointerException;
+    <T> void deleteEdge(T id);
 
 
     /**
@@ -81,7 +79,7 @@ public interface GraphTemplate {
      * @return the entity found otherwise {@link Optional#empty()}
      * @throws NullPointerException when id is null
      */
-    <T, ID> Optional<T> find(ID id) throws NullPointerException;
+    <T, ID> Optional<T> find(ID id);
 
     /**
      * Either find or create an Edge between this two entities.
@@ -95,11 +93,10 @@ public interface GraphTemplate {
      * @param <OUT>    the outgoing type
      * @return the {@link EdgeEntity} of these two entities
      * @throws NullPointerException    Either when any elements are null or the entity is null
-     * @throws IdNotFoundException     when {@link org.jnosql.artemis.Id} annotation is missing in the entities
-     * @throws EntityNotFoundException when neither outbound or incoming is found
+     * @throws org.jnosql.artemis.IdNotFoundException     when {@link org.jnosql.artemis.Id} annotation is missing in the entities
+     * @throws org.jnosql.artemis.EntityNotFoundException when neither outbound or incoming is found
      */
-    <OUT, IN> EdgeEntity edge(OUT outbound, String label, IN incoming) throws NullPointerException,
-            IdNotFoundException, EntityNotFoundException;
+    <OUT, IN> EdgeEntity edge(OUT outbound, String label, IN incoming);
 
     /**
      * Either find or create an Edge between this two entities.
@@ -113,11 +110,10 @@ public interface GraphTemplate {
      * @param <OUT>    the outgoing type
      * @return the {@link EdgeEntity} of these two entities
      * @throws NullPointerException    Either when any elements are null or the entity is null
-     * @throws IdNotFoundException     when {@link org.jnosql.artemis.Id} annotation is missing in the entities
-     * @throws EntityNotFoundException when neither outbound or incoming is found
+     * @throws org.jnosql.artemis.IdNotFoundException     when {@link org.jnosql.artemis.Id} annotation is missing in the entities
+     * @throws org.jnosql.artemis.EntityNotFoundException when neither outbound or incoming is found
      */
-    default <OUT, IN> EdgeEntity edge(OUT outbound, Supplier<String> label, IN incoming) throws NullPointerException,
-            IdNotFoundException, EntityNotFoundException {
+    default <OUT, IN> EdgeEntity edge(OUT outbound, Supplier<String> label, IN incoming) {
         Objects.requireNonNull(label,"supplier is required");
         return edge(outbound, label.get(), incoming);
     }
@@ -133,8 +129,7 @@ public interface GraphTemplate {
      * @return the Edges
      * @throws NullPointerException where there is any parameter null
      */
-    <ID> Collection<EdgeEntity> getEdgesById(ID id, Direction direction, String... labels)
-            throws NullPointerException;
+    <ID> Collection<EdgeEntity> getEdgesById(ID id, Direction direction, String... labels);
 
     /**
      * returns the edges of from a vertex id
@@ -146,8 +141,7 @@ public interface GraphTemplate {
      * @return the Edges
      * @throws NullPointerException where there is any parameter null
      */
-    <ID> Collection<EdgeEntity> getEdgesById(ID id, Direction direction, Supplier<String>... labels)
-            throws NullPointerException;
+    <ID> Collection<EdgeEntity> getEdgesById(ID id, Direction direction, Supplier<String>... labels);
 
     /**
      * returns the edges of from a vertex id
@@ -158,7 +152,7 @@ public interface GraphTemplate {
      * @return the Edges
      * @throws NullPointerException where there is any parameter null
      */
-    <ID> Collection<EdgeEntity> getEdgesById(ID id, Direction direction) throws NullPointerException;
+    <ID> Collection<EdgeEntity> getEdgesById(ID id, Direction direction);
 
 
     /**
@@ -171,8 +165,7 @@ public interface GraphTemplate {
      * @return the Edges
      * @throws NullPointerException where there is any parameter null
      */
-    <T> Collection<EdgeEntity> getEdges(T entity, Direction direction, String... labels)
-            throws NullPointerException;
+    <T> Collection<EdgeEntity> getEdges(T entity, Direction direction, String... labels);
 
     /**
      * returns the edges of from an entity
@@ -184,8 +177,7 @@ public interface GraphTemplate {
      * @return the Edges
      * @throws NullPointerException where there is any parameter null
      */
-    <T> Collection<EdgeEntity> getEdges(T entity, Direction direction, Supplier<String>... labels)
-            throws NullPointerException;
+    <T> Collection<EdgeEntity> getEdges(T entity, Direction direction, Supplier<String>... labels);
 
     /**
      * returns the edges of from an entity
@@ -196,8 +188,7 @@ public interface GraphTemplate {
      * @return the Edges
      * @throws NullPointerException where there is any parameter null
      */
-    <T> Collection<EdgeEntity> getEdges(T entity, Direction direction)
-            throws NullPointerException;
+    <T> Collection<EdgeEntity> getEdges(T entity, Direction direction);
 
 
     /**
@@ -208,7 +199,7 @@ public interface GraphTemplate {
      * @return the {@link EdgeEntity} otherwise {@link Optional#empty()}
      * @throws NullPointerException when edgeId is null
      */
-    <E> Optional<EdgeEntity> edge(E edgeId) throws NullPointerException;
+    <E> Optional<EdgeEntity> edge(E edgeId);
 
 
     /**
@@ -218,7 +209,7 @@ public interface GraphTemplate {
      * @return a {@link VertexTraversal} instance
      * @throws NullPointerException if any id element is null
      */
-    VertexTraversal getTraversalVertex(Object... vertexIds) throws NullPointerException;
+    VertexTraversal getTraversalVertex(Object... vertexIds);
 
 
     /**
@@ -228,7 +219,7 @@ public interface GraphTemplate {
      * @return a {@link VertexTraversal} instance
      * @throws NullPointerException if any id element is null
      */
-    EdgeTraversal getTraversalEdge(Object... edgeIds) throws NullPointerException;
+    EdgeTraversal getTraversalEdge(Object... edgeIds);
 
 
 }

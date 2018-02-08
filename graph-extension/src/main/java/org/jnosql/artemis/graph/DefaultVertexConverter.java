@@ -51,7 +51,7 @@ class DefaultVertexConverter implements VertexConverter {
     private Converters converters;
 
     @Override
-    public ArtemisVertex toVertex(Object entityInstance) throws NullPointerException {
+    public ArtemisVertex toVertex(Object entityInstance) {
 
         ClassRepresentation representation = classRepresentations.get(entityInstance.getClass());
         String label = representation.getName();
@@ -76,7 +76,7 @@ class DefaultVertexConverter implements VertexConverter {
     }
 
     @Override
-    public <T> T toEntity(Class<T> entityClass, ArtemisVertex vertex) throws NullPointerException {
+    public <T> T toEntity(Class<T> entityClass, ArtemisVertex vertex) {
         requireNonNull(entityClass, "entityClass is required");
         requireNonNull(vertex, "vertex is required");
         T entity = toEntity(entityClass, vertex.getProperties());
@@ -87,7 +87,7 @@ class DefaultVertexConverter implements VertexConverter {
 
 
     @Override
-    public <T> T toEntity(ArtemisVertex vertex) throws NullPointerException {
+    public <T> T toEntity(ArtemisVertex vertex) {
         requireNonNull(vertex, "vertex is required");
         ClassRepresentation representation = classRepresentations.findByName(vertex.getLabel());
         Class<T> entityClass = (Class<T>) representation.getClassInstance();

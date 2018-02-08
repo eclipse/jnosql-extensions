@@ -70,7 +70,7 @@ class DefaultEdgeEntity<OUT, IN> implements EdgeEntity {
     }
 
     @Override
-    public void add(String key, Object value) throws NullPointerException {
+    public void add(String key, Object value) {
         requireNonNull(key, "key is required");
         requireNonNull(value, "value is required");
         edge.property(key, value);
@@ -78,21 +78,21 @@ class DefaultEdgeEntity<OUT, IN> implements EdgeEntity {
     }
 
     @Override
-    public void add(String key, Value value) throws NullPointerException {
+    public void add(String key, Value value) {
         requireNonNull(key, "key is required");
         requireNonNull(value, "value is required");
         edge.property(key, value.get());
     }
 
     @Override
-    public void remove(String key) throws NullPointerException {
+    public void remove(String key) {
         requireNonNull(key, "key is required");
         Property<Object> property = edge.property(key);
         property.ifPresent(o -> property.remove());
     }
 
     @Override
-    public Optional<Value> get(String key) throws NullPointerException {
+    public Optional<Value> get(String key) {
         requireNonNull(key, "key is required");
         Property<Object> property = edge.property(key);
         if (property.isPresent()) {
