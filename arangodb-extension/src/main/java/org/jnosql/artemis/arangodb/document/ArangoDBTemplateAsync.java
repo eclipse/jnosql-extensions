@@ -16,7 +16,6 @@ package org.jnosql.artemis.arangodb.document;
 
 
 import org.jnosql.artemis.document.DocumentTemplateAsync;
-import org.jnosql.diana.api.ExecuteAsyncQueryException;
 
 import java.util.List;
 import java.util.Map;
@@ -36,10 +35,9 @@ public interface ArangoDBTemplateAsync extends DocumentTemplateAsync {
      * @param values   the named queries
      * @param callBack the callback, when the process is finished will call this instance returning
      *                 the result of select within parameters
-     * @throws ExecuteAsyncQueryException    when there is a async error
+     * @throws org.jnosql.diana.api.ExecuteAsyncQueryException    when there is a async error
      * @throws UnsupportedOperationException when the database does not support this feature
      * @throws NullPointerException          when either select or callback are null
      */
-    <T> void aql(String query, Map<String, Object> values, Consumer<List<T>> callBack) throws
-            ExecuteAsyncQueryException, UnsupportedOperationException, NullPointerException;
+    <T> void aql(String query, Map<String, Object> values, Consumer<List<T>> callBack);
 }

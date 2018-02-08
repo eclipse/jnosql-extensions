@@ -35,6 +35,6 @@ public interface ArangoDBTemplate extends DocumentTemplate {
      * @return the query result
      * @throws NullPointerException when either query or values are null
      */
-    <T> List<T> aql(String query, Map<String, Object> values) throws NullPointerException;
+    <T> List<T> aql(String query, Map<String, Object> values);
 
 }

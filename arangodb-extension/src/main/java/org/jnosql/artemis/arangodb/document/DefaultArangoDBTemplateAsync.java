@@ -19,7 +19,6 @@ import org.jnosql.artemis.Converters;
 import org.jnosql.artemis.document.AbstractDocumentTemplateAsync;
 import org.jnosql.artemis.document.DocumentEntityConverter;
 import org.jnosql.artemis.reflection.ClassRepresentations;
-import org.jnosql.diana.api.ExecuteAsyncQueryException;
 import org.jnosql.diana.api.document.DocumentCollectionManagerAsync;
 import org.jnosql.diana.api.document.DocumentEntity;
 import org.jnosql.diana.arangodb.document.ArangoDBDocumentCollectionManagerAsync;
@@ -85,8 +84,7 @@ class DefaultArangoDBTemplateAsync extends AbstractDocumentTemplateAsync impleme
 
 
     @Override
-    public <T> void aql(String query, Map<String, Object> values, Consumer<List<T>> callBack)
-            throws ExecuteAsyncQueryException, UnsupportedOperationException, NullPointerException {
+    public <T> void aql(String query, Map<String, Object> values, Consumer<List<T>> callBack) {
 
         requireNonNull(query, "query is required");
         requireNonNull(values, "values is required");
