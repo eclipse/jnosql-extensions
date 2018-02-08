@@ -21,7 +21,6 @@ import org.jnosql.artemis.Converters;
 import org.jnosql.artemis.document.AbstractDocumentTemplateAsync;
 import org.jnosql.artemis.document.DocumentEntityConverter;
 import org.jnosql.artemis.reflection.ClassRepresentations;
-import org.jnosql.diana.api.ExecuteAsyncQueryException;
 import org.jnosql.diana.api.document.DocumentCollectionManagerAsync;
 import org.jnosql.diana.api.document.DocumentEntity;
 import org.jnosql.diana.couchbase.document.CouchbaseDocumentCollectionManagerAsync;
@@ -84,8 +83,7 @@ class DefaultCouchbaseTemplateAsync extends AbstractDocumentTemplateAsync implem
     }
 
     @Override
-    public <T> void n1qlQuery(String n1qlQuery, JsonObject params, Consumer<List<T>> callback)
-            throws NullPointerException, ExecuteAsyncQueryException {
+    public <T> void n1qlQuery(String n1qlQuery, JsonObject params, Consumer<List<T>> callback) {
 
         Objects.requireNonNull(n1qlQuery, "n1qlQuery is required");
         Objects.requireNonNull(params, "params is required");
@@ -100,8 +98,7 @@ class DefaultCouchbaseTemplateAsync extends AbstractDocumentTemplateAsync implem
     }
 
     @Override
-    public <T> void n1qlQuery(Statement n1qlQuery, JsonObject params, Consumer<List<T>> callback)
-            throws NullPointerException, ExecuteAsyncQueryException {
+    public <T> void n1qlQuery(Statement n1qlQuery, JsonObject params, Consumer<List<T>> callback) {
         Objects.requireNonNull(n1qlQuery, "n1qlQuery is required");
         Objects.requireNonNull(params, "params is required");
         Objects.requireNonNull(callback, "callback is required");
@@ -114,8 +111,7 @@ class DefaultCouchbaseTemplateAsync extends AbstractDocumentTemplateAsync implem
     }
 
     @Override
-    public <T> void n1qlQuery(String n1qlQuery, Consumer<List<T>> callback)
-            throws NullPointerException, ExecuteAsyncQueryException {
+    public <T> void n1qlQuery(String n1qlQuery, Consumer<List<T>> callback) {
 
         Objects.requireNonNull(n1qlQuery, "n1qlQuery is required");
         Objects.requireNonNull(callback, "callback is required");
@@ -130,8 +126,7 @@ class DefaultCouchbaseTemplateAsync extends AbstractDocumentTemplateAsync implem
     }
 
     @Override
-    public <T> void n1qlQuery(Statement n1qlQuery, Consumer<List<T>> callback)
-            throws NullPointerException, ExecuteAsyncQueryException {
+    public <T> void n1qlQuery(Statement n1qlQuery, Consumer<List<T>> callback) {
         Objects.requireNonNull(n1qlQuery, "n1qlQuery is required");
         Objects.requireNonNull(callback, "callback is required");
 

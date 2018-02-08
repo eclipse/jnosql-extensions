@@ -18,7 +18,6 @@ package org.jnosql.artemis.couchbase.document;
 import com.couchbase.client.java.document.json.JsonObject;
 import com.couchbase.client.java.query.Statement;
 import org.jnosql.artemis.document.DocumentTemplateAsync;
-import org.jnosql.diana.api.ExecuteAsyncQueryException;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -36,10 +35,9 @@ public interface CouchbaseTemplateAsync extends DocumentTemplateAsync {
      * @param params    the params
      * @param callback  the callback
      * @throws NullPointerException       when either n1qlQuery or params are null
-     * @throws ExecuteAsyncQueryException an async error
+     * @throws org.jnosql.diana.api.ExecuteAsyncQueryException an async error
      */
-    <T> void n1qlQuery(String n1qlQuery, JsonObject params, Consumer<List<T>> callback) throws NullPointerException
-            , ExecuteAsyncQueryException;
+    <T> void n1qlQuery(String n1qlQuery, JsonObject params, Consumer<List<T>> callback);
 
     /**
      * Executes the n1qlquery  with params and then result que result
@@ -48,10 +46,9 @@ public interface CouchbaseTemplateAsync extends DocumentTemplateAsync {
      * @param params    the params
      * @param callback  the callback
      * @throws NullPointerException       when either n1qlQuery or params are null
-     * @throws ExecuteAsyncQueryException an async error
+     * @throws org.jnosql.diana.api.ExecuteAsyncQueryException an async error
      */
-    <T> void n1qlQuery(Statement n1qlQuery, JsonObject params, Consumer<List<T>> callback) throws NullPointerException,
-            ExecuteAsyncQueryException;
+    <T> void n1qlQuery(Statement n1qlQuery, JsonObject params, Consumer<List<T>> callback);
 
     /**
      * Executes the n1qlquery  plain query and then result que result
@@ -59,10 +56,9 @@ public interface CouchbaseTemplateAsync extends DocumentTemplateAsync {
      * @param n1qlQuery the query
      * @param callback  the callback
      * @throws NullPointerException       when either n1qlQuery or params are null
-     * @throws ExecuteAsyncQueryException an async error
+     * @throws org.jnosql.diana.api.ExecuteAsyncQueryException an async error
      */
-    <T> void n1qlQuery(String n1qlQuery, Consumer<List<T>> callback) throws NullPointerException,
-            ExecuteAsyncQueryException;
+    <T> void n1qlQuery(String n1qlQuery, Consumer<List<T>> callback);
 
     /**
      * Executes the n1qlquery  plain query and then result que result
@@ -70,8 +66,7 @@ public interface CouchbaseTemplateAsync extends DocumentTemplateAsync {
      * @param n1qlQuery the query
      * @param callback  the callback
      * @throws NullPointerException       when either n1qlQuery or params are null
-     * @throws ExecuteAsyncQueryException an async error
+     * @throws org.jnosql.diana.api.ExecuteAsyncQueryException an async error
      */
-    <T> void n1qlQuery(Statement n1qlQuery, Consumer<List<T>> callback) throws
-            NullPointerException, ExecuteAsyncQueryException;
+    <T> void n1qlQuery(Statement n1qlQuery, Consumer<List<T>> callback);
 }

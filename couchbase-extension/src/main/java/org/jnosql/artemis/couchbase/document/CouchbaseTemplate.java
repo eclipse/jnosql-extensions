@@ -36,7 +36,7 @@ public interface CouchbaseTemplate extends DocumentTemplate {
      * @return the query result
      * @throws NullPointerException when either n1qlQuery or params are null
      */
-    <T> List<T> n1qlQuery(String n1qlQuery, JsonObject params) throws NullPointerException;
+    <T> List<T> n1qlQuery(String n1qlQuery, JsonObject params);
 
     /**
      * Executes the n1qlquery  with params and then result que result
@@ -46,7 +46,7 @@ public interface CouchbaseTemplate extends DocumentTemplate {
      * @return the query result
      * @throws NullPointerException when either n1qlQuery or params are null
      */
-    <T> List<T> n1qlQuery(Statement n1qlQuery, JsonObject params) throws NullPointerException;
+    <T> List<T> n1qlQuery(Statement n1qlQuery, JsonObject params);
 
     /**
      * Executes the n1qlquery  plain query and then result que result
@@ -55,7 +55,7 @@ public interface CouchbaseTemplate extends DocumentTemplate {
      * @return the query result
      * @throws NullPointerException when either n1qlQuery or params are null
      */
-    <T> List<T> n1qlQuery(String n1qlQuery) throws NullPointerException;
+    <T> List<T> n1qlQuery(String n1qlQuery);
 
     /**
      * Searches in Couchbase using Full Text Search
@@ -65,7 +65,7 @@ public interface CouchbaseTemplate extends DocumentTemplate {
      * @return the elements from the query
      * @throws NullPointerException when either the query or index are null
      */
-    <T> List<T> search(SearchQuery query) throws NullPointerException;
+    <T> List<T> search(SearchQuery query);
 
     /**
      * Executes the n1qlquery  plain query and then result que result
@@ -74,5 +74,5 @@ public interface CouchbaseTemplate extends DocumentTemplate {
      * @return the query result
      * @throws NullPointerException when either n1qlQuery or params are null
      */
-    <T> List<T> n1qlQuery(Statement n1qlQuery) throws NullPointerException;
+    <T> List<T> n1qlQuery(Statement n1qlQuery);
 }
