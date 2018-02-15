@@ -17,10 +17,10 @@ package org.jnosql.artemis.orientdb.document;
 
 import org.jnosql.artemis.document.DocumentTemplate;
 import org.jnosql.diana.api.document.DocumentQuery;
+import org.jnosql.diana.orientdb.document.OrientDBLiveCallback;
 
 import java.util.List;
 import java.util.Map;
-import java.util.function.Consumer;
 
 /**
  * A {@link DocumentTemplate} to orientdb
@@ -50,18 +50,18 @@ public interface OrientDBTemplate extends DocumentTemplate {
      * Execute live query
      *
      * @param query    the query
-     * @param callBack when a new callback is coming
+     * @param callBacks callbacks for each operation
      * @throws NullPointerException when both query and callBack are null
      */
-    <T> void live(DocumentQuery query, Consumer<T> callBack);
+    <T> void live(DocumentQuery query, OrientDBLiveCallback<T> callBacks);
 
     /**
      * Execute live query
      *
      * @param query    the string query, you must add "live"
-     * @param callBack when a new entity is coming
+     * @param callBacks callbacks for each operation
      * @param params   the params
      * @throws NullPointerException when both query, callBack are null
      */
-    <T> void live(String query, Consumer<T> callBack, Object... params);
+    <T> void live(String query, OrientDBLiveCallback<T> callBacks, Object... params);
 }

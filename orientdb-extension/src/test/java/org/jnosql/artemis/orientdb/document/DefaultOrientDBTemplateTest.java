@@ -23,6 +23,8 @@ import org.jnosql.diana.api.document.Document;
 import org.jnosql.diana.api.document.DocumentEntity;
 import org.jnosql.diana.api.document.DocumentQuery;
 import org.jnosql.diana.orientdb.document.OrientDBDocumentCollectionManager;
+import org.jnosql.diana.orientdb.document.OrientDBLiveCallback;
+import org.jnosql.diana.orientdb.document.OrientDBLiveCreateCallback;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -32,7 +34,6 @@ import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 import java.util.Collections;
 import java.util.List;
-import java.util.function.Consumer;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
@@ -90,19 +91,20 @@ public class DefaultOrientDBTemplateTest {
     public void shouldLive() {
 
         DocumentQuery query = select().from("Person").build();
-        
-        Consumer<Person> callBack = p -> {
+
+        OrientDBLiveCreateCallback<Person> callBack = p -> {
         };
-        template.live(query, callBack);
-        verify(manager).live(Mockito.eq(query), Mockito.any(Consumer.class));
+        template.live(query, OrientDBLiveCallbackBuilder.builder().onCreate(callBack).build());
+        verify(manager).live(Mockito.eq(query), Mockito.any(OrientDBLiveCallback.class));
     }
 
     @Test
     public void shouldLiveQuery() {
-        Consumer<Person> callBack = p -> {
+        OrientDBLiveCreateCallback<Person> callBack = p -> {
         };
-        template.live("sql from Person where name = ?", callBack, "Ada");
+        template.live("sql from Person where name = ?", OrientDBLiveCallbackBuilder.builder().onCreate(callBack).build(), "Ada");
         verify(manager).live(Mockito.eq("sql from Person where name = ?"),
-                Mockito.any(Consumer.class), Mockito.eq("Ada"));
+                Mockito.any(OrientDBLiveCallback.class),
+                Mockito.eq("Ada"));
     }
 }

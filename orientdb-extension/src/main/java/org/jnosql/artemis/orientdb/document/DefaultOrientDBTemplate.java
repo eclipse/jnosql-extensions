@@ -25,6 +25,8 @@ import org.jnosql.diana.api.document.DocumentCollectionManager;
 import org.jnosql.diana.api.document.DocumentEntity;
 import org.jnosql.diana.api.document.DocumentQuery;
 import org.jnosql.diana.orientdb.document.OrientDBDocumentCollectionManager;
+import org.jnosql.diana.orientdb.document.OrientDBLiveCallback;
+import org.jnosql.diana.orientdb.document.OrientDBLiveCallbackBuilder;
 
 import javax.enterprise.inject.Instance;
 import javax.enterprise.inject.Typed;
@@ -32,7 +34,6 @@ import javax.inject.Inject;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 /**
@@ -117,18 +118,24 @@ class DefaultOrientDBTemplate extends AbstractDocumentTemplate
     }
 
     @Override
-    public <T> void live(DocumentQuery query, Consumer<T> callBack) {
+    public <T> void live(DocumentQuery query, OrientDBLiveCallback<T> callBacks) {
         Objects.requireNonNull(query, "query is required");
-        Objects.requireNonNull(callBack, "callBack is required");
-        Consumer<DocumentEntity> dianaCallback = d -> callBack.accept(converter.toEntity(d));
-        manager.get().live(query, dianaCallback);
+        Objects.requireNonNull(callBacks, "callBacks is required");
+        manager.get().live(query, bindCallbacks(callBacks));
     }
 
     @Override
-    public <T> void live(String query, Consumer<T> callBack, Object... params) {
+    public <T> void live(String query, OrientDBLiveCallback<T> callBacks, Object... params) {
         Objects.requireNonNull(query, "query is required");
-        Objects.requireNonNull(callBack, "callBack is required");
-        Consumer<DocumentEntity> dianaCallback = d -> callBack.accept(converter.toEntity(d));
-        manager.get().live(query, dianaCallback, params);
+        Objects.requireNonNull(callBacks, "callBack is required");
+        manager.get().live(query, bindCallbacks(callBacks), params);
+    }
+
+    private <T> OrientDBLiveCallback<DocumentEntity> bindCallbacks(OrientDBLiveCallback<T> callBacks) {
+        return OrientDBLiveCallbackBuilder.builder()
+                .onCreate(d -> callBacks.getCreateCallback().ifPresent(callback -> callback.accept(converter.toEntity(d))))
+                .onUpdate(d -> callBacks.getUpdateCallback().ifPresent(callback -> callback.accept(converter.toEntity(d))))
+                .onDelete(d -> callBacks.getDeleteCallback().ifPresent(callback -> callback.accept(converter.toEntity(d))))
+                .build();
     }
 }
