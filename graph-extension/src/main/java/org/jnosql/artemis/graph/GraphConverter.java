@@ -14,6 +14,7 @@
  */
 package org.jnosql.artemis.graph;
 
+import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 
 public interface GraphConverter {
@@ -39,5 +40,21 @@ public interface GraphConverter {
     <T> T toEntity(Vertex vertex);
 
 
-    
+    /**
+     *
+     * @param edge
+     * @return
+     * @throws NullPointerException
+     */
+    EdgeEntity toEdgeEntity(Edge edge);
+
+    /**
+     *
+     * @param edge
+     * @return
+     * @throws NullPointerException
+     */
+    Edge toEdge(EdgeEntity edge);
+
+
 }
