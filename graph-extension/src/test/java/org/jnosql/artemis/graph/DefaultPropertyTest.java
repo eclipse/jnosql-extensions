@@ -21,42 +21,42 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
-public class DefaultArtemisPropertyTest {
+public class DefaultPropertyTest {
 
 
     @Test
     public void shouldReturnErrorWhenKeyINull() {
-        Assertions.assertThrows(NullPointerException.class, () -> ArtemisProperty.of(null, 10L));
+        Assertions.assertThrows(NullPointerException.class, () -> Property.of(null, 10L));
     }
 
     @Test
     public void shouldReturnErrorWhenValueINull() {
-        Assertions.assertThrows(NullPointerException.class, () -> ArtemisProperty.of("key", null));
+        Assertions.assertThrows(NullPointerException.class, () -> Property.of("key", null));
     }
 
     @Test
     public void shouldReturnKey() {
-        ArtemisProperty element = ArtemisProperty.of("key", 10L);
+        Property element = Property.of("key", 10L);
         assertEquals("key", element.getKey());
     }
 
     @Test
     public void shouldReturnValue() {
-        ArtemisProperty element = ArtemisProperty.of("key", 10L);
+        Property element = Property.of("key", 10L);
         assertEquals(Value.of(10L), element.getValue());
     }
 
     @Test
     public void shouldReturnValueAsObject() {
         long value = 10L;
-        ArtemisProperty element = ArtemisProperty.of("key", value);
+        Property element = Property.of("key", value);
         assertEquals(value, element.get());
     }
 
 
     @Test
     public void shouldCreateInstanceValue() {
-        ArtemisProperty element = ArtemisProperty.of("key", Value.of(10L));
+        Property element = Property.of("key", Value.of(10L));
         assertEquals(Value.of(10L), element.getValue());
         assertEquals("key", element.getKey());
         assertEquals(10L, element.get());

@@ -67,7 +67,7 @@ public interface EdgeEntity {
      *
      * @return the properties
      */
-    List<ArtemisProperty> getProperties();
+    List<Property> getProperties();
 
 
     /**

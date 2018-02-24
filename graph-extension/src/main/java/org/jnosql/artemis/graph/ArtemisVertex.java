@@ -56,10 +56,10 @@ public interface ArtemisVertex {
     /**
      * Add a new element in the Vertex
      *
-     * @param artemisProperty the element
+     * @param property the element
      * @throws NullPointerException when either key or value are null
      */
-    void add(ArtemisProperty artemisProperty);
+    void add(Property property);
 
     /**
      * Returns a Set view of the keys contained in this instance
@@ -94,7 +94,7 @@ public interface ArtemisVertex {
      *
      * @return the properties
      */
-    List<ArtemisProperty> getProperties();
+    List<Property> getProperties();
 
     /**
      * creates a new Vertex
@@ -134,7 +134,7 @@ public interface ArtemisVertex {
      * @return the value
      * @throws NullPointerException when the key is null
      */
-    Optional<ArtemisProperty> find(String key);
+    Optional<Property> find(String key);
 
     /**
      * Removes the mapping for a key from this map if it is present (optional operation).

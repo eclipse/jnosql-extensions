@@ -200,7 +200,7 @@ public class EdgeEntityTest {
 
         assertFalse(edge.isEmpty());
         assertEquals(1, edge.size());
-        assertThat(edge.getProperties(), Matchers.contains(ArtemisProperty.of("where", "Brazil")));
+        assertThat(edge.getProperties(), Matchers.contains(Property.of("where", "Brazil")));
     }
 
     @Test

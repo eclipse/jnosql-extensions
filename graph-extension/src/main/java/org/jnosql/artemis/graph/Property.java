@@ -22,7 +22,7 @@ import static java.util.Objects.requireNonNull;
 /**
  * The tuple that represent a property at {@link ArtemisVertex}
  */
-public interface ArtemisProperty {
+public interface Property {
 
     /**
      * Gets the key
@@ -39,13 +39,13 @@ public interface ArtemisProperty {
     Value getValue();
 
 
-    static ArtemisProperty of(String key, Object value) {
-        return new DefaultArtemisProperty(key, value);
+    static Property of(String key, Object value) {
+        return new DefaultProperty(key, value);
     }
 
-    static ArtemisProperty of(String key, Value value) {
+    static Property of(String key, Value value) {
         requireNonNull(value, "value is required");
-        return new DefaultArtemisProperty(key, value.get());
+        return new DefaultProperty(key, value.get());
     }
 
     /**

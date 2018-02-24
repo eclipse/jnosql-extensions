@@ -63,7 +63,7 @@ class DefaultVertexConverter implements VertexConverter {
         Optional<FieldGraph> id = fields.stream().filter(FieldGraph::isId).findFirst();
 
         ArtemisVertex vertex = id.map(f -> f.toElement(this, converters))
-                .map(ArtemisProperty::get)
+                .map(Property::get)
                 .map(v -> ArtemisVertex.of(label, v))
                 .orElse(ArtemisVertex.of(label));
 
@@ -110,11 +110,11 @@ class DefaultVertexConverter implements VertexConverter {
     }
 
 
-    private <T> T convertEntity(List<ArtemisProperty> elements, ClassRepresentation representation, T instance) {
+    private <T> T convertEntity(List<Property> elements, ClassRepresentation representation, T instance) {
 
         Map<String, FieldRepresentation> fieldsGroupByName = representation.getFieldsGroupByName();
         List<String> names = elements.stream()
-                .map(ArtemisProperty::getKey)
+                .map(Property::getKey)
                 .sorted()
                 .collect(toList());
         Predicate<String> existField = k -> Collections.binarySearch(names, k) >= 0;
@@ -126,10 +126,10 @@ class DefaultVertexConverter implements VertexConverter {
         return instance;
     }
 
-    private <T> Consumer<String> feedObject(T instance, List<ArtemisProperty> elements,
+    private <T> Consumer<String> feedObject(T instance, List<Property> elements,
                                             Map<String, FieldRepresentation> fieldsGroupByName) {
         return k -> {
-            Optional<ArtemisProperty> element = elements
+            Optional<Property> element = elements
                     .stream()
                     .filter(c -> c.getKey().equals(k))
                     .findFirst();
@@ -144,7 +144,7 @@ class DefaultVertexConverter implements VertexConverter {
     }
 
 
-    private <T> void setSingleField(T instance, Optional<ArtemisProperty> element, FieldRepresentation field) {
+    private <T> void setSingleField(T instance, Optional<Property> element, FieldRepresentation field) {
         Value value = element.get().getValue();
         Optional<Class<? extends AttributeConverter>> converter = field.getConverter();
         if (converter.isPresent()) {
@@ -156,12 +156,12 @@ class DefaultVertexConverter implements VertexConverter {
         }
     }
 
-    private <T> void setEmbeddedField(T instance, List<ArtemisProperty> elements,
+    private <T> void setEmbeddedField(T instance, List<Property> elements,
                                       FieldRepresentation field) {
         reflections.setValue(instance, field.getNativeField(), toEntity(field.getNativeField().getType(), elements));
     }
 
-    private <T> T toEntity(Class<T> entityClass, List<ArtemisProperty> elements) {
+    private <T> T toEntity(Class<T> entityClass, List<Property> elements) {
         ClassRepresentation representation = classRepresentations.get(entityClass);
         T instance = reflections.newInstance(representation.getConstructor());
         return convertEntity(elements, representation, instance);
