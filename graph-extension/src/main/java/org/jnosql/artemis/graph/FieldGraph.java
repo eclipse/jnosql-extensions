@@ -56,12 +56,6 @@ class FieldGraph {
         return !isId();
     }
 
-
-    public boolean isEmbedded() {
-        return EMBEDDED.equals(field.getType());
-    }
-
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -105,7 +99,7 @@ class FieldGraph {
         return singletonList(Property.of(field.getName(), value));
     }
 
-    public Property toElement(VertexConverter converter, Converters converters) {
+    public Property toElement(Converters converters) {
         Optional<Class<? extends AttributeConverter>> optionalConverter = field.getConverter();
         if (optionalConverter.isPresent()) {
             AttributeConverter attributeConverter = converters.get(optionalConverter.get());
