@@ -14,6 +14,7 @@
  */
 package org.jnosql.artemis.graph;
 
+import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.jnosql.artemis.AttributeConverter;
 import org.jnosql.artemis.Converters;
 import org.jnosql.artemis.reflection.FieldRepresentation;
@@ -21,8 +22,11 @@ import org.jnosql.artemis.reflection.FieldRepresentation;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
+import static java.lang.System.getProperties;
 import static java.util.Collections.singletonList;
+import static java.util.stream.Collectors.toList;
 import static org.jnosql.artemis.reflection.FieldType.EMBEDDED;
 
 class FieldGraph {
@@ -87,10 +91,25 @@ class FieldGraph {
         return new FieldGraph(value, field);
     }
 
+    @Deprecated
     public List<Property> toElements(VertexConverter converter, Converters converters) {
         if (EMBEDDED.equals(field.getType())) {
             return converter.toVertex(value).getProperties();
         }
+        Optional<Class<? extends AttributeConverter>> optionalConverter = field.getConverter();
+        if (optionalConverter.isPresent()) {
+            AttributeConverter attributeConverter = converters.get(optionalConverter.get());
+            return singletonList(Property.of(field.getName(), attributeConverter.convertToDatabaseColumn(value)));
+        }
+        return singletonList(Property.of(field.getName(), value));
+    }
+
+    public List<Property> toElements(GraphConverter converter, Converters converters) {
+        if (EMBEDDED.equals(field.getType())) {
+            Vertex vertex = converter.toVertex(value);
+            return vertex.keys().stream().map(k -> Property.of(k, vertex.value(k))).collect(toList());
+        }
+        
         Optional<Class<? extends AttributeConverter>> optionalConverter = field.getConverter();
         if (optionalConverter.isPresent()) {
             AttributeConverter attributeConverter = converters.get(optionalConverter.get());
