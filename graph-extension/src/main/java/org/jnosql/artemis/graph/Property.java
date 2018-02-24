@@ -40,10 +40,13 @@ public interface Property {
 
 
     static Property of(String key, Object value) {
+        requireNonNull(key, "key is required");
+        requireNonNull(value, "value is required");
         return new DefaultProperty(key, value);
     }
 
     static Property of(String key, Value value) {
+        requireNonNull(key, "key is required");
         requireNonNull(value, "value is required");
         return new DefaultProperty(key, value.get());
     }
