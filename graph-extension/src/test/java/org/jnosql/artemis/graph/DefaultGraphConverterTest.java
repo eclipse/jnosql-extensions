@@ -14,12 +14,42 @@
  */
 package org.jnosql.artemis.graph;
 
+import org.apache.tinkerpop.gremlin.structure.Graph;
+import org.apache.tinkerpop.gremlin.structure.T;
+import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.jnosql.artemis.graph.cdi.CDIExtension;
+import org.jnosql.artemis.graph.model.Person;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
-import static org.junit.jupiter.api.Assertions.*;
+import javax.inject.Inject;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ExtendWith(CDIExtension.class)
 class DefaultGraphConverterTest {
 
+    @Inject
+    private GraphConverter converter;
+
+    @Inject
+    private Graph graph;
+
+    @Test
+    public void shouldReturnErroWhenToVertexHasNullParameter() {
+        assertThrows(NullPointerException.class, () -> {
+           converter.toEntity(null);
+        });
+    }
+
+    @Test
+    public void shouldReturnToEntity() {
+        Vertex vertex = graph.addVertex(T.label, "Person", "age", 22, "name", "Ada");
+        Person person = converter.toEntity(vertex);
+
+        assertEquals(Long.valueOf(10L), person.getId());
+        assertEquals("Ada", person.getName());
+        assertEquals(Integer.valueOf(22), Integer.valueOf(person.getAge()));
+    }
 }
