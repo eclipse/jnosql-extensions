@@ -20,7 +20,7 @@ import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.jnosql.artemis.Repository;
 import org.jnosql.artemis.graph.VertexConverter;
-import org.jnosql.artemis.graph.util.TinkerPopUtil;
+import org.jnosql.artemis.graph.TinkerPopUtil;
 import org.jnosql.artemis.reflection.ClassRepresentation;
 
 import java.lang.reflect.InvocationHandler;

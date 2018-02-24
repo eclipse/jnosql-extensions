@@ -20,7 +20,6 @@ import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.T;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
-import org.jnosql.artemis.graph.util.TinkerPopUtil;
 import org.jnosql.diana.api.NonUniqueResultException;
 
 import java.util.List;
@@ -32,7 +31,7 @@ import java.util.stream.Stream;
 
 import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.toList;
-import static org.jnosql.artemis.graph.util.TinkerPopUtil.toEdgeEntity;
+import static org.jnosql.artemis.graph.TinkerPopUtil.toEdgeEntity;
 
 class DefaultEdgeTraversal extends AbstractEdgeTraversal implements EdgeTraversal {
 
