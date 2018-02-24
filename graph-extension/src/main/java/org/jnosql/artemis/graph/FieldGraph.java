@@ -109,7 +109,7 @@ class FieldGraph {
             Vertex vertex = converter.toVertex(value);
             return vertex.keys().stream().map(k -> Property.of(k, vertex.value(k))).collect(toList());
         }
-        
+
         Optional<Class<? extends AttributeConverter>> optionalConverter = field.getConverter();
         if (optionalConverter.isPresent()) {
             AttributeConverter attributeConverter = converters.get(optionalConverter.get());
