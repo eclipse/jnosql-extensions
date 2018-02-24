@@ -42,15 +42,11 @@ public interface Property {
     static Property of(String key, Object value) {
         requireNonNull(key, "key is required");
         requireNonNull(value, "value is required");
+        if (value instanceof Value) {
+            return new DefaultProperty(key, Value.class.cast(value).get());
+        }
         return new DefaultProperty(key, value);
     }
-
-    static Property of(String key, Value value) {
-        requireNonNull(key, "key is required");
-        requireNonNull(value, "value is required");
-        return new DefaultProperty(key, value.get());
-    }
-
     /**
      * Alias to {@link org.jnosql.diana.api.Value#get(TypeSupplier)}
      *
