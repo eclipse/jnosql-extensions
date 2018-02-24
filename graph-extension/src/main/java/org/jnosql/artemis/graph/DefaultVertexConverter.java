@@ -62,7 +62,7 @@ class DefaultVertexConverter implements VertexConverter {
 
         Optional<FieldGraph> id = fields.stream().filter(FieldGraph::isId).findFirst();
 
-        ArtemisVertex vertex = id.map(f -> f.toElement(this, converters))
+        ArtemisVertex vertex = id.map(f -> f.toElement(converters))
                 .map(Property::get)
                 .map(v -> ArtemisVertex.of(label, v))
                 .orElse(ArtemisVertex.of(label));
