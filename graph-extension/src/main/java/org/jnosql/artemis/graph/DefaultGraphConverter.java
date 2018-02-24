@@ -18,12 +18,14 @@ import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 
 import javax.enterprise.context.ApplicationScoped;
+import java.util.Objects;
 
 @ApplicationScoped
 class DefaultGraphConverter implements GraphConverter {
 
     @Override
     public <T> Vertex toVertex(T entity) {
+        Objects.requireNonNull(entity, "entity is required");
         return null;
     }
 
