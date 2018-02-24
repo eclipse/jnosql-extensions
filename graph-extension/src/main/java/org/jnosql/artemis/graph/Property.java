@@ -20,7 +20,7 @@ import org.jnosql.diana.api.Value;
 import static java.util.Objects.requireNonNull;
 
 /**
- * The tuple that represent a property at {@link ArtemisVertex}
+ * The tuple that represent a property in the Graph Mapping layer.
  */
 public interface Property {
 
@@ -39,6 +39,13 @@ public interface Property {
     Value getValue();
 
 
+    /**
+     * Creates a Property from key and value
+     * @param key the key
+     * @param value the value
+     * @return the Property instance
+     * @throws NullPointerException when either key or value are null
+     */
     static Property of(String key, Object value) {
         requireNonNull(key, "key is required");
         requireNonNull(value, "value is required");
