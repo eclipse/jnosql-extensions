@@ -25,6 +25,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import javax.inject.Inject;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ExtendWith(CDIExtension.class)
@@ -48,7 +49,7 @@ class DefaultGraphConverterTest {
         Vertex vertex = graph.addVertex(T.label, "Person", "age", 22, "name", "Ada");
         Person person = converter.toEntity(vertex);
 
-        assertEquals(Long.valueOf(10L), person.getId());
+        assertNotNull(person.getId());
         assertEquals("Ada", person.getName());
         assertEquals(Integer.valueOf(22), Integer.valueOf(person.getAge()));
     }
