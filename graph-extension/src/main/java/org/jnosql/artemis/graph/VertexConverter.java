@@ -24,7 +24,7 @@ public interface VertexConverter {
     /**
      * Converts the instance entity to {@link ArtemisVertex}
      *
-     * @param entityInstance the instnace
+     * @param entityInstance the instance
      * @return a {@link ArtemisVertex} instance
      * @throws NullPointerException when entityInstance is null
      */
