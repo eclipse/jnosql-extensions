@@ -15,6 +15,7 @@
 package org.jnosql.artemis.graph;
 
 import org.apache.tinkerpop.gremlin.structure.Edge;
+import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.jnosql.artemis.AttributeConverter;
 import org.jnosql.artemis.Converters;
@@ -25,14 +26,17 @@ import org.jnosql.artemis.reflection.Reflections;
 import org.jnosql.diana.api.Value;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 import java.lang.reflect.Field;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Predicate;
 
 import static java.util.Objects.requireNonNull;
@@ -51,12 +55,38 @@ class DefaultGraphConverter implements GraphConverter {
     @Inject
     private Converters converters;
 
+    @Inject
+    private Instance<Graph> graph;
+
 
     @Override
     public <T> Vertex toVertex(T entity) {
+        requireNonNull(entity, "entity is required");
 
+        ClassRepresentation representation = classRepresentations.get(entity.getClass());
+        String label = representation.getName();
 
-        return null;
+        List<FieldGraph> fields = representation.getFields().stream()
+                .map(f -> to(f, entity))
+                .filter(FieldGraph::isNotEmpty).collect(toList());
+
+        Optional<FieldGraph> id = fields.stream().filter(FieldGraph::isId).findFirst();
+        final Function<Property, Vertex> findVertexOrCreateWithId = p -> {
+            Iterator<Vertex> vertices = graph.get().vertices(p.get());
+            return vertices.hasNext() ? vertices.next() :
+                    graph.get().addVertex(org.apache.tinkerpop.gremlin.structure.T.label, label,
+                            org.apache.tinkerpop.gremlin.structure.T.id, p.get());
+        };
+
+        Vertex vertex = id.map(i -> i.toElement(converters))
+                .map(findVertexOrCreateWithId)
+                .orElseGet(() -> graph.get().addVertex(label));
+
+        fields.stream().filter(FieldGraph::isNotId)
+                .flatMap(f -> f.toElements(this, converters).stream())
+                .forEach(p -> vertex.property(p.getKey(), p.get()));
+
+        return vertex;
     }
 
     @Override
@@ -154,5 +184,10 @@ class DefaultGraphConverter implements GraphConverter {
     private <T> void setEmbeddedField(T instance, List<Property> elements,
                                       FieldRepresentation field) {
         reflections.setValue(instance, field.getNativeField(), toEntity(field.getNativeField().getType(), elements));
+    }
+
+    private FieldGraph to(FieldRepresentation field, Object entityInstance) {
+        Object value = reflections.getValue(entityInstance, field.getNativeField());
+        return FieldGraph.of(value, field);
     }
 }
