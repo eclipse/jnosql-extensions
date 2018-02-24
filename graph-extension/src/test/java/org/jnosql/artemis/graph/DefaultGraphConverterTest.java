@@ -18,15 +18,20 @@ import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.T;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.jnosql.artemis.graph.cdi.CDIExtension;
+import org.jnosql.artemis.graph.model.Movie;
 import org.jnosql.artemis.graph.model.Person;
+import org.jnosql.artemis.graph.model.Worker;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import javax.inject.Inject;
 
+import java.math.BigDecimal;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ExtendWith(CDIExtension.class)
 class DefaultGraphConverterTest {
@@ -52,5 +57,24 @@ class DefaultGraphConverterTest {
         assertNotNull(person.getId());
         assertEquals("Ada", person.getName());
         assertEquals(Integer.valueOf(22), Integer.valueOf(person.getAge()));
+    }
+
+    @Test
+    public void shouldReturnToEntityWithDifferentMap() {
+        Vertex vertex = graph.addVertex(T.label, "movie", "title", "Matrix", "movie_year", "1999");
+        Movie movie = converter.toEntity(vertex);
+
+        assertEquals("Matrix", movie.getTitle());
+        assertEquals(1999, movie.getYear());
+    }
+
+    @Test
+    public void shouldReturnToEntityUsingConverter() {
+        Vertex vertex = graph.addVertex(T.label, "Worker", "name", "James", "money", "USD 1000");
+        Worker worker = converter.toEntity(vertex);
+
+        assertEquals("James", worker.getName());
+        assertEquals("USD", worker.getSalary().getCurrency());
+        assertTrue(BigDecimal.valueOf(1_000).compareTo(worker.getSalary().getValue()) == 0);
     }
 }
