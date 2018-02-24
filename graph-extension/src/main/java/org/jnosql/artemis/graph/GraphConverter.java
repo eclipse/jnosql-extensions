@@ -41,18 +41,20 @@ public interface GraphConverter {
 
 
     /**
+     * Converts {@link EdgeEntity} from {@link Edge} Thinkerpop
      *
-     * @param edge
-     * @return
-     * @throws NullPointerException
+     * @param edge the ThinkerPop edge
+     * @return an EdgeEntity instance
+     * @throws NullPointerException when Edge is null
      */
     EdgeEntity toEdgeEntity(Edge edge);
 
     /**
+     * Converts {@link Edge} from {@link EdgeEntity}
      *
-     * @param edge
-     * @return
-     * @throws NullPointerException
+     * @param edge the EdgeEntity instance
+     * @return a Edge instance
+     * @throws NullPointerException when edge entity is null
      */
     Edge toEdge(EdgeEntity edge);
 
