@@ -127,6 +127,19 @@ class DefaultGraphConverterTest {
         assertEquals("Alexandre", vertex.value("name"));
     }
 
+    @Test
+    public void shouldConvertEntityWithIdExistToTinkerPopVertex() {
+        Vertex adaVertex = graph.addVertex(T.label, "Person", "age", 22, "name", "Ada");
+        Person person = Person.builder().withName("Ada").withAge(22).withId((Long) adaVertex.id()).build();
+        Vertex vertex = converter.toVertex(person);
+
+        assertEquals(vertex.id(), adaVertex.id());
+        assertEquals("Person", vertex.label());
+        assertEquals("Ada", vertex.value("name"));
+        assertEquals(Integer.valueOf(22), vertex.value("age"));
+    }
+
+
 
     @Test
     public void shouldReturnErrorWhenToEdgeEntityIsNull() {
