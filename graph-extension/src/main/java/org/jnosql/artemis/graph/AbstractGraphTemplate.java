@@ -20,6 +20,7 @@ import org.apache.tinkerpop.gremlin.structure.Direction;
 import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
+import org.jnosql.artemis.EntityNotFoundException;
 import org.jnosql.artemis.IdNotFoundException;
 import org.jnosql.artemis.reflection.ClassRepresentation;
 import org.jnosql.artemis.reflection.ClassRepresentations;
@@ -122,8 +123,9 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
             throw new NullPointerException("inbound Id field is required");
         }
 
-        Vertex outVertex = getConverter().toVertex(outbound);
-        Vertex inVertex = getConverter().toVertex(incoming);
+
+        Vertex outVertex = getVertex(outbound).orElseThrow(() -> new EntityNotFoundException("Outbound entity does not found"));
+        Vertex inVertex = getVertex(incoming).orElseThrow(() -> new EntityNotFoundException("Incoming entity does not found"));
 
         final Predicate<Traverser<Edge>> predicate = t -> {
             Edge e = t.get();
@@ -248,6 +250,17 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
         FieldRepresentation field = classRepresentation.getId().get();
         return isNull(getReflections().getValue(entity, field.getNativeField()));
 
+    }
+
+    private <T> Optional<Vertex> getVertex(T entity) {
+        ClassRepresentation classRepresentation = getClassRepresentations().get(entity.getClass());
+        FieldRepresentation field = classRepresentation.getId().get();
+        Object id = getReflections().getValue(entity, field.getNativeField());
+        Iterator<Vertex> vertices = getGraph().vertices(id);
+        if(vertices.hasNext()) {
+            return Optional.of(vertices.next());
+        }
+        return Optional.empty();
     }
 
     private <T> void checkId(T entity) {
