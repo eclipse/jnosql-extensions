@@ -14,6 +14,8 @@
  */
 package org.jnosql.artemis.graph;
 
+import org.apache.tinkerpop.gremlin.process.traversal.P;
+import org.apache.tinkerpop.gremlin.structure.T;
 import org.jnosql.artemis.graph.cdi.CDIExtension;
 import org.jnosql.artemis.graph.model.Animal;
 import org.jnosql.artemis.graph.model.Book;
@@ -167,6 +169,18 @@ public class DefaultEdgeTraversalTest extends AbstractTraversalTest {
 
 
     @Test
+    public void shouldHasPropertyFromAccessor() {
+
+        Optional<EdgeEntity> edgeEntity = graphTemplate.getTraversalVertex()
+                .outE(READS)
+                .has(T.id, "notFound").next();
+
+        assertFalse(edgeEntity.isPresent());
+    }
+
+
+
+    @Test
     public void shouldHasProperty() {
         Optional<EdgeEntity> edgeEntity = graphTemplate.getTraversalVertex()
                 .outE(READS)
@@ -175,6 +189,40 @@ public class DefaultEdgeTraversalTest extends AbstractTraversalTest {
         assertTrue(edgeEntity.isPresent());
         assertEquals(reads.getId().get(), edgeEntity.get().getId().get());
     }
+
+    @Test
+    public void shouldHasSupplierProperty() {
+        Optional<EdgeEntity> edgeEntity = graphTemplate.getTraversalVertex()
+                .outE(READS)
+                .has(() -> "motivation", "hobby").next();
+
+        assertTrue(edgeEntity.isPresent());
+        assertEquals(reads.getId().get(), edgeEntity.get().getId().get());
+    }
+
+    @Test
+    public void shouldHasPropertyPredicate() {
+
+        Optional<EdgeEntity> edgeEntity = graphTemplate.getTraversalVertex()
+                .outE(READS)
+                .has("motivation", P.eq("hobby")).next();
+
+        assertTrue(edgeEntity.isPresent());
+        assertEquals(reads.getId().get(), edgeEntity.get().getId().get());
+    }
+
+
+    @Test
+    public void shouldHasPropertyKeySupplierPredicate() {
+
+        Optional<EdgeEntity> edgeEntity = graphTemplate.getTraversalVertex()
+                .outE(READS)
+                .has(() -> "motivation", P.eq("hobby")).next();
+
+        assertTrue(edgeEntity.isPresent());
+        assertEquals(reads.getId().get(), edgeEntity.get().getId().get());
+    }
+
 
     @Test
     public void shouldReturnErrorWhenHasPropertyWhenKeyIsNull() {
