@@ -102,7 +102,10 @@ class DefaultGraphConverter implements GraphConverter {
 
     @Override
     public EdgeEntity toEdgeEntity(Edge edge) {
-        return null;
+        requireNonNull(edge, "vertex is required");
+        Object out = toEntity(edge.outVertex());
+        Object in = toEntity(edge.inVertex());
+        return EdgeEntity.of(out, edge, in);
     }
 
     @Override
