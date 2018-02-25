@@ -20,13 +20,13 @@ import org.apache.tinkerpop.gremlin.structure.Vertex;
 import java.util.function.UnaryOperator;
 
 /**
- * This implementation defines the workflow to insert an Entity on {@link ArtemisVertex}.
+ * This implementation defines the workflow to insert an Entity on {@link Vertex}.
  * The default implementation follows:
  *  <p>{@link GraphEventPersistManager#firePreEntity(Object)}</p>
  *  <p>{@link GraphEventPersistManager#firePreGraphEntity(Object)}</p>
- *  <p>{@link GraphEventPersistManager#firePreGraph(ArtemisVertex)}</p>
+ *  <p>{@link GraphEventPersistManager#firePreGraph(Vertex)}</p>
  *  <p>Database alteration</p>
- *  <p>{@link GraphEventPersistManager#firePostGraph(ArtemisVertex)}</p>
+ *  <p>{@link GraphEventPersistManager#firePostGraph(Vertex)}</p>
  *  <p>{@link GraphEventPersistManager#firePostEntity(Object)}</p>
  *  <p>{@link GraphEventPersistManager#firePostGraphEntity(Object)}</p>
  */
