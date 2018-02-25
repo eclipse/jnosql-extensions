@@ -39,6 +39,17 @@ public interface GraphConverter {
      */
     <T> T toEntity(Vertex vertex);
 
+    /**
+     * Converts vertex to an entity
+     *
+     * @param entityClass the entity class
+     * @param vertex the vertex
+     * @param <T>    the entity type
+     * @return a entity instance
+     * @throws NullPointerException when vertex is null
+     */
+    <T> T toEntity(Class<T> entityClass, Vertex vertex);
+
 
     /**
      * Converts {@link EdgeEntity} from {@link Edge} Thinkerpop
