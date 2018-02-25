@@ -14,6 +14,7 @@
  */
 package org.jnosql.artemis.graph;
 
+import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.T;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
@@ -22,11 +23,11 @@ import org.jnosql.artemis.graph.model.Money;
 import org.jnosql.artemis.graph.model.Movie;
 import org.jnosql.artemis.graph.model.Person;
 import org.jnosql.artemis.graph.model.Worker;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import javax.inject.Inject;
-
 import java.math.BigDecimal;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -42,6 +43,12 @@ class DefaultGraphConverterTest {
 
     @Inject
     private Graph graph;
+
+    @BeforeEach
+    public void setUp() {
+        graph.traversal().V().toList().forEach(Vertex::remove);
+        graph.traversal().E().toList().forEach(Edge::remove);
+    }
 
     @Test
     public void shouldReturnErrorWhenToEntityHasNullParameter() {
