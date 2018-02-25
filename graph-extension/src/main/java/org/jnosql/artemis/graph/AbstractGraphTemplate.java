@@ -233,10 +233,13 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
     private <T> Collection<EdgeEntity> getEdgesImpl(T entity, Direction direction, String... labels) {
         requireNonNull(entity, "entity is required");
 
-        if(isIdNull(entity)) {
+        if (isIdNull(entity)) {
             throw new NullPointerException("Entity id is required");
         }
 
+        if (!getVertex(entity).isPresent()) {
+            return Collections.emptyList();
+        }
         Object id = getConverter().toVertex(entity).id();
         return getEdgesByIdImpl(id, direction, labels);
     }
@@ -259,7 +262,7 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
         FieldRepresentation field = classRepresentation.getId().get();
         Object id = getReflections().getValue(entity, field.getNativeField());
         Iterator<Vertex> vertices = getGraph().vertices(id);
-        if(vertices.hasNext()) {
+        if (vertices.hasNext()) {
             return Optional.of(vertices.next());
         }
         return Optional.empty();
