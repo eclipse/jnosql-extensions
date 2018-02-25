@@ -19,6 +19,7 @@ import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.jnosql.artemis.AttributeConverter;
 import org.jnosql.artemis.Converters;
+import org.jnosql.artemis.EntityNotFoundException;
 import org.jnosql.artemis.reflection.ClassRepresentation;
 import org.jnosql.artemis.reflection.ClassRepresentations;
 import org.jnosql.artemis.reflection.FieldRepresentation;
@@ -116,7 +117,7 @@ class DefaultGraphConverter implements GraphConverter {
         if (edges.hasNext()) {
             return edges.next();
         }
-        throw new IllegalArgumentException("Edge does not found in the database with id: " + id);
+        throw new EntityNotFoundException("Edge does not found in the database with id: " + id);
     }
 
     private <T> void feedId(Vertex vertex, T entity) {
