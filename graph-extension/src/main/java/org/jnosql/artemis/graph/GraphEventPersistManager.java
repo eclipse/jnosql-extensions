@@ -15,6 +15,8 @@
 package org.jnosql.artemis.graph;
 
 
+import org.apache.tinkerpop.gremlin.structure.Vertex;
+
 /**
  * This interface represent the manager of events. When an entity be either saved or updated an event will be fired. This order gonna be:
  * 1) firePreEntity
@@ -33,14 +35,14 @@ public interface GraphEventPersistManager {
      *
      * @param entity the entity
      */
-    void firePreGraph(ArtemisVertex entity);
+    void firePreGraph(Vertex entity);
 
     /**
      * Fire an event after the response from communication layer
      *
      * @param entity the entity
      */
-    void firePostGraph(ArtemisVertex entity);
+    void firePostGraph(Vertex entity);
 
     /**
      * Fire an event once the method is called
@@ -51,7 +53,7 @@ public interface GraphEventPersistManager {
     <T> void firePreEntity(T entity);
 
     /**
-     * Fire an event after convert the {@link ArtemisVertex},
+     * Fire an event after convert the {@link Vertex},
      * from database response, to Entity.
      *
      * @param entity the entity

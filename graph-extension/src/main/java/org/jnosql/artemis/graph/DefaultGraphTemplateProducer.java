@@ -15,7 +15,9 @@
 package org.jnosql.artemis.graph;
 
 import org.apache.tinkerpop.gremlin.structure.Graph;
+import org.jnosql.artemis.Converters;
 import org.jnosql.artemis.reflection.ClassRepresentations;
+import org.jnosql.artemis.reflection.Reflections;
 
 import javax.enterprise.inject.Vetoed;
 import javax.inject.Inject;
@@ -31,15 +33,21 @@ class DefaultGraphTemplateProducer implements GraphTemplateProducer {
     private ClassRepresentations classRepresentations;
 
     @Inject
-    private VertexConverter vertexConverter;
+    private Reflections reflections;
 
     @Inject
-    private GraphWorkflow workflow;
+    private Converters converters;
+
+    @Inject
+    private GraphEventPersistManager persistManager;
 
     @Override
     public GraphTemplate get(Graph graph) {
         requireNonNull(graph, "graph is required");
-        return new ProducerGraphTemplate(classRepresentations, vertexConverter, workflow, graph);
+
+        GraphConverter converter = new ProducerGraphConverter(classRepresentations, reflections, converters, graph);
+        GraphWorkflow workflow = new DefaultGraphWorkflow(persistManager, converter);
+        return new ProducerGraphTemplate(classRepresentations, converter, workflow, graph, reflections);
     }
 
 
@@ -48,21 +56,24 @@ class DefaultGraphTemplateProducer implements GraphTemplateProducer {
 
         private ClassRepresentations classRepresentations;
 
-        private VertexConverter vertexConverter;
+        private GraphConverter converter;
 
         private Graph graph;
 
         private GraphWorkflow workflow;
 
+        private Reflections reflections;
+
         ProducerGraphTemplate(ClassRepresentations classRepresentations,
-                              VertexConverter vertexConverter,
+                              GraphConverter converter,
                               GraphWorkflow workflow,
-                              Graph graph) {
+                              Graph graph, Reflections reflections) {
 
             this.classRepresentations = classRepresentations;
-            this.vertexConverter = vertexConverter;
+            this.converter = converter;
             this.graph = graph;
             this.workflow = workflow;
+            this.reflections = reflections;
         }
 
         ProducerGraphTemplate() {
@@ -79,13 +90,62 @@ class DefaultGraphTemplateProducer implements GraphTemplateProducer {
         }
 
         @Override
-        protected VertexConverter getConverter() {
-            return vertexConverter;
+        protected GraphConverter getConverter() {
+            return converter;
         }
 
         @Override
         protected GraphWorkflow getFlow() {
             return workflow;
+        }
+
+        @Override
+        protected Reflections getReflections() {
+            return reflections;
+        }
+    }
+
+    @Vetoed
+    static class ProducerGraphConverter extends AbstractGraphConverter implements GraphConverter {
+
+        private ClassRepresentations classRepresentations;
+
+        private Reflections reflections;
+
+        private Converters converters;
+
+        private Graph graph;
+
+        public ProducerGraphConverter(ClassRepresentations classRepresentations,
+                                      Reflections reflections, Converters converters,
+                                      Graph graph) {
+            this.classRepresentations = classRepresentations;
+            this.reflections = reflections;
+            this.converters = converters;
+            this.graph = graph;
+        }
+
+        ProducerGraphConverter() {
+        }
+
+        @Override
+        protected ClassRepresentations getClassRepresentations() {
+            return classRepresentations;
+        }
+
+        @Override
+        protected Reflections getReflections() {
+            return reflections;
+        }
+
+        @Override
+        protected Converters getConverters() {
+            return converters;
+        }
+
+        @Override
+        protected Graph getGraph() {
+            return graph;
         }
     }
 }

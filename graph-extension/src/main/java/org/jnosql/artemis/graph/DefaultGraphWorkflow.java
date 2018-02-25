@@ -14,6 +14,8 @@
  */
 package org.jnosql.artemis.graph;
 
+import org.apache.tinkerpop.gremlin.structure.Vertex;
+
 import javax.inject.Inject;
 import java.util.Objects;
 import java.util.function.Function;
@@ -26,25 +28,25 @@ class DefaultGraphWorkflow implements GraphWorkflow {
 
     private GraphEventPersistManager graphEventPersistManager;
 
-    private VertexConverter converter;
+    private GraphConverter converter;
 
 
     DefaultGraphWorkflow() {
     }
 
     @Inject
-    DefaultGraphWorkflow(GraphEventPersistManager graphEventPersistManager, VertexConverter converter) {
+    DefaultGraphWorkflow(GraphEventPersistManager graphEventPersistManager, GraphConverter converter) {
         this.graphEventPersistManager = graphEventPersistManager;
         this.converter = converter;
     }
 
     @Override
-    public <T> T flow(T entity, UnaryOperator<ArtemisVertex> action) {
+    public <T> T flow(T entity, UnaryOperator<Vertex> action) {
         Function<T, T> flow = getFlow(entity, action);
         return flow.apply(entity);
     }
 
-    private <T> Function<T, T> getFlow(T entity, UnaryOperator<ArtemisVertex> action) {
+    private <T> Function<T, T> getFlow(T entity, UnaryOperator<Vertex> action) {
         UnaryOperator<T> validation = t -> Objects.requireNonNull(t, "entity is required");
 
         UnaryOperator<T> firePreEntity = t -> {
@@ -57,19 +59,19 @@ class DefaultGraphWorkflow implements GraphWorkflow {
             return t;
         };
 
-        Function<T, ArtemisVertex> converterGraph = t -> converter.toVertex(t);
+        Function<T, Vertex> converterGraph = t -> converter.toVertex(t);
 
-        UnaryOperator<ArtemisVertex> firePreGraph = t -> {
+        UnaryOperator<Vertex> firePreGraph = t -> {
             graphEventPersistManager.firePreGraph(t);
             return t;
         };
 
-        UnaryOperator<ArtemisVertex> firePostGraph = t -> {
+        UnaryOperator<Vertex> firePostGraph = t -> {
             graphEventPersistManager.firePostGraph(t);
             return t;
         };
 
-        Function<ArtemisVertex, T> converterEntity = t -> converter.toEntity((Class<T>) entity.getClass(), t);
+        Function<Vertex, T> converterEntity = t -> converter.toEntity((Class<T>) entity.getClass(), t);
 
         UnaryOperator<T> firePostEntity = t -> {
             graphEventPersistManager.firePostEntity(t);

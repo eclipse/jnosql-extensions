@@ -14,6 +14,7 @@
  */
 package org.jnosql.artemis.graph;
 
+import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.jnosql.artemis.AttributeConverter;
 import org.jnosql.artemis.Converters;
 import org.jnosql.artemis.reflection.FieldRepresentation;
@@ -23,6 +24,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 import static java.util.Collections.singletonList;
+import static java.util.stream.Collectors.toList;
 import static org.jnosql.artemis.reflection.FieldType.EMBEDDED;
 
 class FieldGraph {
@@ -56,12 +58,6 @@ class FieldGraph {
         return !isId();
     }
 
-
-    public boolean isEmbedded() {
-        return EMBEDDED.equals(field.getType());
-    }
-
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -93,25 +89,27 @@ class FieldGraph {
         return new FieldGraph(value, field);
     }
 
-    public List<ArtemisProperty> toElements(VertexConverter converter, Converters converters) {
+    public List<Property> toElements(GraphConverter converter, Converters converters) {
         if (EMBEDDED.equals(field.getType())) {
-            return converter.toVertex(value).getProperties();
+            Vertex vertex = converter.toVertex(value);
+            return vertex.keys().stream().map(k -> Property.of(k, vertex.value(k))).collect(toList());
         }
+
         Optional<Class<? extends AttributeConverter>> optionalConverter = field.getConverter();
         if (optionalConverter.isPresent()) {
             AttributeConverter attributeConverter = converters.get(optionalConverter.get());
-            return singletonList(ArtemisProperty.of(field.getName(), attributeConverter.convertToDatabaseColumn(value)));
+            return singletonList(Property.of(field.getName(), attributeConverter.convertToDatabaseColumn(value)));
         }
-        return singletonList(ArtemisProperty.of(field.getName(), value));
+        return singletonList(Property.of(field.getName(), value));
     }
 
-    public ArtemisProperty toElement(VertexConverter converter, Converters converters) {
+    public Property toElement(Converters converters) {
         Optional<Class<? extends AttributeConverter>> optionalConverter = field.getConverter();
         if (optionalConverter.isPresent()) {
             AttributeConverter attributeConverter = converters.get(optionalConverter.get());
-            return ArtemisProperty.of(field.getName(), attributeConverter.convertToDatabaseColumn(value));
+            return Property.of(field.getName(), attributeConverter.convertToDatabaseColumn(value));
         }
-        return ArtemisProperty.of(field.getName(), value);
+        return Property.of(field.getName(), value);
     }
 
 }

@@ -14,6 +14,7 @@
  */
 package org.jnosql.artemis.graph;
 
+import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.jnosql.artemis.EntityPostPersit;
 import org.jnosql.artemis.EntityPrePersist;
 
@@ -22,7 +23,7 @@ import javax.enterprise.event.Event;
 import javax.inject.Inject;
 
 @ApplicationScoped
-class DefaultGraphEventPersistManager implements GraphEventPersistManager{
+class DefaultGraphEventPersistManager implements GraphEventPersistManager {
 
 
     @Inject
@@ -44,12 +45,12 @@ class DefaultGraphEventPersistManager implements GraphEventPersistManager{
     private Event<EntityGraphPostPersist> entityGraphPostPersist;
 
     @Override
-    public void firePreGraph(ArtemisVertex entity) {
+    public void firePreGraph(Vertex entity) {
         graphEntityPrePersistEvent.fire(GraphEntityPrePersist.of(entity));
     }
 
     @Override
-    public void firePostGraph(ArtemisVertex entity) {
+    public void firePostGraph(Vertex entity) {
         graphEntityPostPersistEvent.fire(GraphEntityPostPersist.of(entity));
     }
 

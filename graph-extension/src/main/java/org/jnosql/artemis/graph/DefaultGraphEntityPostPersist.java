@@ -14,6 +14,8 @@
  */
 package org.jnosql.artemis.graph;
 
+import org.apache.tinkerpop.gremlin.structure.Vertex;
+
 import java.util.Objects;
 
 /**
@@ -21,14 +23,14 @@ import java.util.Objects;
  */
 class DefaultGraphEntityPostPersist implements GraphEntityPostPersist {
 
-    private final ArtemisVertex entity;
+    private final Vertex entity;
 
-    DefaultGraphEntityPostPersist(ArtemisVertex entity) {
+    DefaultGraphEntityPostPersist(Vertex entity) {
         this.entity = entity;
     }
 
     @Override
-    public ArtemisVertex getEntity() {
+    public Vertex getVertex() {
         return entity;
     }
 

@@ -32,7 +32,7 @@ class DefaultVertexRepeatTraversal extends AbstractVertexTraversal implements Ve
 
     DefaultVertexRepeatTraversal(Supplier<GraphTraversal<?, ?>> supplier,
                                  Function<GraphTraversal<?, ?>, GraphTraversal<Vertex, Vertex>> flow,
-                                 VertexConverter converter) {
+                                 GraphConverter converter) {
         super(supplier, flow, converter);
     }
 

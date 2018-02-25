@@ -24,7 +24,8 @@ import org.jnosql.artemis.EntityNotFoundException;
 import org.jnosql.artemis.IdNotFoundException;
 import org.jnosql.artemis.reflection.ClassRepresentation;
 import org.jnosql.artemis.reflection.ClassRepresentations;
-import org.jnosql.diana.api.Value;
+import org.jnosql.artemis.reflection.FieldRepresentation;
+import org.jnosql.artemis.reflection.Reflections;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -40,12 +41,9 @@ import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static java.lang.String.format;
+import static java.util.Objects.isNull;
 import static java.util.Objects.requireNonNull;
 import static org.apache.tinkerpop.gremlin.structure.T.id;
-import static org.jnosql.artemis.graph.util.TinkerPopUtil.toArtemisVertex;
-import static org.jnosql.artemis.graph.util.TinkerPopUtil.toEdgeEntity;
-import static org.jnosql.artemis.graph.util.TinkerPopUtil.toVertex;
 
 public abstract class AbstractGraphTemplate implements GraphTemplate {
     private static final Function<GraphTraversal<?, ?>, GraphTraversal<Vertex, Vertex>> INITIAL_VERTEX =
@@ -59,20 +57,17 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
 
     protected abstract ClassRepresentations getClassRepresentations();
 
-    protected abstract VertexConverter getConverter();
+    protected abstract GraphConverter getConverter();
 
     protected abstract GraphWorkflow getFlow();
+
+    protected abstract Reflections getReflections();
 
     @Override
     public <T> T insert(T entity) {
         requireNonNull(entity, "entity is required");
         checkId(entity);
-
-        UnaryOperator<ArtemisVertex> save = e -> {
-            ArtemisVertex artemisVertex = getConverter().toVertex(entity);
-            Vertex vertex = toVertex(artemisVertex, getGraph());
-            return toArtemisVertex(vertex);
-        };
+        UnaryOperator<Vertex> save = v -> v;
 
         return getFlow().flow(entity, save);
     }
@@ -81,23 +76,12 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
     public <T> T update(T entity) {
         requireNonNull(entity, "entity is required");
         checkId(entity);
+        if (isIdNull(entity)) {
+            throw new NullPointerException("to update a graph id cannot be null");
+        }
+        getVertex(entity).orElseThrow(() -> new EntityNotFoundException("Entity does not find in the update"));
 
-        UnaryOperator<ArtemisVertex> update = e -> {
-            ArtemisVertex artemisVertex = getConverter().toVertex(entity);
-            Object idValue = artemisVertex.getId()
-                    .map(Value::get)
-                    .orElseThrow(() -> new NullPointerException("Id field is required"));
-
-            Vertex vertex = getGraph()
-                    .traversal()
-                    .V(idValue)
-                    .tryNext()
-                    .orElseThrow(() -> new EntityNotFoundException(format("The entity %s with id %s is not found to update",
-                            entity.getClass().getName(), idValue.toString())));
-
-            artemisVertex.getProperties().forEach(p -> vertex.property(p.getKey(), p.get()));
-            return artemisVertex;
-        };
+        UnaryOperator<Vertex> update = e -> getConverter().toVertex(entity);
         return getFlow().flow(entity, update);
     }
 
@@ -120,7 +104,7 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
     public <T, ID> Optional<T> find(ID idValue) {
         requireNonNull(idValue, "id is required");
         Optional<Vertex> vertex = getGraph().traversal().V(idValue).tryNext();
-        return vertex.map(vertex1 -> getConverter().toEntity(toArtemisVertex(vertex1)));
+        return vertex.map(getConverter()::toEntity);
     }
 
     @Override
@@ -130,43 +114,34 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
         requireNonNull(label, "label is required");
         requireNonNull(outbound, "outbound is required");
 
-        ArtemisVertex inboundVertex = getConverter().toVertex(incoming);
-        ArtemisVertex outboundVertex = getConverter().toVertex(outbound);
+        checkId(outbound);
+        checkId(incoming);
 
-        Object outboundId = outboundVertex.getId()
-                .map(Value::get)
-                .orElseThrow(() -> new NullPointerException("outbound Id field is required"));
-        Object inboundId = inboundVertex.getId()
-                .map(Value::get)
-                .orElseThrow(() -> new NullPointerException("inbound Id field is required"));
+        if (isIdNull(outbound)) {
+            throw new NullPointerException("outbound Id field is required");
+        }
 
+        if (isIdNull(incoming)) {
+            throw new NullPointerException("inbound Id field is required");
+        }
+
+
+        Vertex outVertex = getVertex(outbound).orElseThrow(() -> new EntityNotFoundException("Outbound entity does not found"));
+        Vertex inVertex = getVertex(incoming).orElseThrow(() -> new EntityNotFoundException("Incoming entity does not found"));
 
         final Predicate<Traverser<Edge>> predicate = t -> {
             Edge e = t.get();
-            return e.inVertex().id().equals(inboundId)
-                    && e.outVertex().id().equals(outboundId);
+            return e.inVertex().id().equals(inVertex.id())
+                    && e.outVertex().id().equals(outVertex.id());
         };
 
         Optional<Edge> edge = getGraph()
-                .traversal().V(outboundId)
-                .out(label).has(id, inboundId).inE(label).filter(predicate).tryNext();
+                .traversal().V(outVertex.id())
+                .out(label).has(id, inVertex.id()).inE(label).filter(predicate).tryNext();
 
         if (edge.isPresent()) {
             return new DefaultEdgeEntity<>(edge.get(), incoming, outbound);
         } else {
-
-            Vertex inVertex = getGraph()
-                    .traversal()
-                    .V(inboundId)
-                    .tryNext()
-                    .orElseThrow(() -> new EntityNotFoundException("inbound entity not found"));
-
-            Vertex outVertex = getGraph()
-                    .traversal()
-                    .V(outboundId)
-                    .tryNext()
-                    .orElseThrow(() -> new EntityNotFoundException("outbound entity not found"));
-
             return new DefaultEdgeEntity<>(outVertex.addEdge(label, inVertex), incoming, outbound);
         }
 
@@ -181,7 +156,7 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
 
         if (edgeOptional.isPresent()) {
             Edge edge = edgeOptional.get();
-            return Optional.of(toEdgeEntity(edge, getConverter()));
+            return Optional.of(getConverter().toEdgeEntity(edge));
         }
 
         return Optional.empty();
@@ -250,7 +225,7 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
         if (vertices.hasNext()) {
             List<Edge> edges = new ArrayList<>();
             vertices.next().edges(direction, labels).forEachRemaining(edges::add);
-            return edges.stream().map(e -> toEdgeEntity(e, getConverter())).collect(Collectors.toList());
+            return edges.stream().map(getConverter()::toEdgeEntity).collect(Collectors.toList());
         }
         return Collections.emptyList();
     }
@@ -258,9 +233,14 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
     private <T> Collection<EdgeEntity> getEdgesImpl(T entity, Direction direction, String... labels) {
         requireNonNull(entity, "entity is required");
 
-        Object id = getConverter().toVertex(entity).getId()
-                .orElseThrow(() -> new NullPointerException("Entity is required")).get();
+        if (isIdNull(entity)) {
+            throw new NullPointerException("Entity id is required");
+        }
 
+        if (!getVertex(entity).isPresent()) {
+            return Collections.emptyList();
+        }
+        Object id = getConverter().toVertex(entity).id();
         return getEdgesByIdImpl(id, direction, labels);
     }
 
@@ -268,6 +248,24 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
         if (Stream.of(labels).anyMatch(Objects::isNull)) {
             throw new NullPointerException("Item cannot be null");
         }
+    }
+
+    private <T> boolean isIdNull(T entity) {
+        ClassRepresentation classRepresentation = getClassRepresentations().get(entity.getClass());
+        FieldRepresentation field = classRepresentation.getId().get();
+        return isNull(getReflections().getValue(entity, field.getNativeField()));
+
+    }
+
+    private <T> Optional<Vertex> getVertex(T entity) {
+        ClassRepresentation classRepresentation = getClassRepresentations().get(entity.getClass());
+        FieldRepresentation field = classRepresentation.getId().get();
+        Object id = getReflections().getValue(entity, field.getNativeField());
+        Iterator<Vertex> vertices = getGraph().vertices(id);
+        if (vertices.hasNext()) {
+            return Optional.of(vertices.next());
+        }
+        return Optional.empty();
     }
 
     private <T> void checkId(T entity) {

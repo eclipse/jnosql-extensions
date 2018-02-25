@@ -28,7 +28,7 @@ final class DefaultVertexTraversalOrder extends AbstractVertexTraversal implemen
     private final String property;
 
     DefaultVertexTraversalOrder(Supplier<GraphTraversal<?, ?>> supplier, Function<GraphTraversal<?, ?>,
-            GraphTraversal<Vertex, Vertex>> flow, VertexConverter converter, String property) {
+            GraphTraversal<Vertex, Vertex>> flow, GraphConverter converter, String property) {
         super(supplier, flow, converter);
         this.property = property;
     }

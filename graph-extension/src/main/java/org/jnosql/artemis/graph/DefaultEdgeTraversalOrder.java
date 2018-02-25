@@ -30,7 +30,7 @@ final class DefaultEdgeTraversalOrder extends AbstractEdgeTraversal implements E
     private final String property;
 
     DefaultEdgeTraversalOrder(Supplier<GraphTraversal<?, ?>> supplier, Function<GraphTraversal<?, ?>,
-            GraphTraversal<Vertex, Edge>> flow, VertexConverter converter, String property) {
+            GraphTraversal<Vertex, Edge>> flow, GraphConverter converter, String property) {
         super(supplier, flow, converter);
         this.property = property;
     }

@@ -15,38 +15,29 @@
 package org.jnosql.artemis.graph;
 
 import org.apache.tinkerpop.gremlin.structure.Graph;
+import org.jnosql.artemis.Converters;
 import org.jnosql.artemis.reflection.ClassRepresentations;
 import org.jnosql.artemis.reflection.Reflections;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 
-/**
- * The default {@link GraphTemplate}
- */
-class DefaultGraphTemplate extends AbstractGraphTemplate {
-
-
-    @Inject
-    private Instance<Graph> graph;
+@ApplicationScoped
+class DefaultGraphConverter extends AbstractGraphConverter implements GraphConverter {
 
     @Inject
     private ClassRepresentations classRepresentations;
 
     @Inject
-    private GraphConverter converter;
-
-    @Inject
-    private GraphWorkflow workflow;
-
-    @Inject
     private Reflections reflections;
 
+    @Inject
+    private Converters converters;
 
-    @Override
-    protected Graph getGraph() {
-        return graph.get();
-    }
+    @Inject
+    private Instance<Graph> graph;
+
 
     @Override
     protected ClassRepresentations getClassRepresentations() {
@@ -54,17 +45,17 @@ class DefaultGraphTemplate extends AbstractGraphTemplate {
     }
 
     @Override
-    protected GraphConverter getConverter() {
-        return converter;
-    }
-
-    @Override
-    protected GraphWorkflow getFlow() {
-        return workflow;
-    }
-
-    @Override
     protected Reflections getReflections() {
         return reflections;
+    }
+
+    @Override
+    protected Converters getConverters() {
+        return converters;
+    }
+
+    @Override
+    protected Graph getGraph() {
+        return graph.get();
     }
 }

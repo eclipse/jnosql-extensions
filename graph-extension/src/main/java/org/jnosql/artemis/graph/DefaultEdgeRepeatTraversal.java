@@ -32,7 +32,7 @@ class DefaultEdgeRepeatTraversal extends AbstractEdgeTraversal implements EdgeRe
 
     DefaultEdgeRepeatTraversal(Supplier<GraphTraversal<?, ?>> supplier,
                                Function<GraphTraversal<?, ?>, GraphTraversal<Vertex, Edge>> flow,
-                               VertexConverter converter) {
+                               GraphConverter converter) {
         super(supplier, flow, converter);
     }
 

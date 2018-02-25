@@ -20,7 +20,6 @@ import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import org.apache.tinkerpop.gremlin.structure.T;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.jnosql.artemis.Entity;
-import org.jnosql.artemis.graph.util.TinkerPopUtil;
 import org.jnosql.diana.api.NonUniqueResultException;
 
 import java.util.List;
@@ -45,7 +44,7 @@ class DefaultVertexTraversal extends AbstractVertexTraversal implements VertexTr
 
     DefaultVertexTraversal(Supplier<GraphTraversal<?, ?>> supplier,
                            Function<GraphTraversal<?, ?>, GraphTraversal<Vertex, Vertex>> flow,
-                           VertexConverter converter) {
+                           GraphConverter converter) {
         super(supplier, flow, converter);
     }
 
@@ -97,7 +96,7 @@ class DefaultVertexTraversal extends AbstractVertexTraversal implements VertexTr
     public <T> VertexTraversal filter(Predicate<T> predicate) {
         requireNonNull(predicate, "predicate is required");
 
-        Predicate<Traverser<Vertex>> p = v -> predicate.test(TinkerPopUtil.toEntity(v.get(), converter));
+        Predicate<Traverser<Vertex>> p = v -> predicate.test(converter.toEntity(v.get()));
         return new DefaultVertexTraversal(supplier, flow.andThen(g -> g.filter(p)), converter);
     }
 
@@ -191,8 +190,7 @@ class DefaultVertexTraversal extends AbstractVertexTraversal implements VertexTr
     public <T> Optional<T> next() {
         Optional<Vertex> vertex = flow.apply(supplier.get()).tryNext();
         if (vertex.isPresent()) {
-            ArtemisVertex artemisVertex = TinkerPopUtil.toArtemisVertex(vertex.get());
-            return Optional.of(converter.toEntity(artemisVertex));
+            return Optional.of(converter.toEntity(vertex.get()));
 
         }
         return Optional.empty();
@@ -201,7 +199,6 @@ class DefaultVertexTraversal extends AbstractVertexTraversal implements VertexTr
     @Override
     public <T> Stream<T> stream() {
         return flow.apply(supplier.get()).toList().stream()
-                .map(TinkerPopUtil::toArtemisVertex)
                 .map(converter::toEntity);
     }
 
@@ -225,8 +222,8 @@ class DefaultVertexTraversal extends AbstractVertexTraversal implements VertexTr
 
     @Override
     public <T> Stream<T> next(int limit) {
-        return flow.apply(supplier.get()).next(limit).stream()
-                .map(TinkerPopUtil::toArtemisVertex)
+        return flow.apply(supplier.get())
+                .next(limit).stream()
                 .map(converter::toEntity);
     }
 

@@ -14,20 +14,22 @@
  */
 package org.jnosql.artemis.graph;
 
+import org.apache.tinkerpop.gremlin.structure.Vertex;
+
 import static java.util.Objects.requireNonNull;
 
 /**
- * The interface represents the model before the {@link ArtemisVertex} be saved that  event will fired.
+ * The interface represents the model before the {@link Vertex} be saved that  event will fired.
  */
 public interface GraphEntityPrePersist {
 
 
     /**
-     * The {@link ArtemisVertex}  before be saved
+     * The {@link Vertex}  before be saved
      *
-     * @return the {@link ArtemisVertex} instance
+     * @return the {@link Vertex} instance
      */
-    ArtemisVertex getEntity();
+    Vertex getVertex();
 
     /**
      * Creates the {@link GraphEntityPrePersist} instance
@@ -36,7 +38,7 @@ public interface GraphEntityPrePersist {
      * @return {@link GraphEntityPrePersist} instance
      * @throws NullPointerException when the entity is null
      */
-    static GraphEntityPrePersist of(ArtemisVertex entity) {
+    static GraphEntityPrePersist of(Vertex entity) {
         requireNonNull(entity, "Entity is required");
         return new DefaultGraphEntityPrePersist(entity);
     }

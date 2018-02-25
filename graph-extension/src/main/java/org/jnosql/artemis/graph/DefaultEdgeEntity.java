@@ -15,7 +15,6 @@
 package org.jnosql.artemis.graph;
 
 import org.apache.tinkerpop.gremlin.structure.Edge;
-import org.apache.tinkerpop.gremlin.structure.Property;
 import org.jnosql.diana.api.Value;
 
 import java.util.Collections;
@@ -62,10 +61,10 @@ class DefaultEdgeEntity<OUT, IN> implements EdgeEntity {
     }
 
     @Override
-    public List<ArtemisProperty> getProperties() {
+    public List<Property> getProperties() {
         return edge.keys()
                 .stream()
-                .map(k -> ArtemisProperty.of(k, Value.of(edge.value(k))))
+                .map(k -> Property.of(k, Value.of(edge.value(k))))
                 .collect(collectingAndThen(toList(), Collections::unmodifiableList));
     }
 
@@ -87,14 +86,14 @@ class DefaultEdgeEntity<OUT, IN> implements EdgeEntity {
     @Override
     public void remove(String key) {
         requireNonNull(key, "key is required");
-        Property<Object> property = edge.property(key);
+        org.apache.tinkerpop.gremlin.structure.Property property = edge.property(key);
         property.ifPresent(o -> property.remove());
     }
 
     @Override
     public Optional<Value> get(String key) {
         requireNonNull(key, "key is required");
-        Property<Object> property = edge.property(key);
+        org.apache.tinkerpop.gremlin.structure.Property property = edge.property(key);
         if (property.isPresent()) {
             return Optional.of(Value.of(property.value()));
         }

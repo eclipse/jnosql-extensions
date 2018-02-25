@@ -19,8 +19,7 @@ import org.apache.tinkerpop.gremlin.structure.Element;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.jnosql.artemis.Repository;
-import org.jnosql.artemis.graph.VertexConverter;
-import org.jnosql.artemis.graph.util.TinkerPopUtil;
+import org.jnosql.artemis.graph.GraphConverter;
 import org.jnosql.artemis.reflection.ClassRepresentation;
 
 import java.lang.reflect.InvocationHandler;
@@ -47,7 +46,7 @@ abstract class AbstractGraphRepositoryProxy<T, ID> implements InvocationHandler 
 
     protected abstract Graph getGraph();
 
-    protected abstract VertexConverter getVertexConverter();
+    protected abstract GraphConverter getConverter();
 
 
     @Override
@@ -91,9 +90,7 @@ abstract class AbstractGraphRepositoryProxy<T, ID> implements InvocationHandler 
         getQueryParser().findByParse(methodName, args, getClassRepresentation(), traversal);
 
         List<Vertex> vertices = traversal.hasLabel(getClassRepresentation().getName()).toList();
-
-        Stream<T> stream = vertices.stream().map(TinkerPopUtil::toArtemisVertex)
-                .map(getVertexConverter()::toEntity);
+        Stream<T> stream = vertices.stream().map(getConverter()::toEntity);
 
         return returnObject(stream, classInstance, method);
     }

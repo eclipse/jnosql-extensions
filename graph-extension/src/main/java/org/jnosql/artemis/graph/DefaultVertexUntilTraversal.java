@@ -34,7 +34,7 @@ class DefaultVertexUntilTraversal extends AbstractVertexTraversal implements Ver
 
 
     DefaultVertexUntilTraversal(Supplier<GraphTraversal<?, ?>> supplier, Function<GraphTraversal<?, ?>,
-            GraphTraversal<Vertex, Vertex>> flow, VertexConverter converter) {
+            GraphTraversal<Vertex, Vertex>> flow, GraphConverter converter) {
         super(supplier, flow, converter);
     }
 

@@ -20,7 +20,6 @@ import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.T;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
-import org.jnosql.artemis.graph.util.TinkerPopUtil;
 import org.jnosql.diana.api.NonUniqueResultException;
 
 import java.util.List;
@@ -32,14 +31,13 @@ import java.util.stream.Stream;
 
 import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.toList;
-import static org.jnosql.artemis.graph.util.TinkerPopUtil.toEdgeEntity;
 
 class DefaultEdgeTraversal extends AbstractEdgeTraversal implements EdgeTraversal {
 
 
     DefaultEdgeTraversal(Supplier<GraphTraversal<?, ?>> supplier,
                          Function<GraphTraversal<?, ?>, GraphTraversal<Vertex, Edge>> flow,
-                         VertexConverter converter) {
+                         GraphConverter converter) {
         super(supplier, flow, converter);
     }
 
@@ -88,7 +86,8 @@ class DefaultEdgeTraversal extends AbstractEdgeTraversal implements EdgeTraversa
     @Override
     public EdgeTraversal filter(Predicate<EdgeEntity> predicate) {
         requireNonNull(predicate, "predicat is required");
-        Predicate<Traverser<Edge>> p = e -> predicate.test(TinkerPopUtil.toEdgeEntity(e.get(), converter));
+
+        Predicate<Traverser<Edge>> p = e -> predicate.test(converter.toEdgeEntity(e.get()));
         return new DefaultEdgeTraversal(supplier, flow.andThen(g -> g.filter(p)), converter);
     }
 
@@ -129,7 +128,7 @@ class DefaultEdgeTraversal extends AbstractEdgeTraversal implements EdgeTraversa
         Optional<Edge> edgeOptional = flow.apply(supplier.get()).tryNext();
         if (edgeOptional.isPresent()) {
             Edge edge = edgeOptional.get();
-            return Optional.of(toEdge(edge));
+            return Optional.of(converter.toEdgeEntity(edge));
 
         }
         return Optional.empty();
@@ -154,12 +153,12 @@ class DefaultEdgeTraversal extends AbstractEdgeTraversal implements EdgeTraversa
 
     @Override
     public Stream<EdgeEntity> stream() {
-        return flow.apply(supplier.get()).toList().stream().map(this::toEdge);
+        return flow.apply(supplier.get()).toList().stream().map(converter::toEdgeEntity);
     }
 
     @Override
     public Stream<EdgeEntity> next(int limit) {
-        return flow.apply(supplier.get()).next(limit).stream().map(this::toEdge);
+        return flow.apply(supplier.get()).next(limit).stream().map(converter::toEdgeEntity);
     }
 
     @Override
@@ -178,10 +177,6 @@ class DefaultEdgeTraversal extends AbstractEdgeTraversal implements EdgeTraversa
         return flow.apply(supplier.get()).count().tryNext().orElse(0L);
     }
 
-
-    <OUT, IN> EdgeEntity toEdge(Edge edge) {
-        return toEdgeEntity(edge, converter);
-    }
 
 
 }

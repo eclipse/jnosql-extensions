@@ -14,6 +14,7 @@
  */
 package org.jnosql.artemis.graph;
 
+import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.jnosql.artemis.graph.cdi.MockitoExtension;
 import org.jnosql.artemis.graph.model.Person;
 import org.junit.jupiter.api.BeforeEach;
@@ -41,17 +42,17 @@ public class DefaultGraphWorkflowTest {
     private GraphEventPersistManager graphEventPersistManager;
 
     @Mock
-    private VertexConverter converter;
+    private GraphConverter converter;
 
     @Mock
-    private ArtemisVertex artemisVertex;
+    private Vertex vertex;
 
 
     @BeforeEach
     public void setUp() {
         when(converter.toVertex(any(Object.class)))
-                .thenReturn(artemisVertex);
-        when(converter.toEntity(Mockito.eq(Person.class), any(ArtemisVertex .class)))
+                .thenReturn(vertex);
+        when(converter.toEntity(Mockito.eq(Person.class), any(Vertex.class)))
                 .thenReturn(Person.builder().build());
 
     }
@@ -59,7 +60,7 @@ public class DefaultGraphWorkflowTest {
     @Test
     public void shouldReturnErrorWhenEntityIsNull() {
         assertThrows(NullPointerException.class, () -> {
-            UnaryOperator<ArtemisVertex> action = t -> t;
+            UnaryOperator<Vertex> action = t -> t;
             subject.flow(null, action);
         });
     }
@@ -71,11 +72,11 @@ public class DefaultGraphWorkflowTest {
 
     @Test
     public void shouldFollowWorkflow() {
-        UnaryOperator<ArtemisVertex> action = t -> t;
+        UnaryOperator<Vertex> action = t -> t;
         subject.flow(Person.builder().withId(1L).withAge().withName("Ada").build(), action);
 
-        verify(graphEventPersistManager).firePreGraph(any(ArtemisVertex.class));
-        verify(graphEventPersistManager).firePostGraph(any(ArtemisVertex.class));
+        verify(graphEventPersistManager).firePreGraph(any(Vertex.class));
+        verify(graphEventPersistManager).firePostGraph(any(Vertex.class));
         verify(graphEventPersistManager).firePreEntity(any(Person.class));
         verify(graphEventPersistManager).firePostEntity(any(Person.class));
 

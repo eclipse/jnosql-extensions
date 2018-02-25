@@ -14,6 +14,8 @@
  */
 package org.jnosql.artemis.graph;
 
+import org.apache.tinkerpop.gremlin.structure.Vertex;
+
 import java.util.Objects;
 
 /**
@@ -21,16 +23,16 @@ import java.util.Objects;
  */
 class DefaultGraphEntityPrePersist implements GraphEntityPrePersist {
 
-    private final ArtemisVertex entity;
+    private final Vertex vertex;
 
-    DefaultGraphEntityPrePersist(ArtemisVertex entity) {
-        this.entity = entity;
+    DefaultGraphEntityPrePersist(Vertex vertex) {
+        this.vertex = vertex;
     }
 
 
     @Override
-    public ArtemisVertex getEntity() {
-        return entity;
+    public Vertex getVertex() {
+        return vertex;
     }
 
     @Override
@@ -42,18 +44,18 @@ class DefaultGraphEntityPrePersist implements GraphEntityPrePersist {
             return false;
         }
         DefaultGraphEntityPrePersist that = (DefaultGraphEntityPrePersist) o;
-        return Objects.equals(entity, that.entity);
+        return Objects.equals(vertex, that.vertex);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(entity);
+        return Objects.hashCode(vertex);
     }
 
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("DefaultGraphEntityPrePersist{");
-        sb.append("entity=").append(entity);
+        sb.append("vertex=").append(vertex);
         sb.append('}');
         return sb.toString();
     }
