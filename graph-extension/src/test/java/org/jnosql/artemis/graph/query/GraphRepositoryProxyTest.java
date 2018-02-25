@@ -19,8 +19,8 @@ import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.T;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.jnosql.artemis.Repository;
+import org.jnosql.artemis.graph.GraphConverter;
 import org.jnosql.artemis.graph.GraphTemplate;
-import org.jnosql.artemis.graph.VertexConverter;
 import org.jnosql.artemis.graph.cdi.CDIExtension;
 import org.jnosql.artemis.graph.model.Person;
 import org.jnosql.artemis.reflection.ClassRepresentations;
@@ -68,7 +68,7 @@ public class GraphRepositoryProxyTest {
     private Graph graph;
 
     @Inject
-    private VertexConverter vertexConverter;
+    private GraphConverter converter;
 
     @BeforeEach
     public void setUp() {
@@ -80,7 +80,7 @@ public class GraphRepositoryProxyTest {
         this.template = Mockito.mock(GraphTemplate.class);
 
         GraphRepositoryProxy handler = new GraphRepositoryProxy(template,
-                classRepresentations, PersonRepository.class, reflections, graph, vertexConverter);
+                classRepresentations, PersonRepository.class, reflections, graph, converter);
 
         when(template.insert(any(Person.class))).thenReturn(Person.builder().build());
         when(template.update(any(Person.class))).thenReturn(Person.builder().build());
