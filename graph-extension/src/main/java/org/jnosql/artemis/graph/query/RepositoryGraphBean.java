@@ -18,8 +18,8 @@ import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.jnosql.artemis.DatabaseQualifier;
 import org.jnosql.artemis.DatabaseType;
 import org.jnosql.artemis.Repository;
+import org.jnosql.artemis.graph.GraphConverter;
 import org.jnosql.artemis.graph.GraphTemplate;
-import org.jnosql.artemis.graph.VertexConverter;
 import org.jnosql.artemis.reflection.ClassRepresentations;
 import org.jnosql.artemis.reflection.Reflections;
 
@@ -93,12 +93,12 @@ public class RepositoryGraphBean implements Bean<Repository>, PassivationCapable
         GraphTemplate repository = provider.isEmpty() ? getInstance(GraphTemplate.class) :
                 getInstance(GraphTemplate.class, provider);
         Reflections reflections = getInstance(Reflections.class);
-        VertexConverter vertexConverter = getInstance(VertexConverter.class);
+        GraphConverter converter = getInstance(GraphConverter.class);
         Graph graph = provider.isEmpty() ? getInstance(Graph.class) :
                 getInstance(Graph.class, provider);
 
         GraphRepositoryProxy handler = new GraphRepositoryProxy(repository,
-                classRepresentations, type, reflections, graph, vertexConverter);
+                classRepresentations, type, reflections, graph, converter);
         return (Repository) Proxy.newProxyInstance(type.getClassLoader(),
                 new Class[]{type},
                 handler);
