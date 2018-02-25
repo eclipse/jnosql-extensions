@@ -15,6 +15,8 @@
 package org.jnosql.artemis.graph;
 
 
+import org.apache.tinkerpop.gremlin.structure.Vertex;
+
 import java.util.function.UnaryOperator;
 
 /**
@@ -38,5 +40,5 @@ public interface GraphWorkflow {
      * @param <T>    the entity type
      * @return after the workflow the the entity response
      */
-    <T> T flow(T entity, UnaryOperator<ArtemisVertex> action);
+    <T> T flow(T entity, UnaryOperator<Vertex> action);
 }
