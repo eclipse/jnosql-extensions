@@ -44,7 +44,7 @@ public class EdgeEntityTest {
 
 
     @Test
-    public void shouldReturnErrorWhenInboudIsNull() {
+    public void shouldReturnErrorWhenInboundIsNull() {
         Assertions.assertThrows(NullPointerException.class, () -> {
             Person person = Person.builder().withName("Poliana").withAge().build();
             Book book = null;
@@ -53,7 +53,7 @@ public class EdgeEntityTest {
     }
 
     @Test
-    public void shouldReturnErrorWhenOutboudIsNull() {
+    public void shouldReturnErrorWhenOutboundIsNull() {
         Assertions.assertThrows(NullPointerException.class, () -> {
             Person person = Person.builder().withName("Poliana").withAge().build();
             Book book = Book.builder().withAge(2007).withName("The Shack").build();
@@ -112,6 +112,19 @@ public class EdgeEntityTest {
         Person person = graphTemplate.insert(Person.builder().withName("Poliana").withAge().build());
         Book book = graphTemplate.insert(Book.builder().withAge(2007).withName("The Shack").build());
         EdgeEntity edge = graphTemplate.edge(person, "reads", book);
+
+        assertEquals("reads", edge.getLabel());
+        assertEquals(person, edge.getOutbound());
+        assertEquals(book, edge.getInbound());
+        assertTrue(edge.isEmpty());
+        assertNotNull(edge.getId());
+    }
+
+    @Test
+    public void shouldCreateAnEdgeWithSupplier() {
+        Person person = graphTemplate.insert(Person.builder().withName("Poliana").withAge().build());
+        Book book = graphTemplate.insert(Book.builder().withAge(2007).withName("The Shack").build());
+        EdgeEntity edge = graphTemplate.edge(person, () -> "reads", book);
 
         assertEquals("reads", edge.getLabel());
         assertEquals(person, edge.getOutbound());
