@@ -18,6 +18,7 @@ import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.T;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.jnosql.artemis.graph.cdi.CDIExtension;
+import org.jnosql.artemis.graph.model.Money;
 import org.jnosql.artemis.graph.model.Movie;
 import org.jnosql.artemis.graph.model.Person;
 import org.jnosql.artemis.graph.model.Worker;
@@ -104,5 +105,18 @@ class DefaultGraphConverterTest {
         assertEquals("movie", vertex.label());
         assertEquals(1999, Number.class.cast(vertex.value("movie_year")).intValue());
         assertEquals("Matrix", vertex.value("title"));
+    }
+
+
+    @Test
+    public void shouldConvertEntityToTinkerPopVertexUsingConverter() {
+        Worker worker = new Worker();
+        worker.setName("Alexandre");
+        worker.setSalary(new Money("BRL", BigDecimal.valueOf(1_000L)));
+
+        Vertex vertex = converter.toVertex(worker);
+        assertEquals("Worker", vertex.label());
+        assertEquals("BRL 1000", vertex.value("money"));
+        assertEquals("Alexandre", vertex.value("name"));
     }
 }
