@@ -151,13 +151,10 @@ class DefaultGraphConverterTest {
 
     }
 
-
-
-
     @Test
     public void shouldReturnErrorWhenToEdgeEntityIsNull() {
         assertThrows(NullPointerException.class, () -> {
-           converter.toEdgeEntity(null);
+            converter.toEdgeEntity(null);
         });
     }
 
@@ -183,5 +180,24 @@ class DefaultGraphConverterTest {
 
         assertEquals("Matrix", matrix.getTitle());
         assertEquals(1999L, matrix.getYear());
+    }
+
+    @Test
+    public void shouldReturnToEdgeErrorWhenIsNull() {
+        assertThrows(NullPointerException.class, () -> {
+            converter.toEdge(null);
+        });
+    }
+
+    @Test
+    public void shouldReturnToEdge() {
+        Vertex matrixVertex = graph.addVertex(T.label, "movie", "title", "Matrix", "movie_year", "1999");
+        Vertex adaVertex = graph.addVertex(T.label, "Person", "age", 22, "name", "Ada");
+        Edge edge = adaVertex.addEdge("watch", matrixVertex);
+
+        EdgeEntity edgeEntity = converter.toEdgeEntity(edge);
+        Edge edge1 = converter.toEdge(edgeEntity);
+
+        assertEquals(edge.id(), edge1.id());
     }
 }
