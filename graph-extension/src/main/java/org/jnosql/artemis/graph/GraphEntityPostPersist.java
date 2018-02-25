@@ -14,29 +14,31 @@
  */
 package org.jnosql.artemis.graph;
 
+import org.apache.tinkerpop.gremlin.structure.Vertex;
+
 import java.util.Objects;
 
 /**
- * The interface represents the model when the {@link ArtemisVertex} be saved that  event will fired.
+ * The interface represents the model when the {@link Vertex} be saved that  event will fired.
  */
 public interface GraphEntityPostPersist {
 
     /**
-     * The {@link ArtemisVertex}  after be saved
+     * The {@link Vertex}  after be saved
      *
-     * @return the {@link ArtemisVertex} instance
+     * @return the {@link Vertex} instance
      */
-    ArtemisVertex getEntity();
+    Vertex getVertex();
 
     /**
      * Creates the {@link GraphEntityPostPersist} instance
      *
-     * @param entity the entity
+     * @param vertex the vertex
      * @return {@link GraphEntityPostPersist} instance
-     * @throws NullPointerException when the entity is null
+     * @throws NullPointerException when the vertex is null
      */
-    static GraphEntityPostPersist of(ArtemisVertex entity) {
-        Objects.requireNonNull(entity, "Entity is required");
-        return new DefaultGraphEntityPostPersist(entity);
+    static GraphEntityPostPersist of(Vertex vertex) {
+        Objects.requireNonNull(vertex, "vertex is required");
+        return new DefaultGraphEntityPostPersist(vertex);
     }
 }

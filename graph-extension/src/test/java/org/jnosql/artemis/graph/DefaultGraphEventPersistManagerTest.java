@@ -63,7 +63,7 @@ public class DefaultGraphEventPersistManagerTest {
         verify(graphEntityPrePersistEvent).fire(captor.capture());
 
         GraphEntityPrePersist captorValue = captor.getValue();
-        assertEquals(entity, captorValue.getEntity());
+        assertEquals(entity, captorValue.getVertex());
     }
 
 
@@ -77,7 +77,7 @@ public class DefaultGraphEventPersistManagerTest {
         verify(graphEntityPostPersistEvent).fire(captor.capture());
 
         GraphEntityPostPersist captorValue = captor.getValue();
-        assertEquals(entity, captorValue.getEntity());
+        assertEquals(entity, captorValue.getVertex());
     }
 
     @Test
