@@ -102,6 +102,17 @@ class DefaultGraphConverter implements GraphConverter {
     }
 
     @Override
+    public <T> T toEntity(Class<T> entityClass, Vertex vertex) {
+        requireNonNull(entityClass, "entityClass is required");
+        requireNonNull(vertex, "vertex is required");
+
+        List<Property> properties = vertex.keys().stream().map(k -> Property.of(k, vertex.value(k))).collect(toList());
+        T entity = toEntity(entityClass, properties);
+        feedId(vertex, entity);
+        return entity;
+    }
+
+    @Override
     public EdgeEntity toEdgeEntity(Edge edge) {
         requireNonNull(edge, "vertex is required");
         Object out = toEntity(edge.outVertex());
