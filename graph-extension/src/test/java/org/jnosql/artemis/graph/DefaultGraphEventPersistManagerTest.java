@@ -14,6 +14,7 @@
  */
 package org.jnosql.artemis.graph;
 
+import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.jnosql.artemis.EntityPostPersit;
 import org.jnosql.artemis.EntityPrePersist;
 import org.jnosql.artemis.graph.cdi.MockitoExtension;
@@ -52,32 +53,32 @@ public class DefaultGraphEventPersistManagerTest {
     @Mock
     private Event<EntityGraphPostPersist> entityGraphPostPersist;
 
+    @Mock
+    private Vertex vertex;
 
     @Test
     public void shouldFirePreGraph() {
-        ArtemisVertex entity = ArtemisVertex.of("label");
-        subject.firePreGraph(entity);
+        subject.firePreGraph(vertex);
 
         ArgumentCaptor<GraphEntityPrePersist> captor = ArgumentCaptor.forClass(GraphEntityPrePersist.class);
 
         verify(graphEntityPrePersistEvent).fire(captor.capture());
 
         GraphEntityPrePersist captorValue = captor.getValue();
-        assertEquals(entity, captorValue.getVertex());
+        assertEquals(vertex, captorValue.getVertex());
     }
 
 
     @Test
     public void shouldFirePostGraph() {
 
-        ArtemisVertex entity = ArtemisVertex.of("label");
-        subject.firePostGraph(entity);
+        subject.firePostGraph(vertex);
 
         ArgumentCaptor<GraphEntityPostPersist> captor = ArgumentCaptor.forClass(GraphEntityPostPersist.class);
         verify(graphEntityPostPersistEvent).fire(captor.capture());
 
         GraphEntityPostPersist captorValue = captor.getValue();
-        assertEquals(entity, captorValue.getVertex());
+        assertEquals(vertex, captorValue.getVertex());
     }
 
     @Test
