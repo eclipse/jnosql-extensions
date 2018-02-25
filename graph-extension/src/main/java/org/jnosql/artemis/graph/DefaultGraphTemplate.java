@@ -16,6 +16,7 @@ package org.jnosql.artemis.graph;
 
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.jnosql.artemis.reflection.ClassRepresentations;
+import org.jnosql.artemis.reflection.Reflections;
 
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
@@ -33,10 +34,13 @@ class DefaultGraphTemplate extends AbstractGraphTemplate {
     private ClassRepresentations classRepresentations;
 
     @Inject
-    private VertexConverter converter;
+    private GraphConverter converter;
 
     @Inject
     private GraphWorkflow workflow;
+
+    @Inject
+    private Reflections reflections;
 
 
     @Override
@@ -50,12 +54,17 @@ class DefaultGraphTemplate extends AbstractGraphTemplate {
     }
 
     @Override
-    protected VertexConverter getConverter() {
+    protected GraphConverter getConverter() {
         return converter;
     }
 
     @Override
     protected GraphWorkflow getFlow() {
         return workflow;
+    }
+
+    @Override
+    protected Reflections getReflections() {
+        return reflections;
     }
 }
