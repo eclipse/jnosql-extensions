@@ -79,6 +79,8 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
         if (isIdNull(entity)) {
             throw new NullPointerException("to update a graph id cannot be null");
         }
+        getVertex(entity).orElseThrow(() -> new EntityNotFoundException("Entity does not find in the update"));
+
         UnaryOperator<Vertex> update = e -> getConverter().toVertex(entity);
         return getFlow().flow(entity, update);
     }
