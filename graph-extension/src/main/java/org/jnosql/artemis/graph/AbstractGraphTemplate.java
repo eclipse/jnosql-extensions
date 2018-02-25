@@ -66,7 +66,7 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
     public <T> T insert(T entity) {
         requireNonNull(entity, "entity is required");
         checkId(entity);
-        UnaryOperator<Vertex> save = e -> getConverter().toVertex(entity);
+        UnaryOperator<Vertex> save = v -> v;
 
         return getFlow().flow(entity, save);
     }
