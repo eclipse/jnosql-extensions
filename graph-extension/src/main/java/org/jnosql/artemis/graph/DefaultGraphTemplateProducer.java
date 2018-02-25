@@ -15,6 +15,7 @@
 package org.jnosql.artemis.graph;
 
 import org.apache.tinkerpop.gremlin.structure.Graph;
+import org.jnosql.artemis.Converters;
 import org.jnosql.artemis.reflection.ClassRepresentations;
 import org.jnosql.artemis.reflection.Reflections;
 
@@ -32,18 +33,20 @@ class DefaultGraphTemplateProducer implements GraphTemplateProducer {
     private ClassRepresentations classRepresentations;
 
     @Inject
-    private GraphConverter vertexConverter;
-
-    @Inject
     private GraphWorkflow workflow;
 
     @Inject
     private Reflections reflections;
 
+    @Inject
+    private Converters converters;
+
     @Override
     public GraphTemplate get(Graph graph) {
         requireNonNull(graph, "graph is required");
-        return new ProducerGraphTemplate(classRepresentations, vertexConverter, workflow, graph, reflections);
+
+        GraphConverter converter = new ProducerGraphConverter(classRepresentations, reflections, converters, graph);
+        return new ProducerGraphTemplate(classRepresentations, converter, workflow, graph, reflections);
     }
 
 
@@ -98,6 +101,50 @@ class DefaultGraphTemplateProducer implements GraphTemplateProducer {
         @Override
         protected Reflections getReflections() {
             return reflections;
+        }
+    }
+
+    @Vetoed
+    static class ProducerGraphConverter extends AbstractGraphConverter implements GraphConverter {
+
+        private ClassRepresentations classRepresentations;
+
+        private Reflections reflections;
+
+        private Converters converters;
+
+        private Graph graph;
+
+        public ProducerGraphConverter(ClassRepresentations classRepresentations,
+                                      Reflections reflections, Converters converters,
+                                      Graph graph) {
+            this.classRepresentations = classRepresentations;
+            this.reflections = reflections;
+            this.converters = converters;
+            this.graph = graph;
+        }
+
+        ProducerGraphConverter() {
+        }
+
+        @Override
+        protected ClassRepresentations getClassRepresentations() {
+            return classRepresentations;
+        }
+
+        @Override
+        protected Reflections getReflections() {
+            return reflections;
+        }
+
+        @Override
+        protected Converters getConverters() {
+            return converters;
+        }
+
+        @Override
+        protected Graph getGraph() {
+            return graph;
         }
     }
 }
