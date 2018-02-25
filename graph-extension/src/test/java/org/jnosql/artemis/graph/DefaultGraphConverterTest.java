@@ -139,6 +139,19 @@ class DefaultGraphConverterTest {
         assertEquals(Integer.valueOf(22), vertex.value("age"));
     }
 
+    @Test
+    public void shouldConvertEntityWithIdDoesNotExistToTinkerPopVertex() {
+
+        UnsupportedOperationException exception = assertThrows(UnsupportedOperationException.class, () -> {
+            Person person = Person.builder().withName("Ada").withAge(22).withId(10L).build();
+            Vertex vertex = converter.toVertex(person);
+        });
+
+        assertEquals("Vertex does not support user supplied identifiers", exception.getMessage());
+
+    }
+
+
 
 
     @Test
