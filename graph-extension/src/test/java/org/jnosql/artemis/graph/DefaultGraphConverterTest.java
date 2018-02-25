@@ -126,4 +126,36 @@ class DefaultGraphConverterTest {
         assertEquals("BRL 1000", vertex.value("money"));
         assertEquals("Alexandre", vertex.value("name"));
     }
+
+
+    @Test
+    public void shouldReturnErrorWhenToEdgeEntityIsNull() {
+        assertThrows(NullPointerException.class, () -> {
+           converter.toEdgeEntity(null);
+        });
+    }
+
+
+    @Test
+    public void shouldToEdgeEntity() {
+        Vertex matrixVertex = graph.addVertex(T.label, "movie", "title", "Matrix", "movie_year", "1999");
+        Vertex adaVertex = graph.addVertex(T.label, "Person", "age", 22, "name", "Ada");
+        Edge edge = adaVertex.addEdge("watch", matrixVertex);
+        edge.property("feel", "like");
+
+        EdgeEntity edgeEntity = converter.toEdgeEntity(edge);
+        Person ada = edgeEntity.getOutbound();
+        Movie matrix = edgeEntity.getInbound();
+
+        assertNotNull(edgeEntity);
+        assertEquals("watch", edgeEntity.getLabel());
+        assertNotNull(edgeEntity.getId());
+        assertEquals(edge.id(), edgeEntity.getId().get());
+
+        assertEquals("Ada", ada.getName());
+        assertEquals(22, ada.getAge());
+
+        assertEquals("Matrix", matrix.getTitle());
+        assertEquals(1999L, matrix.getYear());
+    }
 }
