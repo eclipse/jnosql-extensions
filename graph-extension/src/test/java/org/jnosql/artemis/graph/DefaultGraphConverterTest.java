@@ -43,9 +43,9 @@ class DefaultGraphConverterTest {
     private Graph graph;
 
     @Test
-    public void shouldReturnErroWhenToVertexHasNullParameter() {
+    public void shouldReturnErrorWhenToEntityHasNullParameter() {
         assertThrows(NullPointerException.class, () -> {
-           converter.toEntity(null);
+            converter.toEntity(null);
         });
     }
 
@@ -76,5 +76,33 @@ class DefaultGraphConverterTest {
         assertEquals("James", worker.getName());
         assertEquals("USD", worker.getSalary().getCurrency());
         assertTrue(BigDecimal.valueOf(1_000).compareTo(worker.getSalary().getValue()) == 0);
+    }
+
+    @Test
+    public void shouldReturnErrorWhenToVertexHasNullParameter() {
+        assertThrows(NullPointerException.class, () -> {
+            converter.toVertex(null);
+        });
+    }
+
+
+    @Test
+    public void shouldConvertEntityToTinkerPopVertex() {
+        Person person = Person.builder().withName("Ada").withAge(22).build();
+        Vertex vertex = converter.toVertex(person);
+
+        assertEquals("Person", vertex.label());
+        assertEquals("Ada", vertex.value("name"));
+        assertEquals(Integer.valueOf(22), vertex.value("age"));
+    }
+
+    @Test
+    public void shouldConvertEntityToTinkerPopVertexUsingNativeName() {
+        Movie movie = new Movie("Matrix", 1999, null);
+        Vertex vertex = converter.toVertex(movie);
+
+        assertEquals("movie", vertex.label());
+        assertEquals(1999, Number.class.cast(vertex.value("movie_year")).intValue());
+        assertEquals("Matrix", vertex.value("title"));
     }
 }
