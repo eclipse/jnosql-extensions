@@ -85,7 +85,7 @@ class GraphRepositoryProxy<T, ID> extends AbstractGraphRepositoryProxy<T, ID> {
     }
 
     @Override
-    protected VertexConverter getVertexConverter() {
+    protected VertexConverter getConverter() {
         return converter;
     }
 
