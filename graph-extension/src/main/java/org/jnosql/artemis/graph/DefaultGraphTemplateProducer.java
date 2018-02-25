@@ -16,6 +16,7 @@ package org.jnosql.artemis.graph;
 
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.jnosql.artemis.reflection.ClassRepresentations;
+import org.jnosql.artemis.reflection.Reflections;
 
 import javax.enterprise.inject.Vetoed;
 import javax.inject.Inject;
@@ -31,15 +32,18 @@ class DefaultGraphTemplateProducer implements GraphTemplateProducer {
     private ClassRepresentations classRepresentations;
 
     @Inject
-    private VertexConverter vertexConverter;
+    private GraphConverter vertexConverter;
 
     @Inject
     private GraphWorkflow workflow;
 
+    @Inject
+    private Reflections reflections;
+
     @Override
     public GraphTemplate get(Graph graph) {
         requireNonNull(graph, "graph is required");
-        return new ProducerGraphTemplate(classRepresentations, vertexConverter, workflow, graph);
+        return new ProducerGraphTemplate(classRepresentations, vertexConverter, workflow, graph, reflections);
     }
 
 
@@ -48,21 +52,24 @@ class DefaultGraphTemplateProducer implements GraphTemplateProducer {
 
         private ClassRepresentations classRepresentations;
 
-        private VertexConverter vertexConverter;
+        private GraphConverter converter;
 
         private Graph graph;
 
         private GraphWorkflow workflow;
 
+        private Reflections reflections;
+
         ProducerGraphTemplate(ClassRepresentations classRepresentations,
-                              VertexConverter vertexConverter,
+                              GraphConverter converter,
                               GraphWorkflow workflow,
-                              Graph graph) {
+                              Graph graph, Reflections reflections) {
 
             this.classRepresentations = classRepresentations;
-            this.vertexConverter = vertexConverter;
+            this.converter = converter;
             this.graph = graph;
             this.workflow = workflow;
+            this.reflections = reflections;
         }
 
         ProducerGraphTemplate() {
@@ -79,13 +86,18 @@ class DefaultGraphTemplateProducer implements GraphTemplateProducer {
         }
 
         @Override
-        protected VertexConverter getConverter() {
-            return vertexConverter;
+        protected GraphConverter getConverter() {
+            return converter;
         }
 
         @Override
         protected GraphWorkflow getFlow() {
             return workflow;
+        }
+
+        @Override
+        protected Reflections getReflections() {
+            return reflections;
         }
     }
 }
