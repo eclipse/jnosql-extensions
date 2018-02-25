@@ -325,7 +325,7 @@ public class EdgeEntityTest {
 
     @Test
     public void shouldNotFindAnEdge() {
-        Optional<EdgeEntity> edgeEntity = graphTemplate.edge(12L);
+        Optional<EdgeEntity> edgeEntity = graphTemplate.edge(-12L);
 
         assertFalse(edgeEntity.isPresent());
     }
