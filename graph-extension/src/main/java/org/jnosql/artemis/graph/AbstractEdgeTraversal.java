@@ -28,11 +28,11 @@ abstract class AbstractEdgeTraversal {
 
     protected final Supplier<GraphTraversal<?, ?>> supplier;
     protected final Function<GraphTraversal<?, ?>, GraphTraversal<Vertex, Edge>> flow;
-    protected final VertexConverter converter;
+    protected final GraphConverter converter;
 
     AbstractEdgeTraversal(Supplier<GraphTraversal<?, ?>> supplier,
                                    Function<GraphTraversal<?, ?>, GraphTraversal<Vertex, Edge>> flow,
-                                   VertexConverter converter) {
+                          GraphConverter converter) {
         this.supplier = supplier;
         this.flow = flow;
         this.converter = converter;

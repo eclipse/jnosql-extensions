@@ -30,7 +30,7 @@ import static java.util.Objects.requireNonNull;
 class DefaultEdgeUntilTraversal  extends AbstractEdgeTraversal implements EdgeUntilTraversal {
 
     DefaultEdgeUntilTraversal(Supplier<GraphTraversal<?, ?>> supplier, Function<GraphTraversal<?, ?>,
-            GraphTraversal<Vertex, Edge>> flow, VertexConverter converter) {
+            GraphTraversal<Vertex, Edge>> flow, GraphConverter converter) {
         super(supplier, flow, converter);
     }
 

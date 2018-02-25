@@ -24,8 +24,8 @@ import java.util.function.Supplier;
 class DefaultEdgeRepeatStepTraversal extends AbstractEdgeTraversal implements EdgeRepeatStepTraversal {
 
     DefaultEdgeRepeatStepTraversal(Supplier<GraphTraversal<?, ?>> supplier,
-                               Function<GraphTraversal<?, ?>, GraphTraversal<Vertex, Edge>> flow,
-                               VertexConverter converter) {
+                                   Function<GraphTraversal<?, ?>, GraphTraversal<Vertex, Edge>> flow,
+                                   GraphConverter converter) {
         super(supplier, flow, converter);
     }
 

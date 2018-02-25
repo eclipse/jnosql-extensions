@@ -27,11 +27,11 @@ abstract class AbstractVertexTraversal {
 
     protected final Supplier<GraphTraversal<?, ?>> supplier;
     protected final Function<GraphTraversal<?, ?>, GraphTraversal<Vertex, Vertex>> flow;
-    protected final VertexConverter converter;
+    protected final GraphConverter converter;
 
     AbstractVertexTraversal(Supplier<GraphTraversal<?, ?>> supplier,
                            Function<GraphTraversal<?, ?>, GraphTraversal<Vertex, Vertex>> flow,
-                           VertexConverter converter) {
+                            GraphConverter converter) {
         this.supplier = supplier;
         this.flow = flow;
         this.converter = converter;

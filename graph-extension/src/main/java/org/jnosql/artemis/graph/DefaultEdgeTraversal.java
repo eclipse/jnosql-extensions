@@ -38,7 +38,7 @@ class DefaultEdgeTraversal extends AbstractEdgeTraversal implements EdgeTraversa
 
     DefaultEdgeTraversal(Supplier<GraphTraversal<?, ?>> supplier,
                          Function<GraphTraversal<?, ?>, GraphTraversal<Vertex, Edge>> flow,
-                         VertexConverter converter) {
+                         GraphConverter converter) {
         super(supplier, flow, converter);
     }
 
