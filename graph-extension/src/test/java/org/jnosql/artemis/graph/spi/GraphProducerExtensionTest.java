@@ -56,9 +56,9 @@ public class GraphProducerExtensionTest {
 
     @Test
     public void shouldSave() {
-        Person personMock = managerMock.insert(Person.builder().build());
+        Person personMock = managerMock.insert(Person.builder().withId(10L).build());
 
-        assertEquals("nameMock", personMock.getName());
+        assertEquals(Long.valueOf(10L), personMock.getId());
     }
 
     @Test
