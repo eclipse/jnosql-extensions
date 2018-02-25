@@ -14,6 +14,8 @@
  */
 package org.jnosql.artemis.graph;
 
+import org.apache.tinkerpop.gremlin.structure.Vertex;
+
 import javax.inject.Inject;
 import java.util.Objects;
 import java.util.function.Function;
@@ -39,12 +41,12 @@ class DefaultGraphWorkflow implements GraphWorkflow {
     }
 
     @Override
-    public <T> T flow(T entity, UnaryOperator<ArtemisVertex> action) {
+    public <T> T flow(T entity, UnaryOperator<Vertex> action) {
         Function<T, T> flow = getFlow(entity, action);
         return flow.apply(entity);
     }
 
-    private <T> Function<T, T> getFlow(T entity, UnaryOperator<ArtemisVertex> action) {
+    private <T> Function<T, T> getFlow(T entity, UnaryOperator<Vertex> action) {
         UnaryOperator<T> validation = t -> Objects.requireNonNull(t, "entity is required");
 
         UnaryOperator<T> firePreEntity = t -> {
