@@ -110,7 +110,13 @@ class DefaultGraphConverter implements GraphConverter {
 
     @Override
     public Edge toEdge(EdgeEntity edge) {
-        return null;
+        requireNonNull(edge, "vertex is required");
+        Object id = edge.getId().get();
+        Iterator<Edge> edges = graph.get().edges(id);
+        if (edges.hasNext()) {
+            return edges.next();
+        }
+        throw new IllegalArgumentException("Edge does not found in the database with id: " + id);
     }
 
     private <T> void feedId(Vertex vertex, T entity) {
