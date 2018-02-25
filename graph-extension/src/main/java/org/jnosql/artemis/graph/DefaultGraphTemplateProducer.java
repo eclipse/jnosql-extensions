@@ -33,19 +33,20 @@ class DefaultGraphTemplateProducer implements GraphTemplateProducer {
     private ClassRepresentations classRepresentations;
 
     @Inject
-    private GraphWorkflow workflow;
-
-    @Inject
     private Reflections reflections;
 
     @Inject
     private Converters converters;
+
+    @Inject
+    private GraphEventPersistManager persistManager;
 
     @Override
     public GraphTemplate get(Graph graph) {
         requireNonNull(graph, "graph is required");
 
         GraphConverter converter = new ProducerGraphConverter(classRepresentations, reflections, converters, graph);
+        GraphWorkflow workflow = new DefaultGraphWorkflow(persistManager, converter);
         return new ProducerGraphTemplate(classRepresentations, converter, workflow, graph, reflections);
     }
 
