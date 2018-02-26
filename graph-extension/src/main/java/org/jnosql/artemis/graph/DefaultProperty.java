@@ -29,7 +29,7 @@ class DefaultProperty<V> implements Property<V> {
 
     private final V value;
 
-    DefaultProperty(String key, V value) {
+    private DefaultProperty(String key, V value) {
         this.key = requireNonNull(key, "key is required");
         this.value = requireNonNull(value, "value is required");
     }
@@ -85,5 +85,18 @@ class DefaultProperty<V> implements Property<V> {
     @Override
     public void remove() {
         throw new UnsupportedOperationException("The method does not support remove");
+    }
+
+    /**
+     * Creates an instance of {@link Property}
+     *
+     * @param key   the key
+     * @param value the value
+     * @param <T>   the type of value
+     * @return a {@link Property} instance
+     * @throws NullPointerException when either key and value are null
+     */
+    public static <T> Property<T> of(String key, T value) {
+        return new DefaultProperty<>(key, value);
     }
 }
