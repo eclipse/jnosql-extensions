@@ -16,6 +16,7 @@ package org.jnosql.artemis.graph;
 
 import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Graph;
+import org.apache.tinkerpop.gremlin.structure.Property;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.jnosql.artemis.AttributeConverter;
 import org.jnosql.artemis.Converters;
@@ -65,10 +66,10 @@ abstract class AbstractGraphConverter implements GraphConverter {
 
         Optional<FieldGraph> id = fields.stream().filter(FieldGraph::isId).findFirst();
         final Function<Property, Vertex> findVertexOrCreateWithId = p -> {
-            Iterator<Vertex> vertices = getGraph().vertices(p.get());
+            Iterator<Vertex> vertices = getGraph().vertices(p.value());
             return vertices.hasNext() ? vertices.next() :
                     getGraph().addVertex(org.apache.tinkerpop.gremlin.structure.T.label, label,
-                            org.apache.tinkerpop.gremlin.structure.T.id, p.get());
+                            org.apache.tinkerpop.gremlin.structure.T.id, p.value());
         };
 
         Vertex vertex = id.map(i -> i.toElement(getConverters()))
@@ -77,7 +78,7 @@ abstract class AbstractGraphConverter implements GraphConverter {
 
         fields.stream().filter(FieldGraph::isNotId)
                 .flatMap(f -> f.toElements(this, getConverters()).stream())
-                .forEach(p -> vertex.property(p.getKey(), p.get()));
+                .forEach(p -> vertex.property(p.key(), p.value()));
 
         return vertex;
     }
@@ -87,7 +88,7 @@ abstract class AbstractGraphConverter implements GraphConverter {
         requireNonNull(vertex, "vertex is required");
         ClassRepresentation representation = getClassRepresentations().findByName(vertex.label());
 
-        List<Property> properties = vertex.keys().stream().map(k -> Property.of(k, vertex.value(k))).collect(toList());
+        List<Property> properties = vertex.keys().stream().map(k -> DefaultProperty.of(k, vertex.value(k))).collect(toList());
         T entity = toEntity((Class<T>) representation.getClassInstance(), properties);
         feedId(vertex, entity);
         return entity;
@@ -98,7 +99,7 @@ abstract class AbstractGraphConverter implements GraphConverter {
         requireNonNull(entityClass, "entityClass is required");
         requireNonNull(vertex, "vertex is required");
 
-        List<Property> properties = vertex.keys().stream().map(k -> Property.of(k, vertex.value(k))).collect(toList());
+        List<Property> properties = vertex.keys().stream().map(k -> DefaultProperty.of(k, vertex.value(k))).collect(toList());
         T entity = toEntity(entityClass, properties);
         feedId(vertex, entity);
         return entity;
@@ -153,7 +154,7 @@ abstract class AbstractGraphConverter implements GraphConverter {
 
         Map<String, FieldRepresentation> fieldsGroupByName = representation.getFieldsGroupByName();
         List<String> names = elements.stream()
-                .map(Property::getKey)
+                .map(Property::key)
                 .sorted()
                 .collect(toList());
         Predicate<String> existField = k -> Collections.binarySearch(names, k) >= 0;
@@ -170,7 +171,7 @@ abstract class AbstractGraphConverter implements GraphConverter {
         return k -> {
             Optional<Property> element = elements
                     .stream()
-                    .filter(c -> c.getKey().equals(k))
+                    .filter(c -> c.key().equals(k))
                     .findFirst();
 
             FieldRepresentation field = fieldsGroupByName.get(k);
@@ -183,14 +184,14 @@ abstract class AbstractGraphConverter implements GraphConverter {
     }
 
     private <T> void setSingleField(T instance, Optional<Property> element, FieldRepresentation field) {
-        Value value = element.get().getValue();
+        Object value = element.get().value();
         Optional<Class<? extends AttributeConverter>> converter = field.getConverter();
         if (converter.isPresent()) {
             AttributeConverter attributeConverter = getConverters().get(converter.get());
-            Object attributeConverted = attributeConverter.convertToEntityAttribute(value.get());
+            Object attributeConverted = attributeConverter.convertToEntityAttribute(value);
             getReflections().setValue(instance, field.getNativeField(), field.getValue(Value.of(attributeConverted)));
         } else {
-            getReflections().setValue(instance, field.getNativeField(), field.getValue(value));
+            getReflections().setValue(instance, field.getNativeField(), field.getValue(Value.of(value)));
         }
     }
 
