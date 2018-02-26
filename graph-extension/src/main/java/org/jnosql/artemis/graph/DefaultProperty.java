@@ -15,44 +15,25 @@
 package org.jnosql.artemis.graph;
 
 
-import org.jnosql.diana.api.TypeSupplier;
-import org.jnosql.diana.api.Value;
+import org.apache.tinkerpop.gremlin.structure.Element;
+import org.apache.tinkerpop.gremlin.structure.Property;
 
+import java.util.NoSuchElementException;
 import java.util.Objects;
 
 import static java.util.Objects.requireNonNull;
 
-class DefaultProperty implements Property {
+class DefaultProperty<V> implements Property<V> {
 
     private final String key;
 
-    private final Object value;
+    private final V value;
 
-    DefaultProperty(String key, Object value) {
+    DefaultProperty(String key, V value) {
         this.key = requireNonNull(key, "key is required");
         this.value = requireNonNull(value, "value is required");
     }
 
-    @Override
-    public String getKey() {
-        return key;
-    }
-
-    @Override
-    public Value getValue() {
-        return Value.of(value);
-    }
-
-    @Override
-    public <T> T get(TypeSupplier<T> typeSupplier) {
-        requireNonNull(typeSupplier, "typeSupplier is required");
-        return Value.of(value).get(typeSupplier);
-    }
-
-    @Override
-    public Object get() {
-        return Value.of(value).get();
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -79,5 +60,30 @@ class DefaultProperty implements Property {
         sb.append(", value=").append(value);
         sb.append('}');
         return sb.toString();
+    }
+
+    @Override
+    public String key() {
+        return key;
+    }
+
+    @Override
+    public V value() throws NoSuchElementException {
+        return value;
+    }
+
+    @Override
+    public boolean isPresent() {
+        return true;
+    }
+
+    @Override
+    public Element element() {
+        throw new UnsupportedOperationException("The method does not support element");
+    }
+
+    @Override
+    public void remove() {
+        throw new UnsupportedOperationException("The method does not support remove");
     }
 }
