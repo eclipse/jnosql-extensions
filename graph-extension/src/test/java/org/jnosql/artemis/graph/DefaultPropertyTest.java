@@ -44,7 +44,7 @@ public class DefaultPropertyTest {
     @Test
     public void shouldReturnValue() {
         Property element = DefaultProperty.of("key", 10L);
-        assertEquals(Value.of(10L), element.value());
+        assertEquals(10L, element.value());
     }
 
     @Test
@@ -60,7 +60,7 @@ public class DefaultPropertyTest {
         Property element = DefaultProperty.of("key", Value.of(10L));
         assertEquals(Value.of(10L), element.value());
         assertEquals("key", element.key());
-        assertEquals(10L, element.value());
+        assertEquals(Value.of(10L), element.value());
     }
 
 }
