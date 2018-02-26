@@ -14,12 +14,12 @@
  */
 package org.jnosql.artemis.graph;
 
-import org.jnosql.diana.api.Value;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 import org.apache.tinkerpop.gremlin.structure.Property;
+import org.jnosql.diana.api.Value;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
 public class DefaultPropertyTest {
@@ -27,12 +27,12 @@ public class DefaultPropertyTest {
 
     @Test
     public void shouldReturnErrorWhenKeyINull() {
-        Assertions.assertThrows(NullPointerException.class, () -> DefaultProperty.of(null, 10L));
+        assertThrows(NullPointerException.class, () -> DefaultProperty.of(null, 10L));
     }
 
     @Test
     public void shouldReturnErrorWhenValueINull() {
-        Assertions.assertThrows(NullPointerException.class, () -> DefaultProperty.of("key", null));
+        assertThrows(NullPointerException.class, () -> DefaultProperty.of("key", null));
     }
 
     @Test
