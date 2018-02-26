@@ -43,7 +43,7 @@ class DefaultProperty<V> implements Property<V> {
         if (!(o instanceof DefaultProperty)) {
             return false;
         }
-        DefaultProperty that = (DefaultProperty) o;
+        DefaultProperty<?> that = (DefaultProperty<?>) o;
         return Objects.equals(key, that.key) &&
                 Objects.equals(value, that.value);
     }
