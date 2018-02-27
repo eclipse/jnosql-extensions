@@ -65,7 +65,7 @@ class DefaultEdgeEntity<OUT, IN> implements EdgeEntity {
     public List<Property> getProperties() {
         return edge.keys()
                 .stream()
-                .map(k -> DefaultProperty.of(k, Value.of(edge.value(k))))
+                .map(k -> DefaultProperty.of(k, edge.value(k)))
                 .collect(collectingAndThen(toList(), Collections::unmodifiableList));
     }
 
