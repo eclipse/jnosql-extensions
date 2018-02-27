@@ -52,9 +52,7 @@ class DefaultGraphConverterTest {
 
     @Test
     public void shouldReturnErrorWhenToEntityHasNullParameter() {
-        assertThrows(NullPointerException.class, () -> {
-            converter.toEntity(null);
-        });
+        assertThrows(NullPointerException.class, () -> converter.toEntity(null));
     }
 
     @Test
@@ -88,9 +86,7 @@ class DefaultGraphConverterTest {
 
     @Test
     public void shouldReturnErrorWhenToVertexHasNullParameter() {
-        assertThrows(NullPointerException.class, () -> {
-            converter.toVertex(null);
-        });
+        assertThrows(NullPointerException.class, () -> converter.toVertex(null));
     }
 
 
@@ -153,9 +149,7 @@ class DefaultGraphConverterTest {
 
     @Test
     public void shouldReturnErrorWhenToEdgeEntityIsNull() {
-        assertThrows(NullPointerException.class, () -> {
-            converter.toEdgeEntity(null);
-        });
+        assertThrows(NullPointerException.class, () -> converter.toEdgeEntity(null));
     }
 
 
@@ -184,9 +178,7 @@ class DefaultGraphConverterTest {
 
     @Test
     public void shouldReturnToEdgeErrorWhenIsNull() {
-        assertThrows(NullPointerException.class, () -> {
-            converter.toEdge(null);
-        });
+        assertThrows(NullPointerException.class, () -> converter.toEdge(null));
     }
 
     @Test
