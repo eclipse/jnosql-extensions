@@ -14,6 +14,7 @@
  */
 package org.jnosql.artemis.graph;
 
+import org.apache.tinkerpop.gremlin.structure.Property;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.jnosql.artemis.AttributeConverter;
 import org.jnosql.artemis.Converters;
@@ -92,24 +93,24 @@ class FieldGraph {
     public List<Property> toElements(GraphConverter converter, Converters converters) {
         if (EMBEDDED.equals(field.getType())) {
             Vertex vertex = converter.toVertex(value);
-            return vertex.keys().stream().map(k -> Property.of(k, vertex.value(k))).collect(toList());
+            return vertex.keys().stream().map(k -> DefaultProperty.of(k, vertex.value(k))).collect(toList());
         }
 
         Optional<Class<? extends AttributeConverter>> optionalConverter = field.getConverter();
         if (optionalConverter.isPresent()) {
             AttributeConverter attributeConverter = converters.get(optionalConverter.get());
-            return singletonList(Property.of(field.getName(), attributeConverter.convertToDatabaseColumn(value)));
+            return singletonList(DefaultProperty.of(field.getName(), attributeConverter.convertToDatabaseColumn(value)));
         }
-        return singletonList(Property.of(field.getName(), value));
+        return singletonList(DefaultProperty.of(field.getName(), value));
     }
 
     public Property toElement(Converters converters) {
         Optional<Class<? extends AttributeConverter>> optionalConverter = field.getConverter();
         if (optionalConverter.isPresent()) {
             AttributeConverter attributeConverter = converters.get(optionalConverter.get());
-            return Property.of(field.getName(), attributeConverter.convertToDatabaseColumn(value));
+            return DefaultProperty.of(field.getName(), attributeConverter.convertToDatabaseColumn(value));
         }
-        return Property.of(field.getName(), value);
+        return DefaultProperty.of(field.getName(), value);
     }
 
 }

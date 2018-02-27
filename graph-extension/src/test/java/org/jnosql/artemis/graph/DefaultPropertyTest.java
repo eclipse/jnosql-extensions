@@ -14,11 +14,12 @@
  */
 package org.jnosql.artemis.graph;
 
+import org.apache.tinkerpop.gremlin.structure.Property;
 import org.jnosql.diana.api.Value;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
 public class DefaultPropertyTest {
@@ -26,40 +27,40 @@ public class DefaultPropertyTest {
 
     @Test
     public void shouldReturnErrorWhenKeyINull() {
-        Assertions.assertThrows(NullPointerException.class, () -> Property.of(null, 10L));
+        assertThrows(NullPointerException.class, () -> DefaultProperty.of(null, 10L));
     }
 
     @Test
     public void shouldReturnErrorWhenValueINull() {
-        Assertions.assertThrows(NullPointerException.class, () -> Property.of("key", null));
+        assertThrows(NullPointerException.class, () -> DefaultProperty.of("key", null));
     }
 
     @Test
     public void shouldReturnKey() {
-        Property element = Property.of("key", 10L);
-        assertEquals("key", element.getKey());
+        Property element = DefaultProperty.of("key", 10L);
+        assertEquals("key", element.key());
     }
 
     @Test
     public void shouldReturnValue() {
-        Property element = Property.of("key", 10L);
-        assertEquals(Value.of(10L), element.getValue());
+        Property element = DefaultProperty.of("key", 10L);
+        assertEquals(10L, element.value());
     }
 
     @Test
     public void shouldReturnValueAsObject() {
         long value = 10L;
-        Property element = Property.of("key", value);
-        assertEquals(value, element.get());
+        Property element = DefaultProperty.of("key", value);
+        assertEquals(value, element.value());
     }
 
 
     @Test
     public void shouldCreateInstanceValue() {
-        Property element = Property.of("key", Value.of(10L));
-        assertEquals(Value.of(10L), element.getValue());
-        assertEquals("key", element.getKey());
-        assertEquals(10L, element.get());
+        Property element = DefaultProperty.of("key", Value.of(10L));
+        assertEquals(Value.of(10L), element.value());
+        assertEquals("key", element.key());
+        assertEquals(Value.of(10L), element.value());
     }
 
 }

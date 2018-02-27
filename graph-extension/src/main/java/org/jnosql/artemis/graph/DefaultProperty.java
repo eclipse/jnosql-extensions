@@ -15,44 +15,29 @@
 package org.jnosql.artemis.graph;
 
 
-import org.jnosql.diana.api.TypeSupplier;
-import org.jnosql.diana.api.Value;
+import org.apache.tinkerpop.gremlin.structure.Element;
+import org.apache.tinkerpop.gremlin.structure.Property;
 
+import java.util.NoSuchElementException;
 import java.util.Objects;
 
 import static java.util.Objects.requireNonNull;
 
-class DefaultProperty implements Property {
+/**
+ * The default implementation to Mapping API
+ * @param <V>
+ */
+class DefaultProperty<V> implements Property<V> {
 
     private final String key;
 
-    private final Object value;
+    private final V value;
 
-    DefaultProperty(String key, Object value) {
+    private DefaultProperty(String key, V value) {
         this.key = requireNonNull(key, "key is required");
         this.value = requireNonNull(value, "value is required");
     }
 
-    @Override
-    public String getKey() {
-        return key;
-    }
-
-    @Override
-    public Value getValue() {
-        return Value.of(value);
-    }
-
-    @Override
-    public <T> T get(TypeSupplier<T> typeSupplier) {
-        requireNonNull(typeSupplier, "typeSupplier is required");
-        return Value.of(value).get(typeSupplier);
-    }
-
-    @Override
-    public Object get() {
-        return Value.of(value).get();
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -62,7 +47,7 @@ class DefaultProperty implements Property {
         if (!(o instanceof DefaultProperty)) {
             return false;
         }
-        DefaultProperty that = (DefaultProperty) o;
+        DefaultProperty<?> that = (DefaultProperty<?>) o;
         return Objects.equals(key, that.key) &&
                 Objects.equals(value, that.value);
     }
@@ -79,5 +64,43 @@ class DefaultProperty implements Property {
         sb.append(", value=").append(value);
         sb.append('}');
         return sb.toString();
+    }
+
+    @Override
+    public String key() {
+        return key;
+    }
+
+    @Override
+    public V value() throws NoSuchElementException {
+        return value;
+    }
+
+    @Override
+    public boolean isPresent() {
+        return true;
+    }
+
+    @Override
+    public Element element() {
+        throw new UnsupportedOperationException("The method does not support element");
+    }
+
+    @Override
+    public void remove() {
+        throw new UnsupportedOperationException("The method does not support remove");
+    }
+
+    /**
+     * Creates an instance of {@link Property}
+     *
+     * @param key   the key
+     * @param value the value
+     * @param <T>   the type of value
+     * @return a {@link Property} instance
+     * @throws NullPointerException when either key and value are null
+     */
+    public static <T> Property<T> of(String key, T value) {
+        return new DefaultProperty<>(key, value);
     }
 }

@@ -15,6 +15,7 @@
 package org.jnosql.artemis.graph;
 
 import org.apache.tinkerpop.gremlin.structure.Edge;
+import org.apache.tinkerpop.gremlin.structure.Property;
 import org.jnosql.diana.api.Value;
 
 import java.util.Collections;
@@ -64,7 +65,7 @@ class DefaultEdgeEntity<OUT, IN> implements EdgeEntity {
     public List<Property> getProperties() {
         return edge.keys()
                 .stream()
-                .map(k -> Property.of(k, Value.of(edge.value(k))))
+                .map(k -> DefaultProperty.of(k, edge.value(k)))
                 .collect(collectingAndThen(toList(), Collections::unmodifiableList));
     }
 
