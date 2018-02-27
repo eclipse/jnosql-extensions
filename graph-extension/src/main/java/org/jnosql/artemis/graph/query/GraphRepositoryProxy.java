@@ -32,7 +32,6 @@ import java.lang.reflect.ParameterizedType;
  */
 class GraphRepositoryProxy<T, ID> extends AbstractGraphRepositoryProxy<T, ID> {
 
-    private final GraphTemplate template;
 
     private final GraphRepository repository;
 
@@ -54,7 +53,6 @@ class GraphRepositoryProxy<T, ID> extends AbstractGraphRepositoryProxy<T, ID> {
         Class<T> typeClass = Class.class.cast(ParameterizedType.class.cast(repositoryType.getGenericInterfaces()[0])
                 .getActualTypeArguments()[0]);
 
-        this.template = template;
         this.graph = graph;
         this.converter = converter;
         this.reflections = reflections;
