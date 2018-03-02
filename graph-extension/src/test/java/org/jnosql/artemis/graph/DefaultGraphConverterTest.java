@@ -66,6 +66,18 @@ class DefaultGraphConverterTest {
     }
 
     @Test
+    public void shouldReturnToEntityInstance() {
+        Vertex vertex = graph.addVertex(T.label, "Person", "age", 22, "name", "Ada");
+        Person person = Person.builder().build();
+        Person result = converter.toEntity(person, vertex);
+
+        assertTrue(person == result);
+        assertNotNull(person.getId());
+        assertEquals("Ada", person.getName());
+        assertEquals(Integer.valueOf(22), Integer.valueOf(person.getAge()));
+    }
+
+    @Test
     public void shouldReturnToEntityWithDifferentMap() {
         Vertex vertex = graph.addVertex(T.label, "movie", "title", "Matrix", "movie_year", "1999");
         Movie movie = converter.toEntity(vertex);
