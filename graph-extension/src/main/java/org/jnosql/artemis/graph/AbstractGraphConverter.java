@@ -106,6 +106,20 @@ abstract class AbstractGraphConverter implements GraphConverter {
     }
 
     @Override
+    public <T> T toEntity(T entityInstance, Vertex vertex) {
+        requireNonNull(entityInstance, "entityInstance is required");
+        requireNonNull(vertex, "vertex is required");
+
+        List<Property> properties = vertex.keys().stream().map(k -> DefaultProperty.of(k, vertex.value(k))).collect(toList());
+
+        ClassRepresentation representation = getClassRepresentations().get(entityInstance.getClass());
+        convertEntity(properties, representation, entityInstance);
+        feedId(vertex, entityInstance);
+        return entityInstance;
+
+    }
+
+    @Override
     public EdgeEntity toEdgeEntity(Edge edge) {
         requireNonNull(edge, "vertex is required");
         Object out = toEntity(edge.outVertex());
