@@ -54,6 +54,8 @@ public class DefaultGraphWorkflowTest {
                 .thenReturn(vertex);
         when(converter.toEntity(Mockito.eq(Person.class), any(Vertex.class)))
                 .thenReturn(Person.builder().build());
+        when(converter.toEntity(Mockito.any(Person.class), any(Vertex.class)))
+                .thenReturn(Person.builder().build());
 
     }
 
