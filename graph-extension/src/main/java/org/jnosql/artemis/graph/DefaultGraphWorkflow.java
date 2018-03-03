@@ -71,7 +71,7 @@ class DefaultGraphWorkflow implements GraphWorkflow {
             return t;
         };
 
-        Function<Vertex, T> converterEntity = t -> converter.toEntity((Class<T>) entity.getClass(), t);
+        Function<Vertex, T> converterEntity = t -> converter.toEntity(entity, t);
 
         UnaryOperator<T> firePostEntity = t -> {
             graphEventPersistManager.firePostEntity(t);
