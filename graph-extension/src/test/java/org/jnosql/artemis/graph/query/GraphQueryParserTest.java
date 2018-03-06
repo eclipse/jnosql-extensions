@@ -341,22 +341,4 @@ public class GraphQueryParserTest {
 
     }
 
-    @Test
-    public void shouldFindAll() {
-        Vertex poliana = graph.addVertex(T.label, "Person", "name", "Poliana", "age", 10);
-        Vertex otavio = graph.addVertex(T.label, "Person", "name", "Otavio", "age", 9);
-
-        poliana.addEdge("knows", otavio);
-
-        GraphTraversal<Vertex, Vertex> traversal = graph.traversal().V();
-
-        parser.findByParse("findAll", new Object[0], classRepresentation, traversal);
-
-        List<Vertex> vertices = traversal.toList();
-
-        List<Object> ids = vertices.stream().map(Vertex::id).collect(toList());
-        assertThat(ids, containsInAnyOrder(poliana.id(), otavio.id()));
-    }
-
-
 }
