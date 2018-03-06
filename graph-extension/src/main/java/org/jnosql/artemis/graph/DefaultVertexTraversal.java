@@ -189,11 +189,7 @@ class DefaultVertexTraversal extends AbstractVertexTraversal implements VertexTr
     @Override
     public <T> Optional<T> next() {
         Optional<Vertex> vertex = flow.apply(supplier.get()).tryNext();
-        if (vertex.isPresent()) {
-            return Optional.of(converter.toEntity(vertex.get()));
-
-        }
-        return Optional.empty();
+        return vertex.map(converter::toEntity);
     }
 
     @Override
