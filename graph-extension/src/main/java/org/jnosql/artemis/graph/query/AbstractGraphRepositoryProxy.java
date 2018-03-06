@@ -61,6 +61,8 @@ abstract class AbstractGraphRepositoryProxy<T, ID> implements InvocationHandler 
                 return executeFindByMethod(method, args, methodName);
             case DELETE_BY:
                 return executeDeleteMethod(args, methodName);
+            case FIND_ALL:
+                return executeFindAll(method, args);
             case OBJECT_METHOD:
                 return method.invoke(this, args);
             case UNKNOWN:
@@ -92,6 +94,14 @@ abstract class AbstractGraphRepositoryProxy<T, ID> implements InvocationHandler 
         List<Vertex> vertices = traversal.hasLabel(getClassRepresentation().getName()).toList();
         Stream<T> stream = vertices.stream().map(getConverter()::toEntity);
 
+        return returnObject(stream, classInstance, method);
+    }
+
+    private Object executeFindAll(Method method, Object[] args) {
+        Class<?> classInstance = getClassRepresentation().getClassInstance();
+        GraphTraversal<Vertex, Vertex> traversal = getGraph().traversal().V();
+        List<Vertex> vertices = traversal.hasLabel(getClassRepresentation().getName()).toList();
+        Stream<T> stream = vertices.stream().map(getConverter()::toEntity);
         return returnObject(stream, classInstance, method);
     }
 

@@ -139,11 +139,8 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
                 .traversal().V(outVertex.id())
                 .out(label).has(id, inVertex.id()).inE(label).filter(predicate).tryNext();
 
-        if (edge.isPresent()) {
-            return new DefaultEdgeEntity<>(edge.get(), incoming, outbound);
-        } else {
-            return new DefaultEdgeEntity<>(outVertex.addEdge(label, inVertex), incoming, outbound);
-        }
+        return edge.<EdgeEntity>map(edge1 -> new DefaultEdgeEntity<>(edge1, incoming, outbound))
+                .orElseGet(() -> new DefaultEdgeEntity<>(outVertex.addEdge(label, inVertex), incoming, outbound));
 
 
     }

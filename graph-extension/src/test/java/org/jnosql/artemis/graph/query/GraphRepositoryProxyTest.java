@@ -264,6 +264,14 @@ public class GraphRepositoryProxyTest {
     }
 
     @Test
+    public void shouldFindAll() {
+        graph.addVertex(T.label, "Person", "name", "name", "age", 20);
+        graph.addVertex(T.label, "Person", "name", "name", "age", 20);
+        List<Person> people = personRepository.findAll();
+        assertFalse(people.isEmpty());
+    }
+
+    @Test
     public void shouldReturnToString() {
         assertNotNull(personRepository.toString());
     }
@@ -274,11 +282,15 @@ public class GraphRepositoryProxyTest {
         assertEquals(personRepository.hashCode(), personRepository.hashCode());
     }
 
+
+
     interface PersonRepository extends Repository<Person, Long> {
 
         Person findByName(String name);
 
         void deleteByName(String name);
+
+        List<Person> findAll();
 
         Optional<Person> findByAge(Integer age);
 

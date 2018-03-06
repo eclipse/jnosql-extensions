@@ -422,7 +422,7 @@ public class DefaultVertexTraversalTest extends AbstractTraversalTest {
 
     @Test
     public void shouldReturnErrorWhenHasLabelEntityClassNull() {
-        assertThrows(NullPointerException.class, () -> graphTemplate.getTraversalVertex().hasLabel((Class<? extends Object>) null));
+        assertThrows(NullPointerException.class, () -> graphTemplate.getTraversalVertex().hasLabel((Class<?>) null));
     }
 
     @Test
