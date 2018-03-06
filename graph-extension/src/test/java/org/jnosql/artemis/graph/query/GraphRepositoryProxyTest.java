@@ -280,6 +280,8 @@ public class GraphRepositoryProxyTest {
 
         void deleteByName(String name);
 
+        List<Person> findAll();
+
         Optional<Person> findByAge(Integer age);
 
         List<Person> findByNameAndAge(String name, Integer age);
