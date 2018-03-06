@@ -265,7 +265,8 @@ public class GraphRepositoryProxyTest {
 
     @Test
     public void shouldFindAll() {
-
+        List<Person> people = personRepository.findAll();
+        assertFalse(people.isEmpty());
     }
 
     @Test
