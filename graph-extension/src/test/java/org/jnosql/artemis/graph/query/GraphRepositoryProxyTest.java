@@ -265,6 +265,8 @@ public class GraphRepositoryProxyTest {
 
     @Test
     public void shouldFindAll() {
+        graph.addVertex(T.label, "Person", "name", "name", "age", 20);
+        graph.addVertex(T.label, "Person", "name", "name", "age", 20);
         List<Person> people = personRepository.findAll();
         assertFalse(people.isEmpty());
     }
