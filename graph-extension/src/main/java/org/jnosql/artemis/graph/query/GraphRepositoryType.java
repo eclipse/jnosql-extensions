@@ -19,7 +19,7 @@ import java.util.stream.Stream;
 
 public enum GraphRepositoryType {
 
-    DEFAULT, FIND_BY, DELETE_BY, UNKNOWN, OBJECT_METHOD;
+    DEFAULT, FIND_ALL, FIND_BY, DELETE_BY, UNKNOWN, OBJECT_METHOD;
 
     private static final Method[] METHODS = Object.class.getMethods();
 
@@ -38,6 +38,8 @@ public enum GraphRepositoryType {
             case "findById":
             case "existsById":
                 return DEFAULT;
+            case "findAll":
+                return FIND_ALL;
             default:
         }
 
