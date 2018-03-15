@@ -14,14 +14,14 @@
  */
 package org.jnosql.artemis.graph;
 
-import org.apache.tinkerpop.gremlin.structure.Graph;
-import org.jnosql.artemis.Converters;
-import org.jnosql.artemis.reflection.ClassRepresentations;
-import org.jnosql.artemis.reflection.Reflections;
-
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
+
+import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
+import org.jnosql.artemis.Converters;
+import org.jnosql.artemis.reflection.ClassRepresentations;
+import org.jnosql.artemis.reflection.Reflections;
 
 @ApplicationScoped
 class DefaultGraphConverter extends AbstractGraphConverter implements GraphConverter {
@@ -36,7 +36,7 @@ class DefaultGraphConverter extends AbstractGraphConverter implements GraphConve
     private Converters converters;
 
     @Inject
-    private Instance<Graph> graph;
+    private Instance<GraphTraversalSource> graphTraversal;
 
 
     @Override
@@ -55,7 +55,7 @@ class DefaultGraphConverter extends AbstractGraphConverter implements GraphConve
     }
 
     @Override
-    protected Graph getGraph() {
-        return graph.get();
+    protected GraphTraversalSource getGraphTraversal() {
+        return graphTraversal.get();
     }
 }

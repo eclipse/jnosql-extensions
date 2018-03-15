@@ -14,18 +14,9 @@
  */
 package org.jnosql.artemis.graph;
 
-import org.apache.tinkerpop.gremlin.structure.Edge;
-import org.apache.tinkerpop.gremlin.structure.Graph;
-import org.apache.tinkerpop.gremlin.structure.Property;
-import org.apache.tinkerpop.gremlin.structure.Vertex;
-import org.jnosql.artemis.AttributeConverter;
-import org.jnosql.artemis.Converters;
-import org.jnosql.artemis.EntityNotFoundException;
-import org.jnosql.artemis.reflection.ClassRepresentation;
-import org.jnosql.artemis.reflection.ClassRepresentations;
-import org.jnosql.artemis.reflection.FieldRepresentation;
-import org.jnosql.artemis.reflection.Reflections;
-import org.jnosql.diana.api.Value;
+import static java.util.Objects.requireNonNull;
+import static java.util.stream.Collectors.toList;
+import static org.jnosql.artemis.reflection.FieldType.EMBEDDED;
 
 import java.lang.reflect.Field;
 import java.util.Collections;
@@ -38,9 +29,19 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-import static java.util.Objects.requireNonNull;
-import static java.util.stream.Collectors.toList;
-import static org.jnosql.artemis.reflection.FieldType.EMBEDDED;
+import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
+import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
+import org.apache.tinkerpop.gremlin.structure.Edge;
+import org.apache.tinkerpop.gremlin.structure.Property;
+import org.apache.tinkerpop.gremlin.structure.Vertex;
+import org.jnosql.artemis.AttributeConverter;
+import org.jnosql.artemis.Converters;
+import org.jnosql.artemis.EntityNotFoundException;
+import org.jnosql.artemis.reflection.ClassRepresentation;
+import org.jnosql.artemis.reflection.ClassRepresentations;
+import org.jnosql.artemis.reflection.FieldRepresentation;
+import org.jnosql.artemis.reflection.Reflections;
+import org.jnosql.diana.api.Value;
 
 abstract class AbstractGraphConverter implements GraphConverter {
 
@@ -51,7 +52,7 @@ abstract class AbstractGraphConverter implements GraphConverter {
 
     protected abstract Converters getConverters();
 
-    protected abstract Graph getGraph();
+    protected abstract GraphTraversalSource getGraphTraversal();
 
     @Override
     public <T> Vertex toVertex(T entity) {
@@ -65,22 +66,24 @@ abstract class AbstractGraphConverter implements GraphConverter {
                 .filter(FieldGraph::isNotEmpty).collect(toList());
 
         Optional<FieldGraph> id = fields.stream().filter(FieldGraph::isId).findFirst();
-        final Function<Property, Vertex> findVertexOrCreateWithId = p -> {
-            Iterator<Vertex> vertices = getGraph().vertices(p.value());
-            return vertices.hasNext() ? vertices.next() :
-                    getGraph().addVertex(org.apache.tinkerpop.gremlin.structure.T.label, label,
-                            org.apache.tinkerpop.gremlin.structure.T.id, p.value());
+        
+        final Function<Property, GraphTraversal<Vertex,Vertex>> findVertexOrCreateWithId = p -> {
+            final GraphTraversal<Vertex,Vertex> vertices = getGraphTraversal().V(p.value());
+            return vertices.hasNext() ? 
+            		vertices : 
+            		getGraphTraversal().addV(label).property( org.apache.tinkerpop.gremlin.structure.T.id, p.value() ) ;
         };
 
-        Vertex vertex = id.map(i -> i.toElement(getConverters()))
+        final GraphTraversal<Vertex, Vertex> vertex = 
+        		  id.map(i -> i.toElement(getConverters()))
                 .map(findVertexOrCreateWithId)
-                .orElseGet(() -> getGraph().addVertex(label));
+                .orElseGet(() -> getGraphTraversal().addV(label) );
 
         fields.stream().filter(FieldGraph::isNotId)
                 .flatMap(f -> f.toElements(this, getConverters()).stream())
                 .forEach(p -> vertex.property(p.key(), p.value()));
 
-        return vertex;
+        return vertex.next();
     }
 
     @Override
@@ -131,7 +134,8 @@ abstract class AbstractGraphConverter implements GraphConverter {
     public Edge toEdge(EdgeEntity edge) {
         requireNonNull(edge, "vertex is required");
         Object id = edge.getId().get();
-        Iterator<Edge> edges = getGraph().edges(id);
+        //Iterator<Edge> edges = getGraph().edges(id);
+        final Iterator<Edge> edges = getGraphTraversal().E(id);
         if (edges.hasNext()) {
             return edges.next();
         }

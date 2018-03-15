@@ -14,12 +14,12 @@
  */
 package org.jnosql.artemis.graph;
 
-import org.apache.tinkerpop.gremlin.structure.Graph;
-import org.jnosql.artemis.reflection.ClassRepresentations;
-import org.jnosql.artemis.reflection.Reflections;
-
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
+
+import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
+import org.jnosql.artemis.reflection.ClassRepresentations;
+import org.jnosql.artemis.reflection.Reflections;
 
 /**
  * The default {@link GraphTemplate}
@@ -28,7 +28,7 @@ class DefaultGraphTemplate extends AbstractGraphTemplate {
 
 
     @Inject
-    private Instance<Graph> graph;
+    private Instance<GraphTraversalSource> graphTraversal;
 
     @Inject
     private ClassRepresentations classRepresentations;
@@ -44,8 +44,8 @@ class DefaultGraphTemplate extends AbstractGraphTemplate {
 
 
     @Override
-    protected Graph getGraph() {
-        return graph.get();
+    protected GraphTraversalSource getGraphTraversal() {
+        return graphTraversal.get();
     }
 
     @Override

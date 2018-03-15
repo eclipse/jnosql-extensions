@@ -14,7 +14,7 @@
  */
 package org.jnosql.artemis.graph;
 
-import org.apache.tinkerpop.gremlin.structure.Graph;
+import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
 
 /**
  * The producer of {@link GraphTemplate}
@@ -26,9 +26,9 @@ public interface GraphTemplateProducer <T extends GraphTemplate> {
     /**
      * creates a {@link GraphTemplate}
      *
-     * @param graph the graph
+     * @param graphTraversal the graph
      * @return a new instance
      * @throws NullPointerException when collectionManager is null
      */
-    T get(Graph graph);
+    T get(GraphTraversalSource graphTraversal);
 }

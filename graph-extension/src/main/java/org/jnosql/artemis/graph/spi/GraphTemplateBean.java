@@ -14,11 +14,10 @@
  */
 package org.jnosql.artemis.graph.spi;
 
-import org.apache.tinkerpop.gremlin.structure.Graph;
-import org.jnosql.artemis.DatabaseQualifier;
-import org.jnosql.artemis.DatabaseType;
-import org.jnosql.artemis.graph.GraphTemplate;
-import org.jnosql.artemis.graph.GraphTemplateProducer;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Type;
+import java.util.Collections;
+import java.util.Set;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.spi.CreationalContext;
@@ -26,10 +25,13 @@ import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.BeanManager;
 import javax.enterprise.inject.spi.InjectionPoint;
 import javax.enterprise.inject.spi.PassivationCapable;
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Type;
-import java.util.Collections;
-import java.util.Set;
+
+import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
+import org.apache.tinkerpop.gremlin.structure.Graph;
+import org.jnosql.artemis.DatabaseQualifier;
+import org.jnosql.artemis.DatabaseType;
+import org.jnosql.artemis.graph.GraphTemplate;
+import org.jnosql.artemis.graph.GraphTemplateProducer;
 
 class GraphTemplateBean implements Bean<GraphTemplate>, PassivationCapable {
 
@@ -72,16 +74,16 @@ class GraphTemplateBean implements Bean<GraphTemplate>, PassivationCapable {
     @Override
     public GraphTemplate create(CreationalContext<GraphTemplate> creationalContext) {
 
-        GraphTemplateProducer producer = getInstance(GraphTemplateProducer.class);
-        Graph manager = getGraph();
+        final GraphTemplateProducer<?> producer = getInstance(GraphTemplateProducer.class);
+        final GraphTraversalSource manager = getGraphTraversal();
         return producer.get(manager);
     }
 
-    private Graph getGraph() {
+    private GraphTraversalSource getGraphTraversal() {
         Bean<Graph> bean = (Bean<Graph>) beanManager.getBeans(Graph.class,
                 DatabaseQualifier.ofGraph(provider) ).iterator().next();
         CreationalContext<Graph> ctx = beanManager.createCreationalContext(bean);
-        return (Graph) beanManager.getReference(bean, Graph.class, ctx);
+        return (GraphTraversalSource) beanManager.getReference(bean, GraphTraversalSource.class, ctx);
     }
 
 
