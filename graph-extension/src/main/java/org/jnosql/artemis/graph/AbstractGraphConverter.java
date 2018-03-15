@@ -70,15 +70,15 @@ abstract class AbstractGraphConverter implements GraphConverter {
         final Function<Property, GraphTraversal<Vertex,Vertex>> findVertexOrCreateWithId = p -> {
             final GraphTraversal<Vertex,Vertex> vertices = getGraphTraversal().V(p.value());
             return vertices.hasNext() ? 
-            		vertices : 
-            		getGraphTraversal().addV(label).property( org.apache.tinkerpop.gremlin.structure.T.id, p.value() ) ;
+                    vertices : 
+                    getGraphTraversal().addV(label).property( org.apache.tinkerpop.gremlin.structure.T.id, p.value() ) ;
         };
 
         final GraphTraversal<Vertex, Vertex> vertex = 
-        		  id.map(i -> i.toElement(getConverters()))
+                id.map(i -> i.toElement(getConverters()))
                 .map(findVertexOrCreateWithId)
                 .orElseGet(() -> getGraphTraversal().addV(label) );
-
+        
         fields.stream().filter(FieldGraph::isNotId)
                 .flatMap(f -> f.toElements(this, getConverters()).stream())
                 .forEach(p -> vertex.property(p.key(), p.value()));
