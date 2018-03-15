@@ -27,7 +27,7 @@ import org.jnosql.artemis.reflection.Reflections;
 /**
  * The default implementation of {@link GraphTemplateProducer}
  */
-class DefaultGraphTemplateProducer implements GraphTemplateProducer {
+class DefaultGraphTemplateProducer implements GraphTemplateProducer<GraphTemplate> {
 
     @Inject
     private ClassRepresentations classRepresentations;
@@ -42,12 +42,12 @@ class DefaultGraphTemplateProducer implements GraphTemplateProducer {
     private GraphEventPersistManager persistManager;
 
     @Override
-    public GraphTemplate get(GraphTraversalSource graphTraversal) {
-        requireNonNull(graphTraversal, "graphTraversal is required");
+    public GraphTemplate get(GraphTraversalSource traversalSource) {
+        requireNonNull(traversalSource, "traversalSource is required");
 
-        GraphConverter converter = new ProducerGraphConverter(classRepresentations, reflections, converters, graphTraversal);
+        GraphConverter converter = new ProducerGraphConverter(classRepresentations, reflections, converters, traversalSource);
         GraphWorkflow workflow = new DefaultGraphWorkflow(persistManager, converter);
-        return new ProducerGraphTemplate(classRepresentations, converter, workflow, graphTraversal, reflections);
+        return new ProducerGraphTemplate(classRepresentations, converter, workflow, traversalSource, reflections);
     }
 
 
@@ -58,7 +58,7 @@ class DefaultGraphTemplateProducer implements GraphTemplateProducer {
 
         private GraphConverter converter;
 
-        private GraphTraversalSource graphTraversal;
+        private GraphTraversalSource traversalSource;
 
         private GraphWorkflow workflow;
 
@@ -67,11 +67,11 @@ class DefaultGraphTemplateProducer implements GraphTemplateProducer {
         ProducerGraphTemplate(ClassRepresentations classRepresentations,
                               GraphConverter converter,
                               GraphWorkflow workflow,
-                              GraphTraversalSource graphTraversal, Reflections reflections) {
+                              GraphTraversalSource traversalSource, Reflections reflections) {
 
             this.classRepresentations = classRepresentations;
             this.converter = converter;
-            this.graphTraversal = graphTraversal;
+            this.traversalSource = traversalSource;
             this.workflow = workflow;
             this.reflections = reflections;
         }
@@ -80,8 +80,8 @@ class DefaultGraphTemplateProducer implements GraphTemplateProducer {
         }
 
         @Override
-        protected GraphTraversalSource getGraphTraversal() {
-            return graphTraversal;
+        public final GraphTraversalSource getTraversalSource() {
+            return traversalSource;
         }
 
         @Override

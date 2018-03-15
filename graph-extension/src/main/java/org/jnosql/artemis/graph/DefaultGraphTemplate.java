@@ -44,7 +44,7 @@ class DefaultGraphTemplate extends AbstractGraphTemplate {
 
 
     @Override
-    protected GraphTraversalSource getGraphTraversal() {
+    public final GraphTraversalSource getTraversalSource() {
         return graphTraversal.get();
     }
 
