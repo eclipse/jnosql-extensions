@@ -78,9 +78,10 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
     public <T> T insert(T entity) {
         requireNonNull(entity, "entity is required");
         checkId(entity);
-        UnaryOperator<Vertex> save = v -> v;
+        
+        final UnaryOperator<Vertex> insert = v -> getConverter().toNewVertex(entity);
 
-        return getFlow().flow(entity, save);
+        return getFlow().flow(entity, Optional.empty(), insert);
     }
 
     @Override
@@ -92,9 +93,9 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
         }
         final Vertex vertex = getVertex(entity).orElseThrow(() -> new EntityNotFoundException("Entity does not find in the update"));
 
-        //final UnaryOperator<Vertex> update = e -> getConverter().toVertex(entity);
-        final UnaryOperator<Vertex> update = e -> vertex;
-        return getFlow().flow(entity, update);
+        final UnaryOperator<Vertex> update =  v -> getConverter().toVertex(entity, v);
+            
+        return getFlow().flow(entity, Optional.of(vertex), update );
     }
 
     @Override

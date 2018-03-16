@@ -14,12 +14,14 @@
  */
 package org.jnosql.artemis.graph;
 
-import org.apache.tinkerpop.gremlin.structure.Vertex;
-
-import javax.inject.Inject;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.UnaryOperator;
+
+import javax.inject.Inject;
+
+import org.apache.tinkerpop.gremlin.structure.Vertex;
 
 /**
  * The default implementation of {@link GraphWorkflow}
@@ -41,13 +43,16 @@ class DefaultGraphWorkflow implements GraphWorkflow {
     }
 
     @Override
-    public <T> T flow(T entity, UnaryOperator<Vertex> action) {
-        Function<T, T> flow = getFlow(entity, action);
+    public <T> T flow(T entity, Optional<Vertex> vertex, UnaryOperator<Vertex> action) {
+        Objects.requireNonNull(entity, "entity is required");
+        Objects.requireNonNull(vertex, "vartex is required");
+        Objects.requireNonNull(action, "action is required");
+        
+        Function<T, T> flow = getFlow(entity, vertex, action );
         return flow.apply(entity);
     }
 
-    private <T> Function<T, T> getFlow(T entity, UnaryOperator<Vertex> action) {
-        UnaryOperator<T> validation = t -> Objects.requireNonNull(t, "entity is required");
+    private <T> Function<T, T> getFlow(T entity, Optional<Vertex> vertex, UnaryOperator<Vertex> action) {
 
         UnaryOperator<T> firePreEntity = t -> {
             graphEventPersistManager.firePreEntity(t);
@@ -59,10 +64,8 @@ class DefaultGraphWorkflow implements GraphWorkflow {
             return t;
         };
 
-        Function<T, Vertex> converterGraph = t -> converter.toVertex(t);
-
         UnaryOperator<Vertex> firePreGraph = t -> {
-            graphEventPersistManager.firePreGraph(t);
+            if( t != null ) graphEventPersistManager.firePreGraph(t);
             return t;
         };
 
@@ -70,8 +73,6 @@ class DefaultGraphWorkflow implements GraphWorkflow {
             graphEventPersistManager.firePostGraph(t);
             return t;
         };
-
-        Function<Vertex, T> converterEntity = t -> converter.toEntity(entity, t);
 
         UnaryOperator<T> firePostEntity = t -> {
             graphEventPersistManager.firePostEntity(t);
@@ -83,14 +84,13 @@ class DefaultGraphWorkflow implements GraphWorkflow {
             return t;
         };
 
-        return validation
-                .andThen(firePreEntity)
+        return  firePreEntity
                 .andThen(firePreGraphEntity)
-                .andThen(converterGraph)
+                .andThen(v -> vertex.orElseGet( () -> null ) )
                 .andThen(firePreGraph)
                 .andThen(action)
                 .andThen(firePostGraph)
-                .andThen(converterEntity)
+                .andThen(v -> entity)
                 .andThen(firePostEntity)
                 .andThen(firePostGraphEntity);
     }

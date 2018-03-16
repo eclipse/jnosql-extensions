@@ -15,9 +15,10 @@
 package org.jnosql.artemis.graph;
 
 
-import org.apache.tinkerpop.gremlin.structure.Vertex;
-
+import java.util.Optional;
 import java.util.function.UnaryOperator;
+
+import org.apache.tinkerpop.gremlin.structure.Vertex;
 
 /**
  * This implementation defines the workflow to insert an Entity on {@link Vertex}.
@@ -36,9 +37,10 @@ public interface GraphWorkflow {
      * Executes the workflow to do an interaction on a graph database.
      *
      * @param entity the entity to be saved
+     * @param vertex related vertex
      * @param action the alteration to be executed on database
      * @param <T>    the entity type
      * @return after the workflow the the entity response
      */
-    <T> T flow(T entity, UnaryOperator<Vertex> action);
+    public <T> T flow(T entity, Optional<Vertex> vertex, UnaryOperator<Vertex> action);
 }

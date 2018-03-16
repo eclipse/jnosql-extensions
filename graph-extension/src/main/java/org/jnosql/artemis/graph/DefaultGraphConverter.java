@@ -55,7 +55,7 @@ class DefaultGraphConverter extends AbstractGraphConverter implements GraphConve
     }
 
     @Override
-    protected GraphTraversalSource getGraphTraversal() {
+    protected GraphTraversalSource getTraversalSource() {
         return graphTraversal.get();
     }
 }

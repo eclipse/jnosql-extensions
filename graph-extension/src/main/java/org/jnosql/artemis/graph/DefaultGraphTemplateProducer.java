@@ -144,7 +144,7 @@ class DefaultGraphTemplateProducer implements GraphTemplateProducer<GraphTemplat
         }
 
         @Override
-        protected GraphTraversalSource getGraphTraversal() {
+        protected GraphTraversalSource getTraversalSource() {
             return graphTraversal;
         }
     }

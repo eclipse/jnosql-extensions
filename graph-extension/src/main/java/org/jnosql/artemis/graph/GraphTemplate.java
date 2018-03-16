@@ -38,8 +38,9 @@ public interface GraphTemplate {
 
     /**
      * 
-     * @param v
-     * @return
+     * @param v vertex
+     * @param <T> return type 
+     * @return entity
      */
     <T> T toEntity(Vertex v);
 

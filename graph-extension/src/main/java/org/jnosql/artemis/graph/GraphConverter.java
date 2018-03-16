@@ -18,7 +18,26 @@ import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 
 public interface GraphConverter {
-
+    
+    /**
+     * add a new vertex from entity
+     * 
+     * @param entity entity
+     * @param <T> entity type
+     * @return return a new aeed vertex
+     */
+     <T> Vertex toNewVertex(T entity);
+  
+     /**
+      * update vertex property from entity
+      * 
+      * @param entity entity
+      * @param <T> entity type
+      * @param vertex vertex
+      * @return updated vertex
+      */
+      <T> Vertex toVertex(T entity, Vertex vertex);
+     
     /**
      * Converts entity object to  TinkerPop Vertex
      *
@@ -26,6 +45,7 @@ public interface GraphConverter {
      * @param <T>    the entity type
      * @return the ThinkerPop Vertex with the entity values
      * @throws NullPointerException when entity is null
+     * @deprecated
      */
     <T> Vertex toVertex(T entity);
 
