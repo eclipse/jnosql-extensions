@@ -29,16 +29,16 @@ import static java.util.stream.Collectors.toList;
 
 class DefaultEdgeEntity<OUT, IN> implements EdgeEntity {
 
-    private final OUT outbound;
+    private final OUT outgoing;
 
     private final Edge edge;
 
     private final IN inbound;
 
-    DefaultEdgeEntity(Edge edge, IN inbound, OUT outbound) {
+    DefaultEdgeEntity(Edge edge, IN inbound, OUT outgoing) {
         this.edge = edge;
         this.inbound = inbound;
-        this.outbound = outbound;
+        this.outgoing = outgoing;
     }
 
     @Override
@@ -58,7 +58,7 @@ class DefaultEdgeEntity<OUT, IN> implements EdgeEntity {
 
     @Override
     public OUT getOutgoing() {
-        return outbound;
+        return outgoing;
     }
 
     @Override
@@ -127,18 +127,18 @@ class DefaultEdgeEntity<OUT, IN> implements EdgeEntity {
         DefaultEdgeEntity<?, ?> that = (DefaultEdgeEntity<?, ?>) o;
         return Objects.equals(edge, that.edge) &&
                 Objects.equals(inbound, that.inbound) &&
-                Objects.equals(outbound, that.outbound);
+                Objects.equals(outgoing, that.outgoing);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(edge, inbound, outbound);
+        return Objects.hash(edge, inbound, outgoing);
     }
 
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder();
-        sb.append(outbound);
+        sb.append(outgoing);
         sb.append("---").append(edge.label());
         sb.append(" --->").append(inbound);
         return sb.toString();

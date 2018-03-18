@@ -36,7 +36,7 @@ EdgeEntity<Person, Book> reads = graphTemplate.edge(poliana, "reads", shack);
 reads.add("where", "Brazil");
 int size = edge.size();
 String label = edge.getLabel();
-Person outbound = edge.getOutbound();
+Person outgoing = edge.getOutgoing();
 Book inbound = edge.getInbound();
 ```
 
