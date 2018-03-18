@@ -48,10 +48,10 @@ public interface EdgeEntity {
     String getLabel();
 
     /**
-     * Gets the inbound entity
+     * Gets the incoming entity
      *
      * @param <T> the type
-     * @return the inbound entity
+     * @return the incoming entity
      */
     <T> T getInbound();
 

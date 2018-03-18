@@ -84,7 +84,7 @@ public interface EdgeTraversal extends EdgeConditionTraversal {
 
 
     /**
-     * Converts to vertex traversal taking the inbound Vertex
+     * Converts to vertex traversal taking the incoming Vertex
      *
      * @return {@link VertexTraversal}
      */
@@ -98,7 +98,7 @@ public interface EdgeTraversal extends EdgeConditionTraversal {
     VertexTraversal outV();
 
     /**
-     * Converts to vertex traversal taking both inbound and outgoing Vertex
+     * Converts to vertex traversal taking both incoming and outgoing Vertex
      *
      * @return {@link VertexTraversal}
      */

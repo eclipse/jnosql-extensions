@@ -110,7 +110,7 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
     @Override
     public <OUT, IN> EdgeEntity edge(OUT outgoing, String label, IN incoming) {
 
-        requireNonNull(incoming, "inbound is required");
+        requireNonNull(incoming, "incoming is required");
         requireNonNull(label, "label is required");
         requireNonNull(outgoing, "outgoing is required");
 
@@ -122,7 +122,7 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
         }
 
         if (isIdNull(incoming)) {
-            throw new NullPointerException("inbound Id field is required");
+            throw new NullPointerException("incoming Id field is required");
         }
 
 
