@@ -353,7 +353,7 @@ public class DefaultEdgeTraversalTest extends AbstractTraversalTest {
         Optional<EdgeEntity> result = graphTemplate.getTraversalEdge().repeat().has("when").times(2).next();
         assertNotNull(result);
         assertEquals(snake, result.get().getInbound());
-        assertEquals(lion, result.get().getOutbound());
+        assertEquals(lion, result.get().getOutgoing());
     }
 
     @Test
@@ -374,7 +374,7 @@ public class DefaultEdgeTraversalTest extends AbstractTraversalTest {
 
 
         assertEquals(snake, result.get().getInbound());
-        assertEquals(lion, result.get().getOutbound());
+        assertEquals(lion, result.get().getOutgoing());
 
     }
 

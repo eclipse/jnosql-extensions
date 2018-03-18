@@ -57,7 +57,7 @@ class DefaultEdgeEntity<OUT, IN> implements EdgeEntity {
     }
 
     @Override
-    public OUT getOutbound() {
+    public OUT getOutgoing() {
         return outbound;
     }
 

@@ -56,12 +56,12 @@ public interface EdgeEntity {
     <T> T getInbound();
 
     /**
-     * Gets the outbound entity
+     * Gets the outgoing entity
      *
      * @param <T> the type
-     * @return the outbound entity
+     * @return the outgoing entity
      */
-    <T> T getOutbound();
+    <T> T getOutgoing();
 
     /**
      * Returns the properties of this vertex

@@ -173,7 +173,7 @@ class DefaultGraphConverterTest {
         edge.property("feel", "like");
 
         EdgeEntity edgeEntity = converter.toEdgeEntity(edge);
-        Person ada = edgeEntity.getOutbound();
+        Person ada = edgeEntity.getOutgoing();
         Movie matrix = edgeEntity.getInbound();
 
         assertNotNull(edgeEntity);
