@@ -108,16 +108,16 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
     }
 
     @Override
-    public <OUT, IN> EdgeEntity edge(OUT outbound, String label, IN incoming) {
+    public <OUT, IN> EdgeEntity edge(OUT outgoing, String label, IN incoming) {
 
         requireNonNull(incoming, "inbound is required");
         requireNonNull(label, "label is required");
-        requireNonNull(outbound, "outbound is required");
+        requireNonNull(outgoing, "outbound is required");
 
-        checkId(outbound);
+        checkId(outgoing);
         checkId(incoming);
 
-        if (isIdNull(outbound)) {
+        if (isIdNull(outgoing)) {
             throw new NullPointerException("outbound Id field is required");
         }
 
@@ -126,7 +126,7 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
         }
 
 
-        Vertex outVertex = getVertex(outbound).orElseThrow(() -> new EntityNotFoundException("Outbound entity does not found"));
+        Vertex outVertex = getVertex(outgoing).orElseThrow(() -> new EntityNotFoundException("Outbound entity does not found"));
         Vertex inVertex = getVertex(incoming).orElseThrow(() -> new EntityNotFoundException("Incoming entity does not found"));
 
         final Predicate<Traverser<Edge>> predicate = t -> {
@@ -139,8 +139,8 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
                 .traversal().V(outVertex.id())
                 .out(label).has(id, inVertex.id()).inE(label).filter(predicate).tryNext();
 
-        return edge.<EdgeEntity>map(edge1 -> new DefaultEdgeEntity<>(edge1, incoming, outbound))
-                .orElseGet(() -> new DefaultEdgeEntity<>(outVertex.addEdge(label, inVertex), incoming, outbound));
+        return edge.<EdgeEntity>map(edge1 -> new DefaultEdgeEntity<>(edge1, incoming, outgoing))
+                .orElseGet(() -> new DefaultEdgeEntity<>(outVertex.addEdge(label, inVertex), incoming, outgoing));
 
 
     }
