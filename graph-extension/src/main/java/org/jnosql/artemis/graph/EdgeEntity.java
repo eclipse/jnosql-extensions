@@ -53,7 +53,7 @@ public interface EdgeEntity {
      * @param <T> the type
      * @return the incoming entity
      */
-    <T> T getInbound();
+    <T> T getIncoming();
 
     /**
      * Gets the outgoing entity

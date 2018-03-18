@@ -52,7 +52,7 @@ class DefaultEdgeEntity<OUT, IN> implements EdgeEntity {
     }
 
     @Override
-    public IN getInbound() {
+    public IN getIncoming() {
         return inbound;
     }
 

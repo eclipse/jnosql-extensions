@@ -115,7 +115,7 @@ public class EdgeEntityTest {
 
         assertEquals("reads", edge.getLabel());
         assertEquals(person, edge.getOutgoing());
-        assertEquals(book, edge.getInbound());
+        assertEquals(book, edge.getIncoming());
         assertTrue(edge.isEmpty());
         assertNotNull(edge.getId());
     }
@@ -128,7 +128,7 @@ public class EdgeEntityTest {
 
         assertEquals("reads", edge.getLabel());
         assertEquals(person, edge.getOutgoing());
-        assertEquals(book, edge.getInbound());
+        assertEquals(book, edge.getIncoming());
         assertTrue(edge.isEmpty());
         assertNotNull(edge.getId());
     }

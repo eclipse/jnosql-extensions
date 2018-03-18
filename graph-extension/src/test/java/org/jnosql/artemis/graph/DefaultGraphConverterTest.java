@@ -174,7 +174,7 @@ class DefaultGraphConverterTest {
 
         EdgeEntity edgeEntity = converter.toEdgeEntity(edge);
         Person ada = edgeEntity.getOutgoing();
-        Movie matrix = edgeEntity.getInbound();
+        Movie matrix = edgeEntity.getIncoming();
 
         assertNotNull(edgeEntity);
         assertEquals("watch", edgeEntity.getLabel());
