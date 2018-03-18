@@ -37,7 +37,7 @@ reads.add("where", "Brazil");
 int size = edge.size();
 String label = edge.getLabel();
 Person outgoing = edge.getOutgoing();
-Book inbound = edge.getInbound();
+Book incoming = edge.getIncoming();
 ```
 
 #### Find an EdgeEntity

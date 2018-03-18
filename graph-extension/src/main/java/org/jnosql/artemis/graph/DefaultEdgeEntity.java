@@ -33,11 +33,11 @@ class DefaultEdgeEntity<OUT, IN> implements EdgeEntity {
 
     private final Edge edge;
 
-    private final IN inbound;
+    private final IN incoming;
 
-    DefaultEdgeEntity(Edge edge, IN inbound, OUT outgoing) {
+    DefaultEdgeEntity(Edge edge, IN incoming, OUT outgoing) {
         this.edge = edge;
-        this.inbound = inbound;
+        this.incoming = incoming;
         this.outgoing = outgoing;
     }
 
@@ -53,7 +53,7 @@ class DefaultEdgeEntity<OUT, IN> implements EdgeEntity {
 
     @Override
     public IN getIncoming() {
-        return inbound;
+        return incoming;
     }
 
     @Override
@@ -126,13 +126,13 @@ class DefaultEdgeEntity<OUT, IN> implements EdgeEntity {
         }
         DefaultEdgeEntity<?, ?> that = (DefaultEdgeEntity<?, ?>) o;
         return Objects.equals(edge, that.edge) &&
-                Objects.equals(inbound, that.inbound) &&
+                Objects.equals(incoming, that.incoming) &&
                 Objects.equals(outgoing, that.outgoing);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(edge, inbound, outgoing);
+        return Objects.hash(edge, incoming, outgoing);
     }
 
     @Override
@@ -140,7 +140,7 @@ class DefaultEdgeEntity<OUT, IN> implements EdgeEntity {
         final StringBuilder sb = new StringBuilder();
         sb.append(outgoing);
         sb.append("---").append(edge.label());
-        sb.append(" --->").append(inbound);
+        sb.append(" --->").append(incoming);
         return sb.toString();
     }
 
