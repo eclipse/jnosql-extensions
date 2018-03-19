@@ -114,8 +114,8 @@ public class EdgeEntityTest {
         EdgeEntity edge = graphTemplate.edge(person, "reads", book);
 
         assertEquals("reads", edge.getLabel());
-        assertEquals(person, edge.getOutbound());
-        assertEquals(book, edge.getInbound());
+        assertEquals(person, edge.getOutgoing());
+        assertEquals(book, edge.getIncoming());
         assertTrue(edge.isEmpty());
         assertNotNull(edge.getId());
     }
@@ -127,8 +127,8 @@ public class EdgeEntityTest {
         EdgeEntity edge = graphTemplate.edge(person, () -> "reads", book);
 
         assertEquals("reads", edge.getLabel());
-        assertEquals(person, edge.getOutbound());
-        assertEquals(book, edge.getInbound());
+        assertEquals(person, edge.getOutgoing());
+        assertEquals(book, edge.getIncoming());
         assertTrue(edge.isEmpty());
         assertNotNull(edge.getId());
     }

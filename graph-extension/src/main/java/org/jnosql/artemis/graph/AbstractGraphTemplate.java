@@ -121,25 +121,25 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
     }
 
     @Override
-    public <OUT, IN> EdgeEntity edge(OUT outbound, String label, IN incoming) {
+    public <OUT, IN> EdgeEntity edge(OUT outgoing, String label, IN incoming) {
 
-        requireNonNull(incoming, "inbound is required");
+        requireNonNull(incoming, "incoming is required");
         requireNonNull(label, "label is required");
-        requireNonNull(outbound, "outbound is required");
+        requireNonNull(outgoing, "outgoing is required");
 
-        checkId(outbound);
+        checkId(outgoing);
         checkId(incoming);
 
-        if (isIdNull(outbound)) {
-            throw new NullPointerException("outbound Id field is required");
+        if (isIdNull(outgoing)) {
+            throw new NullPointerException("outgoing Id field is required");
         }
 
         if (isIdNull(incoming)) {
-            throw new NullPointerException("inbound Id field is required");
+            throw new NullPointerException("incoming Id field is required");
         }
 
 
-        Vertex outVertex = getVertex(outbound).orElseThrow(() -> new EntityNotFoundException("Outbound entity does not found"));
+        Vertex outVertex = getVertex(outgoing).orElseThrow(() -> new EntityNotFoundException("Outgoing entity does not found"));
         Vertex inVertex = getVertex(incoming).orElseThrow(() -> new EntityNotFoundException("Incoming entity does not found"));
 
         final Predicate<Traverser<Edge>> predicate = t -> {
@@ -152,8 +152,8 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
                 .V(outVertex.id())
                 .out(label).has(id, inVertex.id()).inE(label).filter(predicate).tryNext();
 
-        return edge.<EdgeEntity>map(edge1 -> new DefaultEdgeEntity<>(edge1, incoming, outbound))
-                .orElseGet(() -> new DefaultEdgeEntity<>(outVertex.addEdge(label, inVertex), incoming, outbound));
+        return edge.<EdgeEntity>map(edge1 -> new DefaultEdgeEntity<>(edge1, incoming, outgoing))
+                .orElseGet(() -> new DefaultEdgeEntity<>(outVertex.addEdge(label, inVertex), incoming, outgoing));
 
 
     }

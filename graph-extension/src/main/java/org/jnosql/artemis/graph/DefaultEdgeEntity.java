@@ -29,16 +29,16 @@ import static java.util.stream.Collectors.toList;
 
 class DefaultEdgeEntity<OUT, IN> implements EdgeEntity {
 
-    private final OUT outbound;
+    private final OUT outgoing;
 
     private final Edge edge;
 
-    private final IN inbound;
+    private final IN incoming;
 
-    DefaultEdgeEntity(Edge edge, IN inbound, OUT outbound) {
+    DefaultEdgeEntity(Edge edge, IN incoming, OUT outgoing) {
         this.edge = edge;
-        this.inbound = inbound;
-        this.outbound = outbound;
+        this.incoming = incoming;
+        this.outgoing = outgoing;
     }
 
     @Override
@@ -52,13 +52,13 @@ class DefaultEdgeEntity<OUT, IN> implements EdgeEntity {
     }
 
     @Override
-    public IN getInbound() {
-        return inbound;
+    public IN getIncoming() {
+        return incoming;
     }
 
     @Override
-    public OUT getOutbound() {
-        return outbound;
+    public OUT getOutgoing() {
+        return outgoing;
     }
 
     @Override
@@ -126,21 +126,21 @@ class DefaultEdgeEntity<OUT, IN> implements EdgeEntity {
         }
         DefaultEdgeEntity<?, ?> that = (DefaultEdgeEntity<?, ?>) o;
         return Objects.equals(edge, that.edge) &&
-                Objects.equals(inbound, that.inbound) &&
-                Objects.equals(outbound, that.outbound);
+                Objects.equals(incoming, that.incoming) &&
+                Objects.equals(outgoing, that.outgoing);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(edge, inbound, outbound);
+        return Objects.hash(edge, incoming, outgoing);
     }
 
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder();
-        sb.append(outbound);
+        sb.append(outgoing);
         sb.append("---").append(edge.label());
-        sb.append(" --->").append(inbound);
+        sb.append(" --->").append(incoming);
         return sb.toString();
     }
 

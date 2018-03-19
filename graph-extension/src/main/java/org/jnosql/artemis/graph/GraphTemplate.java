@@ -105,15 +105,15 @@ public interface GraphTemplate {
      *
      * @param incoming the incoming entity
      * @param label    the Edge label
-     * @param outbound the outbound entity
+     * @param outgoing the outgoing entity
      * @param <IN>     the incoming type
      * @param <OUT>    the outgoing type
      * @return the {@link EdgeEntity} of these two entities
      * @throws NullPointerException    Either when any elements are null or the entity is null
      * @throws org.jnosql.artemis.IdNotFoundException     when {@link org.jnosql.artemis.Id} annotation is missing in the entities
-     * @throws org.jnosql.artemis.EntityNotFoundException when neither outbound or incoming is found
+     * @throws org.jnosql.artemis.EntityNotFoundException when neither outgoing or incoming is found
      */
-    <OUT, IN> EdgeEntity edge(OUT outbound, String label, IN incoming);
+    <OUT, IN> EdgeEntity edge(OUT outgoing, String label, IN incoming);
 
     /**
      * Either find or create an Edge between this two entities.
@@ -122,17 +122,17 @@ public interface GraphTemplate {
      *
      * @param incoming the incoming entity
      * @param label    the Edge label
-     * @param outbound the outbound entity
+     * @param outgoing the outgoing entity
      * @param <IN>     the incoming type
      * @param <OUT>    the outgoing type
      * @return the {@link EdgeEntity} of these two entities
      * @throws NullPointerException    Either when any elements are null or the entity is null
      * @throws org.jnosql.artemis.IdNotFoundException     when {@link org.jnosql.artemis.Id} annotation is missing in the entities
-     * @throws org.jnosql.artemis.EntityNotFoundException when neither outbound or incoming is found
+     * @throws org.jnosql.artemis.EntityNotFoundException when neither outgoing or incoming is found
      */
-    default <OUT, IN> EdgeEntity edge(OUT outbound, Supplier<String> label, IN incoming) {
+    default <OUT, IN> EdgeEntity edge(OUT outgoing, Supplier<String> label, IN incoming) {
         Objects.requireNonNull(label,"supplier is required");
-        return edge(outbound, label.get(), incoming);
+        return edge(outgoing, label.get(), incoming);
     }
 
 

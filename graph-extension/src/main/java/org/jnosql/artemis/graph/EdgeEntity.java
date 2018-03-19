@@ -49,20 +49,20 @@ public interface EdgeEntity {
     String getLabel();
 
     /**
-     * Gets the inbound entity
+     * Gets the incoming entity
      *
      * @param <T> the type
-     * @return the inbound entity
+     * @return the incoming entity
      */
-    <T> T getInbound();
+    <T> T getIncoming();
 
     /**
-     * Gets the outbound entity
+     * Gets the outgoing entity
      *
      * @param <T> the type
-     * @return the outbound entity
+     * @return the outgoing entity
      */
-    <T> T getOutbound();
+    <T> T getOutgoing();
 
     /**
      * Returns the properties of this vertex
