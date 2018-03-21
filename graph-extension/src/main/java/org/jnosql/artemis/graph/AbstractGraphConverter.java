@@ -37,6 +37,7 @@ import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.toList;
@@ -81,6 +82,18 @@ abstract class AbstractGraphConverter implements GraphConverter {
                 .forEach(p -> vertex.property(p.key(), p.value()));
 
         return vertex;
+    }
+
+    public <T> List<Property<?>> getProperties(T entity) {
+        Objects.requireNonNull(entity, "entity is required");
+        ClassRepresentation representation = getClassRepresentations().get(entity.getClass());
+        List<FieldGraph> fields = representation.getFields().stream()
+                .map(f -> to(f, entity))
+                .filter(FieldGraph::isNotEmpty).collect(toList());
+
+        return fields.stream().filter(FieldGraph::isNotId)
+                .flatMap(f -> f.toElements(this, getConverters()).stream())
+                .collect(Collectors.toList());
     }
 
     @Override
