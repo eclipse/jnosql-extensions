@@ -104,9 +104,17 @@ class DefaultGraphConverterTest {
         job.setDescription("Java Developer");
 
         Worker worker = new Worker();
+        worker.setName("name");
         worker.setJob(job);
         worker.setSalary(new Money("BRL", BigDecimal.TEN));
-        
+        Vertex vertex = converter.toVertex(worker);
+
+        assertEquals(job.getDescription(), vertex.value("description"));
+        assertEquals(job.getCity(), vertex.value("city"));
+        assertEquals(worker.getName(), vertex.value("name"));
+        assertEquals("BRL 10", vertex.value("money"));
+
+
     }
 
     @Test
