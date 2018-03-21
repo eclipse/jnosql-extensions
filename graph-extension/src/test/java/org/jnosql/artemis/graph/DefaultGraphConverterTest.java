@@ -16,6 +16,7 @@ package org.jnosql.artemis.graph;
 
 import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Graph;
+import org.apache.tinkerpop.gremlin.structure.Property;
 import org.apache.tinkerpop.gremlin.structure.T;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.jnosql.artemis.graph.cdi.CDIExtension;
@@ -30,7 +31,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 
 import javax.inject.Inject;
 import java.math.BigDecimal;
+import java.util.List;
+import java.util.stream.Collectors;
 
+import static java.util.Comparator.comparing;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -230,5 +235,41 @@ class DefaultGraphConverterTest {
         assertThrows(NullPointerException.class, () -> converter.getProperties(null));
     }
 
-    
+    @Test
+    public void shouldGetProperties() {
+        Job job = new Job();
+        job.setCity("Salvador");
+        job.setDescription("Java Developer");
+
+        Worker worker = new Worker();
+        worker.setName("name");
+        worker.setJob(job);
+        worker.setSalary(new Money("BRL", BigDecimal.TEN));
+
+        List<Property<?>> properties = converter.getProperties(worker)
+                .stream()
+                .sorted(comparing(Property::key))
+                .collect(Collectors.toList());
+        assertEquals(4, properties.size());
+
+        assertAll(() -> {
+                    Property<?> property = properties.get(0);
+                    assertEquals("city", property.key());
+                    assertEquals("Salvador", property.value());
+                }, () -> {
+                    Property<?> property = properties.get(1);
+                    assertEquals("description", property.key());
+                    assertEquals("Java Developer", property.value());
+                },
+                () -> {
+                    Property<?> property = properties.get(2);
+                    assertEquals("money", property.key());
+                    assertEquals("BRL 10", property.value());
+                }, () -> {
+                    Property<?> property = properties.get(3);
+                    assertEquals("name", property.key());
+                    assertEquals("name", property.value());
+                });
+    }
+
 }
