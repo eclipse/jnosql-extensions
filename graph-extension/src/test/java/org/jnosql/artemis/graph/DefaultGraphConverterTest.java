@@ -19,6 +19,7 @@ import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.T;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.jnosql.artemis.graph.cdi.CDIExtension;
+import org.jnosql.artemis.graph.model.Job;
 import org.jnosql.artemis.graph.model.Money;
 import org.jnosql.artemis.graph.model.Movie;
 import org.jnosql.artemis.graph.model.Person;
@@ -98,7 +99,14 @@ class DefaultGraphConverterTest {
 
     @Test
     public void shouldConverterFromEmbeddable() {
+        Job job = new Job();
+        job.setCity("Salvador");
+        job.setDescription("Java Developer");
 
+        Worker worker = new Worker();
+        worker.setJob(job);
+        worker.setSalary(new Money("BRL", BigDecimal.TEN));
+        
     }
 
     @Test
