@@ -19,6 +19,7 @@ import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import org.apache.tinkerpop.gremlin.structure.Direction;
 import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Graph;
+import org.apache.tinkerpop.gremlin.structure.Transaction;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.jnosql.artemis.EntityNotFoundException;
 import org.jnosql.artemis.IdNotFoundException;
@@ -211,6 +212,11 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
             throw new NullPointerException("No one edgeId element cannot be null");
         }
         return new DefaultEdgeTraversal(() -> getGraph().traversal().E(edgeIds), INITIAL_EDGE, getConverter());
+    }
+
+    @Override
+    public Transaction getTransaction() {
+        return getGraph().tx();
     }
 
     private <ID> Collection<EdgeEntity> getEdgesByIdImpl(ID id, Direction direction, String... labels) {
