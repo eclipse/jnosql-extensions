@@ -15,7 +15,10 @@
 package org.jnosql.artemis.graph;
 
 import org.apache.tinkerpop.gremlin.structure.Edge;
+import org.apache.tinkerpop.gremlin.structure.Property;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
+
+import java.util.List;
 
 public interface GraphConverter {
 
@@ -49,6 +52,14 @@ public interface GraphConverter {
      * @throws NullPointerException when vertex or entityClass is null
      */
     <T> T toEntity(Class<T> entityClass, Vertex vertex);
+
+    /**
+     *List the fields in the entity as property exclude fields annotated with {@link org.jnosql.artemis.Id}
+     * @param entity the entity
+     * @param <T> the entity type
+     * @throws NullPointerException when entity is null
+     */
+    <T> List<Property<?>> getProperties(T entity);
 
     /**
      * Converts vertex to an entity
