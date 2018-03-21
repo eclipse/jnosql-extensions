@@ -97,6 +97,11 @@ class DefaultGraphConverterTest {
     }
 
     @Test
+    public void shouldConverterFromEmbeddable() {
+
+    }
+
+    @Test
     public void shouldReturnErrorWhenToVertexHasNullParameter() {
         assertThrows(NullPointerException.class, () -> converter.toVertex(null));
     }
