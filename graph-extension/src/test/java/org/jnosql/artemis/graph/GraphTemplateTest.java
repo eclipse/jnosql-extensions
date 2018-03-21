@@ -17,6 +17,7 @@ package org.jnosql.artemis.graph;
 import org.apache.tinkerpop.gremlin.structure.Direction;
 import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Graph;
+import org.apache.tinkerpop.gremlin.structure.Transaction;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.jnosql.artemis.EntityNotFoundException;
 import org.jnosql.artemis.IdNotFoundException;
@@ -253,4 +254,9 @@ public class GraphTemplateTest {
 
     }
 
+    @Test
+    public void shouldGetTransaction() {
+        Transaction transaction = graphTemplate.getTransaction();
+        assertNotNull(transaction);
+    }
 }
