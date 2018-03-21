@@ -226,7 +226,9 @@ class DefaultGraphConverterTest {
     }
 
     @Test
-    public void shouldReturnErrorWhengetPropertiesIsNull() {
+    public void shouldReturnErrorWhenGetPropertiesIsNull() {
         assertThrows(NullPointerException.class, () -> converter.getProperties(null));
     }
+
+    
 }
