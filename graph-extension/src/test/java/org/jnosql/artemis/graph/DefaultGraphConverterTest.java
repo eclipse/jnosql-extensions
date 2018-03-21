@@ -113,9 +113,8 @@ class DefaultGraphConverterTest {
         assertEquals(job.getCity(), vertex.value("city"));
         assertEquals(worker.getName(), vertex.value("name"));
         assertEquals("BRL 10", vertex.value("money"));
-
-
     }
+
 
     @Test
     public void shouldReturnErrorWhenToVertexHasNullParameter() {
@@ -224,5 +223,10 @@ class DefaultGraphConverterTest {
         Edge edge1 = converter.toEdge(edgeEntity);
 
         assertEquals(edge.id(), edge1.id());
+    }
+
+    @Test
+    public void shouldReturnErrorWhengetPropertiesIsNull() {
+        assertThrows(NullPointerException.class, () -> converter.getProperties(null));
     }
 }
