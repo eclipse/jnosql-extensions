@@ -15,6 +15,7 @@
 package org.jnosql.artemis.graph;
 
 import org.apache.tinkerpop.gremlin.structure.Direction;
+import org.apache.tinkerpop.gremlin.structure.Transaction;
 
 import java.util.Collection;
 import java.util.Objects;
@@ -222,4 +223,9 @@ public interface GraphTemplate {
     EdgeTraversal getTraversalEdge(Object... edgeIds);
 
 
+    /**
+     * Gets the current transaction
+     * @return the current {@link Transaction}
+     */
+    Transaction getTransaction();
 }
