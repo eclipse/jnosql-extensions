@@ -17,7 +17,6 @@ package org.jnosql.artemis.graph.query;
 import java.lang.reflect.ParameterizedType;
 
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
-import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.jnosql.artemis.Repository;
 import org.jnosql.artemis.graph.GraphConverter;
 import org.jnosql.artemis.graph.GraphTemplate;
@@ -47,14 +46,17 @@ class GraphRepositoryProxy<T, ID> extends AbstractGraphRepositoryProxy<T, ID> {
     private final GraphConverter converter;
 
 
-    GraphRepositoryProxy(GraphTemplate template, ClassRepresentations classRepresentations,
-                         Class<?> repositoryType, Reflections reflections,
-                         GraphTraversalSource traversal, GraphConverter converter) {
+    GraphRepositoryProxy(GraphTemplate template, 
+                         ClassRepresentations classRepresentations,
+                         Class<?> repositoryType, 
+                         Reflections reflections,
+                         GraphConverter converter) {
 
-        Class<T> typeClass = Class.class.cast(ParameterizedType.class.cast(repositoryType.getGenericInterfaces()[0])
+        Class<T> typeClass = 
+                Class.class.cast( ParameterizedType. class.cast(repositoryType.getGenericInterfaces()[0])
                 .getActualTypeArguments()[0]);
 
-        this.traversal = traversal;
+        this.traversal = template.getTraversalSource();
         this.converter = converter;
         this.reflections = reflections;
         this.classRepresentation = classRepresentations.get(typeClass);

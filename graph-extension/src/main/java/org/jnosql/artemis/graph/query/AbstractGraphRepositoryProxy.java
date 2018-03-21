@@ -14,21 +14,20 @@
  */
 package org.jnosql.artemis.graph.query;
 
-import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
-import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
-import org.apache.tinkerpop.gremlin.structure.Element;
-import org.apache.tinkerpop.gremlin.structure.Graph;
-import org.apache.tinkerpop.gremlin.structure.Vertex;
-import org.jnosql.artemis.Repository;
-import org.jnosql.artemis.graph.GraphConverter;
-import org.jnosql.artemis.reflection.ClassRepresentation;
+import static org.jnosql.artemis.graph.query.ReturnTypeConverterUtil.returnObject;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.stream.Stream;
 
-import static org.jnosql.artemis.graph.query.ReturnTypeConverterUtil.returnObject;
+import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
+import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
+import org.apache.tinkerpop.gremlin.structure.Element;
+import org.apache.tinkerpop.gremlin.structure.Vertex;
+import org.jnosql.artemis.Repository;
+import org.jnosql.artemis.graph.GraphConverter;
+import org.jnosql.artemis.reflection.ClassRepresentation;
 
 /**
  * Template method to {@link Repository} proxy on Graph
