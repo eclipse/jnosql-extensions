@@ -41,7 +41,7 @@ import java.util.Set;
  */
 public class RepositoryGraphBean implements Bean<Repository>, PassivationCapable {
 
-    private final Class type;
+    private final Class<?> type;
 
     private final BeanManager beanManager;
 
@@ -58,7 +58,7 @@ public class RepositoryGraphBean implements Bean<Repository>, PassivationCapable
      * @param beanManager the beanManager
      * @param provider    the provider name, that must be a
      */
-    public RepositoryGraphBean(Class type, BeanManager beanManager, String provider) {
+    public RepositoryGraphBean(Class<?> type, BeanManager beanManager, String provider) {
         this.type = type;
         this.beanManager = beanManager;
         this.types = Collections.singleton(type);
@@ -97,8 +97,13 @@ public class RepositoryGraphBean implements Bean<Repository>, PassivationCapable
         Graph graph = provider.isEmpty() ? getInstance(Graph.class) :
                 getInstance(Graph.class, provider);
 
-        GraphRepositoryProxy handler = new GraphRepositoryProxy(repository,
-                classRepresentations, type, reflections, graph, converter);
+        GraphRepositoryProxy handler = 
+                new GraphRepositoryProxy(repository,
+                                         classRepresentations, 
+                                         type, 
+                                         reflections, 
+                                         converter);
+        
         return (Repository) Proxy.newProxyInstance(type.getClassLoader(),
                 new Class[]{type},
                 handler);
