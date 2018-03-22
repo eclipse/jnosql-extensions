@@ -80,7 +80,7 @@ public class GraphRepositoryProxyTest {
         this.template = Mockito.mock(GraphTemplate.class);
 
         GraphRepositoryProxy handler = new GraphRepositoryProxy(template,
-                classRepresentations, PersonRepository.class, reflections, graph, converter);
+                classRepresentations, PersonRepository.class, reflections, converter);
 
         when(template.insert(any(Person.class))).thenReturn(Person.builder().build());
         when(template.update(any(Person.class))).thenReturn(Person.builder().build());
