@@ -14,14 +14,12 @@
  */
 package org.jnosql.artemis.graph.query;
 
-import org.apache.tinkerpop.gremlin.structure.Graph;
-import org.jnosql.artemis.DatabaseQualifier;
-import org.jnosql.artemis.DatabaseType;
-import org.jnosql.artemis.Repository;
-import org.jnosql.artemis.graph.GraphConverter;
-import org.jnosql.artemis.graph.GraphTemplate;
-import org.jnosql.artemis.reflection.ClassRepresentations;
-import org.jnosql.artemis.reflection.Reflections;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Proxy;
+import java.lang.reflect.Type;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.spi.CreationalContext;
@@ -29,12 +27,14 @@ import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.BeanManager;
 import javax.enterprise.inject.spi.InjectionPoint;
 import javax.enterprise.inject.spi.PassivationCapable;
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Proxy;
-import java.lang.reflect.Type;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+
+import org.jnosql.artemis.DatabaseQualifier;
+import org.jnosql.artemis.DatabaseType;
+import org.jnosql.artemis.Repository;
+import org.jnosql.artemis.graph.GraphConverter;
+import org.jnosql.artemis.graph.GraphTemplate;
+import org.jnosql.artemis.reflection.ClassRepresentations;
+import org.jnosql.artemis.reflection.Reflections;
 
 /**
  * Artemis discoveryBean to CDI extension to register {@link Repository}
@@ -94,8 +94,6 @@ public class RepositoryGraphBean implements Bean<Repository>, PassivationCapable
                 getInstance(GraphTemplate.class, provider);
         Reflections reflections = getInstance(Reflections.class);
         GraphConverter converter = getInstance(GraphConverter.class);
-        Graph graph = provider.isEmpty() ? getInstance(Graph.class) :
-                getInstance(Graph.class, provider);
 
         GraphRepositoryProxy handler = 
                 new GraphRepositoryProxy(repository,

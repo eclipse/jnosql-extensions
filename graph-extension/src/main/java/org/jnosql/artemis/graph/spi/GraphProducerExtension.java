@@ -14,18 +14,8 @@
  */
 package org.jnosql.artemis.graph.spi;
 
-import org.apache.tinkerpop.gremlin.structure.Graph;
-import org.jnosql.artemis.Database;
-import org.jnosql.artemis.Databases;
-import org.jnosql.artemis.Repository;
-import org.jnosql.artemis.graph.query.RepositoryGraphBean;
+import static org.jnosql.artemis.DatabaseType.GRAPH;
 
-import javax.enterprise.event.Observes;
-import javax.enterprise.inject.spi.AfterBeanDiscovery;
-import javax.enterprise.inject.spi.BeanManager;
-import javax.enterprise.inject.spi.Extension;
-import javax.enterprise.inject.spi.ProcessAnnotatedType;
-import javax.enterprise.inject.spi.ProcessProducer;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -34,7 +24,18 @@ import java.util.List;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
 
-import static org.jnosql.artemis.DatabaseType.GRAPH;
+import javax.enterprise.event.Observes;
+import javax.enterprise.inject.spi.AfterBeanDiscovery;
+import javax.enterprise.inject.spi.BeanManager;
+import javax.enterprise.inject.spi.Extension;
+import javax.enterprise.inject.spi.ProcessAnnotatedType;
+import javax.enterprise.inject.spi.ProcessProducer;
+
+import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
+import org.jnosql.artemis.Database;
+import org.jnosql.artemis.Databases;
+import org.jnosql.artemis.Repository;
+import org.jnosql.artemis.graph.query.RepositoryGraphBean;
 
 /**
  * Extension to start up the GraphTemplate, Repository
@@ -62,7 +63,7 @@ public class GraphProducerExtension implements Extension {
     }
 
 
-    <T, X extends Graph> void processProducer(@Observes final ProcessProducer<T, X> pp) {
+    <T, X extends GraphTraversalSource> void processProducer(@Observes final ProcessProducer<T, X> pp) {
         Databases.addDatabase(pp, GRAPH, databases);
     }
 

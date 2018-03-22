@@ -27,7 +27,6 @@ import javax.enterprise.inject.spi.InjectionPoint;
 import javax.enterprise.inject.spi.PassivationCapable;
 
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
-import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.jnosql.artemis.DatabaseQualifier;
 import org.jnosql.artemis.DatabaseType;
 import org.jnosql.artemis.graph.GraphTemplate;
@@ -80,10 +79,15 @@ class GraphTemplateBean implements Bean<GraphTemplate>, PassivationCapable {
     }
 
     private GraphTraversalSource getGraphTraversal() {
+
+        return getInstance(GraphTraversalSource.class);
+        
+        /*
         Bean<Graph> bean = (Bean<Graph>) beanManager.getBeans(Graph.class,
                 DatabaseQualifier.ofGraph(provider) ).iterator().next();
         CreationalContext<Graph> ctx = beanManager.createCreationalContext(bean);
         return (GraphTraversalSource) beanManager.getReference(bean, GraphTraversalSource.class, ctx);
+        */
     }
 
 
