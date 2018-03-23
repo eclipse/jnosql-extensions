@@ -22,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import javax.inject.Inject;
@@ -29,7 +30,6 @@ import javax.inject.Inject;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
 import org.apache.tinkerpop.gremlin.structure.Edge;
-import org.apache.tinkerpop.gremlin.structure.T;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.apache.tinkerpop.gremlin.structure.VertexProperty;
 import org.jnosql.artemis.DynamicQueryException;
@@ -206,12 +206,16 @@ public class GraphQueryParserTest {
 
     @Test
     public void shouldFindByKnowsOutV() {
-        Vertex poliana = graph.addV("Person").property("name", "Poliana").property("age", 10).next();
-        Vertex otavio = graph.addV("Person").property("name", "Otavio").property("age", 9).next();
+        
+        Vertex otavio = (Vertex) graph.addV("Person").property("name", "Otavio").property("age", 9).as("otavio")
+                .addV("Person").property("name", "Poliana").property("age", 10).as("poliana")
+                .addE("knows").to("otavio").as("edge")
+                .select("otavio")
+                .next();        
+
         //Vertex poliana = graph.addVertex(T.label, "Person", "name", "Poliana", "age", 10);
         //Vertex otavio = graph.addVertex(T.label, "Person", "name", "Otavio", "age", 9);
-
-        poliana.addEdge("knows", otavio);
+        //poliana.addEdge("knows", otavio);
 
 
         GraphTraversal<Vertex, Vertex> traversal = graph.V();
@@ -226,12 +230,16 @@ public class GraphQueryParserTest {
 
     @Test
     public void shouldFindByOutV() {
-        Vertex poliana = graph.addV("Person").property("name", "Poliana").property("age", 10).next();
-        Vertex otavio = graph.addV("Person").property("name", "Otavio").property("age", 9).next();
+        
+        Vertex otavio = (Vertex) graph.addV("Person").property("name", "Otavio").property("age", 9).as("otavio")
+                .addV("Person").property("name", "Poliana").property("age", 10).as("poliana")
+                .addE("knows").to("otavio").as("edge")
+                .select("otavio")
+                .next();        
+
         //Vertex poliana = graph.addVertex(T.label, "Person", "name", "Poliana", "age", 10);
         //Vertex otavio = graph.addVertex(T.label, "Person", "name", "Otavio", "age", 9);
-
-        poliana.addEdge("knows", otavio);
+        //poliana.addEdge("knows", otavio);
 
 
         GraphTraversal<Vertex, Vertex> traversal = graph.V();
@@ -246,12 +254,16 @@ public class GraphQueryParserTest {
 
     @Test
     public void shouldFindByKnowsInV() {
-        Vertex poliana = graph.addV("Person").property("name", "Poliana").property("age", 10).next();
-        Vertex otavio = graph.addV("Person").property("name", "Otavio").property("age", 9).next();
+        
+        Vertex poliana = (Vertex) graph.addV("Person").property("name", "Otavio").property("age", 9).as("otavio")
+                .addV("Person").property("name", "Poliana").property("age", 10).as("poliana")
+                .addE("knows").to("otavio").as("edge")
+                .select("poliana")
+                .next();        
+
         //Vertex poliana = graph.addVertex(T.label, "Person", "name", "Poliana", "age", 10);
         //Vertex otavio = graph.addVertex(T.label, "Person", "name", "Otavio", "age", 9);
-
-        poliana.addEdge("knows", otavio);
+        //poliana.addEdge("knows", otavio);
 
         GraphTraversal<Vertex, Vertex> traversal = graph.V();
 
@@ -265,12 +277,16 @@ public class GraphQueryParserTest {
 
     @Test
     public void shouldFindByInV() {
-        Vertex poliana = graph.addV("Person").property("name", "Poliana").property("age", 10).next();
-        Vertex otavio = graph.addV("Person").property("name", "Otavio").property("age", 9).next();
+        
+        Vertex poliana = (Vertex) graph.addV("Person").property("name", "Otavio").property("age", 9).as("otavio")
+                .addV("Person").property("name", "Poliana").property("age", 10).as("poliana")
+                .addE("knows").to("otavio").as("edge")
+                .select("poliana")
+                .next();        
+        
         //Vertex poliana = graph.addVertex(T.label, "Person", "name", "Poliana", "age", 10);
         //Vertex otavio = graph.addVertex(T.label, "Person", "name", "Otavio", "age", 9);
-
-        poliana.addEdge("knows", otavio);
+        //poliana.addEdge("knows", otavio);
 
         GraphTraversal<Vertex, Vertex> traversal = graph.V();
 
@@ -285,12 +301,18 @@ public class GraphQueryParserTest {
 
     @Test
     public void shouldFindByKnowsBothV() {
-        Vertex poliana = graph.addV("Person").property("name", "Poliana").property("age", 10).next();
-        Vertex otavio = graph.addV("Person").property("name", "Otavio").property("age", 9).next();
+        
+        Map<String,Object> result = graph.addV("Person").property("name", "Otavio").property("age", 9).as("otavio")
+                .addV("Person").property("name", "Poliana").property("age", 10).as("poliana")
+                .addE("knows").to("otavio").as("edge")
+                .select("otavio", "poliana")
+                .next();        
+        Vertex poliana = (Vertex) result.get("poliana");
+        Vertex otavio = (Vertex) result.get("otavio");
+
         //Vertex poliana = graph.addVertex(T.label, "Person", "name", "Poliana", "age", 10);
         //Vertex otavio = graph.addVertex(T.label, "Person", "name", "Otavio", "age", 9);
-
-        poliana.addEdge("knows", otavio);
+        //poliana.addEdge("knows", otavio);
 
         GraphTraversal<Vertex, Vertex> traversal = graph.V();
 
@@ -305,12 +327,18 @@ public class GraphQueryParserTest {
 
     @Test
     public void shouldFindByBothV() {
-        Vertex poliana = graph.addV("Person").property("name", "Poliana").property("age", 10).next();
-        Vertex otavio = graph.addV("Person").property("name", "Otavio").property("age", 9).next();
+        
+        Map<String,Object> result = graph.addV("Person").property("name", "Otavio").property("age", 9).as("otavio")
+                .addV("Person").property("name", "Poliana").property("age", 10).as("poliana")
+                .addE("knows").to("otavio").as("edge")
+                .select("otavio", "poliana")
+                .next();        
+        Vertex poliana = (Vertex) result.get("poliana");
+        Vertex otavio = (Vertex) result.get("otavio");
+        
         //Vertex poliana = graph.addVertex(T.label, "Person", "name", "Poliana", "age", 10);
         //Vertex otavio = graph.addVertex(T.label, "Person", "name", "Otavio", "age", 9);
-
-        poliana.addEdge("knows", otavio);
+        //poliana.addEdge("knows", otavio);
 
         GraphTraversal<Vertex, Vertex> traversal = graph.V();
 
@@ -325,12 +353,16 @@ public class GraphQueryParserTest {
 
     @Test
     public void shouldFindByNameAndKnowsOutV() {
-        Vertex poliana = graph.addV("Person").property("name", "Poliana").property("age", 10).next();
-        Vertex otavio = graph.addV("Person").property("name", "Otavio").property("age", 9).next();
+        
+        Vertex otavio = (Vertex) graph.addV("Person").property("name", "Otavio").property("age", 9).as("otavio")
+                .addV("Person").property("name", "Poliana").property("age", 10).as("poliana")
+                .addE("knows").to("otavio").as("edge")
+                .select("otavio")
+                .next();        
+        
         //Vertex poliana = graph.addVertex(T.label, "Person", "name", "Poliana", "age", 10);
         //Vertex otavio = graph.addVertex(T.label, "Person", "name", "Otavio", "age", 9);
-
-        poliana.addEdge("knows", otavio);
+        //poliana.addEdge("knows", otavio);
 
         GraphTraversal<Vertex, Vertex> traversal = graph.V();
 
@@ -345,12 +377,16 @@ public class GraphQueryParserTest {
 
     @Test
     public void shouldFindByKnowsOutVAndName() {
-        Vertex poliana = graph.addV("Person").property("name", "Poliana").property("age", 10).next();
-        Vertex otavio = graph.addV("Person").property("name", "Otavio").property("age", 9).next();
+        
+        Vertex otavio = (Vertex) graph.addV("Person").property("name", "Otavio").property("age", 9).as("otavio")
+                .addV("Person").property("name", "Poliana").property("age", 10).as("poliana")
+                .addE("knows").to("otavio").as("edge")
+                .select("otavio")
+                .next();        
+        
         //Vertex poliana = graph.addVertex(T.label, "Person", "name", "Poliana", "age", 10);
         //Vertex otavio = graph.addVertex(T.label, "Person", "name", "Otavio", "age", 9);
-
-        poliana.addEdge("knows", otavio);
+        //poliana.addEdge("knows", otavio);
 
         GraphTraversal<Vertex, Vertex> traversal = graph.V();
 

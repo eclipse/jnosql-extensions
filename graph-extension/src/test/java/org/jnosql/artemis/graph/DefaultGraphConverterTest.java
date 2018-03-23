@@ -173,13 +173,17 @@ class DefaultGraphConverterTest {
 
     @Test
     public void shouldToEdgeEntity() {
-        Vertex matrixVertex = graph.addV("movie").property( "title", "Matrix").property( "movie_year", "1999").next();
-        Vertex adaVertex = graph.addV("Person").property( "age", 22).property( "name", "Ada").next();        
+        Edge edge = (Edge)graph.addV("movie").property( "title", "Matrix").property( "movie_year", "1999").as("matrix")
+                .addV("Person").property( "age", 22).property( "name", "Ada").as("ada")
+                .addE("watch").property("feel", "like").to("matrix").as("edge")
+                .select( "edge")
+                .next();        
+
         //Vertex matrixVertex = graph.addVertex(T.label, "movie", "title", "Matrix", "movie_year", "1999");
         //Vertex adaVertex = graph.addVertex(T.label, "Person", "age", 22, "name", "Ada");
-        Edge edge = adaVertex.addEdge("watch", matrixVertex);
-        edge.property("feel", "like");
-
+        //Edge edge = adaVertex.addEdge("watch", matrixVertex);
+        //edge.property("feel", "like");
+        
         EdgeEntity edgeEntity = converter.toEdgeEntity(edge);
         Person ada = edgeEntity.getOutgoing();
         Movie matrix = edgeEntity.getIncoming();
@@ -203,11 +207,16 @@ class DefaultGraphConverterTest {
 
     @Test
     public void shouldReturnToEdge() {
-        Vertex matrixVertex = graph.addV("movie").property( "title", "Matrix").property( "movie_year", "1999").next();
-        Vertex adaVertex = graph.addV("Person").property( "age", 22).property( "name", "Ada").next();        
+        
+        Edge edge = (Edge)graph.addV("movie").property( "title", "Matrix").property( "movie_year", "1999").as("matrix")
+                            .addV("Person").property( "age", 22).property( "name", "Ada").as("ada")
+                            .addE("watch").property("feel", "like").to("matrix").as("edge")
+                            .select( "edge")
+                            .next();        
+
         //Vertex matrixVertex = graph.addVertex(T.label, "movie", "title", "Matrix", "movie_year", "1999");
         //Vertex adaVertex = graph.addVertex(T.label, "Person", "age", 22, "name", "Ada");
-        Edge edge = adaVertex.addEdge("watch", matrixVertex);
+        //Edge edge = adaVertex.addEdge("watch", matrixVertex);
 
         EdgeEntity edgeEntity = converter.toEdgeEntity(edge);
         Edge edge1 = converter.toEdge(edgeEntity);
