@@ -66,10 +66,22 @@ abstract class AbstractGraphConverter implements GraphConverter {
         requireNonNull(entity, "entity is required");
         
         final ClassRepresentation representation = getClassRepresentations().get(entity.getClass());
+        final String label = representation.getName();
         
-        final GraphTraversal<Vertex,Vertex> t = getTraversalSource().addV( representation.getName() );
+        final List<FieldRepresentation> fieldsR = representation.getFields();
         
-        representation.getFields().stream()
+        final Optional<FieldGraph> id = fieldsR.stream()
+                .map(f -> to(f, entity))
+                .filter(FieldGraph::isNotEmpty)
+                .filter(FieldGraph::isId)
+                .findFirst();
+        
+        final GraphTraversal<Vertex,Vertex> t = 
+                id.map( i -> i.toElement(getConverters()) )
+                .map( i -> getTraversalSource().addV(label).property( org.apache.tinkerpop.gremlin.structure.T.id, i.value() ))
+                .orElseGet(() -> getTraversalSource().addV(label) );     
+          
+        fieldsR.stream()
         .map(f -> to(f, entity))
         .filter(FieldGraph::isNotEmpty)
         .filter(FieldGraph::isNotId)
@@ -108,9 +120,11 @@ abstract class AbstractGraphConverter implements GraphConverter {
 
         
     }
-    
+
+    /**
+     * 
+     */
     @Override
-    @Deprecated
     public <T> Vertex toVertex(T entity) {
         requireNonNull(entity, "entity is required");
 
