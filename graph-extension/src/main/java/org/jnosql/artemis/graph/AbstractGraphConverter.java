@@ -62,7 +62,7 @@ abstract class AbstractGraphConverter implements GraphConverter {
      * @return return a new aeed vertex
      */
     @Override
-    public <T> Vertex toNewVertex(T entity) {
+    public <T> Vertex addVertex(T entity) {
         requireNonNull(entity, "entity is required");
         
         final ClassRepresentation representation = getClassRepresentations().get(entity.getClass());
@@ -101,7 +101,7 @@ abstract class AbstractGraphConverter implements GraphConverter {
      * @return updated vertex
      */
     @Override
-    public <T> Vertex toVertex(T entity, Vertex vertex) {
+    public <T> Vertex updateVertex(T entity, Vertex vertex) {
         requireNonNull(entity, "entity is required");
         requireNonNull(vertex, "vertex is required");
         
@@ -122,7 +122,11 @@ abstract class AbstractGraphConverter implements GraphConverter {
     }
 
     /**
+     * query for vertex
      * 
+     * @param entity entity
+     * @param <T> entity type
+     * @return updated vertex
      */
     @Override
     public <T> Vertex toVertex(T entity) {
@@ -135,8 +139,16 @@ abstract class AbstractGraphConverter implements GraphConverter {
                 .map(f -> to(f, entity))
                 .filter(FieldGraph::isNotEmpty).collect(toList());
 
+        final Property id = fields.stream()
+                                .filter(FieldGraph::isId)
+                                .findFirst()
+                                .map(i -> i.toElement(getConverters()))
+                                .orElseThrow( () -> new IllegalArgumentException( "Entity has not a valid Id"));
+
+        return getTraversalSource().V(id.value()).next();  
+/*        
         Optional<FieldGraph> id = fields.stream().filter(FieldGraph::isId).findFirst();
-        
+
         final Function<Property, GraphTraversal<Vertex,Vertex>> findVertexOrCreateWithId = p -> {
             final GraphTraversal<Vertex,Vertex> vertices = getTraversalSource().V(p.value());
             return vertices.hasNext() ? 
@@ -154,6 +166,7 @@ abstract class AbstractGraphConverter implements GraphConverter {
                 .forEach(p -> vertex.property(p.key(), p.value()));
 
         return vertex.next();
+*/
     }
 
     @Override

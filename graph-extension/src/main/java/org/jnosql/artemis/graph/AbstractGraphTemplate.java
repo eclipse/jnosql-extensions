@@ -21,7 +21,6 @@ import static org.apache.tinkerpop.gremlin.structure.T.id;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -34,6 +33,8 @@ import java.util.stream.Stream;
 
 import org.apache.tinkerpop.gremlin.process.traversal.Traverser;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
+import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal.Symbols;
+import org.apache.tinkerpop.gremlin.process.traversal.step.map.VertexStep;
 import org.apache.tinkerpop.gremlin.structure.Direction;
 import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
@@ -79,7 +80,7 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
         requireNonNull(entity, "entity is required");
         checkId(entity);
         
-        final UnaryOperator<Vertex> insert = v -> getConverter().toNewVertex(entity);
+        final UnaryOperator<Vertex> insert = v -> getConverter().addVertex(entity);
 
         return getFlow().flow(entity, Optional.empty(), insert);
     }
@@ -93,7 +94,7 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
         }
         final Vertex vertex = getVertex(entity).orElseThrow(() -> new EntityNotFoundException("Entity does not find in the update"));
 
-        final UnaryOperator<Vertex> update =  v -> getConverter().toVertex(entity, v);
+        final UnaryOperator<Vertex> update =  v -> getConverter().updateVertex(entity, v);
             
         return getFlow().flow(entity, Optional.of(vertex), update );
     }
@@ -109,8 +110,7 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
     @Override
     public <T> void deleteEdge(T idEdge) {
         requireNonNull(idEdge, "idEdge is required");
-        List<Edge> edges = getTraversalSource().E(idEdge).toList();
-        edges.forEach(Edge::remove);
+        getTraversalSource().E(idEdge).drop().iterate();
     }
 
     @Override
@@ -153,7 +153,8 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
                 .out(label).has(id, inVertex.id()).inE(label).filter(predicate).tryNext();
 
         return edge.<EdgeEntity>map(edge1 -> new DefaultEdgeEntity<>(edge1, incoming, outgoing))
-                .orElseGet(() -> new DefaultEdgeEntity<>(outVertex.addEdge(label, inVertex), incoming, outgoing));
+                .orElseGet(() -> 
+                    new DefaultEdgeEntity<>( getTraversalSource().V(outVertex.id()).as("out").V(inVertex.id()).addE(label).from("out").next(), incoming, outgoing));
 
 
     }
@@ -231,13 +232,26 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
         requireNonNull(id, "id is required");
         requireNonNull(direction, "direction is required");
 
-        //Iterator<Vertex> vertices = getGraph().vertices(id);
-        final Iterator<Vertex> vertices = getTraversalSource().V(id);
-        if (vertices.hasNext()) {
-            List<Edge> edges = new ArrayList<>();
-            vertices.next().edges(direction, labels).forEachRemaining(edges::add);
-            return edges.stream().map(getConverter()::toEdgeEntity).collect(Collectors.toList());
+        GraphTraversal<Vertex,Edge> edges; 
+                
+        switch( direction ) {
+        case IN:   
+            edges = getTraversalSource().V(id).inE(labels);
+            break;
+        case OUT:
+            edges = getTraversalSource().V(id).outE(labels);
+            break;
+        case BOTH:
+        default:
+            edges = getTraversalSource().V(id).bothE(labels);            
         }
+
+        final Optional<List<Edge>> result = edges.fold().tryNext();
+        
+        if( result.isPresent() ) {
+            return result.get().stream().map(getConverter()::toEdgeEntity).collect(Collectors.toList());
+        }
+        
         return Collections.emptyList();
     }
 
@@ -272,7 +286,6 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
         ClassRepresentation classRepresentation = getClassRepresentations().get(entity.getClass());
         FieldRepresentation field = classRepresentation.getId().get();
         Object id = getReflections().getValue(entity, field.getNativeField());
-        //Iterator<Vertex> vertices = getGraph().vertices(id);
         return getTraversalSource().V(id).tryNext();
     }
 

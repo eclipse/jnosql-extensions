@@ -26,17 +26,17 @@ public interface GraphConverter {
      * @param <T> entity type
      * @return return a new aeed vertex
      */
-     <T> Vertex toNewVertex(T entity);
+     <T> Vertex addVertex(T entity);
   
      /**
-      * update vertex property from entity
+      * update vertex properties from entity
       * 
       * @param entity entity
       * @param <T> entity type
       * @param vertex vertex
       * @return updated vertex
       */
-      <T> Vertex toVertex(T entity, Vertex vertex);
+      <T> Vertex updateVertex(T entity, Vertex vertex);
      
     /**
      * Converts entity object to  TinkerPop Vertex
