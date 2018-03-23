@@ -14,22 +14,22 @@
  */
 package org.jnosql.artemis.graph.cdi;
 
-import org.apache.tinkerpop.gremlin.neo4j.structure.Neo4jGraph;
-import org.apache.tinkerpop.gremlin.structure.Graph;
-import org.apache.tinkerpop.gremlin.structure.Vertex;
-import org.jnosql.artemis.Database;
-import org.jnosql.artemis.DatabaseType;
-import org.mockito.Mockito;
+import static java.util.Collections.singleton;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+import java.io.File;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Disposes;
 import javax.enterprise.inject.Produces;
-import java.io.File;
-import java.util.Collections;
 
-import static java.util.Collections.singleton;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import org.apache.tinkerpop.gremlin.neo4j.structure.Neo4jGraph;
+import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
+import org.apache.tinkerpop.gremlin.structure.Graph;
+import org.apache.tinkerpop.gremlin.structure.Vertex;
+import org.jnosql.artemis.Database;
+import org.jnosql.artemis.DatabaseType;
 
 @ApplicationScoped
 public class GraphProducer {
@@ -39,29 +39,29 @@ public class GraphProducer {
 
     @Produces
     @ApplicationScoped
-    public Graph getGraph() {
-        return graph;
+    public GraphTraversalSource getTraversalSource() {
+        return graph.traversal();
     }
 
     @Produces
     @ApplicationScoped
     @Database(value = DatabaseType.GRAPH, provider = "graphRepositoryMock")
-    public Graph getGraphMock() {
+    public GraphTraversalSource getTraversalSourceMock() {
 
-        Graph graphMock = mock(Graph.class);
+        GraphTraversalSource graphMock = mock(GraphTraversalSource.class);
 
         Vertex vertex = mock(Vertex.class);
 
         when(vertex.label()).thenReturn("Person");
         when(vertex.id()).thenReturn(10L);
-        when(graphMock.vertices(10L)).thenReturn(Collections.<Vertex>emptyList().iterator());
+        //when(graphMock.vertices(10L)).thenReturn(Collections.<Vertex>emptyList().iterator());
         when(vertex.keys()).thenReturn(singleton("name"));
         when(vertex.value("name")).thenReturn("nameMock");
-        when(graphMock.addVertex(Mockito.anyString())).thenReturn(vertex);
+        //when(graphMock.addVertex(Mockito.anyString())).thenReturn(vertex);
 
         return graphMock;
     }
-    public void dispose(@Disposes Graph graph) throws Exception {
-        graph.close();
+    public void dispose(@Disposes GraphTraversalSource traversal) throws Exception {
+        traversal.close();
     }
 }

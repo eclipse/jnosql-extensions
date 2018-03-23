@@ -14,9 +14,23 @@
  */
 package org.jnosql.artemis.graph;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.jnosql.artemis.graph.model.Person.builder;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.util.Collection;
+import java.util.Optional;
+
+import javax.inject.Inject;
+
+import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
 import org.apache.tinkerpop.gremlin.structure.Direction;
 import org.apache.tinkerpop.gremlin.structure.Edge;
-import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.jnosql.artemis.EntityNotFoundException;
 import org.jnosql.artemis.IdNotFoundException;
@@ -29,19 +43,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
-import javax.inject.Inject;
-import java.util.Collection;
-import java.util.Optional;
-
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.containsInAnyOrder;
-import static org.jnosql.artemis.graph.model.Person.builder;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 @ExtendWith(CDIExtension.class)
 public class GraphTemplateTest {
 
@@ -49,12 +50,12 @@ public class GraphTemplateTest {
     private GraphTemplate graphTemplate;
 
     @Inject
-    private Graph graph;
+    private GraphTraversalSource graph;
 
     @AfterEach
     public void after() {
-        graph.traversal().V().toList().forEach(Vertex::remove);
-        graph.traversal().E().toList().forEach(Edge::remove);
+        graph.V().toList().forEach(Vertex::remove);
+        graph.E().toList().forEach(Edge::remove);
     }
 
 
