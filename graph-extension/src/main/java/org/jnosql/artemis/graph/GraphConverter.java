@@ -45,7 +45,6 @@ public interface GraphConverter {
      * @param <T>    the entity type
      * @return the ThinkerPop Vertex with the entity values
      * @throws NullPointerException when entity is null
-     * @deprecated
      */
     <T> Vertex toVertex(T entity);
 
