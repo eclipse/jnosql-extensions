@@ -15,7 +15,6 @@
 package org.jnosql.artemis.graph;
 
 import org.apache.tinkerpop.gremlin.structure.Property;
-import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.jnosql.artemis.AttributeConverter;
 import org.jnosql.artemis.Converters;
 import org.jnosql.artemis.reflection.FieldRepresentation;
@@ -25,7 +24,6 @@ import java.util.Objects;
 import java.util.Optional;
 
 import static java.util.Collections.singletonList;
-import static java.util.stream.Collectors.toList;
 import static org.jnosql.artemis.reflection.FieldType.EMBEDDED;
 
 class FieldGraph {
@@ -90,10 +88,9 @@ class FieldGraph {
         return new FieldGraph(value, field);
     }
 
-    public List<Property> toElements(GraphConverter converter, Converters converters) {
+    public List<Property<?>> toElements(GraphConverter converter, Converters converters) {
         if (EMBEDDED.equals(field.getType())) {
-            Vertex vertex = converter.toVertex(value);
-            return vertex.keys().stream().map(k -> DefaultProperty.of(k, vertex.value(k))).collect(toList());
+            return converter.getProperties(value);
         }
 
         Optional<Class<? extends AttributeConverter>> optionalConverter = field.getConverter();

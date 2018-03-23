@@ -27,6 +27,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
@@ -166,6 +167,18 @@ abstract class AbstractGraphConverter implements GraphConverter {
 
         return vertex.next();
 */
+    }
+
+    public <T> List<Property<?>> getProperties(T entity) {
+        Objects.requireNonNull(entity, "entity is required");
+        ClassRepresentation representation = getClassRepresentations().get(entity.getClass());
+        List<FieldGraph> fields = representation.getFields().stream()
+                .map(f -> to(f, entity))
+                .filter(FieldGraph::isNotEmpty).collect(toList());
+
+        return fields.stream().filter(FieldGraph::isNotId)
+                .flatMap(f -> f.toElements(this, getConverters()).stream())
+                .collect(Collectors.toList());
     }
 
     @Override
