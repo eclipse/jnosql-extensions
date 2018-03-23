@@ -14,8 +14,27 @@
  */
 package org.jnosql.artemis.graph.query;
 
+import static java.util.Arrays.asList;
+import static java.util.Collections.singletonList;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.lang.reflect.Proxy;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+
+import javax.inject.Inject;
+
+import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
 import org.apache.tinkerpop.gremlin.structure.Edge;
-import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.T;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.jnosql.artemis.Repository;
@@ -32,24 +51,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
-import javax.inject.Inject;
-import java.lang.reflect.Proxy;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-
-import static java.util.Arrays.asList;
-import static java.util.Collections.singletonList;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 @ExtendWith(CDIExtension.class)
 public class GraphRepositoryProxyTest {
 
@@ -65,7 +66,7 @@ public class GraphRepositoryProxyTest {
     private PersonRepository personRepository;
 
     @Inject
-    private Graph graph;
+    private GraphTraversalSource graph;
 
     @Inject
     private GraphConverter converter;
@@ -73,8 +74,8 @@ public class GraphRepositoryProxyTest {
     @BeforeEach
     public void setUp() {
 
-        graph.traversal().V().toList().forEach(Vertex::remove);
-        graph.traversal().E().toList().forEach(Edge::remove);
+        graph.V().toList().forEach(Vertex::remove);
+        graph.E().toList().forEach(Edge::remove);
 
 
         this.template = Mockito.mock(GraphTemplate.class);
@@ -91,8 +92,8 @@ public class GraphRepositoryProxyTest {
 
     @AfterEach
     public void after() {
-        graph.traversal().V().toList().forEach(Vertex::remove);
-        graph.traversal().E().toList().forEach(Edge::remove);
+        graph.V().toList().forEach(Vertex::remove);
+        graph.E().toList().forEach(Edge::remove);
 
     }
 
@@ -148,7 +149,8 @@ public class GraphRepositoryProxyTest {
     @Test
     public void shouldFindByNameInstance() {
 
-        graph.addVertex(T.label, "Person", "name", "name", "age", 20);
+        graph.addV("Person").property("name", "name").property("age", 20).next();    
+        //graph.addVertex(T.label, "Person", "name", "name", "age", 20);
 
         Person person = personRepository.findByName("name");
         assertNotNull(person);
@@ -159,8 +161,10 @@ public class GraphRepositoryProxyTest {
     @Test
     public void shouldFindByNameAndAge() {
 
-        graph.addVertex(T.label, "Person", "name", "name", "age", 20);
-        graph.addVertex(T.label, "Person", "name", "name", "age", 20);
+        graph.addV("Person").property("name", "name").property("age", 20).next();    
+        graph.addV("Person").property("name", "name").property("age", 20).next();    
+//        graph.addVertex(T.label, "Person", "name", "name", "age", 20);
+//        graph.addVertex(T.label, "Person", "name", "name", "age", 20);
 
         List<Person> people = personRepository.findByNameAndAge("name", 20);
         assertEquals(2, people.size());
@@ -170,8 +174,10 @@ public class GraphRepositoryProxyTest {
     @Test
     public void shouldFindByAgeAndName() {
 
-        graph.addVertex(T.label, "Person", "name", "name", "age", 20);
-        graph.addVertex(T.label, "Person", "name", "name", "age", 20);
+        graph.addV("Person").property("name", "name").property("age", 20).next();    
+        graph.addV("Person").property("name", "name").property("age", 20).next();    
+//        graph.addVertex(T.label, "Person", "name", "name", "age", 20);
+//        graph.addVertex(T.label, "Person", "name", "name", "age", 20);
 
         Set<Person> people = personRepository.findByAgeAndName(20, "name");
         assertEquals(2, people.size());
@@ -181,8 +187,10 @@ public class GraphRepositoryProxyTest {
     @Test
     public void shouldFindByAge() {
 
-        graph.addVertex(T.label, "Person", "name", "name", "age", 20);
-        graph.addVertex(T.label, "Person", "name", "name", "age", 20);
+        graph.addV("Person").property("name", "name").property("age", 20).next();    
+        graph.addV("Person").property("name", "name").property("age", 20).next();    
+//        graph.addVertex(T.label, "Person", "name", "name", "age", 20);
+//        graph.addVertex(T.label, "Person", "name", "name", "age", 20);
 
         Optional<Person> person = personRepository.findByAge(20);
         assertTrue(person.isPresent());
@@ -191,18 +199,21 @@ public class GraphRepositoryProxyTest {
 
     @Test
     public void shouldDeleteByName() {
-        Vertex vertex = graph.addVertex(T.label, "Person", "name", "Ada", "age", 20);
+        Vertex vertex = graph.addV("Person").property("name", "Ada").property("age", 20).next();    
+        //Vertex vertex = graph.addVertex(T.label, "Person", "name", "Ada", "age", 20);
 
         personRepository.deleteByName("Ada");
-        assertFalse(graph.traversal().V(vertex.id()).tryNext().isPresent());
+        assertFalse(graph.V(vertex.id()).tryNext().isPresent());
 
     }
 
     @Test
     public void shouldFindByNameAndAgeGreaterThanEqual() {
 
-        graph.addVertex(T.label, "Person", "name", "name", "age", 20);
-        graph.addVertex(T.label, "Person", "name", "name", "age", 20);
+        graph.addV("Person").property("name", "name").property("age", 20).next();    
+        graph.addV("Person").property("name", "name").property("age", 20).next();    
+//        graph.addVertex(T.label, "Person", "name", "name", "age", 20);
+//        graph.addVertex(T.label, "Person", "name", "name", "age", 20);
 
         Set<Person> people = personRepository.findByNameAndAgeGreaterThanEqual("name", 20);
         assertEquals(2, people.size());
@@ -265,8 +276,10 @@ public class GraphRepositoryProxyTest {
 
     @Test
     public void shouldFindAll() {
-        graph.addVertex(T.label, "Person", "name", "name", "age", 20);
-        graph.addVertex(T.label, "Person", "name", "name", "age", 20);
+        graph.addV("Person").property("name", "name").property("age", 20).next();    
+        graph.addV("Person").property("name", "name").property("age", 20).next();    
+//        graph.addVertex(T.label, "Person", "name", "name", "age", 20);
+//        graph.addVertex(T.label, "Person", "name", "name", "age", 20);
         List<Person> people = personRepository.findAll();
         assertFalse(people.isEmpty());
     }

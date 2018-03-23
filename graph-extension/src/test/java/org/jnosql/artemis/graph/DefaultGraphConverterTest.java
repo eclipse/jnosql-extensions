@@ -14,8 +14,17 @@
  */
 package org.jnosql.artemis.graph;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.math.BigDecimal;
+
+import javax.inject.Inject;
+
+import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
 import org.apache.tinkerpop.gremlin.structure.Edge;
-import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.T;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.jnosql.artemis.graph.cdi.CDIExtension;
@@ -27,14 +36,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
-import javax.inject.Inject;
-import java.math.BigDecimal;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 @ExtendWith(CDIExtension.class)
 class DefaultGraphConverterTest {
 
@@ -42,12 +43,12 @@ class DefaultGraphConverterTest {
     private GraphConverter converter;
 
     @Inject
-    private Graph graph;
+    private GraphTraversalSource graph;
 
     @BeforeEach
     public void setUp() {
-        graph.traversal().V().toList().forEach(Vertex::remove);
-        graph.traversal().E().toList().forEach(Edge::remove);
+        graph.V().toList().forEach(Vertex::remove);
+        graph.E().toList().forEach(Edge::remove);
     }
 
     @Test
@@ -57,7 +58,8 @@ class DefaultGraphConverterTest {
 
     @Test
     public void shouldReturnToEntity() {
-        Vertex vertex = graph.addVertex(T.label, "Person", "age", 22, "name", "Ada");
+        Vertex vertex = graph.addV("Person").property( "age", 22).property( "name", "Ada").next();
+        //Vertex vertex = graph.addVertex(T.label, "Person", "age", 22, "name", "Ada");
         Person person = converter.toEntity(vertex);
 
         assertNotNull(person.getId());
@@ -67,7 +69,8 @@ class DefaultGraphConverterTest {
 
     @Test
     public void shouldReturnToEntityInstance() {
-        Vertex vertex = graph.addVertex(T.label, "Person", "age", 22, "name", "Ada");
+        Vertex vertex = graph.addV("Person").property( "age", 22).property( "name", "Ada").next();
+        //Vertex vertex = graph.addVertex(T.label, "Person", "age", 22, "name", "Ada");
         Person person = Person.builder().build();
         Person result = converter.toEntity(person, vertex);
 
@@ -79,7 +82,8 @@ class DefaultGraphConverterTest {
 
     @Test
     public void shouldReturnToEntityWithDifferentMap() {
-        Vertex vertex = graph.addVertex(T.label, "movie", "title", "Matrix", "movie_year", "1999");
+        Vertex vertex = graph.addV("movie").property( "title", "Matrix").property( "movie_year", "1999").next();
+        //Vertex vertex = graph.addVertex(T.label, "movie", "title", "Matrix", "movie_year", "1999");
         Movie movie = converter.toEntity(vertex);
 
         assertEquals("Matrix", movie.getTitle());
@@ -88,7 +92,8 @@ class DefaultGraphConverterTest {
 
     @Test
     public void shouldReturnToEntityUsingConverter() {
-        Vertex vertex = graph.addVertex(T.label, "Worker", "name", "James", "money", "USD 1000");
+        Vertex vertex = graph.addV("Worker").property( "name", "James").property( "money", "USD 1000").next();
+        //Vertex vertex = graph.addVertex(T.label, "Worker", "name", "James", "money", "USD 1000");
         Worker worker = converter.toEntity(vertex);
 
         assertEquals("James", worker.getName());
@@ -137,7 +142,8 @@ class DefaultGraphConverterTest {
 
     @Test
     public void shouldConvertEntityWithIdExistToTinkerPopVertex() {
-        Vertex adaVertex = graph.addVertex(T.label, "Person", "age", 22, "name", "Ada");
+        Vertex adaVertex = graph.addV("Person").property( "age", 22).property( "name", "Ada").next();
+        //Vertex adaVertex = graph.addVertex(T.label, "Person", "age", 22, "name", "Ada");
         Person person = Person.builder().withName("Ada").withAge(22).withId((Long) adaVertex.id()).build();
         Vertex vertex = converter.toVertex(person);
 
@@ -167,8 +173,10 @@ class DefaultGraphConverterTest {
 
     @Test
     public void shouldToEdgeEntity() {
-        Vertex matrixVertex = graph.addVertex(T.label, "movie", "title", "Matrix", "movie_year", "1999");
-        Vertex adaVertex = graph.addVertex(T.label, "Person", "age", 22, "name", "Ada");
+        Vertex matrixVertex = graph.addV("movie").property( "title", "Matrix").property( "movie_year", "1999").next();
+        Vertex adaVertex = graph.addV("Person").property( "age", 22).property( "name", "Ada").next();        
+        //Vertex matrixVertex = graph.addVertex(T.label, "movie", "title", "Matrix", "movie_year", "1999");
+        //Vertex adaVertex = graph.addVertex(T.label, "Person", "age", 22, "name", "Ada");
         Edge edge = adaVertex.addEdge("watch", matrixVertex);
         edge.property("feel", "like");
 
@@ -195,8 +203,10 @@ class DefaultGraphConverterTest {
 
     @Test
     public void shouldReturnToEdge() {
-        Vertex matrixVertex = graph.addVertex(T.label, "movie", "title", "Matrix", "movie_year", "1999");
-        Vertex adaVertex = graph.addVertex(T.label, "Person", "age", 22, "name", "Ada");
+        Vertex matrixVertex = graph.addV("movie").property( "title", "Matrix").property( "movie_year", "1999").next();
+        Vertex adaVertex = graph.addV("Person").property( "age", 22).property( "name", "Ada").next();        
+        //Vertex matrixVertex = graph.addVertex(T.label, "movie", "title", "Matrix", "movie_year", "1999");
+        //Vertex adaVertex = graph.addVertex(T.label, "Person", "age", 22, "name", "Ada");
         Edge edge = adaVertex.addEdge("watch", matrixVertex);
 
         EdgeEntity edgeEntity = converter.toEdgeEntity(edge);

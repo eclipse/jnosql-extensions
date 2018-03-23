@@ -14,7 +14,18 @@
  */
 package org.jnosql.artemis.graph;
 
-import org.apache.tinkerpop.gremlin.structure.Graph;
+import static org.apache.tinkerpop.gremlin.structure.Transaction.Status.COMMIT;
+import static org.apache.tinkerpop.gremlin.structure.Transaction.Status.ROLLBACK;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.util.concurrent.atomic.AtomicReference;
+
+import javax.inject.Inject;
+
+import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
 import org.apache.tinkerpop.gremlin.structure.Transaction;
 import org.apache.tinkerpop.gremlin.structure.Transaction.Status;
 import org.jnosql.artemis.graph.cdi.CDIExtension;
@@ -23,16 +34,6 @@ import org.jnosql.artemis.graph.model.BookTemplate;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
-import javax.inject.Inject;
-import java.util.concurrent.atomic.AtomicReference;
-
-import static org.apache.tinkerpop.gremlin.structure.Transaction.Status.COMMIT;
-import static org.apache.tinkerpop.gremlin.structure.Transaction.Status.ROLLBACK;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertNull;
-
 @ExtendWith(CDIExtension.class)
 public class BookTemplateTest {
 
@@ -40,7 +41,7 @@ public class BookTemplateTest {
     private BookTemplate template;
 
     @Inject
-    private Graph graph;
+    private GraphTraversalSource graph;
 
 
     @Test
