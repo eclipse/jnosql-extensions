@@ -21,7 +21,26 @@ import org.apache.tinkerpop.gremlin.structure.Vertex;
 import java.util.List;
 
 public interface GraphConverter {
-
+    
+    /**
+     * add a new vertex from entity
+     * 
+     * @param entity entity
+     * @param <T> entity type
+     * @return return a new aeed vertex
+     */
+     <T> Vertex addVertex(T entity);
+  
+     /**
+      * update vertex properties from entity
+      * 
+      * @param entity entity
+      * @param <T> entity type
+      * @param vertex vertex
+      * @return updated vertex
+      */
+      <T> Vertex updateVertex(T entity, Vertex vertex);
+     
     /**
      * Converts entity object to  TinkerPop Vertex
      *

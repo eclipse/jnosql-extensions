@@ -71,24 +71,30 @@ class DefaultEdgeEntity<OUT, IN> implements EdgeEntity {
 
     @Override
     public void add(String key, Object value) {
-        requireNonNull(key, "key is required");
-        requireNonNull(value, "value is required");
-        edge.property(key, value);
+        throw new UnsupportedOperationException("add operation is not supported!");
+        
+//        requireNonNull(key, "key is required");
+//        requireNonNull(value, "value is required");
+//        edge.property(key, value);
 
     }
 
     @Override
     public void add(String key, Value value) {
-        requireNonNull(key, "key is required");
-        requireNonNull(value, "value is required");
-        edge.property(key, value.get());
+        throw new UnsupportedOperationException("add operation is not supported!");
+        
+//        requireNonNull(key, "key is required");
+//        requireNonNull(value, "value is required");
+//        edge.property(key, value.get());
     }
 
     @Override
     public void remove(String key) {
-        requireNonNull(key, "key is required");
-        org.apache.tinkerpop.gremlin.structure.Property property = edge.property(key);
-        property.ifPresent(o -> property.remove());
+        throw new UnsupportedOperationException("remove operation is not supported!");
+
+//        requireNonNull(key, "key is required");
+//        org.apache.tinkerpop.gremlin.structure.Property property = edge.property(key);
+//        property.ifPresent(o -> property.remove());
     }
 
     @Override
@@ -113,7 +119,8 @@ class DefaultEdgeEntity<OUT, IN> implements EdgeEntity {
 
     @Override
     public void delete() {
-        edge.remove();
+        throw new UnsupportedOperationException("remove operation is not supported!");
+        //edge.remove();
     }
 
     @Override

@@ -14,20 +14,20 @@
  */
 package org.jnosql.artemis.graph;
 
-import org.apache.tinkerpop.gremlin.structure.Graph;
-import org.jnosql.artemis.Converters;
-import org.jnosql.artemis.reflection.ClassRepresentations;
-import org.jnosql.artemis.reflection.Reflections;
+import static java.util.Objects.requireNonNull;
 
 import javax.enterprise.inject.Vetoed;
 import javax.inject.Inject;
 
-import static java.util.Objects.requireNonNull;
+import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
+import org.jnosql.artemis.Converters;
+import org.jnosql.artemis.reflection.ClassRepresentations;
+import org.jnosql.artemis.reflection.Reflections;
 
 /**
  * The default implementation of {@link GraphTemplateProducer}
  */
-class DefaultGraphTemplateProducer implements GraphTemplateProducer {
+class DefaultGraphTemplateProducer implements GraphTemplateProducer<GraphTemplate> {
 
     @Inject
     private ClassRepresentations classRepresentations;
@@ -42,12 +42,12 @@ class DefaultGraphTemplateProducer implements GraphTemplateProducer {
     private GraphEventPersistManager persistManager;
 
     @Override
-    public GraphTemplate get(Graph graph) {
-        requireNonNull(graph, "graph is required");
+    public GraphTemplate get(GraphTraversalSource traversalSource) {
+        requireNonNull(traversalSource, "traversalSource is required");
 
-        GraphConverter converter = new ProducerGraphConverter(classRepresentations, reflections, converters, graph);
+        GraphConverter converter = new ProducerGraphConverter(classRepresentations, reflections, converters, traversalSource);
         GraphWorkflow workflow = new DefaultGraphWorkflow(persistManager, converter);
-        return new ProducerGraphTemplate(classRepresentations, converter, workflow, graph, reflections);
+        return new ProducerGraphTemplate(classRepresentations, converter, workflow, traversalSource, reflections);
     }
 
 
@@ -58,7 +58,7 @@ class DefaultGraphTemplateProducer implements GraphTemplateProducer {
 
         private GraphConverter converter;
 
-        private Graph graph;
+        private GraphTraversalSource traversalSource;
 
         private GraphWorkflow workflow;
 
@@ -67,11 +67,11 @@ class DefaultGraphTemplateProducer implements GraphTemplateProducer {
         ProducerGraphTemplate(ClassRepresentations classRepresentations,
                               GraphConverter converter,
                               GraphWorkflow workflow,
-                              Graph graph, Reflections reflections) {
+                              GraphTraversalSource traversalSource, Reflections reflections) {
 
             this.classRepresentations = classRepresentations;
             this.converter = converter;
-            this.graph = graph;
+            this.traversalSource = traversalSource;
             this.workflow = workflow;
             this.reflections = reflections;
         }
@@ -80,8 +80,8 @@ class DefaultGraphTemplateProducer implements GraphTemplateProducer {
         }
 
         @Override
-        protected Graph getGraph() {
-            return graph;
+        public final GraphTraversalSource getTraversalSource() {
+            return traversalSource;
         }
 
         @Override
@@ -114,15 +114,15 @@ class DefaultGraphTemplateProducer implements GraphTemplateProducer {
 
         private Converters converters;
 
-        private Graph graph;
+        private GraphTraversalSource graphTraversal;
 
         public ProducerGraphConverter(ClassRepresentations classRepresentations,
                                       Reflections reflections, Converters converters,
-                                      Graph graph) {
+                                      GraphTraversalSource graphTraversal) {
             this.classRepresentations = classRepresentations;
             this.reflections = reflections;
             this.converters = converters;
-            this.graph = graph;
+            this.graphTraversal = graphTraversal;
         }
 
         ProducerGraphConverter() {
@@ -144,8 +144,8 @@ class DefaultGraphTemplateProducer implements GraphTemplateProducer {
         }
 
         @Override
-        protected Graph getGraph() {
-            return graph;
+        protected GraphTraversalSource getTraversalSource() {
+            return graphTraversal;
         }
     }
 }

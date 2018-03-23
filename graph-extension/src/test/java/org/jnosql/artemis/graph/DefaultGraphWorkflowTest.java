@@ -14,6 +14,14 @@
  */
 package org.jnosql.artemis.graph;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.util.Optional;
+import java.util.function.UnaryOperator;
+
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.jnosql.artemis.graph.cdi.MockitoExtension;
 import org.jnosql.artemis.graph.model.Person;
@@ -23,13 +31,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-
-import java.util.function.UnaryOperator;
-
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class DefaultGraphWorkflowTest {
@@ -63,19 +64,19 @@ public class DefaultGraphWorkflowTest {
     public void shouldReturnErrorWhenEntityIsNull() {
         assertThrows(NullPointerException.class, () -> {
             UnaryOperator<Vertex> action = t -> t;
-            subject.flow(null, action);
+            subject.flow(null, Optional.empty(), action);
         });
     }
 
     @Test
     public void shouldReturnErrorWhenActionIsNull() {
-        assertThrows(NullPointerException.class, () -> subject.flow("", null));
+        assertThrows(NullPointerException.class, () -> subject.flow("", Optional.empty(), null));
     }
 
     @Test
     public void shouldFollowWorkflow() {
         UnaryOperator<Vertex> action = t -> t;
-        subject.flow(Person.builder().withId(1L).withAge().withName("Ada").build(), action);
+        subject.flow(Person.builder().withId(1L).withAge().withName("Ada").build(), Optional.empty(), action);
 
         verify(graphEventPersistManager).firePreGraph(any(Vertex.class));
         verify(graphEventPersistManager).firePostGraph(any(Vertex.class));

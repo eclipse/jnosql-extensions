@@ -14,8 +14,24 @@
  */
 package org.jnosql.artemis.graph;
 
+import static java.util.Objects.requireNonNull;
+import static java.util.stream.Collectors.toList;
+import static org.jnosql.artemis.reflection.FieldType.EMBEDDED;
+
+import java.lang.reflect.Field;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+
+import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
+import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
 import org.apache.tinkerpop.gremlin.structure.Edge;
-import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Property;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.jnosql.artemis.AttributeConverter;
@@ -27,22 +43,6 @@ import org.jnosql.artemis.reflection.FieldRepresentation;
 import org.jnosql.artemis.reflection.Reflections;
 import org.jnosql.diana.api.Value;
 
-import java.lang.reflect.Field;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
-
-import static java.util.Objects.requireNonNull;
-import static java.util.stream.Collectors.toList;
-import static org.jnosql.artemis.reflection.FieldType.EMBEDDED;
-
 abstract class AbstractGraphConverter implements GraphConverter {
 
 
@@ -52,8 +52,82 @@ abstract class AbstractGraphConverter implements GraphConverter {
 
     protected abstract Converters getConverters();
 
-    protected abstract Graph getGraph();
+    protected abstract GraphTraversalSource getTraversalSource();
 
+    /**
+     * add a new vertex from entity
+     * 
+     * @param entity entity
+     * @param <T> entity type
+     * @return return a new aeed vertex
+     */
+    @Override
+    public <T> Vertex addVertex(T entity) {
+        requireNonNull(entity, "entity is required");
+        
+        final ClassRepresentation representation = getClassRepresentations().get(entity.getClass());
+        final String label = representation.getName();
+        
+        final List<FieldRepresentation> fieldsR = representation.getFields();
+        
+        final Optional<FieldGraph> id = fieldsR.stream()
+                .map(f -> to(f, entity))
+                .filter(FieldGraph::isNotEmpty)
+                .filter(FieldGraph::isId)
+                .findFirst();
+        
+        final GraphTraversal<Vertex,Vertex> t = 
+                id.map( i -> i.toElement(getConverters()) )
+                .map( i -> getTraversalSource().addV(label).property( org.apache.tinkerpop.gremlin.structure.T.id, i.value() ))
+                .orElseGet(() -> getTraversalSource().addV(label) );     
+          
+        fieldsR.stream()
+        .map(f -> to(f, entity))
+        .filter(FieldGraph::isNotEmpty)
+        .filter(FieldGraph::isNotId)
+        .flatMap(f -> f.toElements(this, getConverters()).stream())
+        .forEach(p -> t.property(p.key(), p.value()));
+
+        return t.next();
+      
+    }
+    
+    /**
+     * update vertex property from entity
+     * 
+     * @param entity entity
+     * @param <T> entity type
+     * @param vertex vertex
+     * @return updated vertex
+     */
+    @Override
+    public <T> Vertex updateVertex(T entity, Vertex vertex) {
+        requireNonNull(entity, "entity is required");
+        requireNonNull(vertex, "vertex is required");
+        
+        final ClassRepresentation representation = getClassRepresentations().get(entity.getClass());        
+
+        final GraphTraversal<Vertex,Vertex> t = getTraversalSource().V( vertex.id() );
+        
+        representation.getFields().stream()
+        .map(f -> to(f, entity))
+        .filter(FieldGraph::isNotEmpty)
+        .filter(FieldGraph::isNotId)
+        .flatMap(f -> f.toElements(this, getConverters()).stream())
+        .forEach(p -> t.property(p.key(), p.value()));
+
+        return t.next();
+
+        
+    }
+
+    /**
+     * query for vertex
+     * 
+     * @param entity entity
+     * @param <T> entity type
+     * @return updated vertex
+     */
     @Override
     public <T> Vertex toVertex(T entity) {
         requireNonNull(entity, "entity is required");
@@ -65,23 +139,34 @@ abstract class AbstractGraphConverter implements GraphConverter {
                 .map(f -> to(f, entity))
                 .filter(FieldGraph::isNotEmpty).collect(toList());
 
+        final Property id = fields.stream()
+                                .filter(FieldGraph::isId)
+                                .findFirst()
+                                .map(i -> i.toElement(getConverters()))
+                                .orElseThrow( () -> new IllegalArgumentException( "Entity has not a valid Id"));
+
+        return getTraversalSource().V(id.value()).next();  
+/*        
         Optional<FieldGraph> id = fields.stream().filter(FieldGraph::isId).findFirst();
-        final Function<Property, Vertex> findVertexOrCreateWithId = p -> {
-            Iterator<Vertex> vertices = getGraph().vertices(p.value());
-            return vertices.hasNext() ? vertices.next() :
-                    getGraph().addVertex(org.apache.tinkerpop.gremlin.structure.T.label, label,
-                            org.apache.tinkerpop.gremlin.structure.T.id, p.value());
+
+        final Function<Property, GraphTraversal<Vertex,Vertex>> findVertexOrCreateWithId = p -> {
+            final GraphTraversal<Vertex,Vertex> vertices = getTraversalSource().V(p.value());
+            return vertices.hasNext() ? 
+                    vertices : 
+                    getTraversalSource().addV(label).property( org.apache.tinkerpop.gremlin.structure.T.id, p.value() ) ;
         };
 
-        Vertex vertex = id.map(i -> i.toElement(getConverters()))
+        final GraphTraversal<Vertex, Vertex> vertex = 
+                id.map(i -> i.toElement(getConverters()))
                 .map(findVertexOrCreateWithId)
-                .orElseGet(() -> getGraph().addVertex(label));
-
+                .orElseGet(() -> getTraversalSource().addV(label) );
+        
         fields.stream().filter(FieldGraph::isNotId)
                 .flatMap(f -> f.toElements(this, getConverters()).stream())
                 .forEach(p -> vertex.property(p.key(), p.value()));
 
-        return vertex;
+        return vertex.next();
+*/
     }
 
     public <T> List<Property<?>> getProperties(T entity) {
@@ -144,7 +229,8 @@ abstract class AbstractGraphConverter implements GraphConverter {
     public Edge toEdge(EdgeEntity edge) {
         requireNonNull(edge, "vertex is required");
         Object id = edge.getId().get();
-        Iterator<Edge> edges = getGraph().edges(id);
+        //Iterator<Edge> edges = getGraph().edges(id);
+        final Iterator<Edge> edges = getTraversalSource().E(id);
         if (edges.hasNext()) {
             return edges.next();
         }

@@ -14,7 +14,20 @@
  */
 package org.jnosql.artemis.graph.query;
 
-import org.apache.tinkerpop.gremlin.structure.Graph;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Proxy;
+import java.lang.reflect.Type;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.context.spi.CreationalContext;
+import javax.enterprise.inject.spi.Bean;
+import javax.enterprise.inject.spi.BeanManager;
+import javax.enterprise.inject.spi.InjectionPoint;
+import javax.enterprise.inject.spi.PassivationCapable;
+
 import org.jnosql.artemis.DatabaseQualifier;
 import org.jnosql.artemis.DatabaseType;
 import org.jnosql.artemis.Repository;
@@ -23,25 +36,12 @@ import org.jnosql.artemis.graph.GraphTemplate;
 import org.jnosql.artemis.reflection.ClassRepresentations;
 import org.jnosql.artemis.reflection.Reflections;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.context.spi.CreationalContext;
-import javax.enterprise.inject.spi.Bean;
-import javax.enterprise.inject.spi.BeanManager;
-import javax.enterprise.inject.spi.InjectionPoint;
-import javax.enterprise.inject.spi.PassivationCapable;
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Proxy;
-import java.lang.reflect.Type;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
-
 /**
  * Artemis discoveryBean to CDI extension to register {@link Repository}
  */
 public class RepositoryGraphBean implements Bean<Repository>, PassivationCapable {
 
-    private final Class type;
+    private final Class<?> type;
 
     private final BeanManager beanManager;
 
@@ -58,7 +58,7 @@ public class RepositoryGraphBean implements Bean<Repository>, PassivationCapable
      * @param beanManager the beanManager
      * @param provider    the provider name, that must be a
      */
-    public RepositoryGraphBean(Class type, BeanManager beanManager, String provider) {
+    public RepositoryGraphBean(Class<?> type, BeanManager beanManager, String provider) {
         this.type = type;
         this.beanManager = beanManager;
         this.types = Collections.singleton(type);
@@ -94,11 +94,14 @@ public class RepositoryGraphBean implements Bean<Repository>, PassivationCapable
                 getInstance(GraphTemplate.class, provider);
         Reflections reflections = getInstance(Reflections.class);
         GraphConverter converter = getInstance(GraphConverter.class);
-        Graph graph = provider.isEmpty() ? getInstance(Graph.class) :
-                getInstance(Graph.class, provider);
 
-        GraphRepositoryProxy handler = new GraphRepositoryProxy(repository,
-                classRepresentations, type, reflections, graph, converter);
+        GraphRepositoryProxy handler = 
+                new GraphRepositoryProxy(repository,
+                                         classRepresentations, 
+                                         type, 
+                                         reflections, 
+                                         converter);
+        
         return (Repository) Proxy.newProxyInstance(type.getClassLoader(),
                 new Class[]{type},
                 handler);

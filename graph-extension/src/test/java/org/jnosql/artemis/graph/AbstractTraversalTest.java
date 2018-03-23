@@ -16,17 +16,17 @@
  */
 package org.jnosql.artemis.graph;
 
+import static org.jnosql.artemis.graph.model.Person.builder;
+
+import javax.inject.Inject;
+
+import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
 import org.apache.tinkerpop.gremlin.structure.Edge;
-import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.jnosql.artemis.graph.model.Book;
 import org.jnosql.artemis.graph.model.Person;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-
-import javax.inject.Inject;
-
-import static org.jnosql.artemis.graph.model.Person.builder;
 
 public abstract class AbstractTraversalTest {
 
@@ -36,7 +36,7 @@ public abstract class AbstractTraversalTest {
     protected GraphTemplate graphTemplate;
 
     @Inject
-    private Graph graph;
+    private GraphTraversalSource graph;
 
 
     protected Person otavio;
@@ -54,8 +54,8 @@ public abstract class AbstractTraversalTest {
     @BeforeEach
     public void setUp() {
 
-        graph.traversal().V().toList().forEach(Vertex::remove);
-        graph.traversal().E().toList().forEach(Edge::remove);
+        graph.V().toList().forEach(Vertex::remove);
+        graph.E().toList().forEach(Edge::remove);
 
         otavio = graphTemplate.insert(builder().withAge(27)
                 .withName("Otavio").build());
@@ -93,7 +93,7 @@ public abstract class AbstractTraversalTest {
         reads2.delete();
         reads3.delete();
         
-        graph.traversal().V().toList().forEach(Vertex::remove);
-        graph.traversal().E().toList().forEach(Edge::remove);
+        graph.V().toList().forEach(Vertex::remove);
+        graph.E().toList().forEach(Edge::remove);
     }
 }

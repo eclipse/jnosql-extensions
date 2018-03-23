@@ -14,20 +14,20 @@
  */
 package org.jnosql.artemis.graph.query;
 
-import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
-import org.apache.tinkerpop.gremlin.structure.Element;
-import org.apache.tinkerpop.gremlin.structure.Graph;
-import org.apache.tinkerpop.gremlin.structure.Vertex;
-import org.jnosql.artemis.Repository;
-import org.jnosql.artemis.graph.GraphConverter;
-import org.jnosql.artemis.reflection.ClassRepresentation;
+import static org.jnosql.artemis.graph.query.ReturnTypeConverterUtil.returnObject;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.stream.Stream;
 
-import static org.jnosql.artemis.graph.query.ReturnTypeConverterUtil.returnObject;
+import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
+import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
+import org.apache.tinkerpop.gremlin.structure.Element;
+import org.apache.tinkerpop.gremlin.structure.Vertex;
+import org.jnosql.artemis.Repository;
+import org.jnosql.artemis.graph.GraphConverter;
+import org.jnosql.artemis.reflection.ClassRepresentation;
 
 /**
  * Template method to {@link Repository} proxy on Graph
@@ -44,7 +44,7 @@ abstract class AbstractGraphRepositoryProxy<T, ID> implements InvocationHandler 
 
     protected abstract GraphQueryParser getQueryParser();
 
-    protected abstract Graph getGraph();
+    protected abstract GraphTraversalSource getTraversalSource();
 
     protected abstract GraphConverter getConverter();
 
@@ -73,7 +73,7 @@ abstract class AbstractGraphRepositoryProxy<T, ID> implements InvocationHandler 
     }
 
     private Object executeDeleteMethod(Object[] args, String methodName) {
-        GraphTraversal<Vertex, Vertex> traversal = getGraph().traversal().V();
+        GraphTraversal<Vertex, Vertex> traversal = getTraversalSource().V();
         getQueryParser().deleteByParse(methodName, args, getClassRepresentation(), traversal);
 
         List<?> vertices = traversal.toList();
@@ -88,7 +88,7 @@ abstract class AbstractGraphRepositoryProxy<T, ID> implements InvocationHandler 
 
     private Object executeFindByMethod(Method method, Object[] args, String methodName) {
         Class<?> classInstance = getClassRepresentation().getClassInstance();
-        GraphTraversal<Vertex, Vertex> traversal = getGraph().traversal().V();
+        GraphTraversal<Vertex, Vertex> traversal = getTraversalSource().V();
         getQueryParser().findByParse(methodName, args, getClassRepresentation(), traversal);
 
         List<Vertex> vertices = traversal.hasLabel(getClassRepresentation().getName()).toList();
@@ -99,7 +99,7 @@ abstract class AbstractGraphRepositoryProxy<T, ID> implements InvocationHandler 
 
     private Object executeFindAll(Method method, Object[] args) {
         Class<?> classInstance = getClassRepresentation().getClassInstance();
-        GraphTraversal<Vertex, Vertex> traversal = getGraph().traversal().V();
+        GraphTraversal<Vertex, Vertex> traversal = getTraversalSource().V();
         List<Vertex> vertices = traversal.hasLabel(getClassRepresentation().getName()).toList();
         Stream<T> stream = vertices.stream().map(getConverter()::toEntity);
         return returnObject(stream, classInstance, method);

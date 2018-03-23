@@ -14,18 +14,35 @@
  */
 package org.jnosql.artemis.graph;
 
-import org.apache.tinkerpop.gremlin.structure.Direction;
-
 import java.util.Collection;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Supplier;
+
+import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
+import org.apache.tinkerpop.gremlin.structure.Direction;
+import org.apache.tinkerpop.gremlin.structure.Vertex;
 
 /**
  * This interface that represents the common operation between an entity
  * and {@link org.apache.tinkerpop.gremlin.structure.Vertex}
  */
 public interface GraphTemplate {
+
+    /**
+     * access to underlying gremlin layer
+     * 
+     * @return GraphTraversalSource
+     */
+    GraphTraversalSource getTraversalSource();
+
+    /**
+     * 
+     * @param v vertex
+     * @param <T> return type 
+     * @return entity
+     */
+    <T> T toEntity(Vertex v);
 
     /**
      * Inserts entity

@@ -14,6 +14,7 @@
  */
 package org.jnosql.artemis.graph;
 
+import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.jnosql.artemis.graph.cdi.CDIExtension;
 import org.junit.jupiter.api.Test;
@@ -38,7 +39,7 @@ public class DefaultGraphTemplateProducerTest {
 
     @Test
     public void shouldReturn() {
-        Graph manager = Mockito.mock(Graph.class);
+        GraphTraversalSource manager = Mockito.mock(GraphTraversalSource.class);
         GraphTemplate template = producer.get(manager);
         assertNotNull(template);
     }
