@@ -25,9 +25,11 @@ import javax.inject.Inject;
 
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
 import org.apache.tinkerpop.gremlin.structure.Edge;
+import org.apache.tinkerpop.gremlin.structure.Property;
 import org.apache.tinkerpop.gremlin.structure.T;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.jnosql.artemis.graph.cdi.CDIExtension;
+import org.jnosql.artemis.graph.model.Job;
 import org.jnosql.artemis.graph.model.Money;
 import org.jnosql.artemis.graph.model.Movie;
 import org.jnosql.artemis.graph.model.Person;
@@ -35,6 +37,19 @@ import org.jnosql.artemis.graph.model.Worker;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+
+
+import javax.inject.Inject;
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import static java.util.Comparator.comparing;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ExtendWith(CDIExtension.class)
 class DefaultGraphConverterTest {
@@ -100,6 +115,25 @@ class DefaultGraphConverterTest {
         assertEquals("USD", worker.getSalary().getCurrency());
         assertTrue(BigDecimal.valueOf(1_000).compareTo(worker.getSalary().getValue()) == 0);
     }
+
+    @Test
+    public void shouldConverterFromEmbeddable() {
+        Job job = new Job();
+        job.setCity("Salvador");
+        job.setDescription("Java Developer");
+
+        Worker worker = new Worker();
+        worker.setName("name");
+        worker.setJob(job);
+        worker.setSalary(new Money("BRL", BigDecimal.TEN));
+        Vertex vertex = converter.toVertex(worker);
+
+        assertEquals(job.getDescription(), vertex.value("description"));
+        assertEquals(job.getCity(), vertex.value("city"));
+        assertEquals(worker.getName(), vertex.value("name"));
+        assertEquals("BRL 10", vertex.value("money"));
+    }
+
 
     @Test
     public void shouldReturnErrorWhenToVertexHasNullParameter() {
@@ -223,4 +257,47 @@ class DefaultGraphConverterTest {
 
         assertEquals(edge.id(), edge1.id());
     }
+
+    @Test
+    public void shouldReturnErrorWhenGetPropertiesIsNull() {
+        assertThrows(NullPointerException.class, () -> converter.getProperties(null));
+    }
+
+    @Test
+    public void shouldGetProperties() {
+        Job job = new Job();
+        job.setCity("Salvador");
+        job.setDescription("Java Developer");
+
+        Worker worker = new Worker();
+        worker.setName("name");
+        worker.setJob(job);
+        worker.setSalary(new Money("BRL", BigDecimal.TEN));
+
+        List<Property<?>> properties = converter.getProperties(worker)
+                .stream()
+                .sorted(comparing(Property::key))
+                .collect(Collectors.toList());
+        assertEquals(4, properties.size());
+
+        assertAll(() -> {
+                    Property<?> property = properties.get(0);
+                    assertEquals("city", property.key());
+                    assertEquals("Salvador", property.value());
+                }, () -> {
+                    Property<?> property = properties.get(1);
+                    assertEquals("description", property.key());
+                    assertEquals("Java Developer", property.value());
+                },
+                () -> {
+                    Property<?> property = properties.get(2);
+                    assertEquals("money", property.key());
+                    assertEquals("BRL 10", property.value());
+                }, () -> {
+                    Property<?> property = properties.get(3);
+                    assertEquals("name", property.key());
+                    assertEquals("name", property.value());
+                });
+    }
+
 }
