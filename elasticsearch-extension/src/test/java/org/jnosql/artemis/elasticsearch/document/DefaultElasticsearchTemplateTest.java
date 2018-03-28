@@ -99,7 +99,7 @@ public class DefaultElasticsearchTemplateTest {
     @Test
     public void shouldGetManager() {
         assertNotNull(template.getManager());
-        assertEquals(manager, template.getConverter());
+        assertEquals(manager, template.getManager());
     }
 
 
