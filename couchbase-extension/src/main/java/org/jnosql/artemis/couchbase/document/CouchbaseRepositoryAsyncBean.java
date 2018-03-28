@@ -15,7 +15,6 @@
 package org.jnosql.artemis.couchbase.document;
 
 import org.jnosql.artemis.Converters;
-import org.jnosql.artemis.DatabaseQualifier;
 import org.jnosql.artemis.reflection.ClassRepresentations;
 import org.jnosql.artemis.reflection.Reflections;
 
@@ -86,13 +85,6 @@ class CouchbaseRepositoryAsyncBean implements Bean<CouchbaseRepositoryAsync>, Pa
         CreationalContext<T> ctx = beanManager.createCreationalContext(bean);
         return (T) beanManager.getReference(bean, clazz, ctx);
     }
-
-    private <T> T getInstance(Class<T> clazz, String name) {
-        Bean bean = beanManager.getBeans(clazz, DatabaseQualifier.ofDocument(name)).iterator().next();
-        CreationalContext ctx = beanManager.createCreationalContext(bean);
-        return (T) beanManager.getReference(bean, clazz, ctx);
-    }
-
 
     @Override
     public void destroy(CouchbaseRepositoryAsync instance, CreationalContext<CouchbaseRepositoryAsync> creationalContext) {
