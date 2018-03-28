@@ -15,7 +15,6 @@
 package org.jnosql.artemis.arangodb.document;
 
 import org.jnosql.artemis.Converters;
-import org.jnosql.artemis.DatabaseQualifier;
 import org.jnosql.artemis.reflection.ClassRepresentations;
 import org.jnosql.artemis.reflection.Reflections;
 
@@ -87,13 +86,6 @@ class ArangoDBRepositoryBean implements Bean<ArangoDBRepository>, PassivationCap
         CreationalContext<T> ctx = beanManager.createCreationalContext(bean);
         return (T) beanManager.getReference(bean, clazz, ctx);
     }
-
-    private <T> T getInstance(Class<T> clazz, String name) {
-        Bean bean = beanManager.getBeans(clazz, DatabaseQualifier.ofDocument(name)).iterator().next();
-        CreationalContext ctx = beanManager.createCreationalContext(bean);
-        return (T) beanManager.getReference(bean, clazz, ctx);
-    }
-
 
     @Override
     public void destroy(ArangoDBRepository instance, CreationalContext<ArangoDBRepository> creationalContext) {
