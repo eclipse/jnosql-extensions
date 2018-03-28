@@ -33,6 +33,8 @@ import java.util.function.Consumer;
 
 import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
 import static org.elasticsearch.index.query.QueryBuilders.termQuery;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(CDIExtension.class)
@@ -43,7 +45,7 @@ public class DefaultElasticsearchTemplateAsyncTest {
 
     private ElasticsearchDocumentCollectionManagerAsync managerAsync;
 
-    private ElasticsearchTemplateAsync templateAsync;
+    private DefaultElasticsearchTemplateAsync templateAsync;
 
     @Inject
     private ClassRepresentations classRepresentations;
@@ -76,5 +78,29 @@ public class DefaultElasticsearchTemplateAsyncTest {
         Mockito.verify(managerAsync).search(Mockito.eq(queryBuilder), Mockito.any(Consumer.class),
                 Mockito.eq("Person"));
 
+    }
+
+    @Test
+    public void shouldGetConverter() {
+        assertNotNull(templateAsync.getConverter());
+        assertEquals(converter, templateAsync.getConverter());
+    }
+
+    @Test
+    public void shouldGetManager() {
+        assertNotNull(templateAsync.getManager());
+        assertEquals(managerAsync, templateAsync.getManager());
+    }
+
+    @Test
+    public void shouldGetClassRepresentation() {
+        assertNotNull(templateAsync.getClassRepresentations());
+        assertEquals(classRepresentations, templateAsync.getClassRepresentations());
+    }
+
+    @Test
+    public void shouldGetConverters() {
+        assertNotNull(templateAsync.getConverters());
+        assertEquals(converters, templateAsync.getConverters());
     }
 }
