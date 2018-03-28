@@ -14,8 +14,6 @@
  */
 package org.jnosql.artemis.hazelcast.key;
 
-import org.jnosql.artemis.DatabaseQualifier;
-
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.spi.CreationalContext;
 import javax.enterprise.inject.Default;
@@ -77,12 +75,6 @@ class HazelcastRepositoryBean implements Bean<HazelcastRepository>, PassivationC
     private <T> T getInstance(Class<T> clazz) {
         Bean<T> bean = (Bean<T>) beanManager.getBeans(clazz).iterator().next();
         CreationalContext<T> ctx = beanManager.createCreationalContext(bean);
-        return (T) beanManager.getReference(bean, clazz, ctx);
-    }
-
-    private <T> T getInstance(Class<T> clazz, String name) {
-        Bean bean = beanManager.getBeans(clazz, DatabaseQualifier.ofDocument(name)).iterator().next();
-        CreationalContext ctx = beanManager.createCreationalContext(bean);
         return (T) beanManager.getReference(bean, clazz, ctx);
     }
 
