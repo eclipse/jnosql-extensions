@@ -26,7 +26,7 @@ import java.util.Optional;
 import static java.util.Collections.singletonList;
 import static org.jnosql.artemis.reflection.FieldType.EMBEDDED;
 
-class FieldGraph {
+final class FieldGraph {
 
     private final Object value;
 

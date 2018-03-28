@@ -27,7 +27,7 @@ import static java.util.Objects.requireNonNull;
  * The default implementation to Mapping API
  * @param <V>
  */
-class DefaultProperty<V> implements Property<V> {
+final class DefaultProperty<V> implements Property<V> {
 
     private final String key;
 
