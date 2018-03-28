@@ -23,6 +23,7 @@ import org.jnosql.artemis.reflection.ClassRepresentations;
 import org.jnosql.diana.api.document.Document;
 import org.jnosql.diana.api.document.DocumentEntity;
 import org.jnosql.diana.elasticsearch.document.ElasticsearchDocumentCollectionManager;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -37,6 +38,8 @@ import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
 import static org.elasticsearch.index.query.QueryBuilders.termQuery;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.when;
 
 
@@ -60,7 +63,7 @@ public class DefaultElasticsearchTemplateTest {
 
     private ElasticsearchDocumentCollectionManager manager;
 
-    private ElasticsearchTemplate template;
+    private DefaultElasticsearchTemplate template;
 
 
     @BeforeEach
@@ -85,5 +88,43 @@ public class DefaultElasticsearchTemplateTest {
         assertThat(people, contains(new Person("Ada", 10)));
         Mockito.verify(manager).search(Mockito.eq(queryBuilder), Mockito.eq("Person"));
 
+    }
+
+    @Test
+    public void shouldGetConverter() {
+        assertNotNull(template.getConverter());
+        assertEquals(converter, template.getConverter());
+    }
+
+    @Test
+    public void shouldGetManager() {
+        assertNotNull(template.getManager());
+        assertEquals(manager, template.getConverter());
+    }
+
+
+    @Test
+    public void shouldGetWorkflow() {
+        assertNotNull(template.getWorkflow());
+        assertEquals(flow, template.getWorkflow());
+    }
+
+    @Test
+    public void shouldGetPersistManager() {
+        assertNotNull(template.getPersistManager());
+        assertEquals(persistManager, template.getPersistManager());
+    }
+
+
+    @Test
+    public void shouldGetClassRepresentations() {
+        assertNotNull(template.getClassRepresentations());
+        assertEquals(classRepresentations, template.getClassRepresentations());
+    }
+
+    @Test
+    public void shouldGetConverters() {
+        assertNotNull(template.getConverters());
+        assertEquals(converters, template.getConverters());
     }
 }
