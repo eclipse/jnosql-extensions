@@ -15,7 +15,6 @@
 package org.jnosql.artemis.orientdb.document;
 
 import org.jnosql.artemis.Converters;
-import org.jnosql.artemis.DatabaseQualifier;
 import org.jnosql.artemis.reflection.ClassRepresentations;
 import org.jnosql.artemis.reflection.Reflections;
 
@@ -84,12 +83,6 @@ class OrientDBRepositoryBean implements Bean<OrientDBCrudRepository>, Passivatio
     private <T> T getInstance(Class<T> clazz) {
         Bean<T> bean = (Bean<T>) beanManager.getBeans(clazz).iterator().next();
         CreationalContext<T> ctx = beanManager.createCreationalContext(bean);
-        return (T) beanManager.getReference(bean, clazz, ctx);
-    }
-
-    private <T> T getInstance(Class<T> clazz, String name) {
-        Bean bean = beanManager.getBeans(clazz, DatabaseQualifier.ofDocument(name)).iterator().next();
-        CreationalContext ctx = beanManager.createCreationalContext(bean);
         return (T) beanManager.getReference(bean, clazz, ctx);
     }
 
