@@ -227,7 +227,7 @@ abstract class AbstractGraphConverter implements GraphConverter {
         getReflections().setValue(instance, field.getNativeField(), toEntity(field.getNativeField().getType(), elements));
     }
 
-    private FieldGraph to(FieldRepresentation field, Object entityInstance) {
+    protected FieldGraph to(FieldRepresentation field, Object entityInstance) {
         Object value = getReflections().getValue(entityInstance, field.getNativeField());
         return FieldGraph.of(value, field);
     }
