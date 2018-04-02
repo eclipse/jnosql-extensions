@@ -14,19 +14,21 @@
  */
 package org.jnosql.artemis.graph;
 
+import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
+import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Property;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.jnosql.artemis.Converters;
+import org.jnosql.artemis.EntityNotFoundException;
 import org.jnosql.artemis.reflection.ClassRepresentation;
 import org.jnosql.artemis.reflection.ClassRepresentations;
 import org.jnosql.artemis.reflection.Reflections;
 
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
+import java.util.Iterator;
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.toList;
@@ -85,9 +87,22 @@ class DefaultTraversalGraphConverter extends AbstractGraphConverter implements G
                 .findFirst()
                 .map(i -> i.toElement(getConverters()))
                 .orElseThrow(() -> new IllegalArgumentException("Entity has not a valid Id"));
-        return graph.get().traversal().V(id.value()).next();
+        return getTraversalSource().V(id.value()).next();
 
     }
 
+    @Override
+    public Edge toEdge(EdgeEntity edge) {
+        requireNonNull(edge, "vertex is required");
+        Object id = edge.getId().get();
+        final Iterator<Edge> edges = getTraversalSource().E(id);
+        if (edges.hasNext()) {
+            return edges.next();
+        }
+        throw new EntityNotFoundException("Edge does not found in the database with id: " + id);
+    }
 
+    private GraphTraversalSource getTraversalSource() {
+        return graph.get().traversal();
+    }
 }
