@@ -14,38 +14,22 @@
  */
 package org.jnosql.artemis.graph;
 
-import static java.util.Objects.requireNonNull;
-import static java.util.stream.Collectors.toList;
-import static org.jnosql.artemis.reflection.FieldType.EMBEDDED;
-
-import java.lang.reflect.Field;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.function.Consumer;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
-
-import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
-import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
-import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Property;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
-import org.jnosql.artemis.AttributeConverter;
 import org.jnosql.artemis.Converters;
-import org.jnosql.artemis.EntityNotFoundException;
 import org.jnosql.artemis.reflection.ClassRepresentation;
 import org.jnosql.artemis.reflection.ClassRepresentations;
-import org.jnosql.artemis.reflection.FieldRepresentation;
 import org.jnosql.artemis.reflection.Reflections;
-import org.jnosql.diana.api.Value;
 
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
+
+import static java.util.Objects.requireNonNull;
+import static java.util.stream.Collectors.toList;
 
 /**
  * A default implementation using DefaultTraversalGraphConverter
@@ -92,8 +76,6 @@ class DefaultTraversalGraphConverter extends AbstractGraphConverter implements G
         requireNonNull(entity, "entity is required");
 
         ClassRepresentation representation = getClassRepresentations().get(entity.getClass());
-        String label = representation.getName();
-
         List<FieldGraph> fields = representation.getFields().stream()
                 .map(f -> to(f, entity))
                 .filter(FieldGraph::isNotEmpty).collect(toList());
@@ -106,5 +88,6 @@ class DefaultTraversalGraphConverter extends AbstractGraphConverter implements G
         return graph.get().traversal().V(id.value()).next();
 
     }
+
 
 }
