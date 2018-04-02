@@ -84,6 +84,7 @@ abstract class AbstractGraphConverter implements GraphConverter {
         return vertex;
     }
 
+    @Override
     public <T> List<Property<?>> getProperties(T entity) {
         Objects.requireNonNull(entity, "entity is required");
         ClassRepresentation representation = getClassRepresentations().get(entity.getClass());
