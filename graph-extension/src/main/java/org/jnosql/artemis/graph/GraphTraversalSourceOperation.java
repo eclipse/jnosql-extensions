@@ -29,5 +29,5 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * All Graph operation go through the Graph traversal e.g. the GraphConverter and GraphTemplate implementation will use
  * {@link org.apache.tinkerpop.gremlin.structure.Graph#traversal()} in all operations.
  */
-public @interface GraphTraversalOperation {
+public @interface GraphTraversalSourceOperation {
 }

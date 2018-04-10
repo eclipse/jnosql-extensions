@@ -24,7 +24,7 @@ import javax.inject.Inject;
 class DefaultTraversalGraphConverterTest extends AbstractGraphConverterTest{
 
     @Inject
-    @GraphTraversalOperation
+    @GraphTraversalSourceOperation
     private GraphConverter converter;
 
     @Inject
