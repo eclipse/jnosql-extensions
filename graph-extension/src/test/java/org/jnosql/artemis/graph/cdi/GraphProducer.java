@@ -15,11 +15,11 @@
 package org.jnosql.artemis.graph.cdi;
 
 import org.apache.tinkerpop.gremlin.neo4j.structure.Neo4jGraph;
-import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.jnosql.artemis.Database;
 import org.jnosql.artemis.DatabaseType;
+import org.jnosql.artemis.graph.GraphTraversalSourceSupplier;
 import org.mockito.Mockito;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -46,8 +46,8 @@ public class GraphProducer {
 
     @Produces
     @ApplicationScoped
-    public GraphTraversalSource getGraphTraversalSource() {
-        return graph.traversal();
+    public GraphTraversalSourceSupplier getGraphTraversalSource() {
+        return () -> graph.traversal();
     }
 
     @Produces
@@ -68,6 +68,7 @@ public class GraphProducer {
 
         return graphMock;
     }
+
     public void dispose(@Disposes Graph graph) throws Exception {
         graph.close();
     }
