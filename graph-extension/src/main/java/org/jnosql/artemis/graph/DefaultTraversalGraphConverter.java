@@ -29,6 +29,8 @@ import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
+import java.util.function.Function;
 
 import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.toList;
@@ -50,7 +52,7 @@ class DefaultTraversalGraphConverter extends AbstractGraphConverter implements G
     private Converters converters;
 
     @Inject
-    private Instance<GraphTraversalSource> instance;
+    private Instance<GraphTraversalSourceSupplier> instance;
 
 
     @Override
@@ -78,16 +80,31 @@ class DefaultTraversalGraphConverter extends AbstractGraphConverter implements G
         requireNonNull(entity, "entity is required");
 
         ClassRepresentation representation = getClassRepresentations().get(entity.getClass());
+        String label = representation.getName();
+
         List<FieldGraph> fields = representation.getFields().stream()
                 .map(f -> to(f, entity))
                 .filter(FieldGraph::isNotEmpty).collect(toList());
 
-        final Property id = fields.stream()
-                .filter(FieldGraph::isId)
-                .findFirst()
-                .map(i -> i.toElement(getConverters()))
-                .orElseThrow(() -> new IllegalArgumentException("Entity has not a valid Id"));
-        return getTraversalSource().V(id.value()).next();
+        Optional<FieldGraph> id = fields.stream().filter(FieldGraph::isId).findFirst();
+
+        final Function<Property, Vertex> findVertexOrCreateWithId = p -> {
+            Iterator<Vertex> vertices = getTraversalSource().V(p.value());
+            return vertices.hasNext() ? vertices.next() :
+                    getTraversalSource().addV(label)
+                            .property(org.apache.tinkerpop.gremlin.structure.T.id, p.value())
+                    .next();
+        };
+
+        Vertex vertex = id.map(i -> i.toElement(getConverters()))
+                .map(findVertexOrCreateWithId)
+                .orElseGet(() -> getTraversalSource().addV(label).next());
+
+        fields.stream().filter(FieldGraph::isNotId)
+                .flatMap(f -> f.toElements(this, getConverters()).stream())
+                .forEach(p -> vertex.property(p.key(), p.value()));
+
+        return vertex;
 
     }
 
@@ -103,6 +120,6 @@ class DefaultTraversalGraphConverter extends AbstractGraphConverter implements G
     }
 
     private GraphTraversalSource getTraversalSource() {
-        return instance.get();
+        return instance.get().get();
     }
 }
