@@ -15,6 +15,7 @@
 package org.jnosql.artemis.graph.cdi;
 
 import org.apache.tinkerpop.gremlin.neo4j.structure.Neo4jGraph;
+import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.jnosql.artemis.Database;
@@ -41,6 +42,12 @@ public class GraphProducer {
     @ApplicationScoped
     public Graph getGraph() {
         return graph;
+    }
+
+    @Produces
+    @ApplicationScoped
+    public GraphTraversalSource getGraphTraversalSource() {
+        return graph.traversal();
     }
 
     @Produces
