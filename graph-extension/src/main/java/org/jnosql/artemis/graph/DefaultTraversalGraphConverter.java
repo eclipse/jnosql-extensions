@@ -52,7 +52,7 @@ class DefaultTraversalGraphConverter extends AbstractGraphConverter implements G
     private Converters converters;
 
     @Inject
-    private Instance<GraphTraversalSourceSupplier> instance;
+    private Instance<GraphTraversalSourceSupplier> supplierInstance;
 
 
     @Override
@@ -120,6 +120,6 @@ class DefaultTraversalGraphConverter extends AbstractGraphConverter implements G
     }
 
     private GraphTraversalSource getTraversalSource() {
-        return instance.get().get();
+        return supplierInstance.get().get();
     }
 }
