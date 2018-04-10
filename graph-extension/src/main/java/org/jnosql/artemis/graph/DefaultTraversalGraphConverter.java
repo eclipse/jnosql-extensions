@@ -50,7 +50,7 @@ class DefaultTraversalGraphConverter extends AbstractGraphConverter implements G
     private Converters converters;
 
     @Inject
-    private Instance<Graph> graph;
+    private Instance<GraphTraversalSource> instance;
 
 
     @Override
@@ -70,7 +70,7 @@ class DefaultTraversalGraphConverter extends AbstractGraphConverter implements G
 
     @Override
     protected Graph getGraph() {
-        return graph.get();
+        throw new UnsupportedOperationException("GraphTraversalSource does not support graph instance");
     }
 
     @Override
@@ -103,6 +103,6 @@ class DefaultTraversalGraphConverter extends AbstractGraphConverter implements G
     }
 
     private GraphTraversalSource getTraversalSource() {
-        return graph.get().traversal();
+        return instance.get();
     }
 }
