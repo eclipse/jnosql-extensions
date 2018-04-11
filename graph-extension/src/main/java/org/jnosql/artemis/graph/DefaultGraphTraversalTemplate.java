@@ -37,6 +37,7 @@ class DefaultGraphTraversalTemplate extends AbstractGraphTemplate {
     private ClassRepresentations classRepresentations;
 
     @Inject
+    @GraphTraversalSourceOperation
     private GraphConverter converter;
 
     @Inject
