@@ -58,6 +58,18 @@ class DefaultGraphTemplateProducer implements GraphTemplateProducer {
         return new DefaultGraphTemplate(instance, classRepresentations, converter, workflow, reflections);
     }
 
+    @Override
+    public GraphTemplate get(GraphTraversalSourceSupplier supplier) {
+        requireNonNull(supplier, "supplier is required");
+
+        SingleInstance<GraphTraversalSourceSupplier> instance = new SingleInstance<>(supplier);
+
+        GraphConverter converter = new DefaultGraphTraversalSourceConverter(classRepresentations, reflections,
+                converters,
+                instance);
+        GraphWorkflow workflow = new DefaultGraphWorkflow(persistManager, converter);
+        return new DefaultGraphTraversalSourceTemplate(instance, classRepresentations, converter, workflow, reflections);
+    }
 
     class SingleInstance<T> implements Instance<T> {
 
