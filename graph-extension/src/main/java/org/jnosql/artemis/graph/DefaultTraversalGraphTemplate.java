@@ -32,7 +32,7 @@ import java.util.Optional;
  * The default {@link GraphTemplate}
  */
 @GraphTraversalSourceOperation
-class DefaultGraphTraversalTemplate extends AbstractGraphTemplate {
+class DefaultTraversalGraphTemplate extends AbstractGraphTemplate {
 
 
     @Inject
