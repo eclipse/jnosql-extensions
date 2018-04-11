@@ -31,4 +31,14 @@ public interface GraphTemplateProducer <T extends GraphTemplate> {
      * @throws NullPointerException when collectionManager is null
      */
     T get(Graph graph);
+
+
+    /**
+     * creates a {@link GraphTemplate}
+     *
+     * @param supplier the supplier
+     * @return a new instance
+     * @throws NullPointerException when supplier is null
+     */
+    T get(GraphTraversalSourceSupplier supplier);
 }
