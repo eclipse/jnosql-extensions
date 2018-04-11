@@ -27,21 +27,29 @@ import javax.inject.Inject;
 class DefaultGraphTemplate extends AbstractGraphTemplate {
 
 
-    @Inject
     private Instance<Graph> graph;
 
-    @Inject
     private ClassRepresentations classRepresentations;
 
-    @Inject
     private GraphConverter converter;
 
-    @Inject
     private GraphWorkflow workflow;
 
-    @Inject
     private Reflections reflections;
 
+
+    @Inject
+    DefaultGraphTemplate(Instance<Graph> graph, ClassRepresentations classRepresentations, GraphConverter converter,
+                         GraphWorkflow workflow, Reflections reflections) {
+        this.graph = graph;
+        this.classRepresentations = classRepresentations;
+        this.converter = converter;
+        this.workflow = workflow;
+        this.reflections = reflections;
+    }
+
+    DefaultGraphTemplate() {
+    }
 
     @Override
     protected Graph getGraph() {
