@@ -36,7 +36,7 @@ import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.toList;
 
 /**
- * A default implementation using DefaultGraphTraversalSourceConverter
+ * A default implementation to GraphTraversalSourceOperation
  */
 @GraphTraversalSourceOperation
 class DefaultGraphTraversalSourceConverter extends AbstractGraphConverter {
