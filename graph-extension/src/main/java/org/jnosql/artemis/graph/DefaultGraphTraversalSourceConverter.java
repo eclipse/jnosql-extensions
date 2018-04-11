@@ -36,10 +36,10 @@ import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.toList;
 
 /**
- * A default implementation using DefaultTraversalGraphConverter
+ * A default implementation using DefaultGraphTraversalSourceConverter
  */
 @GraphTraversalSourceOperation
-class DefaultTraversalGraphConverter extends AbstractGraphConverter implements GraphConverter {
+class DefaultGraphTraversalSourceConverter extends AbstractGraphConverter {
 
 
     @Inject
@@ -93,7 +93,7 @@ class DefaultTraversalGraphConverter extends AbstractGraphConverter implements G
             return vertices.hasNext() ? vertices.next() :
                     getTraversalSource().addV(label)
                             .property(org.apache.tinkerpop.gremlin.structure.T.id, p.value())
-                    .next();
+                            .next();
         };
 
         Vertex vertex = id.map(i -> i.toElement(getConverters()))

@@ -21,7 +21,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import javax.inject.Inject;
 
 @ExtendWith(CDIExtension.class)
-class DefaultTraversalGraphConverterTest extends AbstractGraphConverterTest {
+class DefaultGraphTraversalSourceConverterTest extends AbstractGraphConverterTest {
 
     @Inject
     @GraphTraversalSourceOperation
