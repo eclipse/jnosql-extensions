@@ -33,13 +33,22 @@ public class DefaultGraphTemplateProducerTest {
 
     @Test
     public void shouldReturnErrorWhenManagerNull() {
-        assertThrows(NullPointerException.class, () -> producer.get(null));
+        assertThrows(NullPointerException.class, () -> producer.get((Graph) null));
+        assertThrows(NullPointerException.class, () -> producer.get((GraphTraversalSourceSupplier) null));
     }
 
     @Test
-    public void shouldReturn() {
-        Graph manager = Mockito.mock(Graph.class);
-        GraphTemplate template = producer.get(manager);
+    public void shouldReturnGraphTemplateWhenGetGraph() {
+        Graph graph = Mockito.mock(Graph.class);
+        GraphTemplate template = producer.get(graph);
+        assertNotNull(template);
+    }
+
+
+    @Test
+    public void shouldReturnGraphTemplateWhenGetGraphTraversalSourceSupplier() {
+        GraphTraversalSourceSupplier supplier = Mockito.mock(GraphTraversalSourceSupplier.class);
+        GraphTemplate template = producer.get(supplier);
         assertNotNull(template);
     }
 }

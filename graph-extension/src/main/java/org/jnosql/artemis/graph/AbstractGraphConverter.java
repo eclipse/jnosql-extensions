@@ -84,6 +84,7 @@ abstract class AbstractGraphConverter implements GraphConverter {
         return vertex;
     }
 
+    @Override
     public <T> List<Property<?>> getProperties(T entity) {
         Objects.requireNonNull(entity, "entity is required");
         ClassRepresentation representation = getClassRepresentations().get(entity.getClass());
@@ -227,7 +228,7 @@ abstract class AbstractGraphConverter implements GraphConverter {
         getReflections().setValue(instance, field.getNativeField(), toEntity(field.getNativeField().getType(), elements));
     }
 
-    private FieldGraph to(FieldRepresentation field, Object entityInstance) {
+    protected FieldGraph to(FieldRepresentation field, Object entityInstance) {
         Object value = getReflections().getValue(entityInstance, field.getNativeField());
         return FieldGraph.of(value, field);
     }

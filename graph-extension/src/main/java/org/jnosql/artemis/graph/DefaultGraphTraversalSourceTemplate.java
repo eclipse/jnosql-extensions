@@ -14,20 +14,25 @@
  */
 package org.jnosql.artemis.graph;
 
+import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
 import org.apache.tinkerpop.gremlin.structure.Graph;
+import org.apache.tinkerpop.gremlin.structure.Transaction;
+import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.jnosql.artemis.reflection.ClassRepresentations;
 import org.jnosql.artemis.reflection.Reflections;
 
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
+import java.util.Iterator;
 
 /**
- * The default {@link GraphTemplate}
+ * The default {@link GraphTemplate} to GraphTraversalSourceOperation
  */
-class DefaultGraphTemplate extends AbstractGraphTemplate {
+@GraphTraversalSourceOperation
+class DefaultGraphTraversalSourceTemplate extends AbstractGraphTemplate {
 
 
-    private Instance<Graph> graph;
+    private Instance<GraphTraversalSourceSupplier> supplierInstance;
 
     private ClassRepresentations classRepresentations;
 
@@ -37,23 +42,29 @@ class DefaultGraphTemplate extends AbstractGraphTemplate {
 
     private Reflections reflections;
 
-
     @Inject
-    DefaultGraphTemplate(Instance<Graph> graph, ClassRepresentations classRepresentations, GraphConverter converter,
-                         GraphWorkflow workflow, Reflections reflections) {
-        this.graph = graph;
+    DefaultGraphTraversalSourceTemplate(Instance<GraphTraversalSourceSupplier> supplierInstance,
+                                        ClassRepresentations classRepresentations,
+                                        @GraphTraversalSourceOperation GraphConverter converter,
+                                        GraphWorkflow workflow, Reflections reflections) {
+        this.supplierInstance = supplierInstance;
         this.classRepresentations = classRepresentations;
         this.converter = converter;
         this.workflow = workflow;
         this.reflections = reflections;
     }
 
-    DefaultGraphTemplate() {
+    DefaultGraphTraversalSourceTemplate() {
     }
 
     @Override
     protected Graph getGraph() {
-        return graph.get();
+        throw new UnsupportedOperationException("The GraphTraversalSourceOperation implementation does not support Graph");
+    }
+
+    @Override
+    public Transaction getTransaction() {
+        return getGraphTraversalSource().tx();
     }
 
     @Override
@@ -74,5 +85,15 @@ class DefaultGraphTemplate extends AbstractGraphTemplate {
     @Override
     protected Reflections getReflections() {
         return reflections;
+    }
+
+
+    @Override
+    protected Iterator<Vertex> getVertices(Object id) {
+        return getGraphTraversalSource().V(id).toList().iterator();
+    }
+
+    private GraphTraversalSource getGraphTraversalSource() {
+        return supplierInstance.get().get();
     }
 }

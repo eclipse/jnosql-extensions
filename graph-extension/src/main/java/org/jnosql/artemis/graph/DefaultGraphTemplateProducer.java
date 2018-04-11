@@ -19,8 +19,12 @@ import org.jnosql.artemis.Converters;
 import org.jnosql.artemis.reflection.ClassRepresentations;
 import org.jnosql.artemis.reflection.Reflections;
 
-import javax.enterprise.inject.Vetoed;
+import javax.enterprise.inject.Instance;
+import javax.enterprise.util.TypeLiteral;
 import javax.inject.Inject;
+import java.lang.annotation.Annotation;
+import java.util.Collections;
+import java.util.Iterator;
 
 import static java.util.Objects.requireNonNull;
 
@@ -45,107 +49,74 @@ class DefaultGraphTemplateProducer implements GraphTemplateProducer {
     public GraphTemplate get(Graph graph) {
         requireNonNull(graph, "graph is required");
 
-        GraphConverter converter = new ProducerGraphConverter(classRepresentations, reflections, converters, graph);
+        SingleInstance<Graph> instance = new SingleInstance<>(graph);
+
+        GraphConverter converter = new DefaultGraphConverter(classRepresentations, reflections,
+                converters,
+                instance);
         GraphWorkflow workflow = new DefaultGraphWorkflow(persistManager, converter);
-        return new ProducerGraphTemplate(classRepresentations, converter, workflow, graph, reflections);
+        return new DefaultGraphTemplate(instance, classRepresentations, converter, workflow, reflections);
     }
 
+    @Override
+    public GraphTemplate get(GraphTraversalSourceSupplier supplier) {
+        requireNonNull(supplier, "supplier is required");
 
-    @Vetoed
-    static class ProducerGraphTemplate extends AbstractGraphTemplate {
+        SingleInstance<GraphTraversalSourceSupplier> instance = new SingleInstance<>(supplier);
 
-        private ClassRepresentations classRepresentations;
-
-        private GraphConverter converter;
-
-        private Graph graph;
-
-        private GraphWorkflow workflow;
-
-        private Reflections reflections;
-
-        ProducerGraphTemplate(ClassRepresentations classRepresentations,
-                              GraphConverter converter,
-                              GraphWorkflow workflow,
-                              Graph graph, Reflections reflections) {
-
-            this.classRepresentations = classRepresentations;
-            this.converter = converter;
-            this.graph = graph;
-            this.workflow = workflow;
-            this.reflections = reflections;
-        }
-
-        ProducerGraphTemplate() {
-        }
-
-        @Override
-        protected Graph getGraph() {
-            return graph;
-        }
-
-        @Override
-        protected ClassRepresentations getClassRepresentations() {
-            return classRepresentations;
-        }
-
-        @Override
-        protected GraphConverter getConverter() {
-            return converter;
-        }
-
-        @Override
-        protected GraphWorkflow getFlow() {
-            return workflow;
-        }
-
-        @Override
-        protected Reflections getReflections() {
-            return reflections;
-        }
+        GraphConverter converter = new DefaultGraphTraversalSourceConverter(classRepresentations, reflections,
+                converters,
+                instance);
+        GraphWorkflow workflow = new DefaultGraphWorkflow(persistManager, converter);
+        return new DefaultGraphTraversalSourceTemplate(instance, classRepresentations, converter, workflow, reflections);
     }
 
-    @Vetoed
-    static class ProducerGraphConverter extends AbstractGraphConverter implements GraphConverter {
+    class SingleInstance<T> implements Instance<T> {
 
-        private ClassRepresentations classRepresentations;
+        private final T instance;
 
-        private Reflections reflections;
-
-        private Converters converters;
-
-        private Graph graph;
-
-        public ProducerGraphConverter(ClassRepresentations classRepresentations,
-                                      Reflections reflections, Converters converters,
-                                      Graph graph) {
-            this.classRepresentations = classRepresentations;
-            this.reflections = reflections;
-            this.converters = converters;
-            this.graph = graph;
+        SingleInstance(T instance) {
+            this.instance = instance;
         }
 
-        ProducerGraphConverter() {
+
+        @Override
+        public Instance<T> select(Annotation... annotations) {
+           throw new UnsupportedOperationException("this method is not support");
         }
 
         @Override
-        protected ClassRepresentations getClassRepresentations() {
-            return classRepresentations;
+        public <U extends T> Instance<U> select(Class<U> aClass, Annotation... annotations) {
+            throw new UnsupportedOperationException("this method is not support");
         }
 
         @Override
-        protected Reflections getReflections() {
-            return reflections;
+        public <U extends T> Instance<U> select(TypeLiteral<U> typeLiteral, Annotation... annotations) {
+            throw new UnsupportedOperationException("this method is not support");
         }
 
         @Override
-        protected Converters getConverters() {
-            return converters;
+        public boolean isUnsatisfied() {
+            return false;
         }
 
         @Override
-        protected Graph getGraph() {
-            return graph;
+        public boolean isAmbiguous() {
+            return false;
+        }
+
+        @Override
+        public void destroy(T t) {
+        }
+
+        @Override
+        public Iterator<T> iterator() {
+         return Collections.singletonList(instance).iterator();
+        }
+
+        @Override
+        public T get() {
+            return instance;
         }
     }
 }

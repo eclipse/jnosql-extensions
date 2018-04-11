@@ -19,6 +19,7 @@ import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.jnosql.artemis.Database;
 import org.jnosql.artemis.DatabaseType;
+import org.jnosql.artemis.graph.GraphTraversalSourceSupplier;
 import org.mockito.Mockito;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -45,6 +46,12 @@ public class GraphProducer {
 
     @Produces
     @ApplicationScoped
+    public GraphTraversalSourceSupplier getGraphTraversalSource() {
+        return () -> graph.traversal();
+    }
+
+    @Produces
+    @ApplicationScoped
     @Database(value = DatabaseType.GRAPH, provider = "graphRepositoryMock")
     public Graph getGraphMock() {
 
@@ -61,6 +68,7 @@ public class GraphProducer {
 
         return graphMock;
     }
+
     public void dispose(@Disposes Graph graph) throws Exception {
         graph.close();
     }

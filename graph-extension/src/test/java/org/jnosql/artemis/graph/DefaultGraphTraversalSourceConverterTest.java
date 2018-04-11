@@ -15,30 +15,28 @@
 package org.jnosql.artemis.graph;
 
 import org.apache.tinkerpop.gremlin.structure.Graph;
+import org.jnosql.artemis.graph.cdi.CDIExtension;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-/**
- * The producer of {@link GraphTemplate}
- *
- * @param <T> the GraphTemplate instance
- */
-public interface GraphTemplateProducer <T extends GraphTemplate> {
+import javax.inject.Inject;
 
-    /**
-     * creates a {@link GraphTemplate}
-     *
-     * @param graph the graph
-     * @return a new instance
-     * @throws NullPointerException when collectionManager is null
-     */
-    T get(Graph graph);
+@ExtendWith(CDIExtension.class)
+class DefaultGraphTraversalSourceConverterTest extends AbstractGraphConverterTest {
 
+    @Inject
+    @GraphTraversalSourceOperation
+    private GraphConverter converter;
 
-    /**
-     * creates a {@link GraphTemplate}
-     *
-     * @param supplier the supplier
-     * @return a new instance
-     * @throws NullPointerException when supplier is null
-     */
-    T get(GraphTraversalSourceSupplier supplier);
+    @Inject
+    private Graph graph;
+
+    @Override
+    protected Graph getGraph() {
+        return graph;
+    }
+
+    @Override
+    protected GraphConverter getConverter() {
+        return converter;
+    }
 }

@@ -14,28 +14,13 @@
  */
 package org.jnosql.artemis.graph;
 
-import org.apache.tinkerpop.gremlin.structure.Graph;
-import org.jnosql.artemis.graph.cdi.CDIExtension;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
 
-import javax.inject.Inject;
+import java.util.function.Supplier;
 
-@ExtendWith(CDIExtension.class)
-public class GraphTemplateTest extends AbstractGraphTemplateTest{
+/**
+ * A {@link Supplier} to {@link GraphTraversalSource}
+ */
+public interface GraphTraversalSourceSupplier extends Supplier<GraphTraversalSource> {
 
-    @Inject
-    private GraphTemplate graphTemplate;
-
-    @Inject
-    private Graph graph;
-
-    @Override
-    protected Graph getGraph() {
-        return graph;
-    }
-
-    @Override
-    protected GraphTemplate getGraphTemplate() {
-        return graphTemplate;
-    }
 }
