@@ -29,10 +29,10 @@ import java.util.Iterator;
 import java.util.Optional;
 
 /**
- * The default {@link GraphTemplate}
+ * The default {@link GraphTemplate} to GraphTraversalSourceOperation
  */
 @GraphTraversalSourceOperation
-class DefaultTraversalGraphTemplate extends AbstractGraphTemplate {
+class DefaultGraphTraversalSourceTemplate extends AbstractGraphTemplate {
 
 
     @Inject
