@@ -26,18 +26,25 @@ import javax.inject.Inject;
 @ApplicationScoped
 class DefaultGraphConverter extends AbstractGraphConverter implements GraphConverter {
 
-    @Inject
     private ClassRepresentations classRepresentations;
 
-    @Inject
     private Reflections reflections;
 
-    @Inject
     private Converters converters;
 
-    @Inject
     private Instance<Graph> graph;
 
+    @Inject
+    DefaultGraphConverter(ClassRepresentations classRepresentations, Reflections reflections, Converters converters,
+                          Instance<Graph> graph) {
+        this.classRepresentations = classRepresentations;
+        this.reflections = reflections;
+        this.converters = converters;
+        this.graph = graph;
+    }
+
+    DefaultGraphConverter() {
+    }
 
     @Override
     protected ClassRepresentations getClassRepresentations() {
