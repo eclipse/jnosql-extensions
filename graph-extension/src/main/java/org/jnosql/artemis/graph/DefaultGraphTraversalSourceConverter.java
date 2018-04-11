@@ -42,18 +42,26 @@ import static java.util.stream.Collectors.toList;
 class DefaultGraphTraversalSourceConverter extends AbstractGraphConverter {
 
 
-    @Inject
     private ClassRepresentations classRepresentations;
 
-    @Inject
     private Reflections reflections;
 
-    @Inject
     private Converters converters;
 
-    @Inject
-    private Instance<GraphTraversalSourceSupplier> supplierInstance;
+    private Instance<GraphTraversalSourceSupplier> suppliers;
 
+
+    @Inject
+    DefaultGraphTraversalSourceConverter(ClassRepresentations classRepresentations, Reflections reflections, Converters converters,
+                                         Instance<GraphTraversalSourceSupplier> suppliers) {
+        this.classRepresentations = classRepresentations;
+        this.reflections = reflections;
+        this.converters = converters;
+        this.suppliers = suppliers;
+    }
+
+    DefaultGraphTraversalSourceConverter() {
+    }
 
     @Override
     protected ClassRepresentations getClassRepresentations() {
@@ -120,6 +128,6 @@ class DefaultGraphTraversalSourceConverter extends AbstractGraphConverter {
     }
 
     private GraphTraversalSource getTraversalSource() {
-        return supplierInstance.get().get();
+        return suppliers.get().get();
     }
 }
