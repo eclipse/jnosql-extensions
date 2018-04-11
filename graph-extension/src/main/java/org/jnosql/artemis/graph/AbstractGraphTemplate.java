@@ -16,6 +16,7 @@ package org.jnosql.artemis.graph;
 
 import org.apache.tinkerpop.gremlin.process.traversal.Traverser;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
+import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
 import org.apache.tinkerpop.gremlin.structure.Direction;
 import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Graph;
@@ -89,7 +90,7 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
     @Override
     public <T> void delete(T idValue) {
         requireNonNull(idValue, "id is required");
-        List<Vertex> vertices = getGraph().traversal().V(idValue).toList();
+        List<Vertex> vertices = getTraversal().V(idValue).toList();
         vertices.forEach(Vertex::remove);
 
     }
@@ -97,14 +98,14 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
     @Override
     public <T> void deleteEdge(T idEdge) {
         requireNonNull(idEdge, "idEdge is required");
-        List<Edge> edges = getGraph().traversal().E(idEdge).toList();
+        List<Edge> edges = getTraversal().E(idEdge).toList();
         edges.forEach(Edge::remove);
     }
 
     @Override
     public <T, ID> Optional<T> find(ID idValue) {
         requireNonNull(idValue, "id is required");
-        Optional<Vertex> vertex = getGraph().traversal().V(idValue).tryNext();
+        Optional<Vertex> vertex = getTraversal().V(idValue).tryNext();
         return vertex.map(getConverter()::toEntity);
     }
 
@@ -136,8 +137,7 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
                     && e.outVertex().id().equals(outVertex.id());
         };
 
-        Optional<Edge> edge = getGraph()
-                .traversal().V(outVertex.id())
+        Optional<Edge> edge = getTraversal().V(outVertex.id())
                 .out(label).has(id, inVertex.id()).inE(label).filter(predicate).tryNext();
 
         return edge.<EdgeEntity>map(edge1 -> new DefaultEdgeEntity<>(edge1, incoming, outgoing))
@@ -150,7 +150,7 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
     public <E> Optional<EdgeEntity> edge(E edgeId) {
         requireNonNull(edgeId, "edgeId is required");
 
-        Optional<Edge> edgeOptional = getGraph().traversal().E(edgeId).tryNext();
+        Optional<Edge> edgeOptional = getTraversal().E(edgeId).tryNext();
 
         if (edgeOptional.isPresent()) {
             Edge edge = edgeOptional.get();
@@ -203,7 +203,11 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
         if (Stream.of(vertexIds).anyMatch(Objects::isNull)) {
             throw new NullPointerException("No one vertexId element cannot be null");
         }
-        return new DefaultVertexTraversal(() -> getGraph().traversal().V(vertexIds), INITIAL_VERTEX, getConverter());
+        return new DefaultVertexTraversal(() -> getTraversal().V(vertexIds), INITIAL_VERTEX, getConverter());
+    }
+
+    protected GraphTraversalSource getTraversal() {
+        return getGraph().traversal();
     }
 
     @Override
@@ -211,7 +215,7 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
         if (Stream.of(edgeIds).anyMatch(Objects::isNull)) {
             throw new NullPointerException("No one edgeId element cannot be null");
         }
-        return new DefaultEdgeTraversal(() -> getGraph().traversal().E(edgeIds), INITIAL_EDGE, getConverter());
+        return new DefaultEdgeTraversal(() -> getTraversal().E(edgeIds), INITIAL_EDGE, getConverter());
     }
 
     @Override
