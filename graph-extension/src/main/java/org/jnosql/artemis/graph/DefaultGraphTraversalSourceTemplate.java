@@ -18,15 +18,12 @@ import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSo
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Transaction;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
-import org.jnosql.artemis.reflection.ClassRepresentation;
 import org.jnosql.artemis.reflection.ClassRepresentations;
-import org.jnosql.artemis.reflection.FieldRepresentation;
 import org.jnosql.artemis.reflection.Reflections;
 
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 import java.util.Iterator;
-import java.util.Optional;
 
 /**
  * The default {@link GraphTemplate} to GraphTraversalSourceOperation
