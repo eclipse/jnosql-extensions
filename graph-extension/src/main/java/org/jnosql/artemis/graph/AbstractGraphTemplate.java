@@ -206,10 +206,6 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
         return new DefaultVertexTraversal(() -> getTraversal().V(vertexIds), INITIAL_VERTEX, getConverter());
     }
 
-    protected GraphTraversalSource getTraversal() {
-        return getGraph().traversal();
-    }
-
     @Override
     public EdgeTraversal getTraversalEdge(Object... edgeIds) {
         if (Stream.of(edgeIds).anyMatch(Objects::isNull)) {
@@ -223,12 +219,20 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
         return getGraph().tx();
     }
 
+    protected GraphTraversalSource getTraversal() {
+        return getGraph().traversal();
+    }
+
+    protected Iterator<Vertex> getVertices(Object id) {
+        return getGraph().vertices(id);
+    }
+
     private <ID> Collection<EdgeEntity> getEdgesByIdImpl(ID id, Direction direction, String... labels) {
 
         requireNonNull(id, "id is required");
         requireNonNull(direction, "direction is required");
 
-        Iterator<Vertex> vertices = getGraph().vertices(id);
+        Iterator<Vertex> vertices = getVertices(id);
         if (vertices.hasNext()) {
             List<Edge> edges = new ArrayList<>();
             vertices.next().edges(direction, labels).forEachRemaining(edges::add);
@@ -236,6 +240,18 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
         }
         return Collections.emptyList();
     }
+
+    private  <T> Optional<Vertex> getVertex(T entity) {
+        ClassRepresentation classRepresentation = getClassRepresentations().get(entity.getClass());
+        FieldRepresentation field = classRepresentation.getId().get();
+        Object id = getReflections().getValue(entity, field.getNativeField());
+        Iterator<Vertex> vertices = getVertices(id);
+        if (vertices.hasNext()) {
+            return Optional.of(vertices.next());
+        }
+        return Optional.empty();
+    }
+
 
     private <T> Collection<EdgeEntity> getEdgesImpl(T entity, Direction direction, String... labels) {
         requireNonNull(entity, "entity is required");
@@ -264,16 +280,6 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
 
     }
 
-    private <T> Optional<Vertex> getVertex(T entity) {
-        ClassRepresentation classRepresentation = getClassRepresentations().get(entity.getClass());
-        FieldRepresentation field = classRepresentation.getId().get();
-        Object id = getReflections().getValue(entity, field.getNativeField());
-        Iterator<Vertex> vertices = getGraph().vertices(id);
-        if (vertices.hasNext()) {
-            return Optional.of(vertices.next());
-        }
-        return Optional.empty();
-    }
 
     private <T> void checkId(T entity) {
         ClassRepresentation classRepresentation = getClassRepresentations().get(entity.getClass());
