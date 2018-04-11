@@ -32,26 +32,34 @@ import java.util.Iterator;
 class DefaultGraphTraversalSourceTemplate extends AbstractGraphTemplate {
 
 
-    @Inject
     private Instance<GraphTraversalSourceSupplier> supplierInstance;
 
-    @Inject
     private ClassRepresentations classRepresentations;
 
-    @Inject
-    @GraphTraversalSourceOperation
     private GraphConverter converter;
 
-    @Inject
     private GraphWorkflow workflow;
 
-    @Inject
     private Reflections reflections;
 
+    @Inject
+    DefaultGraphTraversalSourceTemplate(Instance<GraphTraversalSourceSupplier> supplierInstance,
+                                        ClassRepresentations classRepresentations,
+                                        @GraphTraversalSourceOperation GraphConverter converter,
+                                        GraphWorkflow workflow, Reflections reflections) {
+        this.supplierInstance = supplierInstance;
+        this.classRepresentations = classRepresentations;
+        this.converter = converter;
+        this.workflow = workflow;
+        this.reflections = reflections;
+    }
+
+    DefaultGraphTraversalSourceTemplate() {
+    }
 
     @Override
     protected Graph getGraph() {
-      throw new UnsupportedOperationException("The GraphTraversalSourceOperation implementation does not support Graph");
+        throw new UnsupportedOperationException("The GraphTraversalSourceOperation implementation does not support Graph");
     }
 
     @Override
