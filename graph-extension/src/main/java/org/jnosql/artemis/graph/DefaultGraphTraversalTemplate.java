@@ -17,11 +17,16 @@ package org.jnosql.artemis.graph;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Transaction;
+import org.apache.tinkerpop.gremlin.structure.Vertex;
+import org.jnosql.artemis.reflection.ClassRepresentation;
 import org.jnosql.artemis.reflection.ClassRepresentations;
+import org.jnosql.artemis.reflection.FieldRepresentation;
 import org.jnosql.artemis.reflection.Reflections;
 
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
+import java.util.Iterator;
+import java.util.Optional;
 
 /**
  * The default {@link GraphTemplate}
@@ -57,10 +62,6 @@ class DefaultGraphTraversalTemplate extends AbstractGraphTemplate {
         return getGraphTraversalSource().tx();
     }
 
-    protected GraphTraversalSource getGraphTraversalSource() {
-        return supplierInstance.get().get();
-    }
-
     @Override
     protected ClassRepresentations getClassRepresentations() {
         return classRepresentations;
@@ -79,5 +80,15 @@ class DefaultGraphTraversalTemplate extends AbstractGraphTemplate {
     @Override
     protected Reflections getReflections() {
         return reflections;
+    }
+
+
+    @Override
+    protected Iterator<Vertex> getVertices(Object id) {
+        return getGraphTraversalSource().V(id).toList().iterator();
+    }
+
+    private GraphTraversalSource getGraphTraversalSource() {
+        return supplierInstance.get().get();
     }
 }
