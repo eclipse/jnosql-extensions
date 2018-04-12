@@ -64,9 +64,13 @@ class DefaultGraphTraversalSourceTemplate extends AbstractGraphTemplate {
 
     @Override
     public Transaction getTransaction() {
-        return getGraphTraversalSource().tx();
+        return getTraversal().tx();
     }
 
+    @Override
+    protected GraphTraversalSource getTraversal() {
+        return supplierInstance.get().get();
+    }
     @Override
     protected ClassRepresentations getClassRepresentations() {
         return classRepresentations;
@@ -90,10 +94,7 @@ class DefaultGraphTraversalSourceTemplate extends AbstractGraphTemplate {
 
     @Override
     protected Iterator<Vertex> getVertices(Object id) {
-        return getGraphTraversalSource().V(id).toList().iterator();
+        return getTraversal().V(id).toList().iterator();
     }
 
-    private GraphTraversalSource getGraphTraversalSource() {
-        return supplierInstance.get().get();
-    }
 }
