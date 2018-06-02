@@ -55,9 +55,9 @@ class HazelcastRepositoryProxy<T> extends AbstractKeyValueRepositoryProxy<T> {
             Collection<T> result;
             Map<String, Object> params = ParamUtil.getParams(args, method);
             if (params.isEmpty()) {
-                result = template.query(query.value());
+                result = template.sql(query.value());
             } else {
-                result = template.query(query.value(), params);
+                result = template.sql(query.value(), params);
             }
             return ReturnTypeConverterUtil.returnObject(result, method, typeClass);
         }
