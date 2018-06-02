@@ -49,9 +49,9 @@ public class HazelcastRepositoryProxyTest {
 
         Collection<Object> people = asList(new Person("Poliana", 25), new Person("Otavio", 28));
 
-        when(template.query(anyString())).thenReturn(people);
-        when(template.query(anyString(), any(Map.class))).thenReturn(people);
-        when(template.query(any(Predicate.class))).thenReturn(people);
+        when(template.sql(anyString())).thenReturn(people);
+        when(template.sql(anyString(), any(Map.class))).thenReturn(people);
+        when(template.sql(any(Predicate.class))).thenReturn(people);
 
 
         HazelcastRepositoryProxy handler = new HazelcastRepositoryProxy(template, PersonRepository.class);
@@ -64,7 +64,7 @@ public class HazelcastRepositoryProxyTest {
     @Test
     public void shouldFindAll() {
         List<Person> people = personRepository.findActive();
-        verify(template).query("active");
+        verify(template).sql("active");
         assertNotNull(people);
         assertTrue(people.stream().allMatch(Person.class::isInstance));
     }
@@ -75,7 +75,7 @@ public class HazelcastRepositoryProxyTest {
         Map<String, Object> params = new HashMap<>();
         params.put("age", 10);
         params.put("name", "Ada");
-        verify(template).query("name = :name AND age = :age", params);
+        verify(template).sql("name = :name AND age = :age", params);
         assertNotNull(people);
         assertTrue(people.stream().allMatch(Person.class::isInstance));
     }

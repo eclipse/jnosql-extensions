@@ -39,9 +39,9 @@ public class MockProducer {
         List<Value> people = asList(Value.of(new Person("Poliana", 25)),
                 Value.of(new Person("Otavio", 28)));
 
-        when(manager.query(anyString())).thenReturn(people);
-        when(manager.query(anyString(), any(Map.class))).thenReturn(people);
-        when(manager.query(any(Predicate.class))).thenReturn(people);
+        when(manager.sql(anyString())).thenReturn(people);
+        when(manager.sql(anyString(), any(Map.class))).thenReturn(people);
+        when(manager.sql(any(Predicate.class))).thenReturn(people);
         return manager;
     }
 

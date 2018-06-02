@@ -34,21 +34,21 @@ public class DefaultHazelcastTemplateTest {
 
     @Test
     public void shouldRunQuery() {
-        Collection<Person> people = template.query("active");
+        Collection<Person> people = template.sql("active");
         assertNotNull(people);
         assertTrue(people.stream().allMatch(Person.class::isInstance));
     }
 
     @Test
     public void shouldRunQuery2() {
-        Collection<Person> people = template.query("age = :age", singletonMap("age", 10));
+        Collection<Person> people = template.sql("age = :age", singletonMap("age", 10));
         assertNotNull(people);
         assertTrue(people.stream().allMatch(Person.class::isInstance));
     }
 
     @Test
     public void shouldRunQuery3() {
-        Collection<Person> people = template.query(equal("name",  "Poliana"));
+        Collection<Person> people = template.sql(equal("name",  "Poliana"));
         assertNotNull(people);
         assertTrue(people.stream().allMatch(Person.class::isInstance));
     }
