@@ -43,17 +43,17 @@ class DefaultHazelcastTemplate extends AbstractKeyValueTemplate implements Hazel
 
     @Override
     public <T> Collection<T> query(String query) {
-        return manager.get().query(query).stream().map(v -> (T) v.get()).collect(Collectors.toList());
+        return manager.get().sql(query).stream().map(v -> (T) v.get()).collect(Collectors.toList());
     }
 
     @Override
     public <T> Collection<T> query(String query, Map<String, Object> params) {
-        return manager.get().query(query, params).stream().map(v -> (T) v.get()).collect(Collectors.toList());
+        return manager.get().sql(query, params).stream().map(v -> (T) v.get()).collect(Collectors.toList());
     }
 
     @Override
     public <K, V> Collection<V> query(Predicate<K, V> predicate) {
-        return manager.get().query(predicate).stream().map(v -> (V) v.get()).collect(Collectors.toList());
+        return manager.get().sql(predicate).stream().map(v -> (V) v.get()).collect(Collectors.toList());
     }
 
     @Override
