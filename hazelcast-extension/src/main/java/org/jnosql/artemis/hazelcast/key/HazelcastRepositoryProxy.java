@@ -48,6 +48,16 @@ class HazelcastRepositoryProxy<T> extends AbstractKeyValueRepositoryProxy<T> {
     }
 
     @Override
+    protected KeyValueTemplate getTemplate() {
+        return template;
+    }
+
+    @Override
+    protected Class<T> getEntityClass() {
+        return typeClass;
+    }
+
+    @Override
     public Object invoke(Object o, Method method, Object[] args) throws Throwable {
 
         Query query = method.getAnnotation(Query.class);
