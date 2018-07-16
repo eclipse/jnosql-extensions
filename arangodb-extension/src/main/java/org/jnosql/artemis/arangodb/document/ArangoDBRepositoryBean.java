@@ -14,11 +14,8 @@
  */
 package org.jnosql.artemis.arangodb.document;
 
-import org.jnosql.artemis.Converters;
 import org.jnosql.artemis.Repository;
 import org.jnosql.artemis.document.DocumentRepositoryProducer;
-import org.jnosql.artemis.reflection.ClassRepresentations;
-import org.jnosql.artemis.reflection.Reflections;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.spi.CreationalContext;
