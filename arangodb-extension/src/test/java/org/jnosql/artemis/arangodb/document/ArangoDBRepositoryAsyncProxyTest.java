@@ -14,10 +14,7 @@
  */
 package org.jnosql.artemis.arangodb.document;
 
-import org.jnosql.artemis.Converters;
-import org.jnosql.artemis.DynamicQueryException;
-import org.jnosql.artemis.reflection.ClassRepresentations;
-import org.jnosql.artemis.reflection.Reflections;
+import org.jnosql.artemis.document.DocumentRepositoryAsyncProducer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -32,7 +29,6 @@ import java.util.Map;
 import java.util.function.Consumer;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verify;
 
@@ -43,13 +39,7 @@ public class ArangoDBRepositoryAsyncProxyTest {
     private ArangoDBTemplateAsync template;
 
     @Inject
-    private ClassRepresentations classRepresentations;
-
-    @Inject
-    private Reflections reflections;
-
-    @Inject
-    private Converters converters;
+    private DocumentRepositoryAsyncProducer producer;
 
     private PersonAsyncRepository personRepository;
 
@@ -57,16 +47,14 @@ public class ArangoDBRepositoryAsyncProxyTest {
     @BeforeEach
     public void setUp() {
         this.template = Mockito.mock(ArangoDBTemplateAsync.class);
-
-        ArangoDBRepositoryAsyncProxy handler = new ArangoDBRepositoryAsyncProxy(template,
-                classRepresentations, PersonAsyncRepository.class, reflections, converters);
+        PersonAsyncRepository personAsyncRepository = producer.get(PersonAsyncRepository.class, template);
+        ArangoDBRepositoryAsyncProxy handler = new ArangoDBRepositoryAsyncProxy(template, personAsyncRepository);
 
 
         personRepository = (PersonAsyncRepository) Proxy.newProxyInstance(PersonAsyncRepository.class.getClassLoader(),
                 new Class[]{PersonAsyncRepository.class},
                 handler);
     }
-
 
 
     @Test
@@ -77,12 +65,6 @@ public class ArangoDBRepositoryAsyncProxyTest {
         verify(template).update(captor.capture());
         Person value = captor.getValue();
         assertEquals(person, value);
-    }
-
-
-    @Test
-    public void shouldReturnError() {
-        assertThrows(DynamicQueryException.class, () -> personRepository.findByName("Ada"));
     }
 
 

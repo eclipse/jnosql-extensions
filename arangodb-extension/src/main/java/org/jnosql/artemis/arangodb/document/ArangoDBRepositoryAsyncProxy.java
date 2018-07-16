@@ -15,88 +15,32 @@
 package org.jnosql.artemis.arangodb.document;
 
 
-import org.jnosql.artemis.Converters;
 import org.jnosql.artemis.RepositoryAsync;
-import org.jnosql.artemis.document.DocumentTemplateAsync;
-import org.jnosql.artemis.document.query.AbstractDocumentRepositoryAsync;
-import org.jnosql.artemis.document.query.AbstractDocumentRepositoryAsyncProxy;
-import org.jnosql.artemis.document.query.DocumentQueryDeleteParser;
-import org.jnosql.artemis.document.query.DocumentQueryParser;
-import org.jnosql.artemis.reflection.ClassRepresentation;
-import org.jnosql.artemis.reflection.ClassRepresentations;
-import org.jnosql.artemis.reflection.Reflections;
 
+import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
-import java.lang.reflect.ParameterizedType;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Consumer;
 
 import static java.util.Collections.emptyMap;
 
-class ArangoDBRepositoryAsyncProxy<T> extends AbstractDocumentRepositoryAsyncProxy<T> {
+class ArangoDBRepositoryAsyncProxy<T> implements InvocationHandler {
 
     private static final Consumer NOOP = t -> {
     };
 
-    private final Class<T> typeClass;
 
     private final ArangoDBTemplateAsync template;
 
-
-    private final DocumentCrudRepositoryAsync repository;
-
-    private final ClassRepresentation classRepresentation;
-
-    private final DocumentQueryParser queryParser;
-
-    private final DocumentQueryDeleteParser deleteParser;
-
-    private final Converters converters;
+    private final RepositoryAsync<?, ?> repositoryAsync;
 
 
-    ArangoDBRepositoryAsyncProxy(ArangoDBTemplateAsync template, ClassRepresentations classRepresentations,
-                                 Class<?> repositoryType, Reflections reflections, Converters converters) {
+    ArangoDBRepositoryAsyncProxy(ArangoDBTemplateAsync template, RepositoryAsync<?, ?> repositoryAsync) {
         this.template = template;
-        this.typeClass = Class.class.cast(ParameterizedType.class.cast(repositoryType.getGenericInterfaces()[0])
-                .getActualTypeArguments()[0]);
-        this.classRepresentation = classRepresentations.get(typeClass);
-        this.queryParser = new DocumentQueryParser();
-        this.repository = new DocumentCrudRepositoryAsync(template, classRepresentation, reflections);
-        this.deleteParser = new DocumentQueryDeleteParser();
-        this.converters = converters;
+        this.repositoryAsync = repositoryAsync;
     }
 
-
-    @Override
-    protected RepositoryAsync getRepository() {
-        return repository;
-    }
-
-    @Override
-    protected DocumentQueryParser getQueryParser() {
-        return queryParser;
-    }
-
-    @Override
-    protected DocumentTemplateAsync getTemplate() {
-        return template;
-    }
-
-    @Override
-    protected DocumentQueryDeleteParser getDeleteParser() {
-        return deleteParser;
-    }
-
-    @Override
-    protected ClassRepresentation getClassRepresentation() {
-        return classRepresentation;
-    }
-
-    @Override
-    protected Converters getConverters() {
-        return converters;
-    }
 
     @Override
     public Object invoke(Object instance, Method method, Object[] args) throws Throwable {
@@ -117,35 +61,8 @@ class ArangoDBRepositoryAsyncProxy<T> extends AbstractDocumentRepositoryAsyncPro
                 return Void.class;
             }
         }
-        return super.invoke(instance, method, args);
+        return method.invoke(repositoryAsync, args);
     }
 
 
-    class DocumentCrudRepositoryAsync extends AbstractDocumentRepositoryAsync implements RepositoryAsync {
-
-        private final DocumentTemplateAsync template;
-        private final ClassRepresentation classRepresentation;
-        private final Reflections reflections;
-
-        DocumentCrudRepositoryAsync(DocumentTemplateAsync template, ClassRepresentation classRepresentation, Reflections reflections) {
-            this.template = template;
-            this.classRepresentation = classRepresentation;
-            this.reflections = reflections;
-        }
-
-        @Override
-        protected DocumentTemplateAsync getTemplate() {
-            return template;
-        }
-
-        @Override
-        protected Reflections getReflections() {
-            return reflections;
-        }
-
-        @Override
-        protected ClassRepresentation getClassRepresentation() {
-            return classRepresentation;
-        }
-    }
 }
