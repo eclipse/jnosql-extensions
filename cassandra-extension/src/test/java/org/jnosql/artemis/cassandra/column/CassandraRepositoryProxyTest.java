@@ -15,9 +15,8 @@
 package org.jnosql.artemis.cassandra.column;
 
 import com.datastax.driver.core.ConsistencyLevel;
-import org.jnosql.artemis.Converters;
+import org.jnosql.artemis.column.ColumnRepositoryProducer;
 import org.jnosql.artemis.reflection.ClassRepresentations;
-import org.jnosql.artemis.reflection.Reflections;
 import org.jnosql.diana.api.column.ColumnDeleteQuery;
 import org.jnosql.diana.api.column.ColumnQuery;
 import org.junit.jupiter.api.BeforeEach;
@@ -43,14 +42,9 @@ public class CassandraRepositoryProxyTest {
 
     private CassandraTemplate template;
 
-    @Inject
-    private ClassRepresentations classRepresentations;
 
     @Inject
-    private Reflections reflections;
-
-    @Inject
-    private Converters converters;
+    private ColumnRepositoryProducer producer;
 
     private PersonRepository personRepository;
 
@@ -58,14 +52,14 @@ public class CassandraRepositoryProxyTest {
     @BeforeEach
     public void setUp() {
         this.template = Mockito.mock(CassandraTemplate.class);
-
+        PersonRepository personRepository = producer.get(PersonRepository.class, template);
         CassandraRepositoryProxy handler = new CassandraRepositoryProxy(template,
-                classRepresentations, PersonRepository.class, reflections, converters);
+                PersonRepository.class, personRepository);
 
         when(template.insert(any(Person.class))).thenReturn(new Person());
         when(template.insert(any(Person.class), any(Duration.class))).thenReturn(new Person());
         when(template.update(any(Person.class))).thenReturn(new Person());
-        personRepository = (PersonRepository) Proxy.newProxyInstance(PersonRepository.class.getClassLoader(),
+        this.personRepository = (PersonRepository) Proxy.newProxyInstance(PersonRepository.class.getClassLoader(),
                 new Class[]{PersonRepository.class},
                 handler);
     }
