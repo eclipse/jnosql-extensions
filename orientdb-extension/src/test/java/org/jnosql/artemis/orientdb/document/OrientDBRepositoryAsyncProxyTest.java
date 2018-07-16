@@ -14,10 +14,8 @@
  */
 package org.jnosql.artemis.orientdb.document;
 
-import org.jnosql.artemis.Converters;
 import org.jnosql.artemis.DynamicQueryException;
-import org.jnosql.artemis.reflection.ClassRepresentations;
-import org.jnosql.artemis.reflection.Reflections;
+import org.jnosql.artemis.document.DocumentRepositoryAsyncProducer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -38,26 +36,20 @@ import static org.mockito.Mockito.verify;
 public class OrientDBRepositoryAsyncProxyTest {
 
 
-    private OrientDBTemplateAsync repository;
+    private OrientDBTemplateAsync templateAsync;
 
     @Inject
-    private ClassRepresentations classRepresentations;
-
-    @Inject
-    private Reflections reflections;
-
-    @Inject
-    private Converters converters;
+    private DocumentRepositoryAsyncProducer producer;
 
     private PersonAsyncRepository personRepository;
 
 
     @BeforeEach
     public void setUp() {
-        this.repository = Mockito.mock(OrientDBTemplateAsync.class);
+        this.templateAsync = Mockito.mock(OrientDBTemplateAsync.class);
 
-        OrientDBRepositoryAsyncProxy handler = new OrientDBRepositoryAsyncProxy(repository,
-                classRepresentations, PersonAsyncRepository.class, reflections, converters);
+        PersonAsyncRepository personAsyncRepository = producer.get(PersonAsyncRepository.class, templateAsync);
+        OrientDBRepositoryAsyncProxy handler = new OrientDBRepositoryAsyncProxy(templateAsync, personAsyncRepository);
 
 
         personRepository = (PersonAsyncRepository) Proxy.newProxyInstance(PersonAsyncRepository.class.getClassLoader(),
@@ -86,7 +78,7 @@ public class OrientDBRepositoryAsyncProxyTest {
         };
         personRepository.queryName("Ada", callBack);
 
-        verify(repository).sql(Mockito.eq("select * from Person where name= ?"), Mockito.eq(callBack), captor.capture());
+        verify(templateAsync).sql(Mockito.eq("select * from Person where name= ?"), Mockito.eq(callBack), captor.capture());
         Object value = captor.getValue();
         assertEquals("Ada", value);
 
@@ -99,7 +91,7 @@ public class OrientDBRepositoryAsyncProxyTest {
         };
         personRepository.findByAge(10, callBack);
 
-        verify(repository).sql(Mockito.eq("select * from Person where age= :age"), Mockito.eq(callBack), captor.capture());
+        verify(templateAsync).sql(Mockito.eq("select * from Person where age= :age"), Mockito.eq(callBack), captor.capture());
         Map value = captor.getValue();
         assertEquals(10, value.get("age"));
 

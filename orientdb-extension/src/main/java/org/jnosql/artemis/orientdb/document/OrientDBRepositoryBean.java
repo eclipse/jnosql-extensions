@@ -14,9 +14,8 @@
  */
 package org.jnosql.artemis.orientdb.document;
 
-import org.jnosql.artemis.Converters;
-import org.jnosql.artemis.reflection.ClassRepresentations;
-import org.jnosql.artemis.reflection.Reflections;
+import org.jnosql.artemis.Repository;
+import org.jnosql.artemis.document.DocumentRepositoryProducer;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.spi.CreationalContext;
@@ -67,13 +66,11 @@ class OrientDBRepositoryBean implements Bean<OrientDBCrudRepository>, Passivatio
 
     @Override
     public OrientDBCrudRepository create(CreationalContext<OrientDBCrudRepository> creationalContext) {
-        ClassRepresentations classRepresentations = getInstance(ClassRepresentations.class);
-        OrientDBTemplate repository = getInstance(OrientDBTemplate.class);
-        Reflections reflections = getInstance(Reflections.class);
-        Converters converters = getInstance(Converters.class);
+        OrientDBTemplate template = getInstance(OrientDBTemplate.class);
+        DocumentRepositoryProducer producer = getInstance(DocumentRepositoryProducer.class);
+        Repository<?, ?> repository = producer.get((Class<Repository<Object, Object>>) type, template);
 
-        OrientDBDocumentRepositoryProxy handler = new OrientDBDocumentRepositoryProxy(repository,
-                classRepresentations, type, reflections, converters);
+        OrientDBDocumentRepositoryProxy handler = new OrientDBDocumentRepositoryProxy(template, type, repository);
         return (OrientDBCrudRepository) Proxy.newProxyInstance(type.getClassLoader(),
                 new Class[]{type},
                 handler);
