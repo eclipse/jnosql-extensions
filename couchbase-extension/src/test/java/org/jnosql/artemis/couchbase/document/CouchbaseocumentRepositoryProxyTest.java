@@ -16,6 +16,7 @@ package org.jnosql.artemis.couchbase.document;
 
 import com.couchbase.client.java.document.json.JsonObject;
 import org.jnosql.artemis.Converters;
+import org.jnosql.artemis.document.DocumentRepositoryProducer;
 import org.jnosql.artemis.reflection.ClassRepresentations;
 import org.jnosql.artemis.reflection.Reflections;
 import org.junit.jupiter.api.BeforeEach;
@@ -41,13 +42,7 @@ public class CouchbaseocumentRepositoryProxyTest {
     private CouchbaseTemplate template;
 
     @Inject
-    private ClassRepresentations classRepresentations;
-
-    @Inject
-    private Reflections reflections;
-
-    @Inject
-    private Converters converters;
+    private DocumentRepositoryProducer producer;
 
     private PersonRepository personRepository;
 
@@ -57,7 +52,7 @@ public class CouchbaseocumentRepositoryProxyTest {
         this.template = Mockito.mock(CouchbaseTemplate.class);
 
         CouchbaseocumentRepositoryProxy handler = new CouchbaseocumentRepositoryProxy(template,
-                classRepresentations, PersonRepository.class, reflections, converters);
+                PersonRepository.class, producer.get(PersonRepository.class, template));
 
         when(template.insert(any(Person.class))).thenReturn(new Person());
         when(template.insert(any(Person.class), any(Duration.class))).thenReturn(new Person());
