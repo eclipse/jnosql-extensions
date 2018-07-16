@@ -15,6 +15,8 @@
 package org.jnosql.artemis.cassandra.column;
 
 import org.jnosql.artemis.Converters;
+import org.jnosql.artemis.RepositoryAsync;
+import org.jnosql.artemis.column.ColumnRepositoryAsyncProducer;
 import org.jnosql.artemis.reflection.ClassRepresentations;
 import org.jnosql.artemis.reflection.Reflections;
 
@@ -67,13 +69,11 @@ class CassandraRepositoryAsyncBean implements Bean<CassandraRepositoryAsync>, Pa
 
     @Override
     public CassandraRepositoryAsync create(CreationalContext<CassandraRepositoryAsync> creationalContext) {
-        ClassRepresentations classRepresentations = getInstance(ClassRepresentations.class);
-        CassandraTemplateAsync repository = getInstance(CassandraTemplateAsync.class);
-        Reflections reflections = getInstance(Reflections.class);
-        Converters converters = getInstance(Converters.class);
-
-        CassandraRepositoryAsyncProxy handler = new CassandraRepositoryAsyncProxy(repository,
-                classRepresentations, type, reflections, converters);
+        CassandraTemplateAsync templateAsync = getInstance(CassandraTemplateAsync.class);
+        ColumnRepositoryAsyncProducer producer = getInstance(ColumnRepositoryAsyncProducer.class);
+        RepositoryAsync repositoryAsync = producer.get((Class<RepositoryAsync<Object, Object>>) type, templateAsync);
+        CassandraRepositoryAsyncProxy handler = new CassandraRepositoryAsyncProxy(templateAsync,
+                type, repositoryAsync);
         return (CassandraRepositoryAsync) Proxy.newProxyInstance(type.getClassLoader(),
                 new Class[]{type},
                 handler);

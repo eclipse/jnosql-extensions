@@ -14,26 +14,13 @@
  */
 package org.jnosql.artemis.cassandra.column;
 
-import com.datastax.driver.core.ConsistencyLevel;
-import org.jnosql.artemis.Converters;
-import org.jnosql.artemis.DynamicQueryException;
-import org.jnosql.artemis.column.ColumnTemplateAsync;
-import org.jnosql.artemis.column.query.AbstractColumnRepositoryAsync;
-import org.jnosql.artemis.column.query.ColumnQueryDeleteParser;
-import org.jnosql.artemis.column.query.ColumnQueryParser;
-import org.jnosql.artemis.reflection.ClassRepresentation;
-import org.jnosql.artemis.reflection.ClassRepresentations;
-import org.jnosql.artemis.reflection.Reflections;
-import org.jnosql.diana.api.column.ColumnDeleteQuery;
-import org.jnosql.diana.api.column.ColumnQuery;
+import org.jnosql.artemis.RepositoryAsync;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
-import java.time.Duration;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
@@ -42,42 +29,24 @@ import static org.jnosql.artemis.cassandra.column.CQLObjectUtil.getValues;
 
 class CassandraRepositoryAsyncProxy<T> implements InvocationHandler {
 
-    private static final String SAVE = "save";
-    private static final String UPDATE = "update";
-    private static final String FIND_BY = "findBy";
-    private static final String DELETE_BY = "deleteBy";
 
-    private static final Predicate<Object> IS_NOT_CONSISTENCY_LEVEL = c -> !ConsistencyLevel.class.isInstance(c);
     private static final Predicate<Object> IS_NOT_CONSUMER = c -> !Consumer.class.isInstance(c);
-    private static final Predicate<Object> IS_VALID_PARAMETER = IS_NOT_CONSISTENCY_LEVEL.and(IS_NOT_CONSUMER);
+    private static final Predicate<Object> IS_VALID_PARAMETER = IS_NOT_CONSUMER;
     private static final Consumer NOOP = t -> {
     };
 
     private final Class<T> typeClass;
 
-    private final CassandraTemplateAsync repository;
+    private final CassandraTemplateAsync templateAsync;
 
-    private final ColumnRepositoryAsync crudRepository;
-
-    private final ClassRepresentation classRepresentation;
-
-    private final ColumnQueryParser queryParser;
-
-    private final ColumnQueryDeleteParser queryDeleteParser;
-
-    private final Converters converters;
+    private RepositoryAsync<?, ?> repositoryAsync;
 
 
-    CassandraRepositoryAsyncProxy(CassandraTemplateAsync repository, ClassRepresentations classRepresentations,
-                                  Class<?> repositoryType, Reflections reflections, Converters converters) {
-        this.repository = repository;
+    CassandraRepositoryAsyncProxy(CassandraTemplateAsync repository, Class<?> repositoryType, RepositoryAsync<?, ?> repositoryAsync) {
+        this.templateAsync = repository;
         this.typeClass = Class.class.cast(ParameterizedType.class.cast(repositoryType.getGenericInterfaces()[0])
                 .getActualTypeArguments()[0]);
-        this.classRepresentation = classRepresentations.get(typeClass);
-        this.crudRepository = new ColumnRepositoryAsync(repository, classRepresentation, reflections);
-        this.converters = converters;
-        this.queryParser = new ColumnQueryParser();
-        this.queryDeleteParser = new ColumnQueryDeleteParser();
+        this.repositoryAsync = repositoryAsync;
     }
 
 
@@ -93,141 +62,20 @@ class CassandraRepositoryAsyncProxy<T> implements InvocationHandler {
             }
             Map<String, Object> values = getValues(args, method);
             if (!values.isEmpty()) {
-                repository.cql(cql.value(), values, callBack);
+                templateAsync.cql(cql.value(), values, callBack);
                 return Void.class;
             } else if (args == null || args.length == 1) {
-                repository.cql(cql.value(), callBack);
+                templateAsync.cql(cql.value(), callBack);
                 return Void.class;
             } else {
-                repository.cql(cql.value(), callBack, Stream.of(args)
+                templateAsync.cql(cql.value(), callBack, Stream.of(args)
                         .filter(IS_VALID_PARAMETER)
                         .toArray(Object[]::new));
                 return Void.class;
             }
         }
-
-        String methodName = method.getName();
-        switch (methodName) {
-            case SAVE:
-            case UPDATE:
-                return method.invoke(crudRepository, args);
-            default:
-        }
-
-
-        if (methodName.startsWith(FIND_BY)) {
-            ColumnQuery query = queryParser.parse(methodName, args, classRepresentation, converters);
-            Object callBack = args[args.length - 1];
-            if (Consumer.class.isInstance(callBack)) {
-
-                Optional<ConsistencyLevel> consistencyLevel = getConsistencyLevel(args);
-                if (consistencyLevel.isPresent()) {
-                    repository.select(query, consistencyLevel.get(), Consumer.class.cast(callBack));
-                } else {
-                    repository.select(query, Consumer.class.cast(callBack));
-                }
-                return null;
-            }
-
-            throw new DynamicQueryException("On select async method you must put a java.util.function.Consumer" +
-                    " as end parameter as callback");
-        }
-
-        if (methodName.startsWith(DELETE_BY)) {
-            Object callBack = args[args.length - 1];
-            ColumnDeleteQuery query = queryDeleteParser.parse(methodName, args, classRepresentation, converters);
-            Optional<ConsistencyLevel> consistencyLevel = getConsistencyLevel(args);
-            if (Consumer.class.isInstance(callBack)) {
-
-                if (consistencyLevel.isPresent()) {
-                    repository.delete(query, consistencyLevel.get(), Consumer.class.cast(callBack));
-                } else {
-                    repository.delete(query, Consumer.class.cast(callBack));
-                }
-
-                return null;
-            }
-
-            if (consistencyLevel.isPresent()) {
-                repository.delete(query, consistencyLevel.get());
-            } else {
-                repository.delete(query);
-            }
-
-            return null;
-        }
-
-        return null;
+        return method.invoke(repositoryAsync, args);
     }
 
 
-    private Optional<ConsistencyLevel> getConsistencyLevel(Object[] args) {
-        return Stream.of(args)
-                .filter(ConsistencyLevel.class::isInstance)
-                .map(ConsistencyLevel.class::cast)
-                .findFirst();
-    }
-
-
-    class ColumnRepositoryAsync extends AbstractColumnRepositoryAsync implements CassandraRepositoryAsync {
-
-        private final CassandraTemplateAsync template;
-
-        private final Reflections reflections;
-
-        private final ClassRepresentation classRepresentation;
-
-        ColumnRepositoryAsync(CassandraTemplateAsync template, ClassRepresentation classRepresentation, Reflections reflections) {
-            this.template = template;
-            this.classRepresentation = classRepresentation;
-            this.reflections = reflections;
-        }
-
-        @Override
-        protected ColumnTemplateAsync getTemplate() {
-            return template;
-        }
-
-        @Override
-        protected Reflections getReflections() {
-            return reflections;
-        }
-
-        @Override
-        protected ClassRepresentation getClassRepresentation() {
-            return classRepresentation;
-        }
-
-        @Override
-        public void save(Object entity, ConsistencyLevel level) {
-            template.save(entity, level);
-        }
-
-        @Override
-        public void save(Object entity, Duration ttl, ConsistencyLevel level) {
-            template.save(entity, ttl, level);
-        }
-
-        @Override
-        public void save(Iterable entities, ConsistencyLevel level) {
-            template.save(entities, level);
-        }
-
-        @Override
-        public void save(Iterable entities, Duration ttl, ConsistencyLevel level) {
-            template.save(entities, ttl, level);
-        }
-
-        @Override
-        public void save(Object entity, ConsistencyLevel level, Consumer callBack) {
-            template.save(entity, level, callBack);
-        }
-
-        @Override
-        public void save(Object entity, Duration ttl, ConsistencyLevel level, Consumer callBack) {
-            template.save(entity, ttl, level, callBack);
-        }
-
-
-    }
 }
