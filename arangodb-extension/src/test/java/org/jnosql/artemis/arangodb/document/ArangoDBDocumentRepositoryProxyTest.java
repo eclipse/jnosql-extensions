@@ -14,9 +14,7 @@
  */
 package org.jnosql.artemis.arangodb.document;
 
-import org.jnosql.artemis.Converters;
-import org.jnosql.artemis.reflection.ClassRepresentations;
-import org.jnosql.artemis.reflection.Reflections;
+import org.jnosql.artemis.document.DocumentRepositoryProducer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -43,13 +41,7 @@ public class ArangoDBDocumentRepositoryProxyTest {
     private ArangoDBTemplate template;
 
     @Inject
-    private ClassRepresentations classRepresentations;
-
-    @Inject
-    private Reflections reflections;
-
-    @Inject
-    private Converters converters;
+    private DocumentRepositoryProducer producer;
 
     private PersonRepository personRepository;
 
@@ -58,13 +50,14 @@ public class ArangoDBDocumentRepositoryProxyTest {
     public void setUp() {
         this.template = Mockito.mock(ArangoDBTemplate.class);
 
+        PersonRepository personRepository = producer.get(PersonRepository.class, template);
         ArangoDBDocumentRepositoryProxy handler = new ArangoDBDocumentRepositoryProxy(template,
-                classRepresentations, PersonRepository.class, reflections, converters);
+                PersonRepository.class, personRepository);
 
         when(template.insert(any(Person.class))).thenReturn(new Person());
         when(template.insert(any(Person.class), any(Duration.class))).thenReturn(new Person());
         when(template.update(any(Person.class))).thenReturn(new Person());
-        personRepository = (PersonRepository) Proxy.newProxyInstance(PersonRepository.class.getClassLoader(),
+        this.personRepository = (PersonRepository) Proxy.newProxyInstance(PersonRepository.class.getClassLoader(),
                 new Class[]{PersonRepository.class},
                 handler);
     }

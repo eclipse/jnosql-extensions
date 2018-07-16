@@ -14,9 +14,8 @@
  */
 package org.jnosql.artemis.arangodb.document;
 
-import org.jnosql.artemis.Converters;
-import org.jnosql.artemis.reflection.ClassRepresentations;
-import org.jnosql.artemis.reflection.Reflections;
+import org.jnosql.artemis.Repository;
+import org.jnosql.artemis.document.DocumentRepositoryProducer;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.spi.CreationalContext;
@@ -67,14 +66,12 @@ class ArangoDBRepositoryBean implements Bean<ArangoDBRepository>, PassivationCap
 
     @Override
     public ArangoDBRepository create(CreationalContext<ArangoDBRepository> creationalContext) {
-        ClassRepresentations classRepresentations = getInstance(ClassRepresentations.class);
-        ArangoDBTemplate repository = getInstance(ArangoDBTemplate.class);
+        ArangoDBTemplate template = getInstance(ArangoDBTemplate.class);
+        DocumentRepositoryProducer producer = getInstance(DocumentRepositoryProducer.class);
 
-        Reflections reflections = getInstance(Reflections.class);
-        Converters converters = getInstance(Converters.class);
+        Repository<Object, Object> repository = producer.get((Class<Repository<Object, Object>>) type, template);
 
-        ArangoDBDocumentRepositoryProxy handler = new ArangoDBDocumentRepositoryProxy(repository,
-                classRepresentations, type, reflections, converters);
+        ArangoDBDocumentRepositoryProxy handler = new ArangoDBDocumentRepositoryProxy(template,type, repository);
         return (ArangoDBRepository) Proxy.newProxyInstance(type.getClassLoader(),
                 new Class[]{type},
                 handler);

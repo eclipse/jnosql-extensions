@@ -14,11 +14,7 @@
  */
 package org.jnosql.artemis.cassandra.column;
 
-import com.datastax.driver.core.ConsistencyLevel;
-import org.jnosql.artemis.Converters;
-import org.jnosql.artemis.DynamicQueryException;
-import org.jnosql.artemis.reflection.ClassRepresentations;
-import org.jnosql.artemis.reflection.Reflections;
+import org.jnosql.artemis.column.ColumnRepositoryAsyncProducer;
 import org.jnosql.diana.api.column.ColumnDeleteQuery;
 import org.jnosql.diana.api.column.ColumnQuery;
 import org.junit.jupiter.api.BeforeEach;
@@ -35,7 +31,6 @@ import java.util.Map;
 import java.util.function.Consumer;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(CDIExtension.class)
@@ -45,23 +40,16 @@ public class CassandraRepositoryAsyncProxyTest {
     private CassandraTemplateAsync template;
 
     @Inject
-    private ClassRepresentations classRepresentations;
+    private ColumnRepositoryAsyncProducer producer;
 
-    @Inject
-    private Reflections reflections;
-
-    @Inject
-    private Converters converters;
     private PersonAsyncRepository personRepository;
 
 
     @BeforeEach
     public void setUp() {
         this.template = Mockito.mock(CassandraTemplateAsync.class);
-
-        CassandraRepositoryAsyncProxy handler = new CassandraRepositoryAsyncProxy(template,
-                classRepresentations, PersonAsyncRepository.class, reflections, converters);
-
+        PersonAsyncRepository asyncRepository = producer.get(PersonAsyncRepository.class, template);
+        CassandraRepositoryAsyncProxy handler = new CassandraRepositoryAsyncProxy(template, asyncRepository);
 
         personRepository = (PersonAsyncRepository) Proxy.newProxyInstance(PersonAsyncRepository.class.getClassLoader(),
                 new Class[]{PersonAsyncRepository.class},
@@ -92,20 +80,14 @@ public class CassandraRepositoryAsyncProxyTest {
         assertEquals(person, value);
     }
 
-
-    @Test
-    public void shouldReturnError() {
-        assertThrows(DynamicQueryException.class, () -> personRepository.findByName("Ada"));
-    }
-
     @Test
     public void shouldFindByName() {
         ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
         Consumer<List<Person>> callBack = p -> {
         };
-        personRepository.findByName("Ada", ConsistencyLevel.ANY, callBack);
+        personRepository.findByName("Ada", callBack);
 
-        verify(template).select(captor.capture(), Mockito.eq(ConsistencyLevel.ANY), Mockito.eq(callBack));
+        verify(template).select(captor.capture(), Mockito.eq(callBack));
         ColumnQuery query = captor.getValue();
         assertEquals("Person", query.getColumnFamily());
 
@@ -116,9 +98,9 @@ public class CassandraRepositoryAsyncProxyTest {
         ArgumentCaptor<ColumnDeleteQuery> captor = ArgumentCaptor.forClass(ColumnDeleteQuery.class);
         Consumer<Void> callBack = p -> {
         };
-        personRepository.deleteByName("Ada", ConsistencyLevel.ANY, callBack);
+        personRepository.deleteByName("Ada", callBack);
 
-        verify(template).delete(captor.capture(), Mockito.eq(ConsistencyLevel.ANY), Mockito.eq(callBack));
+        verify(template).delete(captor.capture(), Mockito.eq(callBack));
         ColumnDeleteQuery query = captor.getValue();
         assertEquals("Person", query.getColumnFamily());
     }
@@ -159,9 +141,9 @@ public class CassandraRepositoryAsyncProxyTest {
 
         Person findByName(String name);
 
-        Person findByName(String name, ConsistencyLevel level, Consumer<List<Person>> callBack);
+        Person findByName(String name, Consumer<List<Person>> callBack);
 
-        void deleteByName(String name, ConsistencyLevel level, Consumer<Void> callBack);
+        void deleteByName(String name, Consumer<Void> callBack);
 
         @CQL("select * from Person where name= ?")
         void queryName(String name);

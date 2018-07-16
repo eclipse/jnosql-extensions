@@ -15,77 +15,12 @@
 package org.jnosql.artemis.cassandra.column;
 
 
-import com.datastax.driver.core.ConsistencyLevel;
 import org.jnosql.artemis.RepositoryAsync;
-
-import java.time.Duration;
-import java.util.function.Consumer;
 
 /**
  * A Cassandra extension of {@link RepositoryAsync}
  */
 public interface CassandraRepositoryAsync<T, ID> extends RepositoryAsync<T, ID> {
 
-    /**
-     * Save the entity with ConsistencyLevel
-     *
-     * @param <T>    the type
-     * @param entity the entity
-     * @param level  {@link ConsistencyLevel}
-     */
-    <T> void save(T entity, ConsistencyLevel level);
-
-    /**
-     * Saves the entity with ConsistencyLevel
-     *
-     * @param entity the entity
-     * @param ttl    the ttl
-     * @param level  {@link ConsistencyLevel}
-     * @throws org.jnosql.diana.api.ExecuteAsyncQueryException when there is async issue
-     * @throws NullPointerException       when there are any element null
-     */
-    void save(T entity, Duration ttl, ConsistencyLevel level);
-
-    /**
-     * Save the entity with ConsistencyLevel
-     *
-     * @param entities the entities
-     * @param level    {@link ConsistencyLevel}
-     */
-    void save(Iterable<T> entities, ConsistencyLevel level);
-
-    /**
-     * Saves the entity with ConsistencyLevel
-     *
-     * @param entities the entities
-     * @param ttl      the ttl
-     * @param level    {@link ConsistencyLevel}
-     * @throws org.jnosql.diana.api.ExecuteAsyncQueryException when there is async issue
-     * @throws NullPointerException       when there are any element null
-     */
-    void save(Iterable<T> entities, Duration ttl, ConsistencyLevel level);
-
-    /**
-     * Save the entity with ConsistencyLevel
-     *
-     * @param callBack the callBack
-     * @param entity   the entity
-     * @param level    {@link ConsistencyLevel}
-     * @throws org.jnosql.diana.api.ExecuteAsyncQueryException when there is async issue
-     * @throws NullPointerException       when there are any element null
-     */
-    void save(T entity, ConsistencyLevel level, Consumer<T> callBack);
-
-    /**
-     * Saves the entity with ConsistencyLevel
-     *
-     * @param callBack the callBack
-     * @param entity   the entity
-     * @param ttl      the ttl
-     * @param level    {@link ConsistencyLevel}
-     * @throws org.jnosql.diana.api.ExecuteAsyncQueryException when there is async issue
-     * @throws NullPointerException       when there are any element null
-     */
-    void save(T entity, Duration ttl, ConsistencyLevel level, Consumer<T> callBack);
 
 }

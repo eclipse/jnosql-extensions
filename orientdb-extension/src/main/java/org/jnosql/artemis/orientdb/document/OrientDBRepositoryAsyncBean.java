@@ -14,9 +14,8 @@
  */
 package org.jnosql.artemis.orientdb.document;
 
-import org.jnosql.artemis.Converters;
-import org.jnosql.artemis.reflection.ClassRepresentations;
-import org.jnosql.artemis.reflection.Reflections;
+import org.jnosql.artemis.RepositoryAsync;
+import org.jnosql.artemis.document.DocumentRepositoryAsyncProducer;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.spi.CreationalContext;
@@ -67,14 +66,12 @@ class OrientDBRepositoryAsyncBean implements Bean<OrientDBCrudRepositoryAsync>, 
 
     @Override
     public OrientDBCrudRepositoryAsync create(CreationalContext<OrientDBCrudRepositoryAsync> creationalContext) {
-        ClassRepresentations classRepresentations = getInstance(ClassRepresentations.class);
-        OrientDBTemplateAsync repository = getInstance(OrientDBTemplateAsync.class);
+        OrientDBTemplateAsync templateAsync = getInstance(OrientDBTemplateAsync.class);
+        DocumentRepositoryAsyncProducer producer = getInstance(DocumentRepositoryAsyncProducer.class);
 
-        Reflections reflections = getInstance(Reflections.class);
-        Converters converters = getInstance(Converters.class);
+        RepositoryAsync<?,?> repositoryAsync = producer.get((Class<RepositoryAsync<Object, Object>>) type, templateAsync);
 
-        OrientDBRepositoryAsyncProxy handler = new OrientDBRepositoryAsyncProxy(repository,
-                classRepresentations, type, reflections, converters);
+        OrientDBRepositoryAsyncProxy handler = new OrientDBRepositoryAsyncProxy(templateAsync, repositoryAsync);
         return (OrientDBCrudRepositoryAsync) Proxy.newProxyInstance(type.getClassLoader(),
                 new Class[]{type},
                 handler);

@@ -14,9 +14,8 @@
  */
 package org.jnosql.artemis.couchbase.document;
 
-import org.jnosql.artemis.Converters;
-import org.jnosql.artemis.reflection.ClassRepresentations;
-import org.jnosql.artemis.reflection.Reflections;
+import org.jnosql.artemis.RepositoryAsync;
+import org.jnosql.artemis.document.DocumentRepositoryAsyncProducer;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.spi.CreationalContext;
@@ -67,13 +66,10 @@ class CouchbaseRepositoryAsyncBean implements Bean<CouchbaseRepositoryAsync>, Pa
 
     @Override
     public CouchbaseRepositoryAsync create(CreationalContext<CouchbaseRepositoryAsync> creationalContext) {
-        ClassRepresentations classRepresentations = getInstance(ClassRepresentations.class);
-        CouchbaseTemplateAsync repository = getInstance(CouchbaseTemplateAsync.class);
-        Reflections reflections = getInstance(Reflections.class);
-        Converters converters = getInstance(Converters.class);
-
-        CouchbaseRepositoryAsyncProxy handler = new CouchbaseRepositoryAsyncProxy(repository,
-                classRepresentations, type, reflections, converters);
+        CouchbaseTemplateAsync templateAsync = getInstance(CouchbaseTemplateAsync.class);
+        DocumentRepositoryAsyncProducer producer = getInstance(DocumentRepositoryAsyncProducer.class);
+        RepositoryAsync<?,?> repositoryAsync = producer.get((Class<RepositoryAsync<Object, Object>>) type, templateAsync);
+        CouchbaseRepositoryAsyncProxy handler = new CouchbaseRepositoryAsyncProxy(templateAsync, repositoryAsync);
         return (CouchbaseRepositoryAsync) Proxy.newProxyInstance(type.getClassLoader(),
                 new Class[]{type},
                 handler);

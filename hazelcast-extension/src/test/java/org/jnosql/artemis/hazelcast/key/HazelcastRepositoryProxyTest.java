@@ -15,6 +15,7 @@
 package org.jnosql.artemis.hazelcast.key;
 
 import com.hazelcast.query.Predicate;
+import org.jnosql.artemis.Repository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -41,6 +42,8 @@ public class HazelcastRepositoryProxyTest {
     @Mock
     private HazelcastTemplate template;
 
+    @Mock
+    private Repository<?, ?> repository;
     private PersonRepository personRepository;
 
 
@@ -54,7 +57,7 @@ public class HazelcastRepositoryProxyTest {
         when(template.sql(any(Predicate.class))).thenReturn(people);
 
 
-        HazelcastRepositoryProxy handler = new HazelcastRepositoryProxy(template, PersonRepository.class);
+        HazelcastRepositoryProxy handler = new HazelcastRepositoryProxy(template, PersonRepository.class, repository);
 
         personRepository = (PersonRepository) Proxy.newProxyInstance(PersonRepository.class.getClassLoader(),
                 new Class[]{PersonRepository.class},

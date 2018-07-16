@@ -14,9 +14,8 @@
  */
 package org.jnosql.artemis.arangodb.document;
 
-import org.jnosql.artemis.Converters;
-import org.jnosql.artemis.reflection.ClassRepresentations;
-import org.jnosql.artemis.reflection.Reflections;
+import org.jnosql.artemis.RepositoryAsync;
+import org.jnosql.artemis.document.DocumentRepositoryAsyncProducer;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.spi.CreationalContext;
@@ -67,13 +66,10 @@ class ArangoDBRepositoryAsyncBean implements Bean<ArangoDBRepositoryAsync>, Pass
 
     @Override
     public ArangoDBRepositoryAsync create(CreationalContext<ArangoDBRepositoryAsync> creationalContext) {
-        ClassRepresentations classRepresentations = getInstance(ClassRepresentations.class);
-        ArangoDBTemplateAsync repository = getInstance(ArangoDBTemplateAsync.class);
-        Reflections reflections = getInstance(Reflections.class);
-        Converters converters = getInstance(Converters.class);
-
-        ArangoDBRepositoryAsyncProxy handler = new ArangoDBRepositoryAsyncProxy(repository,
-                classRepresentations, type, reflections, converters);
+        ArangoDBTemplateAsync templateAsync = getInstance(ArangoDBTemplateAsync.class);
+        DocumentRepositoryAsyncProducer producer = getInstance(DocumentRepositoryAsyncProducer.class);
+        RepositoryAsync repositoryAsync = producer.get((Class<RepositoryAsync<Object, Object>>) type, templateAsync);
+        ArangoDBRepositoryAsyncProxy handler = new ArangoDBRepositoryAsyncProxy(templateAsync, repositoryAsync);
         return (ArangoDBRepositoryAsync) Proxy.newProxyInstance(type.getClassLoader(),
                 new Class[]{type},
                 handler);

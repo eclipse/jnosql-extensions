@@ -15,9 +15,8 @@
 package org.jnosql.artemis.cassandra.column;
 
 import com.datastax.driver.core.ConsistencyLevel;
-import org.jnosql.artemis.Converters;
+import org.jnosql.artemis.column.ColumnRepositoryProducer;
 import org.jnosql.artemis.reflection.ClassRepresentations;
-import org.jnosql.artemis.reflection.Reflections;
 import org.jnosql.diana.api.column.ColumnDeleteQuery;
 import org.jnosql.diana.api.column.ColumnQuery;
 import org.junit.jupiter.api.BeforeEach;
@@ -43,14 +42,9 @@ public class CassandraRepositoryProxyTest {
 
     private CassandraTemplate template;
 
-    @Inject
-    private ClassRepresentations classRepresentations;
 
     @Inject
-    private Reflections reflections;
-
-    @Inject
-    private Converters converters;
+    private ColumnRepositoryProducer producer;
 
     private PersonRepository personRepository;
 
@@ -58,14 +52,14 @@ public class CassandraRepositoryProxyTest {
     @BeforeEach
     public void setUp() {
         this.template = Mockito.mock(CassandraTemplate.class);
-
+        PersonRepository personRepository = producer.get(PersonRepository.class, template);
         CassandraRepositoryProxy handler = new CassandraRepositoryProxy(template,
-                classRepresentations, PersonRepository.class, reflections, converters);
+                PersonRepository.class, personRepository);
 
         when(template.insert(any(Person.class))).thenReturn(new Person());
         when(template.insert(any(Person.class), any(Duration.class))).thenReturn(new Person());
         when(template.update(any(Person.class))).thenReturn(new Person());
-        personRepository = (PersonRepository) Proxy.newProxyInstance(PersonRepository.class.getClassLoader(),
+        this.personRepository = (PersonRepository) Proxy.newProxyInstance(PersonRepository.class.getClassLoader(),
                 new Class[]{PersonRepository.class},
                 handler);
     }
@@ -73,20 +67,14 @@ public class CassandraRepositoryProxyTest {
 
     @Test
     public void shouldFindByName() {
-        ConsistencyLevel level = ConsistencyLevel.ANY;
-        when(template.save(Mockito.any(Person.class), Mockito.eq(level))).thenReturn(new Person());
-        ArgumentCaptor<Person> captor = ArgumentCaptor.forClass(Person.class);
-        personRepository.findByName("Ada", level);
-        verify(template).find(Mockito.any(ColumnQuery.class), Mockito.eq(level));
+        personRepository.findByName("Ada");
+        verify(template).cql("select * from Person where name = ?", "Ada");
     }
 
     @Test
     public void shouldDeleteByName() {
-        ConsistencyLevel level = ConsistencyLevel.ANY;
-        when(template.save(Mockito.any(Person.class), Mockito.eq(level))).thenReturn(new Person());
-        ArgumentCaptor<Person> captor = ArgumentCaptor.forClass(Person.class);
-        personRepository.deleteByName("Ada", level);
-        verify(template).delete(Mockito.any(ColumnDeleteQuery.class), Mockito.eq(level));
+        personRepository.deleteByName("Ada");
+        verify(template).delete(Mockito.any(ColumnDeleteQuery.class));
     }
 
     @Test
@@ -113,9 +101,7 @@ public class CassandraRepositoryProxyTest {
 
     interface PersonRepository extends CassandraRepository<Person, String> {
 
-        Person findByName(String name, ConsistencyLevel level);
-
-        void deleteByName(String name, ConsistencyLevel level);
+        void deleteByName(String namel);
 
         @CQL("select * from Person")
         List<Person> findAll();
