@@ -69,8 +69,7 @@ class CassandraRepositoryAsyncBean implements Bean<CassandraRepositoryAsync>, Pa
         CassandraTemplateAsync templateAsync = getInstance(CassandraTemplateAsync.class);
         ColumnRepositoryAsyncProducer producer = getInstance(ColumnRepositoryAsyncProducer.class);
         RepositoryAsync repositoryAsync = producer.get((Class<RepositoryAsync<Object, Object>>) type, templateAsync);
-        CassandraRepositoryAsyncProxy handler = new CassandraRepositoryAsyncProxy(templateAsync,
-                type, repositoryAsync);
+        CassandraRepositoryAsyncProxy handler = new CassandraRepositoryAsyncProxy(templateAsync, repositoryAsync);
         return (CassandraRepositoryAsync) Proxy.newProxyInstance(type.getClassLoader(),
                 new Class[]{type},
                 handler);

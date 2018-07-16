@@ -39,7 +39,7 @@ class CassandraRepositoryAsyncProxy<T> implements InvocationHandler {
     private RepositoryAsync<?, ?> repositoryAsync;
 
 
-    CassandraRepositoryAsyncProxy(CassandraTemplateAsync repository, Class<?> repositoryType, RepositoryAsync<?, ?> repositoryAsync) {
+    CassandraRepositoryAsyncProxy(CassandraTemplateAsync repository, RepositoryAsync<?, ?> repositoryAsync) {
         this.templateAsync = repository;
         this.repositoryAsync = repositoryAsync;
     }

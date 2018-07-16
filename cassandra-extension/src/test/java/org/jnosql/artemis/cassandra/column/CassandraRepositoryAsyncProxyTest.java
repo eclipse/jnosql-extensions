@@ -49,8 +49,7 @@ public class CassandraRepositoryAsyncProxyTest {
     public void setUp() {
         this.template = Mockito.mock(CassandraTemplateAsync.class);
         PersonAsyncRepository asyncRepository = producer.get(PersonAsyncRepository.class, template);
-        CassandraRepositoryAsyncProxy handler = new CassandraRepositoryAsyncProxy(template,
-                PersonAsyncRepository.class, asyncRepository);
+        CassandraRepositoryAsyncProxy handler = new CassandraRepositoryAsyncProxy(template, asyncRepository);
 
         personRepository = (PersonAsyncRepository) Proxy.newProxyInstance(PersonAsyncRepository.class.getClassLoader(),
                 new Class[]{PersonAsyncRepository.class},
