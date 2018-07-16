@@ -15,10 +15,7 @@
 package org.jnosql.artemis.couchbase.document;
 
 import com.couchbase.client.java.document.json.JsonObject;
-import org.jnosql.artemis.Converters;
-import org.jnosql.artemis.DynamicQueryException;
-import org.jnosql.artemis.reflection.ClassRepresentations;
-import org.jnosql.artemis.reflection.Reflections;
+import org.jnosql.artemis.document.DocumentRepositoryAsyncProducer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -31,7 +28,6 @@ import java.util.List;
 import java.util.function.Consumer;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verify;
 
@@ -42,13 +38,7 @@ public class CouchbaseRepositoryAsyncProxyTest {
     private CouchbaseTemplateAsync template;
 
     @Inject
-    private ClassRepresentations classRepresentations;
-
-    @Inject
-    private Reflections reflections;
-
-    @Inject
-    private Converters converters;
+    private DocumentRepositoryAsyncProducer producer;
 
     private PersonAsyncRepository personRepository;
 
@@ -56,16 +46,14 @@ public class CouchbaseRepositoryAsyncProxyTest {
     @BeforeEach
     public void setUp() {
         this.template = Mockito.mock(CouchbaseTemplateAsync.class);
-
-        CouchbaseRepositoryAsyncProxy handler = new CouchbaseRepositoryAsyncProxy(template,
-                classRepresentations, PersonAsyncRepository.class, reflections, converters);
+        PersonAsyncRepository personAsyncRepository = producer.get(PersonAsyncRepository.class, template);
+        CouchbaseRepositoryAsyncProxy handler = new CouchbaseRepositoryAsyncProxy(template, personAsyncRepository);
 
 
         personRepository = (PersonAsyncRepository) Proxy.newProxyInstance(PersonAsyncRepository.class.getClassLoader(),
                 new Class[]{PersonAsyncRepository.class},
                 handler);
     }
-
 
 
     @Test
@@ -76,12 +64,6 @@ public class CouchbaseRepositoryAsyncProxyTest {
         verify(template).update(captor.capture());
         Person value = captor.getValue();
         assertEquals(person, value);
-    }
-
-
-    @Test
-    public void shouldReturnError() {
-        assertThrows(DynamicQueryException.class, () -> personRepository.findByName("Ada"));
     }
 
 
