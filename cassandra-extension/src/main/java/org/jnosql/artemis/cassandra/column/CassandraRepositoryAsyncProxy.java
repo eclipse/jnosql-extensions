@@ -18,7 +18,6 @@ import org.jnosql.artemis.RepositoryAsync;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
-import java.lang.reflect.ParameterizedType;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Consumer;
@@ -35,8 +34,6 @@ class CassandraRepositoryAsyncProxy<T> implements InvocationHandler {
     private static final Consumer NOOP = t -> {
     };
 
-    private final Class<T> typeClass;
-
     private final CassandraTemplateAsync templateAsync;
 
     private RepositoryAsync<?, ?> repositoryAsync;
@@ -44,8 +41,6 @@ class CassandraRepositoryAsyncProxy<T> implements InvocationHandler {
 
     CassandraRepositoryAsyncProxy(CassandraTemplateAsync repository, Class<?> repositoryType, RepositoryAsync<?, ?> repositoryAsync) {
         this.templateAsync = repository;
-        this.typeClass = Class.class.cast(ParameterizedType.class.cast(repositoryType.getGenericInterfaces()[0])
-                .getActualTypeArguments()[0]);
         this.repositoryAsync = repositoryAsync;
     }
 
