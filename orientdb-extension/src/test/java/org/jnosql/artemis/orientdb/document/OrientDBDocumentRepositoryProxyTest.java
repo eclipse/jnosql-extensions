@@ -58,7 +58,6 @@ public class OrientDBDocumentRepositoryProxyTest {
                 new Class[]{PersonRepository.class},
                 handler);
     }
-git
 
     @Test
     public void shouldFindAll() {

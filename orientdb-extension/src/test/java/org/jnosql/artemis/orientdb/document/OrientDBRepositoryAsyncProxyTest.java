@@ -14,7 +14,6 @@
  */
 package org.jnosql.artemis.orientdb.document;
 
-import org.jnosql.artemis.DynamicQueryException;
 import org.jnosql.artemis.document.DocumentRepositoryAsyncProducer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -29,7 +28,6 @@ import java.util.Map;
 import java.util.function.Consumer;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(CDIExtension.class)
@@ -55,13 +53,6 @@ public class OrientDBRepositoryAsyncProxyTest {
         personRepository = (PersonAsyncRepository) Proxy.newProxyInstance(PersonAsyncRepository.class.getClassLoader(),
                 new Class[]{PersonAsyncRepository.class},
                 handler);
-    }
-
-
-
-    @Test
-    public void shouldReturnError() {
-        assertThrows(DynamicQueryException.class, () -> personRepository.findByName("Ada"));
     }
 
 
