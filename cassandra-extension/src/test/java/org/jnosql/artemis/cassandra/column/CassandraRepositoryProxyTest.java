@@ -67,20 +67,14 @@ public class CassandraRepositoryProxyTest {
 
     @Test
     public void shouldFindByName() {
-        ConsistencyLevel level = ConsistencyLevel.ANY;
-        when(template.save(Mockito.any(Person.class), Mockito.eq(level))).thenReturn(new Person());
-        ArgumentCaptor<Person> captor = ArgumentCaptor.forClass(Person.class);
-        personRepository.findByName("Ada", level);
-        verify(template).find(Mockito.any(ColumnQuery.class), Mockito.eq(level));
+        personRepository.findByName("Ada");
+        verify(template).cql("select * from Person where name = ?", "Ada");
     }
 
     @Test
     public void shouldDeleteByName() {
-        ConsistencyLevel level = ConsistencyLevel.ANY;
-        when(template.save(Mockito.any(Person.class), Mockito.eq(level))).thenReturn(new Person());
-        ArgumentCaptor<Person> captor = ArgumentCaptor.forClass(Person.class);
-        personRepository.deleteByName("Ada", level);
-        verify(template).delete(Mockito.any(ColumnDeleteQuery.class), Mockito.eq(level));
+        personRepository.deleteByName("Ada");
+        verify(template).delete(Mockito.any(ColumnDeleteQuery.class));
     }
 
     @Test
@@ -107,9 +101,7 @@ public class CassandraRepositoryProxyTest {
 
     interface PersonRepository extends CassandraRepository<Person, String> {
 
-        Person findByName(String name, ConsistencyLevel level);
-
-        void deleteByName(String name, ConsistencyLevel level);
+        void deleteByName(String namel);
 
         @CQL("select * from Person")
         List<Person> findAll();
