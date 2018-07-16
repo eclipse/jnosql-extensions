@@ -15,50 +15,34 @@
 package org.jnosql.artemis.hazelcast.key;
 
 import org.jnosql.artemis.Repository;
-import org.jnosql.artemis.key.KeyValueTemplate;
-import org.jnosql.artemis.key.query.AbstractKeyValueRepository;
-import org.jnosql.artemis.key.query.AbstractKeyValueRepositoryProxy;
 
+import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Objects;
 
-class HazelcastRepositoryProxy<T> extends AbstractKeyValueRepositoryProxy<T> {
+class HazelcastRepositoryProxy<T> implements InvocationHandler {
 
     private final HazelcastTemplate template;
 
-    private final CrudRepository repository;
+    private final Repository<?,?> repository;
 
     private final Class<T> typeClass;
 
 
-    HazelcastRepositoryProxy(HazelcastTemplate template, Class<?> repositoryType) {
+    HazelcastRepositoryProxy(HazelcastTemplate template, Class<?> repositoryType, Repository<?,?> repository) {
         this.template = template;
         this.typeClass = Class.class.cast(ParameterizedType.class.cast(repositoryType.getGenericInterfaces()[0])
                 .getActualTypeArguments()[0]);
-        this.repository = new CrudRepository(typeClass, template);
+        this.repository = repository;
     }
 
 
-    @Override
-    protected Repository getRepository() {
-        return repository;
-    }
 
     @Override
-    protected KeyValueTemplate getTemplate() {
-        return template;
-    }
-
-    @Override
-    protected Class<T> getEntityClass() {
-        return typeClass;
-    }
-
-    @Override
-    public Object invoke(Object o, Method method, Object[] args) throws Throwable {
+    public Object invoke(Object instance, Method method, Object[] args) throws Throwable {
 
         Query query = method.getAnnotation(Query.class);
         if (Objects.nonNull(query)) {
@@ -71,22 +55,7 @@ class HazelcastRepositoryProxy<T> extends AbstractKeyValueRepositoryProxy<T> {
             }
             return ReturnTypeConverterUtil.returnObject(result, method, typeClass);
         }
-        return super.invoke(o, method, args);
+        return method.invoke(repository, args);
     }
 
-    class CrudRepository extends AbstractKeyValueRepository {
-
-        private final HazelcastTemplate template;
-
-        CrudRepository(Class typeClass, HazelcastTemplate template) {
-            super(typeClass);
-            this.template = template;
-        }
-
-
-        @Override
-        protected KeyValueTemplate getTemplate() {
-            return template;
-        }
-    }
 }

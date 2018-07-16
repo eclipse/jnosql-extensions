@@ -26,7 +26,7 @@ public class HazelcastExtensionTest {
     private PersonRepository personRepository;
 
     @Test
-    public void shouldSaveOrientDB() {
+    public void shouldSave() {
         Person person = new Person("Ada", 10);
         personRepository.deleteById(person.getName());
     }

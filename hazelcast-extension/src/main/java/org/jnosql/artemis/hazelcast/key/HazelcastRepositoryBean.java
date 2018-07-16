@@ -14,6 +14,9 @@
  */
 package org.jnosql.artemis.hazelcast.key;
 
+import org.jnosql.artemis.Repository;
+import org.jnosql.artemis.key.KeyValueRepositoryProducer;
+
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.spi.CreationalContext;
 import javax.enterprise.inject.Default;
@@ -65,7 +68,9 @@ class HazelcastRepositoryBean implements Bean<HazelcastRepository>, PassivationC
     public HazelcastRepository create(CreationalContext<HazelcastRepository> creationalContext) {
         HazelcastTemplate template = getInstance(HazelcastTemplate.class);
 
-        HazelcastRepositoryProxy handler = new HazelcastRepositoryProxy(template, type);
+        KeyValueRepositoryProducer producer = getInstance(KeyValueRepositoryProducer.class);
+        Repository<?, ?> repository = producer.get((Class<Repository<Object, Object>>) type, template);
+        HazelcastRepositoryProxy handler = new HazelcastRepositoryProxy(template, type, repository);
         return (HazelcastRepository) Proxy.newProxyInstance(type.getClassLoader(),
                 new Class[]{type},
                 handler);
