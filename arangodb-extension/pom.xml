@@ -67,8 +67,6 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compile.targetLevel>1.8</maven.compile.targetLevel>
         <maven.compile.sourceLevel>1.8</maven.compile.sourceLevel>
-        <json.b.version>1.0</json.b.version>
-        <javax.json.version>1.1</javax.json.version>
     </properties>
 
     <dependencies>
