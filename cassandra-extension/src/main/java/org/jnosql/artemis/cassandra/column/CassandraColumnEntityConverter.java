@@ -22,7 +22,6 @@ import org.jnosql.artemis.column.ColumnFieldValue;
 import org.jnosql.artemis.reflection.ClassRepresentations;
 import org.jnosql.artemis.reflection.FieldRepresentation;
 import org.jnosql.artemis.reflection.GenericFieldRepresentation;
-import org.jnosql.artemis.reflection.Reflections;
 import org.jnosql.diana.api.column.Column;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -44,20 +43,12 @@ class CassandraColumnEntityConverter extends AbstractColumnEntityConverter imple
     private ClassRepresentations classRepresentations;
 
     @Inject
-    private Reflections reflections;
-
-    @Inject
     private Converters converters;
 
 
     @Override
     protected ClassRepresentations getClassRepresentations() {
         return classRepresentations;
-    }
-
-    @Override
-    protected Reflections getReflections() {
-        return reflections;
     }
 
     @Override
@@ -90,17 +81,18 @@ class CassandraColumnEntityConverter extends AbstractColumnEntityConverter imple
                     Object element = toEntity(genericField.getElementType(), columnList);
                     collection.add(element);
                 }
-                reflections.setValue(instance, field.getNativeField(), collection);
+                field.write(instance, collection);
             } else {
                 Object value = toEntity(field.getNativeField().getType(), (List<Column>) columns);
-                reflections.setValue(instance, field.getNativeField(), value);
+                field.write(instance, value);
             }
         }
     }
 
     @Override
     protected ColumnFieldValue to(FieldRepresentation field, Object entityInstance) {
-        Object value = reflections.getValue(entityInstance, field.getNativeField());
+
+        Object value = field.read(entityInstance);
         UDT annotation = field.getNativeField().getAnnotation(UDT.class);
         if (Objects.isNull(annotation)) {
             return super.to(field, entityInstance);
