@@ -22,7 +22,7 @@ import org.jnosql.artemis.column.AbstractColumnTemplate;
 import org.jnosql.artemis.column.ColumnEntityConverter;
 import org.jnosql.artemis.column.ColumnEventPersistManager;
 import org.jnosql.artemis.column.ColumnWorkflow;
-import org.jnosql.artemis.reflection.ClassRepresentations;
+import org.jnosql.artemis.reflection.ClassMappings;
 import org.jnosql.diana.api.column.ColumnDeleteQuery;
 import org.jnosql.diana.api.column.ColumnEntity;
 import org.jnosql.diana.api.column.ColumnFamilyManager;
@@ -52,7 +52,7 @@ class DefaultCassandraTemplate extends AbstractColumnTemplate implements Cassand
 
     private ColumnEventPersistManager persistManager;
 
-    private ClassRepresentations classRepresentations;
+    private ClassMappings mappings;
 
     private Converters converters;
 
@@ -61,13 +61,13 @@ class DefaultCassandraTemplate extends AbstractColumnTemplate implements Cassand
                              CassandraColumnEntityConverter converter,
                              CassandraColumnWorkflow flow,
                              ColumnEventPersistManager persistManager,
-                             ClassRepresentations classRepresentations,
+                             ClassMappings mappings,
                              Converters converters) {
         this.manager = manager;
         this.converter = converter;
         this.flow = flow;
         this.persistManager = persistManager;
-        this.classRepresentations = classRepresentations;
+        this.mappings = mappings;
         this.converters = converters;
     }
 
@@ -96,8 +96,8 @@ class DefaultCassandraTemplate extends AbstractColumnTemplate implements Cassand
     }
 
     @Override
-    protected ClassRepresentations getClassRepresentations() {
-        return classRepresentations;
+    protected ClassMappings getClassMappings() {
+        return mappings;
     }
 
     @Override

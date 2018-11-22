@@ -21,7 +21,7 @@ import org.jnosql.artemis.Converters;
 import org.jnosql.artemis.document.DocumentEntityConverter;
 import org.jnosql.artemis.document.DocumentEventPersistManager;
 import org.jnosql.artemis.document.DocumentWorkflow;
-import org.jnosql.artemis.reflection.ClassRepresentations;
+import org.jnosql.artemis.reflection.ClassMappings;
 import org.jnosql.diana.api.document.Document;
 import org.jnosql.diana.api.document.DocumentEntity;
 import org.jnosql.diana.couchbase.document.CouchbaseDocumentCollectionManager;
@@ -54,7 +54,7 @@ public class DefaultCouchbaseTemplateTest {
     private DocumentEventPersistManager persistManager;
 
     @Inject
-    private ClassRepresentations classRepresentations;
+    private ClassMappings mappings;
 
     @Inject
     private Converters converters;
@@ -69,7 +69,7 @@ public class DefaultCouchbaseTemplateTest {
         manager = Mockito.mock(CouchbaseDocumentCollectionManager.class);
         Instance instance = Mockito.mock(Instance.class);
         when(instance.get()).thenReturn(manager);
-        template = new DefaultCouchbaseTemplate(instance, converter, flow, persistManager, classRepresentations, converters);
+        template = new DefaultCouchbaseTemplate(instance, converter, flow, persistManager, mappings, converters);
 
         DocumentEntity entity = DocumentEntity.of("Person");
         entity.add(Document.of("_id", "Ada"));

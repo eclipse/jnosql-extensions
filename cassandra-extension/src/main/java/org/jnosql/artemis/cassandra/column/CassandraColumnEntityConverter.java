@@ -19,9 +19,9 @@ import org.jnosql.artemis.Converters;
 import org.jnosql.artemis.column.AbstractColumnEntityConverter;
 import org.jnosql.artemis.column.ColumnEntityConverter;
 import org.jnosql.artemis.column.ColumnFieldValue;
-import org.jnosql.artemis.reflection.ClassRepresentations;
-import org.jnosql.artemis.reflection.FieldRepresentation;
-import org.jnosql.artemis.reflection.GenericFieldRepresentation;
+import org.jnosql.artemis.reflection.ClassMappings;
+import org.jnosql.artemis.reflection.FieldMapping;
+import org.jnosql.artemis.reflection.GenericFieldMapping;
 import org.jnosql.diana.api.column.Column;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -40,15 +40,15 @@ import java.util.stream.StreamSupport;
 class CassandraColumnEntityConverter extends AbstractColumnEntityConverter implements ColumnEntityConverter {
 
     @Inject
-    private ClassRepresentations classRepresentations;
+    private ClassMappings mappings;
 
     @Inject
     private Converters converters;
 
 
     @Override
-    protected ClassRepresentations getClassRepresentations() {
-        return classRepresentations;
+    protected ClassMappings getClassMappings() {
+        return mappings;
     }
 
     @Override
@@ -57,9 +57,9 @@ class CassandraColumnEntityConverter extends AbstractColumnEntityConverter imple
     }
 
     @Override
-    protected <T> Consumer<String> feedObject(T instance, List<Column> columns, Map<String, FieldRepresentation> fieldsGroupByName) {
+    protected <T> Consumer<String> feedObject(T instance, List<Column> columns, Map<String, FieldMapping> fieldsGroupByName) {
         return k -> {
-            FieldRepresentation field = fieldsGroupByName.get(k);
+            FieldMapping field = fieldsGroupByName.get(k);
             if (Objects.nonNull(field.getNativeField().getAnnotation(UDT.class))) {
                 Optional<Column> column = columns.stream().filter(c -> c.getName().equals(k)).findFirst();
                 setUDTField(instance, column, field);
@@ -69,12 +69,12 @@ class CassandraColumnEntityConverter extends AbstractColumnEntityConverter imple
         };
     }
 
-    private <T> void setUDTField(T instance, Optional<Column> column, FieldRepresentation field) {
+    private <T> void setUDTField(T instance, Optional<Column> column, FieldMapping field) {
         if (column.isPresent() && org.jnosql.diana.cassandra.column.UDT.class.isInstance(column.get())) {
             org.jnosql.diana.cassandra.column.UDT udt = org.jnosql.diana.cassandra.column.UDT.class.cast(column.get());
             Object columns = udt.get();
             if (StreamSupport.stream(Iterable.class.cast(columns).spliterator(), false).allMatch(Iterable.class::isInstance)) {
-                GenericFieldRepresentation genericField = GenericFieldRepresentation.class.cast(field);
+                GenericFieldMapping genericField = GenericFieldMapping.class.cast(field);
                 Collection collection = genericField.getCollectionInstance();
                 List<List<Column>> embeddable = (List<List<Column>>) columns;
                 for (List<Column> columnList : embeddable) {
@@ -90,7 +90,7 @@ class CassandraColumnEntityConverter extends AbstractColumnEntityConverter imple
     }
 
     @Override
-    protected ColumnFieldValue to(FieldRepresentation field, Object entityInstance) {
+    protected ColumnFieldValue to(FieldMapping field, Object entityInstance) {
 
         Object value = field.read(entityInstance);
         UDT annotation = field.getNativeField().getAnnotation(UDT.class);

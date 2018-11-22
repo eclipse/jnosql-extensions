@@ -18,7 +18,7 @@ import com.datastax.driver.core.ConsistencyLevel;
 import com.datastax.driver.core.Statement;
 import com.datastax.driver.core.querybuilder.QueryBuilder;
 import org.jnosql.artemis.Converters;
-import org.jnosql.artemis.reflection.ClassRepresentations;
+import org.jnosql.artemis.reflection.ClassMappings;
 import org.jnosql.diana.api.column.Column;
 import org.jnosql.diana.api.column.ColumnDeleteQuery;
 import org.jnosql.diana.api.column.ColumnEntity;
@@ -51,7 +51,7 @@ public class DefaultCassandraTemplateAsyncTest {
     private CassandraColumnEntityConverter converter;
 
     @Inject
-    private ClassRepresentations classRepresentations;
+    private ClassMappings mappings;
 
     @Inject
     private Converters converters;
@@ -65,7 +65,7 @@ public class DefaultCassandraTemplateAsyncTest {
         managerAsync = Mockito.mock(CassandraColumnFamilyManagerAsync.class);
         Instance instance = Mockito.mock(Instance.class);
         Mockito.when(instance.get()).thenReturn(managerAsync);
-        templateAsync = new DefaultCassandraTemplateAsync(converter, instance, classRepresentations, converters);
+        templateAsync = new DefaultCassandraTemplateAsync(converter, instance, mappings, converters);
     }
 
     @Test

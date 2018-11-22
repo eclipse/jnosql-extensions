@@ -17,7 +17,7 @@ package org.jnosql.artemis.elasticsearch.document;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.jnosql.artemis.Converters;
 import org.jnosql.artemis.document.DocumentEntityConverter;
-import org.jnosql.artemis.reflection.ClassRepresentations;
+import org.jnosql.artemis.reflection.ClassMappings;
 import org.jnosql.diana.api.document.Document;
 import org.jnosql.diana.api.document.DocumentEntity;
 import org.jnosql.diana.elasticsearch.document.ElasticsearchDocumentCollectionManagerAsync;
@@ -48,7 +48,7 @@ public class DefaultElasticsearchTemplateAsyncTest {
     private DefaultElasticsearchTemplateAsync templateAsync;
 
     @Inject
-    private ClassRepresentations classRepresentations;
+    private ClassMappings mappings;
 
     @Inject
     private Converters converters;
@@ -60,7 +60,7 @@ public class DefaultElasticsearchTemplateAsyncTest {
         Instance instance = Mockito.mock(Instance.class);
         when(instance.get()).thenReturn(managerAsync);
 
-        templateAsync = new DefaultElasticsearchTemplateAsync(converter, instance, classRepresentations, converters);
+        templateAsync = new DefaultElasticsearchTemplateAsync(converter, instance, mappings, converters);
 
         DocumentEntity entity = DocumentEntity.of("Person");
         entity.add(Document.of("name", "Ada"));
@@ -93,9 +93,9 @@ public class DefaultElasticsearchTemplateAsyncTest {
     }
 
     @Test
-    public void shouldGetClassRepresentation() {
-        assertNotNull(templateAsync.getClassRepresentations());
-        assertEquals(classRepresentations, templateAsync.getClassRepresentations());
+    public void shouldGetClassMapping() {
+        assertNotNull(templateAsync.getClassMappings());
+        assertEquals(mappings, templateAsync.getClassMappings());
     }
 
     @Test

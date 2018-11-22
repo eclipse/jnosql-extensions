@@ -17,7 +17,7 @@ package org.jnosql.artemis.cassandra.column;
 import org.jnosql.artemis.Converters;
 import org.jnosql.artemis.column.ColumnEntityConverter;
 import org.jnosql.artemis.column.ColumnFieldValue;
-import org.jnosql.artemis.reflection.FieldRepresentation;
+import org.jnosql.artemis.reflection.FieldMapping;
 import org.jnosql.diana.api.column.Column;
 import org.jnosql.diana.cassandra.column.UDT;
 
@@ -34,10 +34,10 @@ class CassandraUDTType implements ColumnFieldValue {
 
     private final Object value;
 
-    private final FieldRepresentation field;
+    private final FieldMapping field;
 
 
-    CassandraUDTType(String type, Object value, FieldRepresentation field) {
+    CassandraUDTType(String type, Object value, FieldMapping field) {
         this.value = value;
         this.type = type;
         this.field = Objects.requireNonNull(field, "field is required");
@@ -49,7 +49,7 @@ class CassandraUDTType implements ColumnFieldValue {
     }
 
     @Override
-    public FieldRepresentation getField() {
+    public FieldMapping getField() {
         return field;
     }
 

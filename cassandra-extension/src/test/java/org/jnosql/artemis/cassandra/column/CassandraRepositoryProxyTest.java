@@ -14,11 +14,8 @@
  */
 package org.jnosql.artemis.cassandra.column;
 
-import com.datastax.driver.core.ConsistencyLevel;
 import org.jnosql.artemis.column.ColumnRepositoryProducer;
-import org.jnosql.artemis.reflection.ClassRepresentations;
 import org.jnosql.diana.api.column.ColumnDeleteQuery;
-import org.jnosql.diana.api.column.ColumnQuery;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

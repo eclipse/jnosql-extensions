@@ -19,11 +19,10 @@ import org.jnosql.artemis.Converters;
 import org.jnosql.artemis.document.DocumentEntityConverter;
 import org.jnosql.artemis.document.DocumentEventPersistManager;
 import org.jnosql.artemis.document.DocumentWorkflow;
-import org.jnosql.artemis.reflection.ClassRepresentations;
+import org.jnosql.artemis.reflection.ClassMappings;
 import org.jnosql.diana.api.document.Document;
 import org.jnosql.diana.api.document.DocumentEntity;
 import org.jnosql.diana.elasticsearch.document.ElasticsearchDocumentCollectionManager;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -56,7 +55,7 @@ public class DefaultElasticsearchTemplateTest {
     private DocumentEventPersistManager persistManager;
 
     @Inject
-    private ClassRepresentations classRepresentations;
+    private ClassMappings mappings;
 
     @Inject
     private Converters converters;
@@ -71,7 +70,7 @@ public class DefaultElasticsearchTemplateTest {
         manager = Mockito.mock(ElasticsearchDocumentCollectionManager.class);
         Instance instance = Mockito.mock(Instance.class);
         when(instance.get()).thenReturn(manager);
-        template = new DefaultElasticsearchTemplate(instance, converter, flow, persistManager, classRepresentations, converters);
+        template = new DefaultElasticsearchTemplate(instance, converter, flow, persistManager, mappings, converters);
 
         DocumentEntity entity = DocumentEntity.of("Person");
         entity.add(Document.of("name", "Ada"));
@@ -117,9 +116,9 @@ public class DefaultElasticsearchTemplateTest {
 
 
     @Test
-    public void shouldGetClassRepresentations() {
-        assertNotNull(template.getClassRepresentations());
-        assertEquals(classRepresentations, template.getClassRepresentations());
+    public void shouldGetClassMappings() {
+        assertNotNull(template.getClassMappings());
+        assertEquals(mappings, template.getClassMappings());
     }
 
     @Test

@@ -18,7 +18,7 @@ import com.couchbase.client.java.document.json.JsonObject;
 import com.couchbase.client.java.query.Statement;
 import org.jnosql.artemis.Converters;
 import org.jnosql.artemis.document.DocumentEntityConverter;
-import org.jnosql.artemis.reflection.ClassRepresentations;
+import org.jnosql.artemis.reflection.ClassMappings;
 import org.jnosql.diana.api.document.Document;
 import org.jnosql.diana.api.document.DocumentEntity;
 import org.jnosql.diana.couchbase.document.CouchbaseDocumentCollectionManagerAsync;
@@ -45,7 +45,7 @@ public class DefaultCouchbaseTemplateAsyncTest {
     private CouchbaseTemplateAsync templateAsync;
 
     @Inject
-    private ClassRepresentations classRepresentations;
+    private ClassMappings mappings;
 
     @Inject
     private Converters converters;
@@ -57,7 +57,7 @@ public class DefaultCouchbaseTemplateAsyncTest {
         Instance instance = Mockito.mock(Instance.class);
         when(instance.get()).thenReturn(managerAsync);
 
-        templateAsync = new DefaultCouchbaseTemplateAsync(converter, instance, classRepresentations, converters);
+        templateAsync = new DefaultCouchbaseTemplateAsync(converter, instance, mappings, converters);
 
         DocumentEntity entity = DocumentEntity.of("Person");
         entity.add(Document.of("name", "Ada"));

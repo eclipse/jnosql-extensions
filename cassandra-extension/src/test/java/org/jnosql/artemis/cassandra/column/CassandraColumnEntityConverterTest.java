@@ -25,7 +25,7 @@ import org.jnosql.artemis.cassandra.column.model.Job;
 import org.jnosql.artemis.cassandra.column.model.Money;
 import org.jnosql.artemis.cassandra.column.model.Movie;
 import org.jnosql.artemis.cassandra.column.model.Worker;
-import org.jnosql.artemis.reflection.ClassRepresentations;
+import org.jnosql.artemis.reflection.ClassMappings;
 import org.jnosql.diana.api.TypeReference;
 import org.jnosql.diana.api.Value;
 import org.jnosql.diana.api.column.Column;
@@ -66,9 +66,6 @@ public class CassandraColumnEntityConverterTest {
 
     @Inject
     private CassandraColumnEntityConverter converter;
-
-    @Inject
-    private ClassRepresentations classRepresentations;
 
     private Column[] columns;
 

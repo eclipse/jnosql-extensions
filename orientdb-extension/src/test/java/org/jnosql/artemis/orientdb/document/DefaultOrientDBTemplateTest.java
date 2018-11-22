@@ -18,7 +18,7 @@ import org.jnosql.artemis.Converters;
 import org.jnosql.artemis.document.DocumentEntityConverter;
 import org.jnosql.artemis.document.DocumentEventPersistManager;
 import org.jnosql.artemis.document.DocumentWorkflow;
-import org.jnosql.artemis.reflection.ClassRepresentations;
+import org.jnosql.artemis.reflection.ClassMappings;
 import org.jnosql.diana.api.document.Document;
 import org.jnosql.diana.api.document.DocumentEntity;
 import org.jnosql.diana.api.document.DocumentQuery;
@@ -55,7 +55,7 @@ public class DefaultOrientDBTemplateTest {
     private DocumentEventPersistManager persistManager;
 
     @Inject
-    private ClassRepresentations classRepresentations;
+    private ClassMappings mappings;
 
     @Inject
     private Converters converters;
@@ -70,7 +70,7 @@ public class DefaultOrientDBTemplateTest {
         manager = Mockito.mock(OrientDBDocumentCollectionManager.class);
         Instance instance = Mockito.mock(Instance.class);
         when(instance.get()).thenReturn(manager);
-        template = new DefaultOrientDBTemplate(instance, converter, flow, persistManager, classRepresentations, converters);
+        template = new DefaultOrientDBTemplate(instance, converter, flow, persistManager, mappings, converters);
 
         DocumentEntity entity = DocumentEntity.of("Person");
         entity.add(Document.of("name", "Ada"));

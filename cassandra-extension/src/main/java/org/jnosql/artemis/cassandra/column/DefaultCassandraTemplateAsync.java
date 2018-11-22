@@ -19,7 +19,7 @@ import com.datastax.driver.core.Statement;
 import org.jnosql.artemis.Converters;
 import org.jnosql.artemis.column.AbstractColumnTemplateAsync;
 import org.jnosql.artemis.column.ColumnEntityConverter;
-import org.jnosql.artemis.reflection.ClassRepresentations;
+import org.jnosql.artemis.reflection.ClassMappings;
 import org.jnosql.diana.api.column.ColumnDeleteQuery;
 import org.jnosql.diana.api.column.ColumnEntity;
 import org.jnosql.diana.api.column.ColumnFamilyManagerAsync;
@@ -50,7 +50,7 @@ class DefaultCassandraTemplateAsync extends AbstractColumnTemplateAsync
 
     private Instance<CassandraColumnFamilyManagerAsync> managerAsync;
 
-    private ClassRepresentations classRepresentations;
+    private ClassMappings mappings;
 
     private Converters converters;
 
@@ -60,10 +60,10 @@ class DefaultCassandraTemplateAsync extends AbstractColumnTemplateAsync
     @Inject
     DefaultCassandraTemplateAsync(CassandraColumnEntityConverter converter,
                                   Instance<CassandraColumnFamilyManagerAsync> managerAsync,
-                                  ClassRepresentations classRepresentations, Converters converters) {
+                                  ClassMappings mappings, Converters converters) {
         this.converter = converter;
         this.managerAsync = managerAsync;
-        this.classRepresentations = classRepresentations;
+        this.mappings = mappings;
         this.converters = converters;
     }
 
@@ -78,8 +78,8 @@ class DefaultCassandraTemplateAsync extends AbstractColumnTemplateAsync
     }
 
     @Override
-    protected ClassRepresentations getClassRepresentations() {
-        return classRepresentations;
+    protected ClassMappings getClassMappings() {
+        return mappings;
     }
 
     @Override

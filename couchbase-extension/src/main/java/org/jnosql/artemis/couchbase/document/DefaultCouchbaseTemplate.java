@@ -23,7 +23,7 @@ import org.jnosql.artemis.document.AbstractDocumentTemplate;
 import org.jnosql.artemis.document.DocumentEntityConverter;
 import org.jnosql.artemis.document.DocumentEventPersistManager;
 import org.jnosql.artemis.document.DocumentWorkflow;
-import org.jnosql.artemis.reflection.ClassRepresentations;
+import org.jnosql.artemis.reflection.ClassMappings;
 import org.jnosql.diana.api.document.DocumentCollectionManager;
 import org.jnosql.diana.couchbase.document.CouchbaseDocumentCollectionManager;
 
@@ -50,7 +50,7 @@ class DefaultCouchbaseTemplate extends AbstractDocumentTemplate
 
     private DocumentEventPersistManager persistManager;
 
-    private ClassRepresentations classRepresentations;
+    private ClassMappings mappings;
 
     private Converters converters;
 
@@ -58,13 +58,13 @@ class DefaultCouchbaseTemplate extends AbstractDocumentTemplate
     DefaultCouchbaseTemplate(Instance<CouchbaseDocumentCollectionManager> manager,
                              DocumentEntityConverter converter, DocumentWorkflow flow,
                              DocumentEventPersistManager persistManager,
-                             ClassRepresentations classRepresentations,
+                             ClassMappings mappings,
                              Converters converters) {
         this.manager = manager;
         this.converter = converter;
         this.flow = flow;
         this.persistManager = persistManager;
-        this.classRepresentations = classRepresentations;
+        this.mappings = mappings;
         this.converters = converters;
     }
 
@@ -92,8 +92,8 @@ class DefaultCouchbaseTemplate extends AbstractDocumentTemplate
     }
 
     @Override
-    protected ClassRepresentations getClassRepresentations() {
-        return classRepresentations;
+    protected ClassMappings getClassMappings() {
+        return mappings;
     }
 
     @Override
