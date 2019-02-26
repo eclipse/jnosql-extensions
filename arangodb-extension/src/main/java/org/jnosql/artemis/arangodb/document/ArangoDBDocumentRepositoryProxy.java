@@ -16,6 +16,7 @@ package org.jnosql.artemis.arangodb.document;
 
 
 import org.jnosql.artemis.Repository;
+import org.jnosql.artemis.reflection.DynamicReturn;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -25,6 +26,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import static java.util.Collections.emptyMap;
+import static org.jnosql.artemis.reflection.DynamicReturn.toSingleResult;
 
 class ArangoDBDocumentRepositoryProxy<T> implements InvocationHandler {
 
@@ -55,7 +57,13 @@ class ArangoDBDocumentRepositoryProxy<T> implements InvocationHandler {
             } else {
                 result = template.aql(aql.value(), params);
             }
-            return ReturnTypeConverterUtil.returnObject(result, typeClass, method);
+
+            return DynamicReturn.builder()
+                    .withClassSource(typeClass)
+                    .withMethodSource(method).withList(() -> result)
+                    .withSingleResult(toSingleResult(method).apply(() -> result))
+                    .build().execute();
+
         }
         return method.invoke(repository, args);
     }

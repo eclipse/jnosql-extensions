@@ -16,6 +16,7 @@ package org.jnosql.artemis.cassandra.column;
 
 
 import org.jnosql.artemis.Repository;
+import org.jnosql.artemis.reflection.DynamicReturn;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -25,6 +26,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import static org.jnosql.artemis.cassandra.column.CQLObjectUtil.getValues;
+import static org.jnosql.artemis.reflection.DynamicReturn.toSingleResult;
 
 class CassandraRepositoryProxy<T> implements InvocationHandler {
 
@@ -60,7 +62,11 @@ class CassandraRepositoryProxy<T> implements InvocationHandler {
             } else {
                 result = template.cql(cql.value(), args);
             }
-            return CassandraReturnTypeConverterUtil.returnObject(result, typeClass, method);
+            return DynamicReturn.builder()
+                    .withClassSource(typeClass)
+                    .withMethodSource(method).withList(() -> result)
+                    .withSingleResult(toSingleResult(method).apply(() -> result))
+                    .build().execute();
         }
 
         return method.invoke(repository, args);
