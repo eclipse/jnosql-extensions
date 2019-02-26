@@ -24,10 +24,9 @@ import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
-import java.util.function.Supplier;
 
 import static org.jnosql.artemis.couchbase.document.JsonObjectUtil.getParams;
+import static org.jnosql.artemis.reflection.DynamicReturn.toSingleResult;
 
 class CouchbaseocumentRepositoryProxy<T> implements InvocationHandler {
 
@@ -35,16 +34,15 @@ class CouchbaseocumentRepositoryProxy<T> implements InvocationHandler {
 
     private final CouchbaseTemplate template;
 
-    private final Repository<?,?> repository;
+    private final Repository<?, ?> repository;
 
 
-    CouchbaseocumentRepositoryProxy(CouchbaseTemplate template,Class<?> repositoryType, Repository<?,?> repository) {
+    CouchbaseocumentRepositoryProxy(CouchbaseTemplate template, Class<?> repositoryType, Repository<?, ?> repository) {
         this.template = template;
         this.typeClass = Class.class.cast(ParameterizedType.class.cast(repositoryType.getGenericInterfaces()[0])
                 .getActualTypeArguments()[0]);
         this.repository = repository;
     }
-
 
 
     @Override
@@ -60,16 +58,11 @@ class CouchbaseocumentRepositoryProxy<T> implements InvocationHandler {
                 result = template.n1qlQuery(n1QL.value(), params);
             }
 
-            Supplier<List<?>> querySupplier = () -> result;
-            Supplier<Optional<?>> singleResultSupplier =
-                    DynamicReturn.toSingleResult(method).apply(querySupplier);
-
-            DynamicReturn<?> dynamicReturn = DynamicReturn.builder()
+            return DynamicReturn.builder()
                     .withClassSource(typeClass)
-                    .withMethodSource(method).withList(querySupplier)
-                    .withSingleResult(singleResultSupplier)
-                    .build();
-            return dynamicReturn.execute();
+                    .withMethodSource(method).withList(() -> result)
+                    .withSingleResult(toSingleResult(method).apply(() -> result))
+                    .build().execute();
         }
         return method.invoke(repository, args);
     }
