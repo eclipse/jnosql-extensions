@@ -19,7 +19,9 @@ import org.jnosql.artemis.RepositoryAsync;
 
 /**
  * The couchbase {@link RepositoryAsync}
- * @param <T>
+ *
+ * @param <T> the entity type
+ * @param <I> the entity id type
  */
-public interface CouchbaseRepositoryAsync<T, ID> extends RepositoryAsync<T, ID> {
+public interface CouchbaseRepositoryAsync<T, I> extends RepositoryAsync<T, I> {
 }
