@@ -16,6 +16,7 @@ package org.jnosql.artemis.orientdb.document;
 
 
 import org.jnosql.artemis.Repository;
+import org.jnosql.artemis.reflection.DynamicReturn;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -23,6 +24,8 @@ import java.lang.reflect.ParameterizedType;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+
+import static org.jnosql.artemis.reflection.DynamicReturn.toSingleResult;
 
 class OrientDBDocumentRepositoryProxy<T> implements InvocationHandler {
 
@@ -33,13 +36,12 @@ class OrientDBDocumentRepositoryProxy<T> implements InvocationHandler {
     private final Repository<?, ?> repository;
 
 
-    OrientDBDocumentRepositoryProxy(OrientDBTemplate template,Class<?> repositoryType,Repository<?, ?> repository){
+    OrientDBDocumentRepositoryProxy(OrientDBTemplate template, Class<?> repositoryType, Repository<?, ?> repository) {
         this.template = template;
         this.typeClass = Class.class.cast(ParameterizedType.class.cast(repositoryType.getGenericInterfaces()[0])
                 .getActualTypeArguments()[0]);
         this.repository = repository;
     }
-
 
 
     @Override
@@ -59,7 +61,11 @@ class OrientDBDocumentRepositoryProxy<T> implements InvocationHandler {
                     result = template.sql(sql.value(), params);
                 }
             }
-            return ReturnTypeConverterUtil.returnObject(result, typeClass, method);
+            return DynamicReturn.builder()
+                    .withClassSource(typeClass)
+                    .withMethodSource(method).withList(() -> result)
+                    .withSingleResult(toSingleResult(method).apply(() -> result))
+                    .build().execute();
         }
         return method.invoke(repository, args);
     }
