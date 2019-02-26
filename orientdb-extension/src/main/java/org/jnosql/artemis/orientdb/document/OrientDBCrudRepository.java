@@ -21,7 +21,7 @@ import org.jnosql.artemis.Repository;
  * The OrientDB {@link Repository}
  *
  * @param <T>  the entity type
- * @param <ID> the entity id type
+ * @param <I> the entity id type
  */
-public interface OrientDBCrudRepository<T, ID> extends Repository<T, ID> {
+public interface OrientDBCrudRepository<T, I> extends Repository<T, I> {
 }

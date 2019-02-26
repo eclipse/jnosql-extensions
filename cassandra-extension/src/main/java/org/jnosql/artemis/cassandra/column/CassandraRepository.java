@@ -17,6 +17,11 @@ package org.jnosql.artemis.cassandra.column;
 
 import org.jnosql.artemis.Repository;
 
-public interface CassandraRepository<T, ID> extends Repository<T, ID> {
+/**
+ * The Cassandra {@link Repository}
+ *  * @param <T> the entity type
+ *  * @param <I> the id entity type
+ */
+public interface CassandraRepository<T, I> extends Repository<T, I> {
 
 }

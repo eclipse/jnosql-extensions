@@ -19,7 +19,8 @@ import org.jnosql.artemis.Repository;
 
 /**
  * The arangodb {@link Repository}
- * @param <T>
+ * @param <T> the entity type
+ * @param <I> the id entity type
  */
-public interface ArangoDBRepository<T, ID> extends Repository<T, ID> {
+public interface ArangoDBRepository<T, I> extends Repository<T, I> {
 }

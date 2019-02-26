@@ -18,9 +18,11 @@ package org.jnosql.artemis.cassandra.column;
 import org.jnosql.artemis.RepositoryAsync;
 
 /**
- * A Cassandra extension of {@link RepositoryAsync}
+ * The Cassandra {@link RepositoryAsync}
+ *  * @param <T> the entity type
+ *  * @param <I> the id entity type
  */
-public interface CassandraRepositoryAsync<T, ID> extends RepositoryAsync<T, ID> {
+public interface CassandraRepositoryAsync<T, I> extends RepositoryAsync<T, I> {
 
 
 }
