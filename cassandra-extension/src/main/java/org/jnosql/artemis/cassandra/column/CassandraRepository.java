@@ -19,8 +19,9 @@ import org.jnosql.artemis.Repository;
 
 /**
  * The Cassandra {@link Repository}
- *  * @param <T> the entity type
- *  * @param <I> the id entity type
+ *
+ * @param <T> the entity type
+ * @param <I> the id entity type
  */
 public interface CassandraRepository<T, I> extends Repository<T, I> {
 
