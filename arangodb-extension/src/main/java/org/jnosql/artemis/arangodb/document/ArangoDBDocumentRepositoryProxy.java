@@ -24,10 +24,9 @@ import java.lang.reflect.ParameterizedType;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
-import java.util.function.Supplier;
 
 import static java.util.Collections.emptyMap;
+import static org.jnosql.artemis.reflection.DynamicReturn.toSingleResult;
 
 class ArangoDBDocumentRepositoryProxy<T> implements InvocationHandler {
 
@@ -59,16 +58,12 @@ class ArangoDBDocumentRepositoryProxy<T> implements InvocationHandler {
                 result = template.aql(aql.value(), params);
             }
 
-            Supplier<List<?>> querySupplier = () -> result;
-            Supplier<Optional<?>> singleResultSupplier =
-                    DynamicReturn.toSingleResult(method).apply(querySupplier);
-
-            DynamicReturn<?> dynamicReturn = DynamicReturn.builder()
+            return DynamicReturn.builder()
                     .withClassSource(typeClass)
-                    .withMethodSource(method).withList(querySupplier)
-                    .withSingleResult(singleResultSupplier)
-                    .build();
-            return dynamicReturn.execute();
+                    .withMethodSource(method).withList(() -> result)
+                    .withSingleResult(toSingleResult(method).apply(() -> result))
+                    .build().execute();
+
         }
         return method.invoke(repository, args);
     }
