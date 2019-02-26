@@ -16,14 +16,11 @@ package org.jnosql.artemis.arangodb.document;
 
 import org.jnosql.artemis.Repository;
 import org.jnosql.artemis.document.DocumentRepositoryProducer;
+import org.jnosql.artemis.spi.AbstractBean;
 
-import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.spi.CreationalContext;
 import javax.enterprise.inject.Default;
-import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.BeanManager;
-import javax.enterprise.inject.spi.InjectionPoint;
-import javax.enterprise.inject.spi.PassivationCapable;
 import javax.enterprise.util.AnnotationLiteral;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Proxy;
@@ -32,11 +29,10 @@ import java.util.Collections;
 import java.util.Set;
 
 
-class ArangoDBRepositoryBean implements Bean<ArangoDBRepository>, PassivationCapable {
+class ArangoDBRepositoryBean extends AbstractBean<ArangoDBRepository> {
 
     private final Class type;
 
-    private final BeanManager beanManager;
 
     private final Set<Type> types;
 
@@ -44,24 +40,14 @@ class ArangoDBRepositoryBean implements Bean<ArangoDBRepository>, PassivationCap
     });
 
     ArangoDBRepositoryBean(Class type, BeanManager beanManager) {
+        super(beanManager);
         this.type = type;
-        this.beanManager = beanManager;
         this.types = Collections.singleton(type);
     }
 
     @Override
     public Class<?> getBeanClass() {
         return type;
-    }
-
-    @Override
-    public Set<InjectionPoint> getInjectionPoints() {
-        return Collections.emptySet();
-    }
-
-    @Override
-    public boolean isNullable() {
-        return false;
     }
 
     @Override
@@ -77,18 +63,6 @@ class ArangoDBRepositoryBean implements Bean<ArangoDBRepository>, PassivationCap
                 handler);
     }
 
-
-    private <T> T getInstance(Class<T> clazz) {
-        Bean<T> bean = (Bean<T>) beanManager.getBeans(clazz).iterator().next();
-        CreationalContext<T> ctx = beanManager.createCreationalContext(bean);
-        return (T) beanManager.getReference(bean, clazz, ctx);
-    }
-
-    @Override
-    public void destroy(ArangoDBRepository instance, CreationalContext<ArangoDBRepository> creationalContext) {
-
-    }
-
     @Override
     public Set<Type> getTypes() {
         return types;
@@ -97,26 +71,6 @@ class ArangoDBRepositoryBean implements Bean<ArangoDBRepository>, PassivationCap
     @Override
     public Set<Annotation> getQualifiers() {
         return qualifiers;
-    }
-
-    @Override
-    public Class<? extends Annotation> getScope() {
-        return ApplicationScoped.class;
-    }
-
-    @Override
-    public String getName() {
-        return null;
-    }
-
-    @Override
-    public Set<Class<? extends Annotation>> getStereotypes() {
-        return Collections.emptySet();
-    }
-
-    @Override
-    public boolean isAlternative() {
-        return false;
     }
 
     @Override
