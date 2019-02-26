@@ -16,14 +16,11 @@ package org.jnosql.artemis.arangodb.document;
 
 import org.jnosql.artemis.RepositoryAsync;
 import org.jnosql.artemis.document.DocumentRepositoryAsyncProducer;
+import org.jnosql.artemis.spi.AbstractBean;
 
-import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.spi.CreationalContext;
 import javax.enterprise.inject.Default;
-import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.BeanManager;
-import javax.enterprise.inject.spi.InjectionPoint;
-import javax.enterprise.inject.spi.PassivationCapable;
 import javax.enterprise.util.AnnotationLiteral;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Proxy;
@@ -32,11 +29,9 @@ import java.util.Collections;
 import java.util.Set;
 
 
-class ArangoDBRepositoryAsyncBean implements Bean<ArangoDBRepositoryAsync>, PassivationCapable {
+class ArangoDBRepositoryAsyncBean extends AbstractBean<ArangoDBRepositoryAsync> {
 
     private final Class type;
-
-    private final BeanManager beanManager;
 
     private final Set<Type> types;
 
@@ -44,8 +39,8 @@ class ArangoDBRepositoryAsyncBean implements Bean<ArangoDBRepositoryAsync>, Pass
     });
 
     ArangoDBRepositoryAsyncBean(Class type, BeanManager beanManager) {
+        super(beanManager);
         this.type = type;
-        this.beanManager = beanManager;
         this.types = Collections.singleton(type);
     }
 
@@ -54,15 +49,6 @@ class ArangoDBRepositoryAsyncBean implements Bean<ArangoDBRepositoryAsync>, Pass
         return type;
     }
 
-    @Override
-    public Set<InjectionPoint> getInjectionPoints() {
-        return Collections.emptySet();
-    }
-
-    @Override
-    public boolean isNullable() {
-        return false;
-    }
 
     @Override
     public ArangoDBRepositoryAsync create(CreationalContext<ArangoDBRepositoryAsync> creationalContext) {
@@ -76,17 +62,6 @@ class ArangoDBRepositoryAsyncBean implements Bean<ArangoDBRepositoryAsync>, Pass
     }
 
 
-    private <T> T getInstance(Class<T> clazz) {
-        Bean<T> bean = (Bean<T>) beanManager.getBeans(clazz).iterator().next();
-        CreationalContext<T> ctx = beanManager.createCreationalContext(bean);
-        return (T) beanManager.getReference(bean, clazz, ctx);
-    }
-
-    @Override
-    public void destroy(ArangoDBRepositoryAsync instance, CreationalContext<ArangoDBRepositoryAsync> creationalContext) {
-
-    }
-
     @Override
     public Set<Type> getTypes() {
         return types;
@@ -95,26 +70,6 @@ class ArangoDBRepositoryAsyncBean implements Bean<ArangoDBRepositoryAsync>, Pass
     @Override
     public Set<Annotation> getQualifiers() {
         return qualifiers;
-    }
-
-    @Override
-    public Class<? extends Annotation> getScope() {
-        return ApplicationScoped.class;
-    }
-
-    @Override
-    public String getName() {
-        return null;
-    }
-
-    @Override
-    public Set<Class<? extends Annotation>> getStereotypes() {
-        return Collections.emptySet();
-    }
-
-    @Override
-    public boolean isAlternative() {
-        return false;
     }
 
     @Override
