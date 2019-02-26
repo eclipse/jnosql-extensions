@@ -17,12 +17,15 @@ package org.jnosql.artemis.couchbase.document;
 
 import com.couchbase.client.java.document.json.JsonObject;
 import org.jnosql.artemis.Repository;
+import org.jnosql.artemis.reflection.DynamicReturn;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
+import java.util.function.Supplier;
 
 import static org.jnosql.artemis.couchbase.document.JsonObjectUtil.getParams;
 
@@ -56,7 +59,17 @@ class CouchbaseocumentRepositoryProxy<T> implements InvocationHandler {
             } else {
                 result = template.n1qlQuery(n1QL.value(), params);
             }
-            return ReturnTypeConverterUtil.returnObject(result, typeClass, method);
+
+            Supplier<List<?>> querySupplier = () -> result;
+            Supplier<Optional<?>> singleResultSupplier =
+                    DynamicReturn.toSingleResult(method).apply(querySupplier);
+
+            DynamicReturn<?> dynamicReturn = DynamicReturn.builder()
+                    .withClassSource(typeClass)
+                    .withMethodSource(method).withList(querySupplier)
+                    .withSingleResult(singleResultSupplier)
+                    .build();
+            return dynamicReturn.execute();
         }
         return method.invoke(repository, args);
     }
