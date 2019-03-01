@@ -20,7 +20,7 @@ import org.jnosql.artemis.Repository;
 /**
  * The couchbase {@link Repository}
  * @param <T> the entity type
- * @param <I> the entity id type
+ * @param <K> the entity id type
  */
-public interface CouchbaseRepository<T, I> extends Repository<T, I> {
+public interface CouchbaseRepository<T, K> extends Repository<T, K> {
 }
