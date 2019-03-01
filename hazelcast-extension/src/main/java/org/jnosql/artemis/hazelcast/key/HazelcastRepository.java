@@ -21,7 +21,7 @@ import org.jnosql.artemis.Repository;
  * The hazelcat {@link Repository}
  *
  * @param <T> the entity type
- * @param <I> the id entity type
+ * @param <K> the id entity type
  */
-public interface HazelcastRepository<T, I> extends Repository<T, I> {
+public interface HazelcastRepository<T, K> extends Repository<T, K> {
 }
