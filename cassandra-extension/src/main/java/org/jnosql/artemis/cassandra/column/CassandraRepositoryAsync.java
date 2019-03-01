@@ -21,9 +21,9 @@ import org.jnosql.artemis.RepositoryAsync;
  * The Cassandra {@link RepositoryAsync}
  *
  * @param <T> the entity type
- * @param <I> the id entity type
+ * @param <K> the id entity type
  */
-public interface CassandraRepositoryAsync<T, I> extends RepositoryAsync<T, I> {
+public interface CassandraRepositoryAsync<T, K> extends RepositoryAsync<T, K> {
 
 
 }
