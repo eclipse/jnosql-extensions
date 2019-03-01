@@ -21,7 +21,7 @@ import org.jnosql.artemis.RepositoryAsync;
  * The arangodb {@link RepositoryAsync}
  *
  * @param <T> the entity type
- * @param <I> the id entity type
+ * @param <K> the id entity type
  */
-public interface ArangoDBRepositoryAsync<T, I> extends RepositoryAsync<T, I> {
+public interface ArangoDBRepositoryAsync<T, K> extends RepositoryAsync<T, K> {
 }
