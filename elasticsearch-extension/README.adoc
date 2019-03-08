@@ -1,26 +1,28 @@
-# Elasticsearch-extension
+= Elasticsearch-extension
 
-![Elasticsearch Project](https://jnosql.github.io/img/logos/elastic.svg)
+image::https://jnosql.github.io/img/logos/elastic.svg[Elasticsearch Project,align="center"]
 
 
 Elasticsearch extension has implementations to use specific behavior that is beyond the API such as search Engine.
 
 
-## Set dependency
+== Set dependency
 
 
-```xml
+[source,xml]
+----
 
   <dependency>
      <groupId>org.jnosql.artemis</groupId>
      <artifactId>elasticsearch-extension</artifactId>
      <version>${jnosql.version}</version>
   </dependency>
-```
+----
 
-## Make Elasticsearch manager available to container
+== Make Elasticsearch manager available to container
 
-```java
+[source,java]
+----
 
 public class ElasticsearchProducer {
 
@@ -39,13 +41,14 @@ public class ElasticsearchProducer {
 }
 
 
-```
+----
 
-## ElasticsearchTemplate and ElasticsearchTemplateAsync
+== ElasticsearchTemplate and ElasticsearchTemplateAsync
 
 ElasticsearchTemplate and ElasticsearchTemplateAsync are a specialization of Document Template that allows using search engine on both synchronous and asynchronous.
 
-```java
+[source,java]
+----
         QueryBuilder queryBuilder = boolQuery().filter(termQuery("name", "Ada"));
         List<Person> people = template.search(queryBuilder, "Person");
         
@@ -54,4 +57,4 @@ ElasticsearchTemplate and ElasticsearchTemplateAsync are a specialization of Doc
 
         templateAsync.search(queryBuilder, callBack, "Person");
 
-```
+----
