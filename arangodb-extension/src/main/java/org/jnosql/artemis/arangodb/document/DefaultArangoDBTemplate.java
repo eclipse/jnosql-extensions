@@ -107,4 +107,14 @@ class DefaultArangoDBTemplate extends AbstractDocumentTemplate
         return manager.get().aql(query, values).stream().map(converter::toEntity).map(d -> (T) d)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public <T> List<T> aql(String query, Map<String, Object> values, Class<T> typeClass) {
+        return manager.get().aql(query, values, typeClass);
+    }
+
+    @Override
+    public <T> List<T> aql(String query, Class<T> typeClass) {
+        return manager.get().aql(query, typeClass);
+    }
 }
