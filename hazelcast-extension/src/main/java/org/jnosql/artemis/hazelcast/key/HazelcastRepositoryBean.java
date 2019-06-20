@@ -16,7 +16,7 @@ package org.jnosql.artemis.hazelcast.key;
 
 import jakarta.nosql.mapping.Repository;
 import jakarta.nosql.mapping.key.KeyValueRepositoryProducer;
-import jakarta.nosql.mapping.spi.AbstractBean;
+import org.jnosql.artemis.spi.AbstractBean;
 
 import javax.enterprise.context.spi.CreationalContext;
 import javax.enterprise.inject.Default;

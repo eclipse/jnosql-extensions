@@ -31,7 +31,6 @@ public class DefaultHazelcastTemplateTest {
     @Inject
     private HazelcastTemplate template;
 
-
     @Test
     public void shouldRunQuery() {
         Collection<Person> people = template.sql("active");

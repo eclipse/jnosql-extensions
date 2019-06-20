@@ -16,9 +16,8 @@ package org.jnosql.artemis.hazelcast.key;
 
 
 import com.hazelcast.query.Predicate;
-import org.jnosql.diana.api.Value;
+import jakarta.nosql.Value;
 import org.jnosql.diana.hazelcast.key.HazelcastBucketManager;
-import org.mockito.Mockito;
 
 import javax.enterprise.inject.Produces;
 import java.util.List;
