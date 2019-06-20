@@ -15,7 +15,7 @@
 package org.jnosql.artemis.orientdb.document;
 
 
-import org.jnosql.artemis.RepositoryAsync;
+import jakarta.nosql.mapping.RepositoryAsync;
 
 /**
  * The OrientDB {@link RepositoryAsync}

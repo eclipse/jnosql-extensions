@@ -15,7 +15,7 @@
 package org.jnosql.artemis.couchbase.document;
 
 import com.couchbase.client.java.document.json.JsonObject;
-import org.jnosql.artemis.document.DocumentRepositoryAsyncProducer;
+import jakarta.nosql.mapping.document.DocumentRepositoryAsyncProducer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

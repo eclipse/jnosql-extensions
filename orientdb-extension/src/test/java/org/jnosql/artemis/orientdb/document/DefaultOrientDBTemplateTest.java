@@ -14,14 +14,14 @@
  */
 package org.jnosql.artemis.orientdb.document;
 
-import org.jnosql.artemis.Converters;
-import org.jnosql.artemis.document.DocumentEntityConverter;
-import org.jnosql.artemis.document.DocumentEventPersistManager;
-import org.jnosql.artemis.document.DocumentWorkflow;
-import org.jnosql.artemis.reflection.ClassMappings;
-import org.jnosql.diana.api.document.Document;
-import org.jnosql.diana.api.document.DocumentEntity;
-import org.jnosql.diana.api.document.DocumentQuery;
+import jakarta.nosql.document.Document;
+import jakarta.nosql.document.DocumentEntity;
+import jakarta.nosql.document.DocumentQuery;
+import jakarta.nosql.mapping.Converters;
+import jakarta.nosql.mapping.document.DocumentEntityConverter;
+import jakarta.nosql.mapping.document.DocumentEventPersistManager;
+import jakarta.nosql.mapping.document.DocumentWorkflow;
+import jakarta.nosql.mapping.reflection.ClassMappings;
 import org.jnosql.diana.orientdb.document.OrientDBDocumentCollectionManager;
 import org.jnosql.diana.orientdb.document.OrientDBLiveCallback;
 import org.jnosql.diana.orientdb.document.OrientDBLiveCreateCallback;
@@ -35,9 +35,9 @@ import javax.inject.Inject;
 import java.util.Collections;
 import java.util.List;
 
+import static jakarta.nosql.document.DocumentQuery.select;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
-import static org.jnosql.diana.api.document.query.DocumentQueryBuilder.select;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 

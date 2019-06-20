@@ -15,8 +15,8 @@
 package org.jnosql.artemis.orientdb.document;
 
 
-import org.jnosql.diana.api.document.Document;
-import org.jnosql.diana.api.document.DocumentEntity;
+import jakarta.nosql.document.Document;
+import jakarta.nosql.document.DocumentEntity;
 import org.jnosql.diana.orientdb.document.OrientDBDocumentCollectionManager;
 import org.jnosql.diana.orientdb.document.OrientDBDocumentCollectionManagerAsync;
 import org.mockito.Mockito;

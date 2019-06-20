@@ -15,8 +15,8 @@
 package org.jnosql.artemis.orientdb.document;
 
 
-import org.jnosql.artemis.document.DocumentTemplate;
-import org.jnosql.diana.api.document.DocumentQuery;
+import jakarta.nosql.mapping.document.DocumentTemplate;
+import jakarta.nosql.document.DocumentQuery;
 import org.jnosql.diana.orientdb.document.OrientDBLiveCallback;
 
 import java.util.List;

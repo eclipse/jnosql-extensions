@@ -14,7 +14,7 @@
  */
 package org.jnosql.artemis.orientdb.document;
 
-import org.jnosql.artemis.document.DocumentRepositoryProducer;
+import jakarta.nosql.mapping.document.DocumentRepositoryProducer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

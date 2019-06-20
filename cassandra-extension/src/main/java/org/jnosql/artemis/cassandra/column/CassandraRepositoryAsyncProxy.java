@@ -14,7 +14,7 @@
  */
 package org.jnosql.artemis.cassandra.column;
 
-import org.jnosql.artemis.RepositoryAsync;
+import jakarta.nosql.mapping.RepositoryAsync;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;

@@ -15,8 +15,8 @@
 package org.jnosql.artemis.couchbase.document;
 
 
-import org.jnosql.diana.api.document.Document;
-import org.jnosql.diana.api.document.DocumentEntity;
+import jakarta.nosql.document.Document;
+import jakarta.nosql.document.DocumentEntity;
 import org.jnosql.diana.couchbase.document.CouchbaseDocumentCollectionManager;
 import org.jnosql.diana.couchbase.document.CouchbaseDocumentCollectionManagerAsync;
 import org.mockito.Mockito;

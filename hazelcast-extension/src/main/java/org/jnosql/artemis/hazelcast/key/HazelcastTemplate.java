@@ -15,7 +15,7 @@
 package org.jnosql.artemis.hazelcast.key;
 
 import com.hazelcast.query.Predicate;
-import org.jnosql.artemis.key.KeyValueTemplate;
+import jakarta.nosql.mapping.key.KeyValueTemplate;
 
 import java.util.Collection;
 import java.util.Map;

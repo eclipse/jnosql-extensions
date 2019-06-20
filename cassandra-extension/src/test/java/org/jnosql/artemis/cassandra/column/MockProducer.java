@@ -15,8 +15,8 @@
 package org.jnosql.artemis.cassandra.column;
 
 
-import org.jnosql.diana.api.column.Column;
-import org.jnosql.diana.api.column.ColumnEntity;
+import jakarta.nosql.column.Column;
+import jakarta.nosql.column.ColumnEntity;
 import org.jnosql.diana.cassandra.column.CassandraColumnFamilyManager;
 import org.jnosql.diana.cassandra.column.CassandraColumnFamilyManagerAsync;
 import org.mockito.Mockito;

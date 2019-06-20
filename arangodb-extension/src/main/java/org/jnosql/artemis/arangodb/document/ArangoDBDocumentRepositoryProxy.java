@@ -15,8 +15,8 @@
 package org.jnosql.artemis.arangodb.document;
 
 
-import org.jnosql.artemis.Repository;
-import org.jnosql.artemis.reflection.DynamicReturn;
+import jakarta.nosql.mapping.Repository;
+import jakarta.nosql.mapping.reflection.DynamicReturn;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;

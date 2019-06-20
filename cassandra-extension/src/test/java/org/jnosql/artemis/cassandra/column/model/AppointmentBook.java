@@ -14,9 +14,9 @@
  */
 package org.jnosql.artemis.cassandra.column.model;
 
-import org.jnosql.artemis.Column;
-import org.jnosql.artemis.Entity;
-import org.jnosql.artemis.Id;
+import jakarta.nosql.mapping.Column;
+import jakarta.nosql.mapping.Entity;
+import jakarta.nosql.mapping.Id;
 import org.jnosql.artemis.cassandra.column.UDT;
 
 import java.util.List;

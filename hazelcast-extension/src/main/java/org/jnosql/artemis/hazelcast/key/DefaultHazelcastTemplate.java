@@ -15,9 +15,9 @@
 package org.jnosql.artemis.hazelcast.key;
 
 import com.hazelcast.query.Predicate;
-import org.jnosql.artemis.key.AbstractKeyValueTemplate;
-import org.jnosql.artemis.key.KeyValueEntityConverter;
-import org.jnosql.artemis.key.KeyValueWorkflow;
+import jakarta.nosql.mapping.key.AbstractKeyValueTemplate;
+import jakarta.nosql.mapping.key.KeyValueEntityConverter;
+import jakarta.nosql.mapping.key.KeyValueWorkflow;
 import org.jnosql.diana.api.key.BucketManager;
 import org.jnosql.diana.hazelcast.key.HazelcastBucketManager;
 

@@ -16,7 +16,7 @@ package org.jnosql.artemis.cassandra.converters;
 
 
 import com.datastax.driver.core.LocalDate;
-import org.jnosql.artemis.AttributeConverter;
+import jakarta.nosql.mapping.AttributeConverter;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;

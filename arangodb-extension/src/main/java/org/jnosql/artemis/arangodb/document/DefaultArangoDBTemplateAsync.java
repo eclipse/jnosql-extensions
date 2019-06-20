@@ -15,12 +15,12 @@
 package org.jnosql.artemis.arangodb.document;
 
 
-import org.jnosql.artemis.Converters;
+import jakarta.nosql.mapping.Converters;
+import jakarta.nosql.mapping.document.DocumentEntityConverter;
+import jakarta.nosql.mapping.reflection.ClassMappings;
+import jakarta.nosql.document.DocumentCollectionManagerAsync;
+import jakarta.nosql.document.DocumentEntity;
 import org.jnosql.artemis.document.AbstractDocumentTemplateAsync;
-import org.jnosql.artemis.document.DocumentEntityConverter;
-import org.jnosql.artemis.reflection.ClassMappings;
-import org.jnosql.diana.api.document.DocumentCollectionManagerAsync;
-import org.jnosql.diana.api.document.DocumentEntity;
 import org.jnosql.diana.arangodb.document.ArangoDBDocumentCollectionManagerAsync;
 
 import javax.enterprise.inject.Instance;
@@ -81,7 +81,6 @@ class DefaultArangoDBTemplateAsync extends AbstractDocumentTemplateAsync impleme
     protected Converters getConverters() {
         return converters;
     }
-
 
     @Override
     public <T> void aql(String query, Map<String, Object> values, Consumer<List<T>> callBack) {

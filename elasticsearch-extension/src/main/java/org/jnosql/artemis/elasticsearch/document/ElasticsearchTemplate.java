@@ -16,7 +16,7 @@ package org.jnosql.artemis.elasticsearch.document;
 
 
 import org.elasticsearch.index.query.QueryBuilder;
-import org.jnosql.artemis.document.DocumentTemplate;
+import jakarta.nosql.mapping.document.DocumentTemplate;
 
 import java.util.List;
 

@@ -15,7 +15,7 @@
 package org.jnosql.artemis.couchbase.document;
 
 
-import org.jnosql.artemis.Repository;
+import jakarta.nosql.mapping.Repository;
 
 /**
  * The couchbase {@link Repository}

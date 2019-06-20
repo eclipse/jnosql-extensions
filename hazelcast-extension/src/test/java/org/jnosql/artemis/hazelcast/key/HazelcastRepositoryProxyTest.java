@@ -15,7 +15,7 @@
 package org.jnosql.artemis.hazelcast.key;
 
 import com.hazelcast.query.Predicate;
-import org.jnosql.artemis.Repository;
+import jakarta.nosql.mapping.Repository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

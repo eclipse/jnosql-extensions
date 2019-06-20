@@ -15,7 +15,7 @@
 package org.jnosql.artemis.hazelcast.key;
 
 
-import org.jnosql.artemis.Repository;
+import jakarta.nosql.mapping.Repository;
 
 /**
  * The hazelcat {@link Repository}

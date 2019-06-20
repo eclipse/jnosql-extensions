@@ -14,8 +14,8 @@
  */
 package org.jnosql.artemis.cassandra.column;
 
-import org.jnosql.artemis.Repository;
-import org.jnosql.artemis.column.ColumnRepositoryProducer;
+import jakarta.nosql.mapping.Repository;
+import jakarta.nosql.mapping.column.ColumnRepositoryProducer;
 import org.jnosql.artemis.spi.AbstractBean;
 
 import javax.enterprise.context.spi.CreationalContext;

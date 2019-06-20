@@ -15,13 +15,13 @@
 package org.jnosql.artemis.arangodb.document;
 
 
-import org.jnosql.artemis.Converters;
+import jakarta.nosql.mapping.Converters;
+import jakarta.nosql.mapping.document.DocumentEntityConverter;
+import jakarta.nosql.mapping.document.DocumentEventPersistManager;
+import jakarta.nosql.mapping.document.DocumentWorkflow;
+import jakarta.nosql.mapping.reflection.ClassMappings;
+import jakarta.nosql.document.DocumentCollectionManager;
 import org.jnosql.artemis.document.AbstractDocumentTemplate;
-import org.jnosql.artemis.document.DocumentEntityConverter;
-import org.jnosql.artemis.document.DocumentEventPersistManager;
-import org.jnosql.artemis.document.DocumentWorkflow;
-import org.jnosql.artemis.reflection.ClassMappings;
-import org.jnosql.diana.api.document.DocumentCollectionManager;
 import org.jnosql.diana.arangodb.document.ArangoDBDocumentCollectionManager;
 
 import javax.enterprise.inject.Instance;
@@ -37,8 +37,7 @@ import static java.util.Objects.requireNonNull;
  * The Default implementation of {@link ArangoDBTemplate}
  */
 @Typed(ArangoDBTemplate.class)
-class DefaultArangoDBTemplate extends AbstractDocumentTemplate
-        implements ArangoDBTemplate {
+class DefaultArangoDBTemplate extends AbstractDocumentTemplate implements ArangoDBTemplate {
 
     private Instance<ArangoDBDocumentCollectionManager> manager;
 

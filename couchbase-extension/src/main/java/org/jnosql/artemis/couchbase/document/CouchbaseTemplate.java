@@ -18,7 +18,7 @@ package org.jnosql.artemis.couchbase.document;
 import com.couchbase.client.java.document.json.JsonObject;
 import com.couchbase.client.java.query.Statement;
 import com.couchbase.client.java.search.SearchQuery;
-import org.jnosql.artemis.document.DocumentTemplate;
+import jakarta.nosql.mapping.document.DocumentTemplate;
 
 import java.util.List;
 
