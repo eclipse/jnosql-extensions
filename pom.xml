@@ -19,8 +19,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>org.jnosql</groupId>
-        <artifactId>jnosql-parent</artifactId>
+        <groupId>org.jnosql.artemis</groupId>
+        <artifactId>artemis-parent</artifactId>
         <version>0.1.0-SNAPSHOT</version>
     </parent>
 
@@ -32,43 +32,11 @@
     <description>Eclipse JNoSQL mapping layer, Artemis, extensions</description>
     <url>http://jnosql.org/</url>
 
-    <licenses>
-        <license>
-            <name>The Apache Software License, Version 2.0</name>
-            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-        </license>
-        <license>
-            <name>The Eclipse Public License v1.0</name>
-            <url>http://www.eclipse.org/legal/epl-v10.html</url>
-        </license>
-    </licenses>
-
-
     <scm>
         <connection>scm:git:git://github.com/eclipse/jnosql-artemis-extensions.git</connection>
         <developerConnection>scm:git:ssh://github.com:eclipse/jnosql-artemis-extensions.git</developerConnection>
         <url>https://github.com/eclipse/jnosql-artemis-extensions</url>
     </scm>
-
-    <developers>
-        <developer>
-            <name>Otavio Santana</name>
-            <email>otaviojava@apache.org</email>
-            <organization>SouJava</organization>
-            <organizationUrl>https://about.me/otaviojava</organizationUrl>
-        </developer>
-        <developer>
-            <name>JNoSQL Developers</name>
-            <email>jnosql-dev@eclipse.org</email>
-            <organization>Eclipse JNoSQL</organization>
-            <organizationUrl>https://dev.eclipse.org/mailman/listinfo/jnosql-dev</organizationUrl>
-        </developer>
-    </developers>
-
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <sonar.jacoco.reportPath>../target/jacoco.exec</sonar.jacoco.reportPath>
-    </properties>
 
     <modules>
         <module>cassandra-extension</module>
@@ -78,32 +46,4 @@
         <module>arangodb-extension</module>
         <module>hazelcast-extension</module>
     </modules>
-
-    <dependencies>
-        <dependency>
-            <groupId>org.jboss.weld.se</groupId>
-            <artifactId>weld-se-core</artifactId>
-            <version>${weld.se.core.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>javax.enterprise</groupId>
-                    <artifactId>cdi-api</artifactId>
-                </exclusion>
-            </exclusions>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse</groupId>
-            <artifactId>yasson</artifactId>
-            <version>${yasson.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.glassfish</groupId>
-            <artifactId>javax.json</artifactId>
-            <version>${javax.json.version}</version>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
-
 </project>
