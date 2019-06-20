@@ -15,15 +15,15 @@
 package org.jnosql.artemis.elasticsearch.document;
 
 
-import org.elasticsearch.index.query.QueryBuilder;
+import jakarta.nosql.document.DocumentCollectionManager;
+import jakarta.nosql.document.DocumentEntity;
 import jakarta.nosql.mapping.Converters;
-import jakarta.nosql.mapping.document.AbstractDocumentTemplate;
 import jakarta.nosql.mapping.document.DocumentEntityConverter;
 import jakarta.nosql.mapping.document.DocumentEventPersistManager;
 import jakarta.nosql.mapping.document.DocumentWorkflow;
 import jakarta.nosql.mapping.reflection.ClassMappings;
-import jakarta.nosql.document.DocumentCollectionManager;
-import jakarta.nosql.document.DocumentEntity;
+import org.elasticsearch.index.query.QueryBuilder;
+import org.jnosql.artemis.document.AbstractDocumentTemplate;
 import org.jnosql.diana.elasticsearch.document.ElasticsearchDocumentCollectionManager;
 
 import javax.enterprise.inject.Instance;
