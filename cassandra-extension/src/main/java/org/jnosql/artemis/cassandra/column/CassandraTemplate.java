@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * A Cassandra extension of {@link org.jnosql.artemis.column.ColumnTemplate}
+ * A Cassandra extension of {@link jakarta.nosql.mapping.column.ColumnTemplate}
  */
 public interface CassandraTemplate extends ColumnTemplate {
 

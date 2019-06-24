@@ -35,7 +35,7 @@ public interface CouchbaseTemplateAsync extends DocumentTemplateAsync {
      * @param params    the params
      * @param callback  the callback
      * @throws NullPointerException       when either n1qlQuery or params are null
-     * @throws org.jnosql.diana.api.ExecuteAsyncQueryException an async error
+     * @throws jakarta.nosql.ExecuteAsyncQueryException an async error
      */
     <T> void n1qlQuery(String n1qlQuery, JsonObject params, Consumer<List<T>> callback);
 
@@ -46,7 +46,7 @@ public interface CouchbaseTemplateAsync extends DocumentTemplateAsync {
      * @param params    the params
      * @param callback  the callback
      * @throws NullPointerException       when either n1qlQuery or params are null
-     * @throws org.jnosql.diana.api.ExecuteAsyncQueryException an async error
+     * @throws jakarta.nosql.ExecuteAsyncQueryException an async error
      */
     <T> void n1qlQuery(Statement n1qlQuery, JsonObject params, Consumer<List<T>> callback);
 
@@ -56,7 +56,7 @@ public interface CouchbaseTemplateAsync extends DocumentTemplateAsync {
      * @param n1qlQuery the query
      * @param callback  the callback
      * @throws NullPointerException       when either n1qlQuery or params are null
-     * @throws org.jnosql.diana.api.ExecuteAsyncQueryException an async error
+     * @throws jakarta.nosql.ExecuteAsyncQueryException an async error
      */
     <T> void n1qlQuery(String n1qlQuery, Consumer<List<T>> callback);
 
@@ -66,7 +66,7 @@ public interface CouchbaseTemplateAsync extends DocumentTemplateAsync {
      * @param n1qlQuery the query
      * @param callback  the callback
      * @throws NullPointerException       when either n1qlQuery or params are null
-     * @throws org.jnosql.diana.api.ExecuteAsyncQueryException an async error
+     * @throws jakarta.nosql.ExecuteAsyncQueryException an async error
      */
     <T> void n1qlQuery(Statement n1qlQuery, Consumer<List<T>> callback);
 }
