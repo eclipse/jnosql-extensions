@@ -18,9 +18,9 @@ package org.jnosql.artemis.cassandra.column;
 
 import com.datastax.driver.core.ConsistencyLevel;
 import com.datastax.driver.core.Statement;
-import org.jnosql.artemis.column.ColumnTemplate;
-import org.jnosql.diana.api.column.ColumnDeleteQuery;
-import org.jnosql.diana.api.column.ColumnQuery;
+import jakarta.nosql.mapping.column.ColumnTemplate;
+import jakarta.nosql.column.ColumnDeleteQuery;
+import jakarta.nosql.column.ColumnQuery;
 
 import java.time.Duration;
 import java.util.List;

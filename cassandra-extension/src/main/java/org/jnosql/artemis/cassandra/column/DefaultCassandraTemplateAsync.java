@@ -16,14 +16,14 @@ package org.jnosql.artemis.cassandra.column;
 
 import com.datastax.driver.core.ConsistencyLevel;
 import com.datastax.driver.core.Statement;
-import org.jnosql.artemis.Converters;
+import jakarta.nosql.mapping.Converters;
+import jakarta.nosql.mapping.column.ColumnEntityConverter;
+import jakarta.nosql.mapping.reflection.ClassMappings;
+import jakarta.nosql.column.ColumnDeleteQuery;
+import jakarta.nosql.column.ColumnEntity;
+import jakarta.nosql.column.ColumnFamilyManagerAsync;
+import jakarta.nosql.column.ColumnQuery;
 import org.jnosql.artemis.column.AbstractColumnTemplateAsync;
-import org.jnosql.artemis.column.ColumnEntityConverter;
-import org.jnosql.artemis.reflection.ClassMappings;
-import org.jnosql.diana.api.column.ColumnDeleteQuery;
-import org.jnosql.diana.api.column.ColumnEntity;
-import org.jnosql.diana.api.column.ColumnFamilyManagerAsync;
-import org.jnosql.diana.api.column.ColumnQuery;
 import org.jnosql.diana.cassandra.column.CassandraColumnFamilyManagerAsync;
 
 import javax.enterprise.inject.Instance;
@@ -44,7 +44,6 @@ import static java.util.stream.Collectors.toList;
 @Typed(CassandraTemplateAsync.class)
 class DefaultCassandraTemplateAsync extends AbstractColumnTemplateAsync
         implements CassandraTemplateAsync {
-
 
     private CassandraColumnEntityConverter converter;
 
@@ -207,6 +206,5 @@ class DefaultCassandraTemplateAsync extends AbstractColumnTemplateAsync
                         .collect(toList()));
         managerAsync.get().execute(statement, dianaCallBack);
     }
-
 
 }

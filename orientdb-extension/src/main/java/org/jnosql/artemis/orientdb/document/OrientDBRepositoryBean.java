@@ -14,8 +14,8 @@
  */
 package org.jnosql.artemis.orientdb.document;
 
-import org.jnosql.artemis.Repository;
-import org.jnosql.artemis.document.DocumentRepositoryProducer;
+import jakarta.nosql.mapping.Repository;
+import jakarta.nosql.mapping.document.DocumentRepositoryProducer;
 import org.jnosql.artemis.spi.AbstractBean;
 
 import javax.enterprise.context.spi.CreationalContext;
@@ -49,7 +49,6 @@ class OrientDBRepositoryBean extends AbstractBean<OrientDBCrudRepository> {
         return type;
     }
 
-
     @Override
     public OrientDBCrudRepository create(CreationalContext<OrientDBCrudRepository> creationalContext) {
         OrientDBTemplate template = getInstance(OrientDBTemplate.class);
@@ -61,7 +60,6 @@ class OrientDBRepositoryBean extends AbstractBean<OrientDBCrudRepository> {
                 new Class[]{type},
                 handler);
     }
-
 
     @Override
     public Set<Type> getTypes() {

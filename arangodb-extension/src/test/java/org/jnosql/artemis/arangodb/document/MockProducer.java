@@ -15,8 +15,8 @@
 package org.jnosql.artemis.arangodb.document;
 
 
-import org.jnosql.diana.api.document.Document;
-import org.jnosql.diana.api.document.DocumentEntity;
+import jakarta.nosql.document.Document;
+import jakarta.nosql.document.DocumentEntity;
 import org.jnosql.diana.arangodb.document.ArangoDBDocumentCollectionManager;
 import org.jnosql.diana.arangodb.document.ArangoDBDocumentCollectionManagerAsync;
 import org.mockito.Mockito;

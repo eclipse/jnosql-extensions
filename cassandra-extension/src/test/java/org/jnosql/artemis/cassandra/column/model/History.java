@@ -15,9 +15,9 @@
 package org.jnosql.artemis.cassandra.column.model;
 
 
-import org.jnosql.artemis.Column;
-import org.jnosql.artemis.Convert;
-import org.jnosql.artemis.Entity;
+import jakarta.nosql.mapping.Column;
+import jakarta.nosql.mapping.Convert;
+import jakarta.nosql.mapping.Entity;
 import org.jnosql.artemis.cassandra.converters.LocalDateConverter;
 
 import java.time.LocalDate;
@@ -27,7 +27,6 @@ import java.util.Calendar;
 
 @Entity
 public class History {
-
 
     @Column
     @Convert(value = LocalDateConverter.class)

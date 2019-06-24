@@ -14,7 +14,7 @@
  */
 package org.jnosql.artemis.cassandra.converters;
 
-import org.jnosql.artemis.AttributeConverter;
+import jakarta.nosql.mapping.AttributeConverter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

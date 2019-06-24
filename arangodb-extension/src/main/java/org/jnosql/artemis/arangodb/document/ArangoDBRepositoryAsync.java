@@ -15,7 +15,7 @@
 package org.jnosql.artemis.arangodb.document;
 
 
-import org.jnosql.artemis.RepositoryAsync;
+import jakarta.nosql.mapping.RepositoryAsync;
 
 /**
  * The arangodb {@link RepositoryAsync}

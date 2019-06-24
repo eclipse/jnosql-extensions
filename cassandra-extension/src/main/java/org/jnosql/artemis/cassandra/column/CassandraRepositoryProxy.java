@@ -15,7 +15,7 @@
 package org.jnosql.artemis.cassandra.column;
 
 
-import org.jnosql.artemis.Repository;
+import jakarta.nosql.mapping.Repository;
 import org.jnosql.artemis.reflection.DynamicReturn;
 
 import java.lang.reflect.InvocationHandler;
@@ -30,13 +30,11 @@ import static org.jnosql.artemis.reflection.DynamicReturn.toSingleResult;
 
 class CassandraRepositoryProxy<T> implements InvocationHandler {
 
-
     private final Class<T> typeClass;
 
     private final CassandraTemplate template;
 
     private final Repository<T,?> repository;
-
 
     CassandraRepositoryProxy(CassandraTemplate template, Class<?> repositoryType, Repository<T, ?> repository) {
 
@@ -45,7 +43,6 @@ class CassandraRepositoryProxy<T> implements InvocationHandler {
                 .getActualTypeArguments()[0]);
         this.repository = repository;
     }
-
 
     @Override
     public Object invoke(Object o, Method method, Object[] args) throws Throwable {

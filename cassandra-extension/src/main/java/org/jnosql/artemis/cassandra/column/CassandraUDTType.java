@@ -14,11 +14,11 @@
  */
 package org.jnosql.artemis.cassandra.column;
 
-import org.jnosql.artemis.Converters;
-import org.jnosql.artemis.column.ColumnEntityConverter;
+import jakarta.nosql.mapping.Converters;
+import jakarta.nosql.mapping.column.ColumnEntityConverter;
+import jakarta.nosql.mapping.reflection.FieldMapping;
+import jakarta.nosql.column.Column;
 import org.jnosql.artemis.column.ColumnFieldValue;
-import org.jnosql.artemis.reflection.FieldMapping;
-import org.jnosql.diana.api.column.Column;
 import org.jnosql.diana.cassandra.column.UDT;
 
 import java.util.ArrayList;

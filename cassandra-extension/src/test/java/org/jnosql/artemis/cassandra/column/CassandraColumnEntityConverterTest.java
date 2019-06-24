@@ -14,7 +14,10 @@
  */
 package org.jnosql.artemis.cassandra.column;
 
+import jakarta.nosql.Value;
 import org.jnosql.artemis.cassandra.column.model.Actor;
+import jakarta.nosql.column.Column;
+import jakarta.nosql.column.ColumnEntity;
 import org.jnosql.artemis.cassandra.column.model.AppointmentBook;
 import org.jnosql.artemis.cassandra.column.model.Artist;
 import org.jnosql.artemis.cassandra.column.model.Contact;
@@ -25,11 +28,6 @@ import org.jnosql.artemis.cassandra.column.model.Job;
 import org.jnosql.artemis.cassandra.column.model.Money;
 import org.jnosql.artemis.cassandra.column.model.Movie;
 import org.jnosql.artemis.cassandra.column.model.Worker;
-import org.jnosql.artemis.reflection.ClassMappings;
-import org.jnosql.diana.api.TypeReference;
-import org.jnosql.diana.api.Value;
-import org.jnosql.diana.api.column.Column;
-import org.jnosql.diana.api.column.ColumnEntity;
 import org.jnosql.diana.cassandra.column.UDT;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
@@ -51,6 +49,8 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import jakarta.nosql.TypeReference;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.singleton;
@@ -372,9 +372,7 @@ public class CassandraColumnEntityConverterTest {
         assertTrue(contacts.stream().allMatch(c -> c.size() == 2));
         assertEquals("Contact", column.getUserType());
 
-
     }
-
 
     @Test
     public void shouldConvertListUDTToEntity() {

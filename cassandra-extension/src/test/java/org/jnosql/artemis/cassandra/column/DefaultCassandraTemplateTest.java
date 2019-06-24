@@ -18,13 +18,13 @@ import com.datastax.driver.core.ConsistencyLevel;
 import com.datastax.driver.core.Statement;
 import com.datastax.driver.core.querybuilder.QueryBuilder;
 import org.hamcrest.Matchers;
-import org.jnosql.artemis.Converters;
-import org.jnosql.artemis.column.ColumnEventPersistManager;
-import org.jnosql.artemis.reflection.ClassMappings;
-import org.jnosql.diana.api.column.Column;
-import org.jnosql.diana.api.column.ColumnDeleteQuery;
-import org.jnosql.diana.api.column.ColumnEntity;
-import org.jnosql.diana.api.column.ColumnQuery;
+import jakarta.nosql.mapping.Converters;
+import jakarta.nosql.mapping.column.ColumnEventPersistManager;
+import jakarta.nosql.mapping.reflection.ClassMappings;
+import jakarta.nosql.column.Column;
+import jakarta.nosql.column.ColumnDeleteQuery;
+import jakarta.nosql.column.ColumnEntity;
+import jakarta.nosql.column.ColumnQuery;
 import org.jnosql.diana.cassandra.column.CassandraColumnFamilyManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -38,10 +38,9 @@ import java.time.Duration;
 import java.util.Collections;
 import java.util.List;
 
+import static jakarta.nosql.column.ColumnQuery.select;
 import static java.util.Arrays.asList;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.jnosql.diana.api.column.query.ColumnQueryBuilder.delete;
-import static org.jnosql.diana.api.column.query.ColumnQueryBuilder.select;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -168,7 +167,7 @@ public class DefaultCassandraTemplateTest {
     public void shouldDelete() {
 
 
-        ColumnDeleteQuery query = delete().from("columnFamily").build();
+        ColumnDeleteQuery query = ColumnDeleteQuery.delete().from("columnFamily").build();
         ConsistencyLevel level = ConsistencyLevel.THREE;
         template.delete(query, level);
         verify(manager).delete(query, level);

@@ -14,8 +14,8 @@
  */
 package org.jnosql.artemis.couchbase.document;
 
-import org.jnosql.artemis.Repository;
-import org.jnosql.artemis.document.DocumentRepositoryProducer;
+import jakarta.nosql.mapping.Repository;
+import jakarta.nosql.mapping.document.DocumentRepositoryProducer;
 import org.jnosql.artemis.spi.AbstractBean;
 
 import javax.enterprise.context.spi.CreationalContext;

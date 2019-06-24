@@ -15,7 +15,7 @@
 package org.jnosql.artemis.arangodb.document;
 
 
-import org.jnosql.artemis.document.DocumentTemplateAsync;
+import jakarta.nosql.mapping.document.DocumentTemplateAsync;
 
 import java.util.List;
 import java.util.Map;
@@ -27,7 +27,7 @@ import java.util.function.Consumer;
 public interface ArangoDBTemplateAsync extends DocumentTemplateAsync {
 
     /**
-     * Executes AQL, finds {@link org.jnosql.diana.api.document.DocumentEntity} from select asynchronously
+     * Executes AQL, finds {@link jakarta.nosql.document.DocumentEntity} from select asynchronously
      * <p>FOR u IN users FILTER u.status == @status RETURN u </p>
      *
      * @param <T>      the entity type
@@ -35,7 +35,7 @@ public interface ArangoDBTemplateAsync extends DocumentTemplateAsync {
      * @param values   the named queries
      * @param callBack the callback, when the process is finished will call this instance returning
      *                 the result of select within parameters
-     * @throws org.jnosql.diana.api.ExecuteAsyncQueryException    when there is a async error
+     * @throws jakarta.nosql.ExecuteAsyncQueryException    when there is a async error
      * @throws UnsupportedOperationException when the database does not support this feature
      * @throws NullPointerException          when either select or callback are null
      */

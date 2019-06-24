@@ -15,12 +15,12 @@
 package org.jnosql.artemis.orientdb.document;
 
 
-import org.jnosql.artemis.Converters;
+import jakarta.nosql.document.DocumentCollectionManagerAsync;
+import jakarta.nosql.document.DocumentEntity;
+import jakarta.nosql.mapping.Converters;
+import jakarta.nosql.mapping.document.DocumentEntityConverter;
+import jakarta.nosql.mapping.reflection.ClassMappings;
 import org.jnosql.artemis.document.AbstractDocumentTemplateAsync;
-import org.jnosql.artemis.document.DocumentEntityConverter;
-import org.jnosql.artemis.reflection.ClassMappings;
-import org.jnosql.diana.api.document.DocumentCollectionManagerAsync;
-import org.jnosql.diana.api.document.DocumentEntity;
 import org.jnosql.diana.orientdb.document.OrientDBDocumentCollectionManagerAsync;
 
 import javax.enterprise.inject.Instance;

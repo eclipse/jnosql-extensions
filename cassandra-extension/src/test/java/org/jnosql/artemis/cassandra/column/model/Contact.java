@@ -14,7 +14,7 @@
  */
 package org.jnosql.artemis.cassandra.column.model;
 
-import org.jnosql.artemis.Column;
+import jakarta.nosql.mapping.Column;
 
 import java.util.Objects;
 

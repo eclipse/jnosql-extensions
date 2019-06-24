@@ -14,8 +14,8 @@
  */
 package org.jnosql.artemis.arangodb.document;
 
-import org.jnosql.artemis.RepositoryAsync;
-import org.jnosql.artemis.document.DocumentRepositoryAsyncProducer;
+import jakarta.nosql.mapping.RepositoryAsync;
+import jakarta.nosql.mapping.document.DocumentRepositoryAsyncProducer;
 import org.jnosql.artemis.spi.AbstractBean;
 
 import javax.enterprise.context.spi.CreationalContext;

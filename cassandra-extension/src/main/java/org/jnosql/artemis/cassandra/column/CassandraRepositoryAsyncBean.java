@@ -14,8 +14,8 @@
  */
 package org.jnosql.artemis.cassandra.column;
 
-import org.jnosql.artemis.RepositoryAsync;
-import org.jnosql.artemis.column.ColumnRepositoryAsyncProducer;
+import jakarta.nosql.mapping.RepositoryAsync;
+import jakarta.nosql.mapping.column.ColumnRepositoryAsyncProducer;
 import org.jnosql.artemis.spi.AbstractBean;
 
 import javax.enterprise.context.spi.CreationalContext;
@@ -29,7 +29,7 @@ import java.util.Collections;
 import java.util.Set;
 
 
-class CassandraRepositoryAsyncBean extends AbstractBean<CassandraRepositoryAsync>{
+class CassandraRepositoryAsyncBean extends AbstractBean<CassandraRepositoryAsync> {
 
     private final Class type;
 

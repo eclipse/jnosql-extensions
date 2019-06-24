@@ -14,7 +14,7 @@
  */
 package org.jnosql.artemis.hazelcast.key;
 
-import org.jnosql.artemis.Repository;
+import jakarta.nosql.mapping.Repository;
 import org.jnosql.artemis.reflection.DynamicReturn;
 
 import java.lang.reflect.InvocationHandler;

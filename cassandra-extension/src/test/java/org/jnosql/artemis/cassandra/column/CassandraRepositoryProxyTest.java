@@ -14,8 +14,8 @@
  */
 package org.jnosql.artemis.cassandra.column;
 
-import org.jnosql.artemis.column.ColumnRepositoryProducer;
-import org.jnosql.diana.api.column.ColumnDeleteQuery;
+import jakarta.nosql.mapping.column.ColumnRepositoryProducer;
+import jakarta.nosql.column.ColumnDeleteQuery;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

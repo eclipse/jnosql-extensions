@@ -16,7 +16,7 @@ package org.jnosql.artemis.couchbase.document;
 
 
 import com.couchbase.client.java.document.json.JsonObject;
-import org.jnosql.artemis.RepositoryAsync;
+import jakarta.nosql.mapping.RepositoryAsync;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;

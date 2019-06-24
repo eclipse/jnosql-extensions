@@ -15,7 +15,7 @@
 package org.jnosql.artemis.cassandra.column;
 
 
-import org.jnosql.artemis.Repository;
+import jakarta.nosql.mapping.Repository;
 
 /**
  * The Cassandra {@link Repository}

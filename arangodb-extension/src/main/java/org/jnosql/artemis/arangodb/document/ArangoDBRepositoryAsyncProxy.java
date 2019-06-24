@@ -15,7 +15,7 @@
 package org.jnosql.artemis.arangodb.document;
 
 
-import org.jnosql.artemis.RepositoryAsync;
+import jakarta.nosql.mapping.RepositoryAsync;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -30,7 +30,6 @@ class ArangoDBRepositoryAsyncProxy<T> implements InvocationHandler {
     private static final Consumer NOOP = t -> {
     };
 
-
     private final ArangoDBTemplateAsync template;
 
     private final RepositoryAsync<?, ?> repositoryAsync;
@@ -40,7 +39,6 @@ class ArangoDBRepositoryAsyncProxy<T> implements InvocationHandler {
         this.template = template;
         this.repositoryAsync = repositoryAsync;
     }
-
 
     @Override
     public Object invoke(Object instance, Method method, Object[] args) throws Throwable {
