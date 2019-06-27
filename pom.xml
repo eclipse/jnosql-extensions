@@ -45,5 +45,6 @@
         <module>couchbase-extension</module>
         <module>arangodb-extension</module>
         <module>hazelcast-extension</module>
+        <module>solr-extension</module>
     </modules>
 </project>
