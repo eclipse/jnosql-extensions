@@ -15,7 +15,6 @@
 package org.jnosql.artemis.solr.document;
 
 
-import com.couchbase.client.java.document.json.JsonObject;
 import jakarta.nosql.mapping.Repository;
 import org.jnosql.artemis.reflection.DynamicReturn;
 
@@ -23,6 +22,7 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import static org.jnosql.artemis.reflection.DynamicReturn.toSingleResult;
@@ -50,11 +50,11 @@ class CouchbaseocumentRepositoryProxy<T> implements InvocationHandler {
         Solr solr = method.getAnnotation(Solr.class);
         if (Objects.nonNull(solr)) {
             List<T> result;
-            JsonObject params = JsonObjectUtil.getParams(args, method);
+            Map<String, Object> params = MapParams.getParams(args, method);
             if (params.isEmpty()) {
-                result = template.n1qlQuery(solr.value());
+                result = template.solr(solr.value());
             } else {
-                result = template.n1qlQuery(solr.value(), params);
+                result = template.solr(solr.value(), params);
             }
 
             return DynamicReturn.builder()

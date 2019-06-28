@@ -14,21 +14,21 @@
  */
 package org.jnosql.artemis.solr.document;
 
-import com.couchbase.client.java.document.json.JsonObject;
-
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-final class JsonObjectUtil {
+final class MapParams {
 
-    private JsonObjectUtil() {
+    private MapParams() {
     }
 
-    static JsonObject getParams(Object[] args, Method method) {
+    static Map<String, Object> getParams(Object[] args, Method method) {
 
-        JsonObject jsonObject = JsonObject.create();
+        Map<String, Object> params = new HashMap<>();
         Annotation[][] annotations = method.getParameterAnnotations();
 
         for (int index = 0; index < annotations.length; index++) {
@@ -39,10 +39,10 @@ final class JsonObjectUtil {
                     .filter(Param.class::isInstance)
                     .map(Param.class::cast)
                     .findFirst();
-            param.ifPresent(p -> jsonObject.put(p.value(), arg));
+            param.ifPresent(p -> params.put(p.value(), arg));
 
         }
 
-        return jsonObject;
+        return params;
     }
 }

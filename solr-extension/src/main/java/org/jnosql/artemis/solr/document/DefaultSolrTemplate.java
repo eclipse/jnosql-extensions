@@ -15,9 +15,6 @@
 package org.jnosql.artemis.solr.document;
 
 
-import com.couchbase.client.java.document.json.JsonObject;
-import com.couchbase.client.java.query.Statement;
-import com.couchbase.client.java.search.SearchQuery;
 import jakarta.nosql.document.DocumentCollectionManager;
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.document.DocumentEntityConverter;
@@ -25,12 +22,13 @@ import jakarta.nosql.mapping.document.DocumentEventPersistManager;
 import jakarta.nosql.mapping.document.DocumentWorkflow;
 import jakarta.nosql.mapping.reflection.ClassMappings;
 import org.jnosql.artemis.document.AbstractDocumentTemplate;
-import org.jnosql.diana.couchbase.document.CouchbaseDocumentCollectionManager;
+import org.jnosql.diana.solr.document.SolrDocumentCollectionManager;
 
 import javax.enterprise.inject.Instance;
 import javax.enterprise.inject.Typed;
 import javax.inject.Inject;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import static java.util.Objects.requireNonNull;
@@ -39,10 +37,9 @@ import static java.util.Objects.requireNonNull;
  * The Default implementation of {@link SolrTemplate}
  */
 @Typed(SolrTemplate.class)
-class DefaultSolrTemplate extends AbstractDocumentTemplate
-        implements SolrTemplate {
+class DefaultSolrTemplate extends AbstractDocumentTemplate implements SolrTemplate {
 
-    private Instance<CouchbaseDocumentCollectionManager> manager;
+    private Instance<SolrDocumentCollectionManager> manager;
 
     private DocumentEntityConverter converter;
 
@@ -55,7 +52,7 @@ class DefaultSolrTemplate extends AbstractDocumentTemplate
     private Converters converters;
 
     @Inject
-    DefaultSolrTemplate(Instance<CouchbaseDocumentCollectionManager> manager,
+    DefaultSolrTemplate(Instance<SolrDocumentCollectionManager> manager,
                         DocumentEntityConverter converter, DocumentWorkflow flow,
                         DocumentEventPersistManager persistManager,
                         ClassMappings mappings,
@@ -102,47 +99,19 @@ class DefaultSolrTemplate extends AbstractDocumentTemplate
     }
 
     @Override
-    public <T> List<T> n1qlQuery(String n1qlQuery, JsonObject params) {
-        requireNonNull(n1qlQuery, "n1qlQuery is required");
-        requireNonNull(params, "params is required");
-        return manager.get().n1qlQuery(n1qlQuery, params).stream()
-                .map(converter::toEntity)
-                .map(d -> (T) d)
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public <T> List<T> n1qlQuery(Statement n1qlQuery, JsonObject params) {
-        requireNonNull(n1qlQuery, "n1qlQuery is required");
-        requireNonNull(params, "params is required");
-        return manager.get().n1qlQuery(n1qlQuery, params).stream()
-                .map(converter::toEntity)
-                .map(d -> (T) d)
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public <T> List<T> n1qlQuery(String n1qlQuery) {
-        requireNonNull(n1qlQuery, "n1qlQuery is required");
-        return manager.get().n1qlQuery(n1qlQuery).stream()
-                .map(converter::toEntity)
-                .map(d -> (T) d)
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public <T> List<T> search(SearchQuery query) {
+    public <T> List<T> solr(String query) {
         requireNonNull(query, "query is required");
-        return manager.get().search(query).stream()
+        return manager.get().solr(query).stream()
                 .map(converter::toEntity)
                 .map(d -> (T) d)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public <T> List<T> n1qlQuery(Statement n1qlQuery) {
-        requireNonNull(n1qlQuery, "n1qlQuery is required");
-        return manager.get().n1qlQuery(n1qlQuery).stream()
+    public <T> List<T> solr(String query, Map<String, ?> params) {
+        requireNonNull(query, "query is required");
+        requireNonNull(params, "params is required");
+        return manager.get().solr(query, params).stream()
                 .map(converter::toEntity)
                 .map(d -> (T) d)
                 .collect(Collectors.toList());
