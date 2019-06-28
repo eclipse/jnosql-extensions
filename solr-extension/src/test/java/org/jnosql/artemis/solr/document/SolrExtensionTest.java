@@ -23,9 +23,6 @@ import javax.inject.Inject;
 public class SolrExtensionTest {
 
     @Inject
-    private PersonRepositoryAsync personRepositoryAsync;
-
-    @Inject
     private PersonRepository personRepository;
 
     @Test

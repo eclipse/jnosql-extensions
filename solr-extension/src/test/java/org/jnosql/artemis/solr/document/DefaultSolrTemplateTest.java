@@ -14,17 +14,14 @@
  */
 package org.jnosql.artemis.solr.document;
 
-import com.couchbase.client.java.document.json.JsonObject;
-import com.couchbase.client.java.query.Statement;
-import com.couchbase.client.java.search.SearchQuery;
+import jakarta.nosql.document.Document;
+import jakarta.nosql.document.DocumentEntity;
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.document.DocumentEntityConverter;
 import jakarta.nosql.mapping.document.DocumentEventPersistManager;
 import jakarta.nosql.mapping.document.DocumentWorkflow;
 import jakarta.nosql.mapping.reflection.ClassMappings;
-import jakarta.nosql.document.Document;
-import jakarta.nosql.document.DocumentEntity;
-import org.jnosql.diana.couchbase.document.CouchbaseDocumentCollectionManager;
+import org.jnosql.diana.solr.document.SolrDocumentCollectionManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -32,12 +29,9 @@ import org.mockito.Mockito;
 
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
-import java.util.List;
+import java.util.Collections;
+import java.util.Map;
 
-import static java.util.Collections.singletonList;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
 
 
@@ -59,14 +53,14 @@ public class DefaultSolrTemplateTest {
     @Inject
     private Converters converters;
 
-    private CouchbaseDocumentCollectionManager manager;
+    private SolrDocumentCollectionManager manager;
 
     private SolrTemplate template;
 
 
     @BeforeEach
     public void setup() {
-        manager = Mockito.mock(CouchbaseDocumentCollectionManager.class);
+        manager = Mockito.mock(SolrDocumentCollectionManager.class);
         Instance instance = Mockito.mock(Instance.class);
         when(instance.get()).thenReturn(manager);
         template = new DefaultSolrTemplate(instance, converter, flow, persistManager, mappings, converters);
@@ -75,50 +69,14 @@ public class DefaultSolrTemplateTest {
         entity.add(Document.of("_id", "Ada"));
         entity.add(Document.of("age", 10));
 
-        when(manager.search(any(SearchQuery.class))).thenReturn(singletonList(entity));
 
     }
 
     @Test
-    public void shouldFindN1ql() {
-        JsonObject params = JsonObject.create().put("name", "Ada");
-        template.n1qlQuery("select * from Person where name = $name", params);
-        Mockito.verify(manager).n1qlQuery("select * from Person where name = $name", params);
-    }
-
-    @Test
-    public void shouldFindN1qlStatment() {
-        Statement statement = Mockito.mock(Statement.class);
-        JsonObject params = JsonObject.create().put("name", "Ada");
-        template.n1qlQuery(statement, params);
-        Mockito.verify(manager).n1qlQuery(statement, params);
-    }
-
-
-    @Test
-    public void shouldFindN1ql2() {
-        template.n1qlQuery("select * from Person where name = $name");
-        Mockito.verify(manager).n1qlQuery("select * from Person where name = $name");
-    }
-
-    @Test
-    public void shouldFindN1qlStatment2() {
-        Statement statement = Mockito.mock(Statement.class);
-        template.n1qlQuery(statement);
-        Mockito.verify(manager).n1qlQuery(statement);
-    }
-
-    @Test
-    public void shouldSearch() {
-        SearchQuery query = Mockito.mock(SearchQuery.class);
-
-        List<Person> people = template.search(query);
-
-        assertFalse(people.isEmpty());
-        assertEquals(1, people.size());
-        Person person = people.get(0);
-
-        assertEquals("Ada", person.getName());
+    public void shouldFindBySolr() {
+        Map<String, String> params = Collections.singletonMap("name", "ada");
+        template.solr("name:@name _entity:person", params);
+        Mockito.verify(manager).solr("name:@name _entity:person", params);
     }
 
 }
