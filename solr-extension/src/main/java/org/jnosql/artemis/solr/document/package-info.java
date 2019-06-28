@@ -18,7 +18,7 @@
  * supporting graph, document, key/value, and object models, but the relationships are managed as in graph databases
  * with direct connections between records. It supports schema-less, schema-full and schema-mixed modes.
  * It has a strong security profiling system based on users and roles and supports querying with Gremlin
- * along with N1QL extended for graph traversal. OrientDB uses several indexing mechanisms based
+ * along with Solr extended for graph traversal. OrientDB uses several indexing mechanisms based
  * on B-tree and Extendible hashing, the last one is known as "hash index", there are plans to implement
  * LSM-tree and Fractal tree index based indexes. Each record has Surrogate key which indicates position
  * of record inside of Array list , links between records are stored either as single value of record's
@@ -26,4 +26,4 @@
  * which allows fast traversal (with O(1) complexity) of one-to-many relationships and fast addition/removal
  * of new links. OrientDB is the second most popular graph database according to the DB-Engines graph database ranking.
  */
-package org.jnosql.artemis.couchbase.document;
+package org.jnosql.artemis.solr.document;

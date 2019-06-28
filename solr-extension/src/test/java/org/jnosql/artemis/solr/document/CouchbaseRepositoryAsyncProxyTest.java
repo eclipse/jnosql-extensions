@@ -12,7 +12,7 @@
  *
  *   Otavio Santana
  */
-package org.jnosql.artemis.couchbase.document;
+package org.jnosql.artemis.solr.document;
 
 import com.couchbase.client.java.document.json.JsonObject;
 import jakarta.nosql.mapping.document.DocumentRepositoryAsyncProducer;
@@ -97,10 +97,10 @@ public class CouchbaseRepositoryAsyncProxyTest {
         Person findByName(String name);
 
 
-        @N1QL("select * from Person where name= $name")
+        @Solr("select * from Person where name= $name")
         void queryName(@Param("name") String name);
 
-        @N1QL("select * from Person where name= $name")
+        @Solr("select * from Person where name= $name")
         void queryName(@Param("name") String name, Consumer<List<Person>> callBack);
     }
 }

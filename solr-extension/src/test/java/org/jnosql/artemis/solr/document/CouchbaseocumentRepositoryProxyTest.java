@@ -12,7 +12,7 @@
  *
  *   Otavio Santana
  */
-package org.jnosql.artemis.couchbase.document;
+package org.jnosql.artemis.solr.document;
 
 import com.couchbase.client.java.document.json.JsonObject;
 import jakarta.nosql.mapping.document.DocumentRepositoryProducer;
@@ -36,7 +36,7 @@ import static org.mockito.Mockito.when;
 @ExtendWith(CDIExtension.class)
 public class CouchbaseocumentRepositoryProxyTest {
 
-    private CouchbaseTemplate template;
+    private SolrTemplate template;
 
     @Inject
     private DocumentRepositoryProducer producer;
@@ -46,7 +46,7 @@ public class CouchbaseocumentRepositoryProxyTest {
 
     @BeforeEach
     public void setUp() {
-        this.template = Mockito.mock(CouchbaseTemplate.class);
+        this.template = Mockito.mock(SolrTemplate.class);
 
         CouchbaseocumentRepositoryProxy handler = new CouchbaseocumentRepositoryProxy(template,
                 PersonRepository.class, producer.get(PersonRepository.class, template));
@@ -79,10 +79,10 @@ public class CouchbaseocumentRepositoryProxyTest {
 
     interface PersonRepository extends CouchbaseRepository<Person, String> {
 
-        @N1QL("select * from Person")
+        @Solr("select * from Person")
         List<Person> findAll();
 
-        @N1QL("select * from Person where name = $name")
+        @Solr("select * from Person where name = $name")
         List<Person> findByName(@Param("name") String name);
     }
 }

@@ -12,8 +12,8 @@
  *
  *   Otavio Santana
  */
-package org.jnosql.artemis.couchbase.document;
+package org.jnosql.artemis.solr.document;
 
 
-public interface PersonRepositoryAsync extends CouchbaseRepositoryAsync<Person, String> {
+public interface PersonRepository extends CouchbaseRepository<Person, String> {
 }

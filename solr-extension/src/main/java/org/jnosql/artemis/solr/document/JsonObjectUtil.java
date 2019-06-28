@@ -12,7 +12,7 @@
  *
  *   Otavio Santana
  */
-package org.jnosql.artemis.couchbase.document;
+package org.jnosql.artemis.solr.document;
 
 import com.couchbase.client.java.document.json.JsonObject;
 

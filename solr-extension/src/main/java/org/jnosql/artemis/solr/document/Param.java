@@ -12,15 +12,20 @@
  *
  *   Otavio Santana
  */
-package org.jnosql.artemis.couchbase.document;
+package org.jnosql.artemis.solr.document;
 
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-import jakarta.nosql.mapping.Repository;
 
 /**
- * The couchbase {@link Repository}
- * @param <T> the entity type
- * @param <K> the entity id type
+ * Defines a param to a Solr query.
  */
-public interface CouchbaseRepository<T, K> extends Repository<T, K> {
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.PARAMETER)
+public @interface Param {
+
+    String value();
 }

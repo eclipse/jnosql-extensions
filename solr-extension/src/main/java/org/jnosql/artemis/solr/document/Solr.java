@@ -12,16 +12,19 @@
  *
  *   Otavio Santana
  */
-package org.jnosql.artemis.couchbase.document;
+package org.jnosql.artemis.solr.document;
 
-
-import jakarta.nosql.mapping.RepositoryAsync;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
- * The couchbase {@link RepositoryAsync}
- *
- * @param <T> the entity type
- * @param <K> the entity id type
+ * To a dynamic query on SolrRepository interface.
  */
-public interface CouchbaseRepositoryAsync<T, K> extends RepositoryAsync<T, K> {
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.METHOD)
+public @interface Solr {
+
+    String value();
 }

@@ -12,7 +12,7 @@
  *
  *   Otavio Santana
  */
-package org.jnosql.artemis.couchbase.document;
+package org.jnosql.artemis.solr.document;
 
 
 import com.couchbase.client.java.document.json.JsonObject;
@@ -36,11 +36,11 @@ import java.util.stream.Collectors;
 import static java.util.Objects.requireNonNull;
 
 /**
- * The Default implementation of {@link CouchbaseTemplate}
+ * The Default implementation of {@link SolrTemplate}
  */
-@Typed(CouchbaseTemplate.class)
-class DefaultCouchbaseTemplate extends AbstractDocumentTemplate
-        implements CouchbaseTemplate {
+@Typed(SolrTemplate.class)
+class DefaultSolrTemplate extends AbstractDocumentTemplate
+        implements SolrTemplate {
 
     private Instance<CouchbaseDocumentCollectionManager> manager;
 
@@ -55,11 +55,11 @@ class DefaultCouchbaseTemplate extends AbstractDocumentTemplate
     private Converters converters;
 
     @Inject
-    DefaultCouchbaseTemplate(Instance<CouchbaseDocumentCollectionManager> manager,
-                             DocumentEntityConverter converter, DocumentWorkflow flow,
-                             DocumentEventPersistManager persistManager,
-                             ClassMappings mappings,
-                             Converters converters) {
+    DefaultSolrTemplate(Instance<CouchbaseDocumentCollectionManager> manager,
+                        DocumentEntityConverter converter, DocumentWorkflow flow,
+                        DocumentEventPersistManager persistManager,
+                        ClassMappings mappings,
+                        Converters converters) {
         this.manager = manager;
         this.converter = converter;
         this.flow = flow;
@@ -68,7 +68,7 @@ class DefaultCouchbaseTemplate extends AbstractDocumentTemplate
         this.converters = converters;
     }
 
-    DefaultCouchbaseTemplate() {
+    DefaultSolrTemplate() {
     }
 
     @Override

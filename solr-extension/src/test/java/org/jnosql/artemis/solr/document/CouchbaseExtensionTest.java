@@ -12,19 +12,26 @@
  *
  *   Otavio Santana
  */
-package org.jnosql.artemis.couchbase.document;
+package org.jnosql.artemis.solr.document;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-/**
- * To a dynamic query on CouchbaseRepository and CouchbaseRepositoryAsync interfaces.
- */
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.METHOD)
-public @interface N1QL {
+import javax.inject.Inject;
 
-    String value();
+@ExtendWith(CDIExtension.class)
+public class CouchbaseExtensionTest {
+
+    @Inject
+    private PersonRepositoryAsync personRepositoryAsync;
+
+    @Inject
+    private PersonRepository personRepository;
+
+    @Test
+    public void shouldSaveOrientDB() {
+        Person person = new Person("Ada", 10);
+        personRepository.deleteById(person.getName());
+        personRepositoryAsync.deleteById(person.getName());
+    }
 }

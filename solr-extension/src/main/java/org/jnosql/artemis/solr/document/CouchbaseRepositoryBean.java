@@ -12,7 +12,7 @@
  *
  *   Otavio Santana
  */
-package org.jnosql.artemis.couchbase.document;
+package org.jnosql.artemis.solr.document;
 
 import jakarta.nosql.mapping.Repository;
 import jakarta.nosql.mapping.document.DocumentRepositoryProducer;
@@ -53,7 +53,7 @@ class CouchbaseRepositoryBean extends AbstractBean<CouchbaseRepository> {
 
     @Override
     public CouchbaseRepository create(CreationalContext<CouchbaseRepository> creationalContext) {
-        CouchbaseTemplate template = getInstance(CouchbaseTemplate.class);
+        SolrTemplate template = getInstance(SolrTemplate.class);
         DocumentRepositoryProducer producer = getInstance(DocumentRepositoryProducer.class);
         Repository<Object, Object> repository = producer.get((Class<Repository<Object, Object>>) type, template);
         CouchbaseocumentRepositoryProxy handler = new CouchbaseocumentRepositoryProxy(template, type, repository);
@@ -75,7 +75,7 @@ class CouchbaseRepositoryBean extends AbstractBean<CouchbaseRepository> {
 
     @Override
     public String getId() {
-        return type.getName() + "@couchbase";
+        return type.getName() + "@solr";
     }
 
 }

@@ -12,7 +12,7 @@
  *
  *   Otavio Santana
  */
-package org.jnosql.artemis.couchbase.document;
+package org.jnosql.artemis.solr.document;
 
 
 import com.couchbase.client.java.document.json.JsonObject;
@@ -25,19 +25,18 @@ import java.lang.reflect.ParameterizedType;
 import java.util.List;
 import java.util.Objects;
 
-import static org.jnosql.artemis.couchbase.document.JsonObjectUtil.getParams;
 import static org.jnosql.artemis.reflection.DynamicReturn.toSingleResult;
 
 class CouchbaseocumentRepositoryProxy<T> implements InvocationHandler {
 
     private final Class<T> typeClass;
 
-    private final CouchbaseTemplate template;
+    private final SolrTemplate template;
 
     private final Repository<?, ?> repository;
 
 
-    CouchbaseocumentRepositoryProxy(CouchbaseTemplate template, Class<?> repositoryType, Repository<?, ?> repository) {
+    CouchbaseocumentRepositoryProxy(SolrTemplate template, Class<?> repositoryType, Repository<?, ?> repository) {
         this.template = template;
         this.typeClass = Class.class.cast(ParameterizedType.class.cast(repositoryType.getGenericInterfaces()[0])
                 .getActualTypeArguments()[0]);
@@ -48,14 +47,14 @@ class CouchbaseocumentRepositoryProxy<T> implements InvocationHandler {
     @Override
     public Object invoke(Object instance, Method method, Object[] args) throws Throwable {
 
-        N1QL n1QL = method.getAnnotation(N1QL.class);
-        if (Objects.nonNull(n1QL)) {
+        Solr solr = method.getAnnotation(Solr.class);
+        if (Objects.nonNull(solr)) {
             List<T> result;
-            JsonObject params = getParams(args, method);
+            JsonObject params = JsonObjectUtil.getParams(args, method);
             if (params.isEmpty()) {
-                result = template.n1qlQuery(n1QL.value());
+                result = template.n1qlQuery(solr.value());
             } else {
-                result = template.n1qlQuery(n1QL.value(), params);
+                result = template.n1qlQuery(solr.value(), params);
             }
 
             return DynamicReturn.builder()

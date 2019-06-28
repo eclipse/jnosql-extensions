@@ -12,26 +12,15 @@
  *
  *   Otavio Santana
  */
-package org.jnosql.artemis.couchbase.document;
+package org.jnosql.artemis.solr.document;
 
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 
-import javax.inject.Inject;
+import jakarta.nosql.mapping.Repository;
 
-@ExtendWith(CDIExtension.class)
-public class CouchbaseExtensionTest {
-
-    @Inject
-    private PersonRepositoryAsync personRepositoryAsync;
-
-    @Inject
-    private PersonRepository personRepository;
-
-    @Test
-    public void shouldSaveOrientDB() {
-        Person person = new Person("Ada", 10);
-        personRepository.deleteById(person.getName());
-        personRepositoryAsync.deleteById(person.getName());
-    }
+/**
+ * The couchbase {@link Repository}
+ * @param <T> the entity type
+ * @param <K> the entity id type
+ */
+public interface CouchbaseRepository<T, K> extends Repository<T, K> {
 }

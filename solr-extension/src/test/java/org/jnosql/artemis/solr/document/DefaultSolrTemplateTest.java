@@ -12,7 +12,7 @@
  *
  *   Otavio Santana
  */
-package org.jnosql.artemis.couchbase.document;
+package org.jnosql.artemis.solr.document;
 
 import com.couchbase.client.java.document.json.JsonObject;
 import com.couchbase.client.java.query.Statement;
@@ -42,7 +42,7 @@ import static org.mockito.Mockito.when;
 
 
 @ExtendWith(CDIExtension.class)
-public class DefaultCouchbaseTemplateTest {
+public class DefaultSolrTemplateTest {
 
     @Inject
     private DocumentEntityConverter converter;
@@ -61,7 +61,7 @@ public class DefaultCouchbaseTemplateTest {
 
     private CouchbaseDocumentCollectionManager manager;
 
-    private CouchbaseTemplate template;
+    private SolrTemplate template;
 
 
     @BeforeEach
@@ -69,7 +69,7 @@ public class DefaultCouchbaseTemplateTest {
         manager = Mockito.mock(CouchbaseDocumentCollectionManager.class);
         Instance instance = Mockito.mock(Instance.class);
         when(instance.get()).thenReturn(manager);
-        template = new DefaultCouchbaseTemplate(instance, converter, flow, persistManager, mappings, converters);
+        template = new DefaultSolrTemplate(instance, converter, flow, persistManager, mappings, converters);
 
         DocumentEntity entity = DocumentEntity.of("Person");
         entity.add(Document.of("_id", "Ada"));

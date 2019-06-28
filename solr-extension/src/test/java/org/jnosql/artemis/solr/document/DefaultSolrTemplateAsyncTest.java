@@ -12,7 +12,7 @@
  *
  *   Otavio Santana
  */
-package org.jnosql.artemis.couchbase.document;
+package org.jnosql.artemis.solr.document;
 
 import com.couchbase.client.java.document.json.JsonObject;
 import com.couchbase.client.java.query.Statement;
@@ -35,7 +35,7 @@ import java.util.function.Consumer;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(CDIExtension.class)
-public class DefaultCouchbaseTemplateAsyncTest {
+public class DefaultSolrTemplateAsyncTest {
 
     @Inject
     private DocumentEntityConverter converter;
