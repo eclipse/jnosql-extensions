@@ -61,14 +61,14 @@ public class SolrRepositoryProxyTest {
     @Test
     public void shouldFindAll() {
         personRepository.findAll();
-        verify(template).solr("age:22 AND type:V AND _entity:person");
+        verify(template).solr("_entity:person");
     }
 
     @Test
     public void shouldFindByNameN1ql() {
         ArgumentCaptor<Map> captor = ArgumentCaptor.forClass(Map.class);
         personRepository.findByName("Ada");
-        verify(template).solr(Mockito.eq("select * from Person where name = $name"), captor.capture());
+        verify(template).solr(Mockito.eq("name:@name AND _entity:person"), captor.capture());
 
         Map<String, Object> value = captor.getValue();
 
