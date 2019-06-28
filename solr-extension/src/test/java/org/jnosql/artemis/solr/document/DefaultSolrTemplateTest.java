@@ -68,8 +68,6 @@ public class DefaultSolrTemplateTest {
         DocumentEntity entity = DocumentEntity.of("Person");
         entity.add(Document.of("_id", "Ada"));
         entity.add(Document.of("age", 10));
-
-
     }
 
     @Test
@@ -78,5 +76,12 @@ public class DefaultSolrTemplateTest {
         template.solr("name:@name _entity:person", params);
         Mockito.verify(manager).solr("name:@name _entity:person", params);
     }
+
+    @Test
+    public void shouldFindBySolr2() {
+        template.solr("_entity:person");
+        Mockito.verify(manager).solr("_entity:person");
+    }
+
 
 }
