@@ -29,7 +29,7 @@ import java.util.Collections;
 import java.util.Set;
 
 
-class CouchbaseRepositoryBean extends AbstractBean<CouchbaseRepository> {
+class SolrRepositoryBean extends AbstractBean<SolrRepository> {
 
     private final Class type;
 
@@ -39,7 +39,7 @@ class CouchbaseRepositoryBean extends AbstractBean<CouchbaseRepository> {
     private final Set<Annotation> qualifiers = Collections.singleton(new AnnotationLiteral<Default>() {
     });
 
-    CouchbaseRepositoryBean(Class type, BeanManager beanManager) {
+    SolrRepositoryBean(Class type, BeanManager beanManager) {
         super(beanManager);
         this.type = type;
         this.types = Collections.singleton(type);
@@ -52,12 +52,12 @@ class CouchbaseRepositoryBean extends AbstractBean<CouchbaseRepository> {
 
 
     @Override
-    public CouchbaseRepository create(CreationalContext<CouchbaseRepository> creationalContext) {
+    public SolrRepository create(CreationalContext<SolrRepository> creationalContext) {
         SolrTemplate template = getInstance(SolrTemplate.class);
         DocumentRepositoryProducer producer = getInstance(DocumentRepositoryProducer.class);
         Repository<Object, Object> repository = producer.get((Class<Repository<Object, Object>>) type, template);
-        CouchbaseocumentRepositoryProxy handler = new CouchbaseocumentRepositoryProxy(template, type, repository);
-        return (CouchbaseRepository) Proxy.newProxyInstance(type.getClassLoader(),
+        SolrRepositoryProxy handler = new SolrRepositoryProxy(template, type, repository);
+        return (SolrRepository) Proxy.newProxyInstance(type.getClassLoader(),
                 new Class[]{type},
                 handler);
     }

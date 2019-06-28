@@ -34,7 +34,7 @@ import static org.mockito.Mockito.when;
 
 
 @ExtendWith(CDIExtension.class)
-public class CouchbaseocumentRepositoryProxyTest {
+public class SolrRepositoryProxyTest {
 
     private SolrTemplate template;
 
@@ -48,7 +48,7 @@ public class CouchbaseocumentRepositoryProxyTest {
     public void setUp() {
         this.template = Mockito.mock(SolrTemplate.class);
 
-        CouchbaseocumentRepositoryProxy handler = new CouchbaseocumentRepositoryProxy(template,
+        SolrRepositoryProxy handler = new SolrRepositoryProxy(template,
                 PersonRepository.class, producer.get(PersonRepository.class, template));
 
         when(template.insert(any(Person.class))).thenReturn(new Person());
@@ -77,7 +77,7 @@ public class CouchbaseocumentRepositoryProxyTest {
         assertEquals("Ada", value.getString("name"));
     }
 
-    interface PersonRepository extends CouchbaseRepository<Person, String> {
+    interface PersonRepository extends SolrRepository<Person, String> {
 
         @Solr("select * from Person")
         List<Person> findAll();

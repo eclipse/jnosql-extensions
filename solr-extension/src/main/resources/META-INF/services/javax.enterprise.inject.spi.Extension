@@ -12,4 +12,4 @@
 #
 #   Otavio Santana
 #
-org.jnosql.artemis.solr.document.CouchbaseExtension
+org.jnosql.artemis.solr.document.SolrExtension

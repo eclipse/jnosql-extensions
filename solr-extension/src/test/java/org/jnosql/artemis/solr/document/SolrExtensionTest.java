@@ -20,7 +20,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import javax.inject.Inject;
 
 @ExtendWith(CDIExtension.class)
-public class CouchbaseExtensionTest {
+public class SolrExtensionTest {
 
     @Inject
     private PersonRepositoryAsync personRepositoryAsync;

@@ -25,38 +25,22 @@ import java.util.HashSet;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
 
-public class CouchbaseExtension implements Extension {
+public class SolrExtension implements Extension {
 
-    private static final Logger LOGGER = Logger.getLogger(CouchbaseExtension.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(SolrExtension.class.getName());
 
     private final Collection<Class<?>> crudTypes = new HashSet<>();
 
-    private final Collection<Class<?>> crudAsyncTypes = new HashSet<>();
-
-
-    <T extends CouchbaseRepository> void onProcessAnnotatedType(@Observes final ProcessAnnotatedType<T> repo) {
+    <T extends SolrRepository> void onProcessAnnotatedType(@Observes final ProcessAnnotatedType<T> repo) {
         Class<T> javaClass = repo.getAnnotatedType().getJavaClass();
 
-        if(CouchbaseRepository.class.equals(javaClass)) {
+        if(SolrRepository.class.equals(javaClass)) {
             return;
         }
 
-        if (Stream.of(javaClass.getInterfaces()).anyMatch(CouchbaseRepository.class::equals)
+        if (Stream.of(javaClass.getInterfaces()).anyMatch(SolrRepository.class::equals)
                 && Modifier.isInterface(javaClass.getModifiers())) {
             crudTypes.add(javaClass);
-        }
-    }
-
-    <T extends CouchbaseRepositoryAsync> void onProcessAnnotatedTypeAsync(@Observes final ProcessAnnotatedType<T> repo) {
-        Class<T> javaClass = repo.getAnnotatedType().getJavaClass();
-
-        if(CouchbaseRepositoryAsync.class.equals(javaClass)) {
-            return;
-        }
-
-        if (Stream.of(javaClass.getInterfaces()).anyMatch(CouchbaseRepositoryAsync.class::equals)
-                && Modifier.isInterface(javaClass.getModifiers())) {
-            crudAsyncTypes.add(javaClass);
         }
     }
 
@@ -64,9 +48,7 @@ public class CouchbaseExtension implements Extension {
     void onAfterBeanDiscovery(@Observes final AfterBeanDiscovery afterBeanDiscovery, final BeanManager beanManager) {
         LOGGER.info("Starting the onAfterBeanDiscovery with elements number: " + crudTypes.size());
 
-        crudTypes.forEach(type -> afterBeanDiscovery.addBean(new CouchbaseRepositoryBean(type, beanManager)));
-
-        crudAsyncTypes.forEach(type -> afterBeanDiscovery.addBean(new CouchbaseRepositoryAsyncBean(type, beanManager)));
+        crudTypes.forEach(type -> afterBeanDiscovery.addBean(new SolrRepositoryBean(type, beanManager)));
 
         LOGGER.info("Finished the onAfterBeanDiscovery");
     }

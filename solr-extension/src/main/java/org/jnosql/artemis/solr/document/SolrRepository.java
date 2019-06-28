@@ -22,5 +22,5 @@ import jakarta.nosql.mapping.Repository;
  * @param <T> the entity type
  * @param <K> the entity id type
  */
-public interface CouchbaseRepository<T, K> extends Repository<T, K> {
+public interface SolrRepository<T, K> extends Repository<T, K> {
 }

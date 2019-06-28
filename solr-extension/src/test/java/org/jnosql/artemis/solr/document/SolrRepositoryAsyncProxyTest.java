@@ -32,7 +32,7 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(CDIExtension.class)
-public class CouchbaseRepositoryAsyncProxyTest {
+public class SolrRepositoryAsyncProxyTest {
 
 
     private CouchbaseTemplateAsync template;

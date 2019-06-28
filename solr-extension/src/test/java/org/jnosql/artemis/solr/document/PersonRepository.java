@@ -15,5 +15,5 @@
 package org.jnosql.artemis.solr.document;
 
 
-public interface PersonRepository extends CouchbaseRepository<Person, String> {
+public interface PersonRepository extends SolrRepository<Person, String> {
 }

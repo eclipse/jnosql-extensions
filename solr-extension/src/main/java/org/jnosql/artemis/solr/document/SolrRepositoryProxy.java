@@ -27,7 +27,7 @@ import java.util.Objects;
 
 import static org.jnosql.artemis.reflection.DynamicReturn.toSingleResult;
 
-class CouchbaseocumentRepositoryProxy<T> implements InvocationHandler {
+class SolrRepositoryProxy<T> implements InvocationHandler {
 
     private final Class<T> typeClass;
 
@@ -36,7 +36,7 @@ class CouchbaseocumentRepositoryProxy<T> implements InvocationHandler {
     private final Repository<?, ?> repository;
 
 
-    CouchbaseocumentRepositoryProxy(SolrTemplate template, Class<?> repositoryType, Repository<?, ?> repository) {
+    SolrRepositoryProxy(SolrTemplate template, Class<?> repositoryType, Repository<?, ?> repository) {
         this.template = template;
         this.typeClass = Class.class.cast(ParameterizedType.class.cast(repositoryType.getGenericInterfaces()[0])
                 .getActualTypeArguments()[0]);
