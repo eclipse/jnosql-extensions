@@ -14,7 +14,6 @@
  */
 package org.jnosql.artemis.solr.document;
 
-import com.couchbase.client.java.document.json.JsonObject;
 import jakarta.nosql.mapping.document.DocumentRepositoryProducer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,6 +25,7 @@ import javax.inject.Inject;
 import java.lang.reflect.Proxy;
 import java.time.Duration;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Matchers.any;
@@ -43,7 +43,6 @@ public class SolrRepositoryProxyTest {
 
     private PersonRepository personRepository;
 
-
     @BeforeEach
     public void setUp() {
         this.template = Mockito.mock(SolrTemplate.class);
@@ -59,30 +58,29 @@ public class SolrRepositoryProxyTest {
                 handler);
     }
 
-
     @Test
     public void shouldFindAll() {
         personRepository.findAll();
-        verify(template).n1qlQuery("select * from Person");
+        verify(template).solr("age:22 AND type:V AND _entity:person");
     }
 
     @Test
     public void shouldFindByNameN1ql() {
-        ArgumentCaptor<JsonObject> captor = ArgumentCaptor.forClass(JsonObject.class);
+        ArgumentCaptor<Map> captor = ArgumentCaptor.forClass(Map.class);
         personRepository.findByName("Ada");
-        verify(template).n1qlQuery(Mockito.eq("select * from Person where name = $name"), captor.capture());
+        verify(template).solr(Mockito.eq("select * from Person where name = $name"), captor.capture());
 
-        JsonObject value = captor.getValue();
+        Map<String, Object> value = captor.getValue();
 
-        assertEquals("Ada", value.getString("name"));
+        assertEquals("Ada", value.get("name"));
     }
 
     interface PersonRepository extends SolrRepository<Person, String> {
 
-        @Solr("select * from Person")
+        @Solr("_entity:person")
         List<Person> findAll();
 
-        @Solr("select * from Person where name = $name")
+        @Solr("name:@name AND _entity:person")
         List<Person> findByName(@Param("name") String name);
     }
 }

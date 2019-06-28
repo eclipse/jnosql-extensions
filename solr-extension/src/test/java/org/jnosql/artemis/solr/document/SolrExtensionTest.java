@@ -32,6 +32,5 @@ public class SolrExtensionTest {
     public void shouldSaveOrientDB() {
         Person person = new Person("Ada", 10);
         personRepository.deleteById(person.getName());
-        personRepositoryAsync.deleteById(person.getName());
     }
 }
