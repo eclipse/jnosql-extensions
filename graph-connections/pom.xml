@@ -68,5 +68,11 @@
             <version>2.0.2</version>
             <optional>true</optional>
         </dependency>
+        <dependency>
+            <groupId>org.janusgraph</groupId>
+            <artifactId>janusgraph-core</artifactId>
+            <version>0.3.2</version>
+            <optional>true</optional>
+        </dependency>
     </dependencies>
 </project>
