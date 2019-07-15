@@ -46,6 +46,6 @@
         <module>arangodb-extension</module>
         <module>hazelcast-extension</module>
         <module>solr-extension</module>
-        <module>graph-extension</module>
+        <module>graph-connections</module>
     </modules>
 </project>
