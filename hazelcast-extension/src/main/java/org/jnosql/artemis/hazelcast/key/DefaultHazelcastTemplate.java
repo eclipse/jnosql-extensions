@@ -15,11 +15,11 @@
 package org.jnosql.artemis.hazelcast.key;
 
 import com.hazelcast.query.Predicate;
-import jakarta.nosql.key.BucketManager;
-import jakarta.nosql.mapping.key.KeyValueEntityConverter;
-import jakarta.nosql.mapping.key.KeyValueWorkflow;
-import org.jnosql.artemis.key.AbstractKeyValueTemplate;
-import org.jnosql.diana.hazelcast.key.HazelcastBucketManager;
+import jakarta.nosql.kv.BucketManager;
+import jakarta.nosql.mapping.kv.KeyValueEntityConverter;
+import jakarta.nosql.mapping.kv.KeyValueWorkflow;
+import org.jnosql.artemis.kv.AbstractKeyValueTemplate;
+import org.jnosql.diana.hazelcast.kv.HazelcastBucketManager;
 
 import javax.enterprise.inject.Instance;
 import javax.enterprise.inject.Typed;
