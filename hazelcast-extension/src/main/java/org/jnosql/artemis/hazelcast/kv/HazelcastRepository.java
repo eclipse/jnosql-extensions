@@ -12,23 +12,16 @@
  *
  *   Otavio Santana
  */
-package org.jnosql.artemis.hazelcast.key;
+package org.jnosql.artemis.hazelcast.kv;
 
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 
-import javax.inject.Inject;
+import jakarta.nosql.mapping.Repository;
 
-@ExtendWith(CDIExtension.class)
-public class HazelcastExtensionTest {
-
-    @Inject
-    private PersonRepository personRepository;
-
-    @Test
-    public void shouldSave() {
-        Person person = new Person("Ada", 10);
-        personRepository.deleteById(person.getName());
-    }
-
+/**
+ * The hazelcat {@link Repository}
+ *
+ * @param <T> the entity type
+ * @param <K> the id entity type
+ */
+public interface HazelcastRepository<T, K> extends Repository<T, K> {
 }

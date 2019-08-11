@@ -12,16 +12,19 @@
  *
  *   Otavio Santana
  */
-package org.jnosql.artemis.hazelcast.key;
+package org.jnosql.artemis.hazelcast.kv;
 
-
-import jakarta.nosql.mapping.Repository;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
- * The hazelcat {@link Repository}
- *
- * @param <T> the entity type
- * @param <K> the id entity type
+ * To a dynamic query on HazelcastRepository interfaces.
  */
-public interface HazelcastRepository<T, K> extends Repository<T, K> {
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.METHOD)
+public @interface Query {
+
+    String value();
 }
