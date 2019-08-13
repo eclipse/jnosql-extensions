@@ -12,20 +12,19 @@
  *
  *   Otavio Santana
  */
-package org.jnosql.artemis.hazelcast.key;
+package org.jnosql.artemis.hazelcast.keyvalue;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-
 /**
- * Defines a param to a Query query.
+ * To a dynamic query on HazelcastRepository interfaces.
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.PARAMETER)
-public @interface Param {
+@Target(ElementType.METHOD)
+public @interface Query {
 
     String value();
 }

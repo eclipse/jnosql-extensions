@@ -12,14 +12,14 @@
  *
  *   Otavio Santana
  */
-package org.jnosql.artemis.hazelcast.key;
+package org.jnosql.artemis.hazelcast.keyvalue;
 
 import com.hazelcast.query.Predicate;
-import jakarta.nosql.key.BucketManager;
-import jakarta.nosql.mapping.key.KeyValueEntityConverter;
-import jakarta.nosql.mapping.key.KeyValueWorkflow;
-import org.jnosql.artemis.key.AbstractKeyValueTemplate;
-import org.jnosql.diana.hazelcast.key.HazelcastBucketManager;
+import jakarta.nosql.keyvalue.BucketManager;
+import jakarta.nosql.mapping.keyvalue.KeyValueEntityConverter;
+import jakarta.nosql.mapping.keyvalue.KeyValueWorkflow;
+import org.jnosql.artemis.keyvalue.AbstractKeyValueTemplate;
+import org.jnosql.diana.hazelcast.keyvalue.HazelcastBucketManager;
 
 import javax.enterprise.inject.Instance;
 import javax.enterprise.inject.Typed;
