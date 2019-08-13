@@ -12,19 +12,23 @@
  *
  *   Otavio Santana
  */
-package org.jnosql.artemis.hazelcast.kv;
+package org.jnosql.artemis.hazelcast.keyvalue;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-/**
- * To a dynamic query on HazelcastRepository interfaces.
- */
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.METHOD)
-public @interface Query {
+import javax.inject.Inject;
 
-    String value();
+@ExtendWith(CDIExtension.class)
+public class HazelcastExtensionTest {
+
+    @Inject
+    private PersonRepository personRepository;
+
+    @Test
+    public void shouldSave() {
+        Person person = new Person("Ada", 10);
+        personRepository.deleteById(person.getName());
+    }
+
 }

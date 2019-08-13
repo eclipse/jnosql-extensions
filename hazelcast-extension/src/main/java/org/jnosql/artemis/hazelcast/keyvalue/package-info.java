@@ -29,4 +29,4 @@
  * on most existing ecosystems: Amazon Web Services (AWS), Google Compute Engine and Microsoft Azure.
  * Moreover, it provides single-click deployment for the user's cluster.
  */
-package org.jnosql.artemis.hazelcast.kv;
+package org.jnosql.artemis.hazelcast.keyvalue;

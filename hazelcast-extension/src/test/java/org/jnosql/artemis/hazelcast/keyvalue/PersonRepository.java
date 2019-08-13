@@ -12,16 +12,8 @@
  *
  *   Otavio Santana
  */
-package org.jnosql.artemis.hazelcast.kv;
+package org.jnosql.artemis.hazelcast.keyvalue;
 
 
-import jakarta.nosql.mapping.Repository;
-
-/**
- * The hazelcat {@link Repository}
- *
- * @param <T> the entity type
- * @param <K> the id entity type
- */
-public interface HazelcastRepository<T, K> extends Repository<T, K> {
+public interface PersonRepository extends HazelcastRepository<Person, String> {
 }

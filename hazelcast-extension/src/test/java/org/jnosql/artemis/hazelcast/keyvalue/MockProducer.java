@@ -12,12 +12,12 @@
  *
  *   Otavio Santana
  */
-package org.jnosql.artemis.hazelcast.kv;
+package org.jnosql.artemis.hazelcast.keyvalue;
 
 
 import com.hazelcast.query.Predicate;
 import jakarta.nosql.Value;
-import org.jnosql.diana.hazelcast.kv.HazelcastBucketManager;
+import org.jnosql.diana.hazelcast.keyvalue.HazelcastBucketManager;
 
 import javax.enterprise.inject.Produces;
 import java.util.List;

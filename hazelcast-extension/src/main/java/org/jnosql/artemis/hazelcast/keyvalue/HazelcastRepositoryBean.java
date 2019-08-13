@@ -12,10 +12,10 @@
  *
  *   Otavio Santana
  */
-package org.jnosql.artemis.hazelcast.kv;
+package org.jnosql.artemis.hazelcast.keyvalue;
 
 import jakarta.nosql.mapping.Repository;
-import jakarta.nosql.mapping.kv.KeyValueRepositoryProducer;
+import jakarta.nosql.mapping.keyvalue.KeyValueRepositoryProducer;
 import org.jnosql.artemis.spi.AbstractBean;
 
 import javax.enterprise.context.spi.CreationalContext;
