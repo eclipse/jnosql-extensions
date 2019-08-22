@@ -24,8 +24,8 @@ import org.mockito.Mockito;
 
 import javax.inject.Inject;
 import java.lang.reflect.Proxy;
-import java.util.List;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Matchers.any;
@@ -82,13 +82,14 @@ public class CouchbaseRepositoryAsyncProxyTest {
 
     @Test
     public void shouldFindByNameFromN1ql() {
-        Consumer<List<Person>> callBack = p -> {
+        Consumer<Stream<Person>> callBack = p -> {
         };
 
         JsonObject params = JsonObject.create().put("name", "Ada");
         personRepository.queryName("Ada", callBack);
 
-        verify(template).n1qlQuery(Mockito.eq("select * from Person where name= $name"), Mockito.eq(params), Mockito.eq(callBack));
+        verify(template).n1qlQuery(Mockito.eq("select * from Person where name= $name"),
+                Mockito.eq(params), Mockito.eq(callBack));
 
     }
 
@@ -101,6 +102,6 @@ public class CouchbaseRepositoryAsyncProxyTest {
         void queryName(@Param("name") String name);
 
         @N1QL("select * from Person where name= $name")
-        void queryName(@Param("name") String name, Consumer<List<Person>> callBack);
+        void queryName(@Param("name") String name, Consumer<Stream<Person>> callBack);
     }
 }

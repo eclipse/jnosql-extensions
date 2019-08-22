@@ -33,6 +33,8 @@ import org.mockito.Mockito;
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static java.util.Collections.singletonList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -75,7 +77,7 @@ public class DefaultCouchbaseTemplateTest {
         entity.add(Document.of("_id", "Ada"));
         entity.add(Document.of("age", 10));
 
-        when(manager.search(any(SearchQuery.class))).thenReturn(singletonList(entity));
+        when(manager.search(any(SearchQuery.class))).thenReturn(Stream.of(entity));
 
     }
 
@@ -112,7 +114,7 @@ public class DefaultCouchbaseTemplateTest {
     public void shouldSearch() {
         SearchQuery query = Mockito.mock(SearchQuery.class);
 
-        List<Person> people = template.search(query);
+        List<Person> people = template.<Person>search(query).collect(Collectors.toList());
 
         assertFalse(people.isEmpty());
         assertEquals(1, people.size());
