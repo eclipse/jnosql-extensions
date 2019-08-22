@@ -20,6 +20,7 @@ import jakarta.nosql.mapping.document.DocumentTemplateAsync;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 /**
  * A {@link DocumentTemplateAsync} to arangodb
@@ -39,5 +40,5 @@ public interface ArangoDBTemplateAsync extends DocumentTemplateAsync {
      * @throws UnsupportedOperationException when the database does not support this feature
      * @throws NullPointerException          when either select or callback are null
      */
-    <T> void aql(String query, Map<String, Object> values, Consumer<List<T>> callBack);
+    <T> void aql(String query, Map<String, Object> values, Consumer<Stream<T>> callBack);
 }

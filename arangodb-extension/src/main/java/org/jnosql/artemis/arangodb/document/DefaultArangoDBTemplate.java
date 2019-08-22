@@ -30,6 +30,7 @@ import javax.inject.Inject;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static java.util.Objects.requireNonNull;
 
@@ -100,20 +101,19 @@ class DefaultArangoDBTemplate extends AbstractDocumentTemplate implements Arango
 
 
     @Override
-    public <T> List<T> aql(String query, Map<String, Object> values) {
+    public <T> Stream<T> aql(String query, Map<String, Object> values) {
         requireNonNull(query, "query is required");
         requireNonNull(values, "values is required");
-        return manager.get().aql(query, values).stream().map(converter::toEntity).map(d -> (T) d)
-                .collect(Collectors.toList());
+        return manager.get().aql(query, values).map(converter::toEntity).map(d -> (T) d);
     }
 
     @Override
-    public <T> List<T> aql(String query, Map<String, Object> values, Class<T> typeClass) {
+    public <T> Stream<T> aql(String query, Map<String, Object> values, Class<T> typeClass) {
         return manager.get().aql(query, values, typeClass);
     }
 
     @Override
-    public <T> List<T> aql(String query, Class<T> typeClass) {
+    public <T> Stream<T> aql(String query, Class<T> typeClass) {
         return manager.get().aql(query, typeClass);
     }
 }

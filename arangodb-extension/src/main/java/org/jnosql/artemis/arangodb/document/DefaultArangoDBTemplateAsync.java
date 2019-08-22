@@ -15,23 +15,22 @@
 package org.jnosql.artemis.arangodb.document;
 
 
+import jakarta.nosql.document.DocumentCollectionManagerAsync;
+import jakarta.nosql.document.DocumentEntity;
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.document.DocumentEntityConverter;
 import jakarta.nosql.mapping.reflection.ClassMappings;
-import jakarta.nosql.document.DocumentCollectionManagerAsync;
-import jakarta.nosql.document.DocumentEntity;
 import org.jnosql.artemis.document.AbstractDocumentTemplateAsync;
 import org.jnosql.diana.arangodb.document.ArangoDBDocumentCollectionManagerAsync;
 
 import javax.enterprise.inject.Instance;
 import javax.enterprise.inject.Typed;
 import javax.inject.Inject;
-import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 import static java.util.Objects.requireNonNull;
-import static java.util.stream.Collectors.toList;
 
 /**
  * The default implementation of {@link ArangoDBTemplateAsync}
@@ -83,17 +82,15 @@ class DefaultArangoDBTemplateAsync extends AbstractDocumentTemplateAsync impleme
     }
 
     @Override
-    public <T> void aql(String query, Map<String, Object> values, Consumer<List<T>> callBack) {
+    public <T> void aql(String query, Map<String, Object> values, Consumer<Stream<T>> callBack) {
 
         requireNonNull(query, "query is required");
         requireNonNull(values, "values is required");
         requireNonNull(callBack, "callback is required");
 
-        Consumer<List<DocumentEntity>> dianaCallBack = d -> callBack.accept(
-                d.stream()
-                        .map(getConverter()::toEntity)
-                        .map(o -> (T) o)
-                        .collect(toList()));
+        Consumer<Stream<DocumentEntity>> dianaCallBack = d -> callBack.accept(
+                d.map(getConverter()::toEntity)
+                        .map(o -> (T) o));
         manager.get().aql(query, values, dianaCallBack);
     }
 }

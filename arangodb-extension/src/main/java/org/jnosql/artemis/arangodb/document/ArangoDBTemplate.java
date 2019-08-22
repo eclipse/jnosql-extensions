@@ -19,6 +19,7 @@ import jakarta.nosql.mapping.document.DocumentTemplate;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 
 /**
  * A {@link DocumentTemplate} to arangoDB
@@ -35,7 +36,7 @@ public interface ArangoDBTemplate extends DocumentTemplate {
      * @return the query result
      * @throws NullPointerException when either query or values are null
      */
-    <T> List<T> aql(String query, Map<String, Object> values);
+    <T> Stream<T> aql(String query, Map<String, Object> values);
 
     /**
      * Executes ArangoDB query language, AQL.
@@ -48,7 +49,7 @@ public interface ArangoDBTemplate extends DocumentTemplate {
      * @return the query result
      * @throws NullPointerException when either query or values are null
      */
-    <T> List<T> aql(String query, Map<String, Object> values, Class<T> typeClass);
+    <T> Stream<T> aql(String query, Map<String, Object> values, Class<T> typeClass);
 
     /**
      * Executes ArangoDB query language, AQL.
@@ -60,7 +61,7 @@ public interface ArangoDBTemplate extends DocumentTemplate {
      * @return the query result
      * @throws NullPointerException when either query or values are null
      */
-    <T> List<T> aql(String query, Class<T> typeClass);
+    <T> Stream<T> aql(String query, Class<T> typeClass);
 
 
 }
