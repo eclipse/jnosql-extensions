@@ -22,8 +22,8 @@ import org.jnosql.artemis.reflection.DynamicReturn;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
-import java.util.List;
 import java.util.Objects;
+import java.util.stream.Stream;
 
 import static org.jnosql.artemis.couchbase.document.JsonObjectUtil.getParams;
 import static org.jnosql.artemis.reflection.DynamicReturn.toSingleResult;
@@ -50,7 +50,7 @@ class CouchbaseocumentRepositoryProxy<T> implements InvocationHandler {
 
         N1QL n1QL = method.getAnnotation(N1QL.class);
         if (Objects.nonNull(n1QL)) {
-            List<T> result;
+            Stream<T> result;
             JsonObject params = getParams(args, method);
             if (params.isEmpty()) {
                 result = template.n1qlQuery(n1QL.value());
@@ -60,7 +60,8 @@ class CouchbaseocumentRepositoryProxy<T> implements InvocationHandler {
 
             return DynamicReturn.builder()
                     .withClassSource(typeClass)
-                    .withMethodSource(method).withList(() -> result)
+                    .withMethodSource(method)
+                    .withResult(() -> result)
                     .withSingleResult(toSingleResult(method).apply(() -> result))
                     .build().execute();
         }

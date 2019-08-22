@@ -30,8 +30,7 @@ import org.jnosql.diana.couchbase.document.CouchbaseDocumentCollectionManager;
 import javax.enterprise.inject.Instance;
 import javax.enterprise.inject.Typed;
 import javax.inject.Inject;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static java.util.Objects.requireNonNull;
 
@@ -102,49 +101,44 @@ class DefaultCouchbaseTemplate extends AbstractDocumentTemplate
     }
 
     @Override
-    public <T> List<T> n1qlQuery(String n1qlQuery, JsonObject params) {
+    public <T> Stream<T> n1qlQuery(String n1qlQuery, JsonObject params) {
         requireNonNull(n1qlQuery, "n1qlQuery is required");
         requireNonNull(params, "params is required");
-        return manager.get().n1qlQuery(n1qlQuery, params).stream()
+        return manager.get().n1qlQuery(n1qlQuery, params)
                 .map(converter::toEntity)
-                .map(d -> (T) d)
-                .collect(Collectors.toList());
+                .map(d -> (T) d);
     }
 
     @Override
-    public <T> List<T> n1qlQuery(Statement n1qlQuery, JsonObject params) {
+    public <T> Stream<T> n1qlQuery(Statement n1qlQuery, JsonObject params) {
         requireNonNull(n1qlQuery, "n1qlQuery is required");
         requireNonNull(params, "params is required");
-        return manager.get().n1qlQuery(n1qlQuery, params).stream()
+        return manager.get().n1qlQuery(n1qlQuery, params)
                 .map(converter::toEntity)
-                .map(d -> (T) d)
-                .collect(Collectors.toList());
+                .map(d -> (T) d);
     }
 
     @Override
-    public <T> List<T> n1qlQuery(String n1qlQuery) {
+    public <T> Stream<T> n1qlQuery(String n1qlQuery) {
         requireNonNull(n1qlQuery, "n1qlQuery is required");
-        return manager.get().n1qlQuery(n1qlQuery).stream()
+        return manager.get().n1qlQuery(n1qlQuery)
                 .map(converter::toEntity)
-                .map(d -> (T) d)
-                .collect(Collectors.toList());
+                .map(d -> (T) d);
     }
 
     @Override
-    public <T> List<T> search(SearchQuery query) {
+    public <T> Stream<T> search(SearchQuery query) {
         requireNonNull(query, "query is required");
-        return manager.get().search(query).stream()
+        return manager.get().search(query)
                 .map(converter::toEntity)
-                .map(d -> (T) d)
-                .collect(Collectors.toList());
+                .map(d -> (T) d);
     }
 
     @Override
-    public <T> List<T> n1qlQuery(Statement n1qlQuery) {
+    public <T> Stream<T> n1qlQuery(Statement n1qlQuery) {
         requireNonNull(n1qlQuery, "n1qlQuery is required");
-        return manager.get().n1qlQuery(n1qlQuery).stream()
+        return manager.get().n1qlQuery(n1qlQuery)
                 .map(converter::toEntity)
-                .map(d -> (T) d)
-                .collect(Collectors.toList());
+                .map(d -> (T) d);
     }
 }

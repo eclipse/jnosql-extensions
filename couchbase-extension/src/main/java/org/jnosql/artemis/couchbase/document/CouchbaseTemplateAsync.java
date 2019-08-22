@@ -19,14 +19,13 @@ import com.couchbase.client.java.document.json.JsonObject;
 import com.couchbase.client.java.query.Statement;
 import jakarta.nosql.mapping.document.DocumentTemplateAsync;
 
-import java.util.List;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 /**
  * A {@link DocumentTemplateAsync} to couchbase
  */
 public interface CouchbaseTemplateAsync extends DocumentTemplateAsync {
-
 
     /**
      * Executes the n1qlquery with params and then result que result
@@ -37,7 +36,7 @@ public interface CouchbaseTemplateAsync extends DocumentTemplateAsync {
      * @throws NullPointerException       when either n1qlQuery or params are null
      * @throws jakarta.nosql.ExecuteAsyncQueryException an async error
      */
-    <T> void n1qlQuery(String n1qlQuery, JsonObject params, Consumer<List<T>> callback);
+    <T> void n1qlQuery(String n1qlQuery, JsonObject params, Consumer<Stream<T>> callback);
 
     /**
      * Executes the n1qlquery  with params and then result que result
@@ -48,7 +47,7 @@ public interface CouchbaseTemplateAsync extends DocumentTemplateAsync {
      * @throws NullPointerException       when either n1qlQuery or params are null
      * @throws jakarta.nosql.ExecuteAsyncQueryException an async error
      */
-    <T> void n1qlQuery(Statement n1qlQuery, JsonObject params, Consumer<List<T>> callback);
+    <T> void n1qlQuery(Statement n1qlQuery, JsonObject params, Consumer<Stream<T>> callback);
 
     /**
      * Executes the n1qlquery  plain query and then result que result
@@ -58,7 +57,7 @@ public interface CouchbaseTemplateAsync extends DocumentTemplateAsync {
      * @throws NullPointerException       when either n1qlQuery or params are null
      * @throws jakarta.nosql.ExecuteAsyncQueryException an async error
      */
-    <T> void n1qlQuery(String n1qlQuery, Consumer<List<T>> callback);
+    <T> void n1qlQuery(String n1qlQuery, Consumer<Stream<T>> callback);
 
     /**
      * Executes the n1qlquery  plain query and then result que result
@@ -68,5 +67,5 @@ public interface CouchbaseTemplateAsync extends DocumentTemplateAsync {
      * @throws NullPointerException       when either n1qlQuery or params are null
      * @throws jakarta.nosql.ExecuteAsyncQueryException an async error
      */
-    <T> void n1qlQuery(Statement n1qlQuery, Consumer<List<T>> callback);
+    <T> void n1qlQuery(Statement n1qlQuery, Consumer<Stream<T>> callback);
 }
