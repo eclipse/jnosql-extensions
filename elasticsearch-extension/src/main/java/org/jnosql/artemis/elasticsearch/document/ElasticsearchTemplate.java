@@ -15,10 +15,10 @@
 package org.jnosql.artemis.elasticsearch.document;
 
 
-import org.elasticsearch.index.query.QueryBuilder;
 import jakarta.nosql.mapping.document.DocumentTemplate;
+import org.elasticsearch.index.query.QueryBuilder;
 
-import java.util.List;
+import java.util.stream.Stream;
 
 /**
  * A {@link DocumentTemplate} to elasticsearch
@@ -33,5 +33,5 @@ public interface ElasticsearchTemplate extends DocumentTemplate {
      * @return the objects from query
      * @throws NullPointerException when query is null
      */
-    <T> List<T> search(QueryBuilder query, String... types);
+    <T> Stream<T> search(QueryBuilder query, String... types);
 }

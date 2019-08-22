@@ -15,23 +15,21 @@
 package org.jnosql.artemis.elasticsearch.document;
 
 
-import org.elasticsearch.index.query.QueryBuilder;
+import jakarta.nosql.document.DocumentCollectionManagerAsync;
+import jakarta.nosql.document.DocumentEntity;
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.document.DocumentEntityConverter;
 import jakarta.nosql.mapping.reflection.ClassMappings;
-import jakarta.nosql.document.DocumentCollectionManagerAsync;
-import jakarta.nosql.document.DocumentEntity;
+import org.elasticsearch.index.query.QueryBuilder;
 import org.jnosql.artemis.document.AbstractDocumentTemplateAsync;
 import org.jnosql.diana.elasticsearch.document.ElasticsearchDocumentCollectionManagerAsync;
 
 import javax.enterprise.inject.Instance;
 import javax.enterprise.inject.Typed;
 import javax.inject.Inject;
-import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
-
-import static java.util.stream.Collectors.toList;
+import java.util.stream.Stream;
 
 /**
  * The default implementation of {@link ElasticsearchTemplateAsync}
@@ -82,15 +80,13 @@ class DefaultElasticsearchTemplateAsync extends AbstractDocumentTemplateAsync im
     }
 
     @Override
-    public <T> void search(QueryBuilder query, Consumer<List<T>> callBack, String... types) {
+    public <T> void search(QueryBuilder query, Consumer<Stream<T>> callBack, String... types) {
         Objects.requireNonNull(query, "query is required");
         Objects.requireNonNull(callBack, "callBack is required");
 
-        Consumer<List<DocumentEntity>> dianaCallBack = d -> callBack.accept(
-                d.stream()
-                        .map(getConverter()::toEntity)
-                        .map(o -> (T) o)
-                        .collect(toList()));
+        Consumer<Stream<DocumentEntity>> dianaCallBack = d -> callBack.accept(
+                d.map(getConverter()::toEntity)
+                        .map(o -> (T) o));
         manager.get().search(query, dianaCallBack, types);
     }
 }

@@ -14,12 +14,12 @@
  */
 package org.jnosql.artemis.elasticsearch.document;
 
-import org.elasticsearch.index.query.QueryBuilder;
+import jakarta.nosql.document.Document;
+import jakarta.nosql.document.DocumentEntity;
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.document.DocumentEntityConverter;
 import jakarta.nosql.mapping.reflection.ClassMappings;
-import jakarta.nosql.document.Document;
-import jakarta.nosql.document.DocumentEntity;
+import org.elasticsearch.index.query.QueryBuilder;
 import org.jnosql.diana.elasticsearch.document.ElasticsearchDocumentCollectionManagerAsync;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,8 +28,8 @@ import org.mockito.Mockito;
 
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
-import java.util.List;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
 import static org.elasticsearch.index.query.QueryBuilders.termQuery;
@@ -71,7 +71,7 @@ public class DefaultElasticsearchTemplateAsyncTest {
     @Test
     public void shouldFind() {
         QueryBuilder queryBuilder = boolQuery().filter(termQuery("name", "Ada"));
-        Consumer<List<Person>> callBack = p -> {};
+        Consumer<Stream<Person>> callBack = p -> {};
 
         templateAsync.search(queryBuilder, callBack, "Person");
 
