@@ -37,6 +37,8 @@ import javax.inject.Inject;
 import java.time.Duration;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static jakarta.nosql.column.ColumnQuery.select;
 import static java.util.Arrays.asList;
@@ -183,10 +185,10 @@ public class DefaultCassandraTemplateTest {
         ColumnEntity entity = ColumnEntity.of("Person", asList(Column.of("name", "Name"), Column.of("age", 20)));
         ColumnQuery query = select().from("columnFamily").build();
         ConsistencyLevel level = ConsistencyLevel.THREE;
-        when(manager.select(query, level)).thenReturn(Collections.singletonList(entity));
+        when(manager.select(query, level)).thenReturn(Stream.of(entity));
 
-        List<Person> people = template.find(query, level);
-        assertThat(people, Matchers.contains(person));
+        Stream<Person> people = template.find(query, level);
+        assertThat(people.collect(Collectors.toList()), Matchers.contains(person));
     }
 
     @Test
@@ -197,9 +199,9 @@ public class DefaultCassandraTemplateTest {
         String cql = "select * from Person";
         ColumnEntity entity = ColumnEntity.of("Person", asList(Column.of("name", "Name"), Column.of("age", 20)));
 
-        when(manager.cql(cql)).thenReturn(Collections.singletonList(entity));
+        when(manager.cql(cql)).thenReturn(Stream.of(entity));
 
-        List<Person> people = template.cql(cql);
+        List<Person> people = template.<Person>cql(cql).collect(Collectors.toList());
         assertThat(people, Matchers.contains(person));
     }
     
@@ -211,9 +213,9 @@ public class DefaultCassandraTemplateTest {
         person.setAge(20);
         ColumnEntity entity = ColumnEntity.of("Person", asList(Column.of("name", "Name"), Column.of("age", 20)));
 
-        when(manager.execute(statement)).thenReturn(Collections.singletonList(entity));
+        when(manager.execute(statement)).thenReturn(Stream.of(entity));
 
-        List<Person> people = template.execute(statement);
+        List<Person> people = template.<Person>execute(statement).collect(Collectors.toList());
         assertThat(people, Matchers.contains(person));
     }
 

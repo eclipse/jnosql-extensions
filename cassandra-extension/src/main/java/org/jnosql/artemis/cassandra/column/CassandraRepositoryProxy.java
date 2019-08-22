@@ -21,9 +21,9 @@ import org.jnosql.artemis.reflection.DynamicReturn;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Stream;
 
 import static org.jnosql.artemis.cassandra.column.CQLObjectUtil.getValues;
 import static org.jnosql.artemis.reflection.DynamicReturn.toSingleResult;
@@ -50,7 +50,7 @@ class CassandraRepositoryProxy<T> implements InvocationHandler {
         CQL cql = method.getAnnotation(CQL.class);
         if (Objects.nonNull(cql)) {
 
-            List<T> result;
+            Stream<T> result;
             Map<String, Object> values = getValues(args, method);
             if (!values.isEmpty()) {
                 result = template.cql(cql.value(), values);
@@ -61,7 +61,8 @@ class CassandraRepositoryProxy<T> implements InvocationHandler {
             }
             return DynamicReturn.builder()
                     .withClassSource(typeClass)
-                    .withMethodSource(method).withList(() -> result)
+                    .withMethodSource(method)
+                    .withResult(() -> result)
                     .withSingleResult(toSingleResult(method).apply(() -> result))
                     .build().execute();
         }

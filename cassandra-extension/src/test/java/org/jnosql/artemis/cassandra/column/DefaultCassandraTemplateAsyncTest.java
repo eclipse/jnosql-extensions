@@ -35,6 +35,7 @@ import javax.inject.Inject;
 import java.time.Duration;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 import static jakarta.nosql.column.ColumnDeleteQuery.delete;
 import static jakarta.nosql.column.ColumnQuery.select;
@@ -100,7 +101,6 @@ public class DefaultCassandraTemplateAsyncTest {
         assertEquals(entity, captor.getValue());
     }
 
-
     @Test
     public void shouldSaveDuration() {
         ColumnEntity entity = ColumnEntity.of("Person", asList(Column.of("name", "Name"), Column.of("age", 20)));
@@ -159,7 +159,7 @@ public class DefaultCassandraTemplateAsyncTest {
 
         ColumnQuery query = select().from("columnFamily").build();
         ConsistencyLevel level = ConsistencyLevel.THREE;
-        Consumer<List<Person>> callBack = people -> {
+        Consumer<Stream<Person>> callBack = people -> {
         };
         templateAsync.select(query, level, callBack);
         verify(managerAsync).select(eq(query), eq(level), any());
@@ -168,7 +168,7 @@ public class DefaultCassandraTemplateAsyncTest {
     @Test
     public void shouldFindCQL() {
         String cql = "select * from Person ";
-        Consumer<List<Person>> callBack = people -> {
+        Consumer<Stream<Person>> callBack = people -> {
         };
         templateAsync.cql(cql, callBack);
         verify(managerAsync).cql(eq(cql), any());
@@ -177,7 +177,7 @@ public class DefaultCassandraTemplateAsyncTest {
     @Test
     public void shouldExecute() {
         Statement statement = QueryBuilder.select().from("Person");
-        Consumer<List<Person>> callBack = people -> {
+        Consumer<Stream<Person>> callBack = people -> {
         };
         templateAsync.execute(statement, callBack);
         verify(managerAsync).execute(eq(statement), any());

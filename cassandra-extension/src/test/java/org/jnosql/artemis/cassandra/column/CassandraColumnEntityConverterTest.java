@@ -63,7 +63,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @ExtendWith(CDIExtension.class)
 public class CassandraColumnEntityConverterTest {
 
-
     @Inject
     private CassandraColumnEntityConverter converter;
 
