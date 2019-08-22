@@ -18,13 +18,13 @@ package org.jnosql.artemis.cassandra.column;
 
 import com.datastax.driver.core.ConsistencyLevel;
 import com.datastax.driver.core.Statement;
-import jakarta.nosql.mapping.column.ColumnTemplate;
 import jakarta.nosql.column.ColumnDeleteQuery;
 import jakarta.nosql.column.ColumnQuery;
+import jakarta.nosql.mapping.column.ColumnTemplate;
 
 import java.time.Duration;
-import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 
 /**
  * A Cassandra extension of {@link jakarta.nosql.mapping.column.ColumnTemplate}
@@ -99,7 +99,7 @@ public interface CassandraTemplate extends ColumnTemplate {
      * @param level the consistency level
      * @return the query using a consistency level
      */
-    <T> List<T> find(ColumnQuery query, ConsistencyLevel level);
+    <T> Stream<T> find(ColumnQuery query, ConsistencyLevel level);
 
     /**
      * Executes CQL
@@ -109,7 +109,7 @@ public interface CassandraTemplate extends ColumnTemplate {
      * @return the result of this query
      * @throws NullPointerException when query is null
      */
-    <T> List<T> cql(String query);
+    <T> Stream<T> cql(String query);
 
     /**
      * Executes CQL using the provided named values.
@@ -121,7 +121,7 @@ public interface CassandraTemplate extends ColumnTemplate {
      * @return the result of this query
      * @throws NullPointerException when query is null
      */
-    <T> List<T> cql(String query, Map<String, Object> values);
+    <T> Stream<T> cql(String query, Map<String, Object> values);
 
     /**
      * Executes CQL
@@ -132,7 +132,7 @@ public interface CassandraTemplate extends ColumnTemplate {
      * @return the result of this query
      * @throws NullPointerException when query is null
      */
-    <T> List<T> cql(String query, Object... params);
+    <T> Stream<T> cql(String query, Object... params);
 
     /**
      * Executes a statement
@@ -142,6 +142,6 @@ public interface CassandraTemplate extends ColumnTemplate {
      * @return the result of this query
      * @throws NullPointerException when statement is null
      */
-    <T> List<T> execute(Statement statement);
+    <T> Stream<T> execute(Statement statement);
 
 }
