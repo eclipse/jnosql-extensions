@@ -45,7 +45,6 @@ public class ArangoDBDocumentRepositoryProxyTest {
 
     private PersonRepository personRepository;
 
-
     @BeforeEach
     public void setUp() {
         this.template = Mockito.mock(ArangoDBTemplate.class);

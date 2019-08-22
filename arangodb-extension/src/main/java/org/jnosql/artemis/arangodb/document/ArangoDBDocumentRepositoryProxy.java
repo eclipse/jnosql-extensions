@@ -21,9 +21,9 @@ import org.jnosql.artemis.reflection.DynamicReturn;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Stream;
 
 import static java.util.Collections.emptyMap;
 import static org.jnosql.artemis.reflection.DynamicReturn.toSingleResult;
@@ -50,20 +50,19 @@ class ArangoDBDocumentRepositoryProxy<T> implements InvocationHandler {
 
         AQL aql = method.getAnnotation(AQL.class);
         if (Objects.nonNull(aql)) {
-            List<T> result;
+            Stream<T> result;
             Map<String, Object> params = ParamUtil.getParams(args, method);
             if (params.isEmpty()) {
                 result = template.aql(aql.value(), emptyMap());
             } else {
                 result = template.aql(aql.value(), params);
             }
-
             return DynamicReturn.builder()
                     .withClassSource(typeClass)
-                    .withMethodSource(method).withList(() -> result)
+                    .withMethodSource(method)
+                    .withResult(() -> result)
                     .withSingleResult(toSingleResult(method).apply(() -> result))
                     .build().execute();
-
         }
         return method.invoke(repository, args);
     }

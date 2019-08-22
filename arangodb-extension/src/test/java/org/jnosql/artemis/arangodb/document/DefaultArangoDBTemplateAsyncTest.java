@@ -14,11 +14,11 @@
  */
 package org.jnosql.artemis.arangodb.document;
 
+import jakarta.nosql.document.Document;
+import jakarta.nosql.document.DocumentEntity;
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.document.DocumentEntityConverter;
 import jakarta.nosql.mapping.reflection.ClassMappings;
-import jakarta.nosql.document.Document;
-import jakarta.nosql.document.DocumentEntity;
 import org.jnosql.diana.arangodb.document.ArangoDBDocumentCollectionManagerAsync;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,9 +28,9 @@ import org.mockito.Mockito;
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 import static org.mockito.Mockito.when;
 
@@ -68,7 +68,7 @@ public class DefaultArangoDBTemplateAsyncTest {
     @Test
     public void shouldFind() {
         String query = "select * from Person where name = ?";
-        Consumer<List<Person>> callBack = p -> {
+        Consumer<Stream<Person>> callBack = p -> {
         };
         Map<String, Object> params = Collections.singletonMap("name", "Ada");
         templateAsync.aql(query, params, callBack);

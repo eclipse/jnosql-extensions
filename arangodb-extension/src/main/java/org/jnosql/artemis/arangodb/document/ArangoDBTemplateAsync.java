@@ -17,7 +17,6 @@ package org.jnosql.artemis.arangodb.document;
 
 import jakarta.nosql.mapping.document.DocumentTemplateAsync;
 
-import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
