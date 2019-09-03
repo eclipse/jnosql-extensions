@@ -16,13 +16,13 @@ package org.jnosql.artemis.cassandra.column;
 
 import com.datastax.driver.core.ConsistencyLevel;
 import com.datastax.driver.core.Statement;
-import jakarta.nosql.mapping.Converters;
-import jakarta.nosql.mapping.column.ColumnEntityConverter;
-import jakarta.nosql.mapping.reflection.ClassMappings;
 import jakarta.nosql.column.ColumnDeleteQuery;
 import jakarta.nosql.column.ColumnEntity;
 import jakarta.nosql.column.ColumnFamilyManagerAsync;
 import jakarta.nosql.column.ColumnQuery;
+import jakarta.nosql.mapping.Converters;
+import jakarta.nosql.mapping.column.ColumnEntityConverter;
+import jakarta.nosql.mapping.reflection.ClassMappings;
 import org.jnosql.artemis.column.AbstractColumnTemplateAsync;
 import org.jnosql.diana.cassandra.column.CassandraColumnFamilyManagerAsync;
 
@@ -30,20 +30,18 @@ import javax.enterprise.inject.Instance;
 import javax.enterprise.inject.Typed;
 import javax.inject.Inject;
 import java.time.Duration;
-import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 import static java.util.Objects.requireNonNull;
-import static java.util.stream.Collectors.toList;
 
 /**
  * The CassandraTemplateAsync default implementation
  */
 @Typed(CassandraTemplateAsync.class)
-class DefaultCassandraTemplateAsync extends AbstractColumnTemplateAsync
-        implements CassandraTemplateAsync {
+class DefaultCassandraTemplateAsync extends AbstractColumnTemplateAsync implements CassandraTemplateAsync {
 
     private CassandraColumnEntityConverter converter;
 
@@ -150,60 +148,50 @@ class DefaultCassandraTemplateAsync extends AbstractColumnTemplateAsync
     }
 
     @Override
-    public <T> void select(ColumnQuery query, ConsistencyLevel level, Consumer<List<T>> callBack) {
+    public <T> void select(ColumnQuery query, ConsistencyLevel level, Consumer<Stream<T>> callBack) {
         requireNonNull(callBack, "callBack is required");
-        Consumer<List<ColumnEntity>> dianaCallBack = d -> callBack.accept(
-                d.stream()
-                        .map(getConverter()::toEntity)
-                        .map(o -> (T) o)
-                        .collect(toList()));
+        Consumer<Stream<ColumnEntity>> dianaCallBack = d -> callBack.accept(
+                d.map(getConverter()::toEntity)
+                        .map(o -> (T) o));
 
         managerAsync.get().select(query, level, dianaCallBack);
     }
 
     @Override
-    public <T> void cql(String query, Consumer<List<T>> callBack) {
+    public <T> void cql(String query, Consumer<Stream<T>> callBack) {
         requireNonNull(callBack, "callBack is required");
-        Consumer<List<ColumnEntity>> dianaCallBack = d -> callBack.accept(
-                d.stream()
-                        .map(getConverter()::toEntity)
-                        .map(o -> (T) o)
-                        .collect(toList()));
+        Consumer<Stream<ColumnEntity>> dianaCallBack = d -> callBack.accept(
+                d.map(getConverter()::toEntity)
+                        .map(o -> (T) o));
         managerAsync.get().cql(query, dianaCallBack);
     }
 
     @Override
-    public <T> void cql(String query, Map<String, Object> values, Consumer<List<T>> callBack) {
+    public <T> void cql(String query, Map<String, Object> values, Consumer<Stream<T>> callBack) {
         requireNonNull(callBack, "callBack is required");
-        Consumer<List<ColumnEntity>> dianaCallBack = d -> callBack.accept(
-                d.stream()
-                        .map(getConverter()::toEntity)
-                        .map(o -> (T) o)
-                        .collect(toList()));
+        Consumer<Stream<ColumnEntity>> dianaCallBack = d -> callBack.accept(
+                d.map(getConverter()::toEntity)
+                        .map(o -> (T) o));
         managerAsync.get().cql(query, values, dianaCallBack);
     }
 
     @Override
-    public <T> void cql(String query, Consumer<List<T>> callBack, Object... params) {
+    public <T> void cql(String query, Consumer<Stream<T>> callBack, Object... params) {
         requireNonNull(query, "callBack is required");
         requireNonNull(callBack, "callBack is required");
         requireNonNull(params, "params is required");
-        Consumer<List<ColumnEntity>> dianaCallBack = d -> callBack.accept(
-                d.stream()
-                        .map(getConverter()::toEntity)
-                        .map(o -> (T) o)
-                        .collect(toList()));
+        Consumer<Stream<ColumnEntity>> dianaCallBack = d -> callBack.accept(
+                d.map(getConverter()::toEntity)
+                        .map(o -> (T) o));
         managerAsync.get().nativeQueryPrepare(query).bind(params).executeQueryAsync(dianaCallBack);
     }
 
     @Override
-    public <T> void execute(Statement statement, Consumer<List<T>> callBack) {
+    public <T> void execute(Statement statement, Consumer<Stream<T>> callBack) {
         requireNonNull(callBack, "callBack is required");
-        Consumer<List<ColumnEntity>> dianaCallBack = d -> callBack.accept(
-                d.stream()
-                        .map(getConverter()::toEntity)
-                        .map(o -> (T) o)
-                        .collect(toList()));
+        Consumer<Stream<ColumnEntity>> dianaCallBack = d -> callBack.accept(
+                d.map(getConverter()::toEntity)
+                        .map(o -> (T) o));
         managerAsync.get().execute(statement, dianaCallBack);
     }
 

@@ -16,11 +16,11 @@ package org.jnosql.artemis.couchbase.document;
 
 import com.couchbase.client.java.document.json.JsonObject;
 import com.couchbase.client.java.query.Statement;
+import jakarta.nosql.document.Document;
+import jakarta.nosql.document.DocumentEntity;
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.document.DocumentEntityConverter;
 import jakarta.nosql.mapping.reflection.ClassMappings;
-import jakarta.nosql.document.Document;
-import jakarta.nosql.document.DocumentEntity;
 import org.jnosql.diana.couchbase.document.CouchbaseDocumentCollectionManagerAsync;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -31,6 +31,7 @@ import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 import static org.mockito.Mockito.when;
 
@@ -68,7 +69,7 @@ public class DefaultCouchbaseTemplateAsyncTest {
     @Test
     public void shouldFind() {
         String query = "select * from Person where name = ?";
-        Consumer<List<Person>> callBack = p -> {
+        Consumer<Stream<Person>> callBack = p -> {
         };
         JsonObject params = JsonObject.create().put("name", "Ada");
         templateAsync.n1qlQuery(query, params, callBack);
@@ -79,7 +80,7 @@ public class DefaultCouchbaseTemplateAsyncTest {
     @Test
     public void shouldFindStatement() {
         Statement query = Mockito.mock(Statement.class);
-        Consumer<List<Person>> callBack = p -> {
+        Consumer<Stream<Person>> callBack = p -> {
         };
         JsonObject params = JsonObject.create().put("name", "Ada");
         templateAsync.n1qlQuery(query, params, callBack);
@@ -89,7 +90,7 @@ public class DefaultCouchbaseTemplateAsyncTest {
     @Test
     public void shouldFind1() {
         String query = "select * from Person where name = ?";
-        Consumer<List<Person>> callBack = p -> {
+        Consumer<Stream<Person>> callBack = p -> {
         };
         templateAsync.n1qlQuery(query, callBack);
         Mockito.verify(managerAsync).n1qlQuery(Mockito.eq(query), Mockito.any(Consumer.class));
@@ -99,11 +100,9 @@ public class DefaultCouchbaseTemplateAsyncTest {
     @Test
     public void shouldFindStatement1() {
         Statement query = Mockito.mock(Statement.class);
-        Consumer<List<Person>> callBack = p -> {
+        Consumer<Stream<Person>> callBack = p -> {
         };
         templateAsync.n1qlQuery(query, callBack);
         Mockito.verify(managerAsync).n1qlQuery(Mockito.eq(query), Mockito.any(Consumer.class));
     }
-
-
 }

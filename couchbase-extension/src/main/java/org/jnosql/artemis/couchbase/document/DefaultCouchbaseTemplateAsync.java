@@ -28,11 +28,9 @@ import org.jnosql.diana.couchbase.document.CouchbaseDocumentCollectionManagerAsy
 import javax.enterprise.inject.Instance;
 import javax.enterprise.inject.Typed;
 import javax.inject.Inject;
-import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
-
-import static java.util.stream.Collectors.toList;
+import java.util.stream.Stream;
 
 /**
  * The default implementation of {@link CouchbaseTemplateAsync}
@@ -83,58 +81,49 @@ class DefaultCouchbaseTemplateAsync extends AbstractDocumentTemplateAsync implem
     }
 
     @Override
-    public <T> void n1qlQuery(String n1qlQuery, JsonObject params, Consumer<List<T>> callback) {
+    public <T> void n1qlQuery(String n1qlQuery, JsonObject params, Consumer<Stream<T>> callback) {
 
         Objects.requireNonNull(n1qlQuery, "n1qlQuery is required");
         Objects.requireNonNull(params, "params is required");
         Objects.requireNonNull(callback, "callback is required");
-        Consumer<List<DocumentEntity>> dianaCallBack = d -> callback.accept(
-                d.stream()
-                        .map(getConverter()::toEntity)
-                        .map(o -> (T) o)
-                        .collect(toList()));
+        Consumer<Stream<DocumentEntity>> dianaCallBack = d -> callback.accept(
+                d.map(getConverter()::toEntity)
+                        .map(o -> (T) o));
         manager.get().n1qlQuery(n1qlQuery, params, dianaCallBack);
 
     }
 
     @Override
-    public <T> void n1qlQuery(Statement n1qlQuery, JsonObject params, Consumer<List<T>> callback) {
+    public <T> void n1qlQuery(Statement n1qlQuery, JsonObject params, Consumer<Stream<T>> callback) {
         Objects.requireNonNull(n1qlQuery, "n1qlQuery is required");
         Objects.requireNonNull(params, "params is required");
         Objects.requireNonNull(callback, "callback is required");
-        Consumer<List<DocumentEntity>> dianaCallBack = d -> callback.accept(
-                d.stream()
-                        .map(getConverter()::toEntity)
-                        .map(o -> (T) o)
-                        .collect(toList()));
+        Consumer<Stream<DocumentEntity>> dianaCallBack = d -> callback.accept(
+                d.map(getConverter()::toEntity)
+                        .map(o -> (T) o));
         manager.get().n1qlQuery(n1qlQuery, params, dianaCallBack);
     }
 
     @Override
-    public <T> void n1qlQuery(String n1qlQuery, Consumer<List<T>> callback) {
+    public <T> void n1qlQuery(String n1qlQuery, Consumer<Stream<T>> callback) {
 
         Objects.requireNonNull(n1qlQuery, "n1qlQuery is required");
         Objects.requireNonNull(callback, "callback is required");
 
-        Consumer<List<DocumentEntity>> dianaCallBack = d -> callback.accept(
-                d.stream()
-                        .map(getConverter()::toEntity)
-                        .map(o -> (T) o)
-                        .collect(toList()));
+        Consumer<Stream<DocumentEntity>> dianaCallBack = d -> callback.accept(
+                d.map(getConverter()::toEntity)
+                        .map(o -> (T) o));
         manager.get().n1qlQuery(n1qlQuery, dianaCallBack);
-
     }
 
     @Override
-    public <T> void n1qlQuery(Statement n1qlQuery, Consumer<List<T>> callback) {
+    public <T> void n1qlQuery(Statement n1qlQuery, Consumer<Stream<T>> callback) {
         Objects.requireNonNull(n1qlQuery, "n1qlQuery is required");
         Objects.requireNonNull(callback, "callback is required");
 
-        Consumer<List<DocumentEntity>> dianaCallBack = d -> callback.accept(
-                d.stream()
-                        .map(getConverter()::toEntity)
-                        .map(o -> (T) o)
-                        .collect(toList()));
+        Consumer<Stream<DocumentEntity>> dianaCallBack = d -> callback.accept(
+                d.map(getConverter()::toEntity)
+                        .map(o -> (T) o));
         manager.get().n1qlQuery(n1qlQuery, dianaCallBack);
     }
 }

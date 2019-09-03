@@ -17,14 +17,14 @@ package org.jnosql.artemis.cassandra.column;
 
 import com.datastax.driver.core.ConsistencyLevel;
 import com.datastax.driver.core.Statement;
-import jakarta.nosql.mapping.column.ColumnTemplateAsync;
 import jakarta.nosql.column.ColumnDeleteQuery;
 import jakarta.nosql.column.ColumnQuery;
+import jakarta.nosql.mapping.column.ColumnTemplateAsync;
 
 import java.time.Duration;
-import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 /**
  * A Cassandra extension of {@link jakarta.nosql.mapping.column.ColumnTemplateAsync}
@@ -127,7 +127,7 @@ public interface CassandraTemplateAsync extends ColumnTemplateAsync {
      * @throws jakarta.nosql.ExecuteAsyncQueryException a thread exception
      * @throws NullPointerException       when any arguments are null
      */
-    <T> void select(ColumnQuery query, ConsistencyLevel level, Consumer<List<T>> consumer);
+    <T> void select(ColumnQuery query, ConsistencyLevel level, Consumer<Stream<T>> consumer);
 
     /**
      * Executes CQL
@@ -137,7 +137,7 @@ public interface CassandraTemplateAsync extends ColumnTemplateAsync {
      * @param consumer the callback
      * @throws jakarta.nosql.ExecuteAsyncQueryException a thread exception
      */
-    <T> void cql(String query, Consumer<List<T>> consumer);
+    <T> void cql(String query, Consumer<Stream<T>> consumer);
 
     /**
      * Executes CQL using the provided named values.
@@ -149,8 +149,7 @@ public interface CassandraTemplateAsync extends ColumnTemplateAsync {
      * @param consumer the callback
      * @throws jakarta.nosql.ExecuteAsyncQueryException a thread exception
      */
-    <T> void cql(String query, Map<String, Object> values, Consumer<List<T>> consumer);
-
+    <T> void cql(String query, Map<String, Object> values, Consumer<Stream<T>> consumer);
 
     /**
      * Executes CQL
@@ -160,7 +159,7 @@ public interface CassandraTemplateAsync extends ColumnTemplateAsync {
      * @param params the params
      * @throws NullPointerException when query is null
      */
-    <T> void cql(String query, Consumer<List<T>> consumer, Object... params);
+    <T> void cql(String query, Consumer<Stream<T>> consumer, Object... params);
 
     /**
      * Executes statement
@@ -171,7 +170,7 @@ public interface CassandraTemplateAsync extends ColumnTemplateAsync {
      * @throws jakarta.nosql.ExecuteAsyncQueryException a thread exception
      * @throws NullPointerException       when either statment and callback is null
      */
-    <T> void execute(Statement statement, Consumer<List<T>> consumer);
+    <T> void execute(Statement statement, Consumer<Stream<T>> consumer);
 
 
 }

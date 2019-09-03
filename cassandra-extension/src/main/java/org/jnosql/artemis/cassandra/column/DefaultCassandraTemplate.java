@@ -17,15 +17,15 @@ package org.jnosql.artemis.cassandra.column;
 
 import com.datastax.driver.core.ConsistencyLevel;
 import com.datastax.driver.core.Statement;
+import jakarta.nosql.column.ColumnDeleteQuery;
+import jakarta.nosql.column.ColumnEntity;
+import jakarta.nosql.column.ColumnFamilyManager;
+import jakarta.nosql.column.ColumnQuery;
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.column.ColumnEntityConverter;
 import jakarta.nosql.mapping.column.ColumnEventPersistManager;
 import jakarta.nosql.mapping.column.ColumnWorkflow;
 import jakarta.nosql.mapping.reflection.ClassMappings;
-import jakarta.nosql.column.ColumnDeleteQuery;
-import jakarta.nosql.column.ColumnEntity;
-import jakarta.nosql.column.ColumnFamilyManager;
-import jakarta.nosql.column.ColumnQuery;
 import org.jnosql.artemis.column.AbstractColumnTemplate;
 import org.jnosql.diana.cassandra.column.CassandraColumnFamilyManager;
 import org.jnosql.diana.cassandra.column.CassandraPrepareStatment;
@@ -34,11 +34,11 @@ import javax.enterprise.inject.Instance;
 import javax.enterprise.inject.Typed;
 import javax.inject.Inject;
 import java.time.Duration;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 @Typed(CassandraTemplate.class)
@@ -157,44 +157,39 @@ class DefaultCassandraTemplate extends AbstractColumnTemplate implements Cassand
     }
 
     @Override
-    public <T> List<T> find(ColumnQuery query, ConsistencyLevel level) {
+    public <T> Stream<T> find(ColumnQuery query, ConsistencyLevel level) {
         Objects.requireNonNull(query, "query is required");
         Objects.requireNonNull(level, "level is required");
         persistManager.firePreQuery(query);
 
-        return manager.get().select(query, level).stream()
-                .map(c -> (T) converter.toEntity(c))
-                .collect(Collectors.toList());
+        return manager.get().select(query, level)
+                .map(c -> (T) converter.toEntity(c));
     }
 
     @Override
-    public <T> List<T> cql(String query) {
-        return manager.get().cql(query).stream()
-                .map(c -> (T) converter.toEntity(c))
-                .collect(Collectors.toList());
+    public <T> Stream<T> cql(String query) {
+        return manager.get().cql(query)
+                .map(c -> (T) converter.toEntity(c));
     }
 
     @Override
-    public <T> List<T> cql(String query, Map<String, Object> values) {
-        return manager.get().cql(query, values).stream()
-                .map(c -> (T) converter.toEntity(c))
-                .collect(Collectors.toList());
+    public <T> Stream<T> cql(String query, Map<String, Object> values) {
+        return manager.get().cql(query, values)
+                .map(c -> (T) converter.toEntity(c));
     }
 
     @Override
-    public <T> List<T> cql(String query, Object... params) {
+    public <T> Stream<T> cql(String query, Object... params) {
         Objects.requireNonNull(query, "query is required");
         CassandraPrepareStatment cassandraPrepareStatment = manager.get().nativeQueryPrepare(query);
-        List<ColumnEntity> entities = cassandraPrepareStatment.bind(params).executeQuery();
-        return entities.stream().map(converter::toEntity).map(e -> (T) e).collect(Collectors.toList());
+        Stream<ColumnEntity> entities = cassandraPrepareStatment.bind(params).executeQuery();
+        return entities.map(converter::toEntity).map(e -> (T) e);
     }
 
     @Override
-    public <T> List<T> execute(Statement statement) {
-        return manager.get().execute(statement).stream()
-                .map(c -> (T) converter.toEntity(c))
-                .collect(Collectors.toList());
+    public <T> Stream<T> execute(Statement statement) {
+        return manager.get().execute(statement)
+                .map(c -> (T) converter.toEntity(c));
     }
-
 
 }

@@ -15,11 +15,11 @@
 package org.jnosql.artemis.elasticsearch.document;
 
 
-import org.elasticsearch.index.query.QueryBuilder;
 import jakarta.nosql.mapping.document.DocumentTemplateAsync;
+import org.elasticsearch.index.query.QueryBuilder;
 
-import java.util.List;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 /**
  * A {@link DocumentTemplateAsync} to elasticsearch
@@ -34,5 +34,5 @@ public interface ElasticsearchTemplateAsync extends DocumentTemplateAsync {
      * @param callBack the callback
      * @throws NullPointerException when query is null
      */
-    <T> void search(QueryBuilder query, Consumer<List<T>> callBack, String... types);
+    <T> void search(QueryBuilder query, Consumer<Stream<T>> callBack, String... types);
 }

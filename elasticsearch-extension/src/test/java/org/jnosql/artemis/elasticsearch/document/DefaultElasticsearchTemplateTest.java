@@ -14,14 +14,14 @@
  */
 package org.jnosql.artemis.elasticsearch.document;
 
-import org.elasticsearch.index.query.QueryBuilder;
+import jakarta.nosql.document.Document;
+import jakarta.nosql.document.DocumentEntity;
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.document.DocumentEntityConverter;
 import jakarta.nosql.mapping.document.DocumentEventPersistManager;
 import jakarta.nosql.mapping.document.DocumentWorkflow;
 import jakarta.nosql.mapping.reflection.ClassMappings;
-import jakarta.nosql.document.Document;
-import jakarta.nosql.document.DocumentEntity;
+import org.elasticsearch.index.query.QueryBuilder;
 import org.jnosql.diana.elasticsearch.document.ElasticsearchDocumentCollectionManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -30,8 +30,9 @@ import org.mockito.Mockito;
 
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
-import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
 import static org.elasticsearch.index.query.QueryBuilders.termQuery;
@@ -76,17 +77,16 @@ public class DefaultElasticsearchTemplateTest {
         entity.add(Document.of("name", "Ada"));
         entity.add(Document.of("age", 10));
         when(manager.search(Mockito.any(QueryBuilder.class), Mockito.any(String.class)))
-                .thenReturn(Collections.singletonList(entity));
+                .thenReturn(Stream.of(entity));
     }
 
     @Test
     public void shouldFindQuery() {
         QueryBuilder queryBuilder = boolQuery().filter(termQuery("name", "Ada"));
-        List<Person> people = template.search(queryBuilder, "Person");
+        List<Person> people = template.<Person>search(queryBuilder, "Person").collect(Collectors.toList());
 
         assertThat(people, contains(new Person("Ada", 10)));
         Mockito.verify(manager).search(Mockito.eq(queryBuilder), Mockito.eq("Person"));
-
     }
 
     @Test

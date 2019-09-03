@@ -24,9 +24,9 @@ import org.mockito.Mockito;
 import javax.inject.Inject;
 import java.lang.reflect.Proxy;
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Matchers.any;
@@ -82,13 +82,14 @@ public class ArangoDBRepositoryAsyncProxyTest {
 
     @Test
     public void shouldFindByNameFromAQL() {
-        Consumer<List<Person>> callBack = p -> {
+        Consumer<Stream<Person>> callBack = p -> {
         };
 
         Map params = Collections.singletonMap("name", "Ada");
         personRepository.queryName("Ada", callBack);
 
-        verify(template).aql(Mockito.eq("FOR p IN Person FILTER p.name = @name RETURN p"), Mockito.eq(params), Mockito.eq(callBack));
+        verify(template).aql(Mockito.eq("FOR p IN Person FILTER p.name = @name RETURN p"), Mockito.eq(params),
+                Mockito.eq(callBack));
 
     }
 
@@ -101,6 +102,6 @@ public class ArangoDBRepositoryAsyncProxyTest {
         void queryName(@Param("name") String name);
 
         @AQL("FOR p IN Person FILTER p.name = @name RETURN p")
-        void queryName(@Param("name") String name, Consumer<List<Person>> callBack);
+        void queryName(@Param("name") String name, Consumer<Stream<Person>> callBack);
     }
 }

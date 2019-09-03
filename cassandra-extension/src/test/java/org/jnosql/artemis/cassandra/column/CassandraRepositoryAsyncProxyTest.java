@@ -14,9 +14,9 @@
  */
 package org.jnosql.artemis.cassandra.column;
 
-import jakarta.nosql.mapping.column.ColumnRepositoryAsyncProducer;
 import jakarta.nosql.column.ColumnDeleteQuery;
 import jakarta.nosql.column.ColumnQuery;
+import jakarta.nosql.mapping.column.ColumnRepositoryAsyncProducer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -29,6 +29,7 @@ import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.verify;
@@ -83,7 +84,7 @@ public class CassandraRepositoryAsyncProxyTest {
     @Test
     public void shouldFindByName() {
         ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
-        Consumer<List<Person>> callBack = p -> {
+        Consumer<Stream<Person>> callBack = p -> {
         };
         personRepository.findByName("Ada", callBack);
 
@@ -114,11 +115,12 @@ public class CassandraRepositoryAsyncProxyTest {
     @Test
     public void shouldFindByNameFromCQL() {
         ArgumentCaptor<Object> captor = ArgumentCaptor.forClass(Object.class);
-        Consumer<List<Person>> callBack = p -> {
+        Consumer<Stream<Person>> callBack = p -> {
         };
         personRepository.queryName("Ada", callBack);
 
-        verify(template).cql(Mockito.eq("select * from Person where name= ?"), Mockito.eq(callBack), captor.capture());
+        verify(template).cql(Mockito.eq("select * from Person where name= ?"),
+                Mockito.eq(callBack), captor.capture());
         Object value = captor.getValue();
         assertEquals("Ada", value);
 
@@ -127,11 +129,12 @@ public class CassandraRepositoryAsyncProxyTest {
     @Test
     public void shouldFindByNameFromCQL2() {
         ArgumentCaptor<Map> captor = ArgumentCaptor.forClass(Map.class);
-        Consumer<List<Person>> callBack = p -> {
+        Consumer<Stream<Person>> callBack = p -> {
         };
         personRepository.queryName2("Ada", callBack);
 
-        verify(template).cql(Mockito.eq("select * from Person where name= :personName"), captor.capture(), Mockito.eq(callBack));
+        verify(template).cql(Mockito.eq("select * from Person where name= :personName"),
+                captor.capture(), Mockito.eq(callBack));
         Map value = captor.getValue();
         assertEquals("Ada", value.get("personName"));
 
@@ -141,7 +144,7 @@ public class CassandraRepositoryAsyncProxyTest {
 
         Person findByName(String name);
 
-        Person findByName(String name, Consumer<List<Person>> callBack);
+        Person findByName(String name, Consumer<Stream<Person>> callBack);
 
         void deleteByName(String name, Consumer<Void> callBack);
 
@@ -149,11 +152,10 @@ public class CassandraRepositoryAsyncProxyTest {
         void queryName(String name);
 
         @CQL("select * from Person where name= ?")
-        void queryName(String name, Consumer<List<Person>> callBack);
-
+        void queryName(String name, Consumer<Stream<Person>> callBack);
 
         @CQL("select * from Person where name= :personName")
-        void queryName2(@Param("personName") String name, Consumer<List<Person>> callBack);
+        void queryName2(@Param("personName") String name, Consumer<Stream<Person>> callBack);
     }
 
 

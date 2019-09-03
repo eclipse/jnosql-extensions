@@ -29,9 +29,8 @@ import org.jnosql.diana.elasticsearch.document.ElasticsearchDocumentCollectionMa
 import javax.enterprise.inject.Instance;
 import javax.enterprise.inject.Typed;
 import javax.inject.Inject;
-import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * The Default implementation of {@link ElasticsearchTemplate}
@@ -101,10 +100,9 @@ class DefaultElasticsearchTemplate extends AbstractDocumentTemplate
     }
 
     @Override
-    public <T> List<T> search(QueryBuilder query, String... types) {
+    public <T> Stream<T> search(QueryBuilder query, String... types) {
         Objects.requireNonNull(query, "query is required");
-        List<DocumentEntity> entities = manager.get().search(query, types);
-        return entities.stream().map(converter::toEntity).map(e -> (T) e)
-                .collect(Collectors.toList());
+        Stream<DocumentEntity> entities = manager.get().search(query, types);
+        return entities.map(converter::toEntity).map(e -> (T) e);
     }
 }
