@@ -21,6 +21,7 @@ import org.jnosql.diana.orientdb.document.OrientDBLiveCallback;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 
 /**
  * A {@link DocumentTemplate} to orientdb
@@ -35,7 +36,7 @@ public interface OrientDBTemplate extends DocumentTemplate {
      * @return the query result
      * @throws NullPointerException when either query or params are null
      */
-    <T> List<T> sql(String query, Object... params);
+    <T> Stream<T> sql(String query, Object... params);
 
     /**
      * Find using OrientDB native query with map params
@@ -45,7 +46,7 @@ public interface OrientDBTemplate extends DocumentTemplate {
      * @return the query result
      * @throws NullPointerException when either query or params are null
      */
-    <T> List<T> sql(String query, Map<String, Object> params);
+    <T> Stream<T> sql(String query, Map<String, Object> params);
     /**
      * Execute live query
      *
