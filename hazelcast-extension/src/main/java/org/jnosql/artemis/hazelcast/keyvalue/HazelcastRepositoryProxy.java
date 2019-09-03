@@ -20,10 +20,9 @@ import org.jnosql.artemis.reflection.DynamicReturn;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Stream;
 
 import static org.jnosql.artemis.reflection.DynamicReturn.toSingleResult;
 
@@ -43,23 +42,23 @@ class HazelcastRepositoryProxy<T> implements InvocationHandler {
         this.repository = repository;
     }
 
-
     @Override
     public Object invoke(Object instance, Method method, Object[] args) throws Throwable {
 
         Query query = method.getAnnotation(Query.class);
         if (Objects.nonNull(query)) {
-            List<T> result;
+            Stream<T> result;
             Map<String, Object> params = ParamUtil.getParams(args, method);
             if (params.isEmpty()) {
-                result = new ArrayList<>(template.sql(query.value()));
+                result = template.<T>sql(query.value()).stream();
             } else {
-                result = new ArrayList<>(template.sql(query.value(), params));
+                result = template.<T>sql(query.value(), params).stream();
             }
 
             return DynamicReturn.builder()
                     .withClassSource(typeClass)
-                    .withMethodSource(method).withList(() -> result)
+                    .withMethodSource(method)
+                    .withResult(() -> result)
                     .withSingleResult(toSingleResult(method).apply(() -> result))
                     .build().execute();
         }

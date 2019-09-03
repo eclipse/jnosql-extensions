@@ -48,7 +48,6 @@ public class DefaultOrientDBTemplateAsyncTest {
 
     private OrientDBTemplateAsync templateAsync;
 
-
     @BeforeEach
     public void setUp() {
         managerAsync = Mockito.mock(OrientDBDocumentCollectionManagerAsync.class);
