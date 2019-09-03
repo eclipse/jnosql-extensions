@@ -21,9 +21,9 @@ import org.jnosql.artemis.reflection.DynamicReturn;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Stream;
 
 import static org.jnosql.artemis.reflection.DynamicReturn.toSingleResult;
 
@@ -49,7 +49,7 @@ class OrientDBDocumentRepositoryProxy<T> implements InvocationHandler {
 
         SQL sql = method.getAnnotation(SQL.class);
         if (Objects.nonNull(sql)) {
-            List<T> result;
+            Stream<T> result;
 
             if (args == null || args.length == 0) {
                 result = template.sql(sql.value());
@@ -63,7 +63,7 @@ class OrientDBDocumentRepositoryProxy<T> implements InvocationHandler {
             }
             return DynamicReturn.builder()
                     .withClassSource(typeClass)
-                    .withMethodSource(method).withList(() -> result)
+                    .withMethodSource(method).withResult(() -> result)
                     .withSingleResult(toSingleResult(method).apply(() -> result))
                     .build().execute();
         }

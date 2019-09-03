@@ -31,10 +31,9 @@ import org.jnosql.diana.orientdb.document.OrientDBLiveCallbackBuilder;
 import javax.enterprise.inject.Instance;
 import javax.enterprise.inject.Typed;
 import javax.inject.Inject;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * The Default implementation of {@link OrientDBTemplate}
@@ -104,17 +103,15 @@ class DefaultOrientDBTemplate extends AbstractDocumentTemplate
     }
 
     @Override
-    public <T> List<T> sql(String query, Object... params) {
-        return manager.get().sql(query, params).stream().map(converter::toEntity)
-                .map(e -> (T) e)
-                .collect(Collectors.toList());
+    public <T> Stream<T> sql(String query, Object... params) {
+        return manager.get().sql(query, params).map(converter::toEntity)
+                .map(e -> (T) e);
     }
 
     @Override
-    public <T> List<T> sql(String query, Map<String, Object> params) {
-        return manager.get().sql(query, params).stream().map(converter::toEntity)
-                .map(e -> (T) e)
-                .collect(Collectors.toList());
+    public <T> Stream<T> sql(String query, Map<String, Object> params) {
+        return manager.get().sql(query, params).map(converter::toEntity)
+                .map(e -> (T) e);
     }
 
     @Override
