@@ -15,11 +15,10 @@
 package org.jnosql.artemis.orientdb.document;
 
 
-import jakarta.nosql.mapping.document.DocumentTemplate;
 import jakarta.nosql.document.DocumentQuery;
+import jakarta.nosql.mapping.document.DocumentTemplate;
 import org.jnosql.diana.orientdb.document.OrientDBLiveCallback;
 
-import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
