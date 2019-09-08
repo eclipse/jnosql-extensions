@@ -15,10 +15,10 @@
  */
 package org.eclipse.jnosql.artemis.orientdb.document;
 
-import org.jnosql.diana.orientdb.document.OrientDBLiveCallback;
-import org.jnosql.diana.orientdb.document.OrientDBLiveCreateCallback;
-import org.jnosql.diana.orientdb.document.OrientDBLiveDeleteCallback;
-import org.jnosql.diana.orientdb.document.OrientDBLiveUpdateCallback;
+import org.eclipse.jnosql.diana.orientdb.document.OrientDBLiveCallback;
+import org.eclipse.jnosql.diana.orientdb.document.OrientDBLiveCreateCallback;
+import org.eclipse.jnosql.diana.orientdb.document.OrientDBLiveDeleteCallback;
+import org.eclipse.jnosql.diana.orientdb.document.OrientDBLiveUpdateCallback;
 
 import static java.util.Objects.requireNonNull;
 

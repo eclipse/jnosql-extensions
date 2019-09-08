@@ -20,7 +20,7 @@ import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.document.DocumentEntityConverter;
 import jakarta.nosql.mapping.reflection.ClassMappings;
 import org.elasticsearch.index.query.QueryBuilder;
-import org.jnosql.diana.elasticsearch.document.ElasticsearchDocumentCollectionManagerAsync;
+import org.eclipse.jnosql.diana.elasticsearch.document.ElasticsearchDocumentCollectionManagerAsync;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

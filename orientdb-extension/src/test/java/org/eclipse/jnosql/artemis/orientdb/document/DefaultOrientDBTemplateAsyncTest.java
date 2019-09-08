@@ -19,7 +19,7 @@ import jakarta.nosql.mapping.document.DocumentEntityConverter;
 import jakarta.nosql.mapping.reflection.ClassMappings;
 import jakarta.nosql.document.Document;
 import jakarta.nosql.document.DocumentEntity;
-import org.jnosql.diana.orientdb.document.OrientDBDocumentCollectionManagerAsync;
+import org.eclipse.jnosql.diana.orientdb.document.OrientDBDocumentCollectionManagerAsync;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

@@ -17,7 +17,7 @@ package org.eclipse.jnosql.artemis.solr.document;
 
 import jakarta.nosql.document.Document;
 import jakarta.nosql.document.DocumentEntity;
-import org.jnosql.diana.solr.document.SolrDocumentCollectionManager;
+import org.eclipse.jnosql.diana.solr.document.SolrDocumentCollectionManager;
 import org.mockito.Mockito;
 
 import javax.enterprise.inject.Produces;

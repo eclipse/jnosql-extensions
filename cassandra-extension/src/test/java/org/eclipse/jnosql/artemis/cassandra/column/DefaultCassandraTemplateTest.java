@@ -25,7 +25,7 @@ import jakarta.nosql.column.Column;
 import jakarta.nosql.column.ColumnDeleteQuery;
 import jakarta.nosql.column.ColumnEntity;
 import jakarta.nosql.column.ColumnQuery;
-import org.jnosql.diana.cassandra.column.CassandraColumnFamilyManager;
+import org.eclipse.jnosql.diana.cassandra.column.CassandraColumnFamilyManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

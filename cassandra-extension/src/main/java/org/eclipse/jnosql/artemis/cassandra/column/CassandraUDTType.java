@@ -18,8 +18,8 @@ import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.column.ColumnEntityConverter;
 import jakarta.nosql.mapping.reflection.FieldMapping;
 import jakarta.nosql.column.Column;
-import org.jnosql.artemis.column.ColumnFieldValue;
-import org.jnosql.diana.cassandra.column.UDT;
+import org.eclipse.jnosql.artemis.column.ColumnFieldValue;
+import org.eclipse.jnosql.diana.cassandra.column.UDT;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -19,7 +19,7 @@ import jakarta.nosql.document.DocumentEntity;
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.document.DocumentEntityConverter;
 import jakarta.nosql.mapping.reflection.ClassMappings;
-import org.jnosql.diana.arangodb.document.ArangoDBDocumentCollectionManagerAsync;
+import org.eclipse.jnosql.diana.arangodb.document.ArangoDBDocumentCollectionManagerAsync;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

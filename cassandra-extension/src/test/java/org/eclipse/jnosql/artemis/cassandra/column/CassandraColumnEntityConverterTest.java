@@ -28,7 +28,7 @@ import org.eclipse.jnosql.artemis.cassandra.column.model.Movie;
 import org.eclipse.jnosql.artemis.cassandra.column.model.Worker;
 import jakarta.nosql.column.Column;
 import jakarta.nosql.column.ColumnEntity;
-import org.jnosql.diana.cassandra.column.UDT;
+import org.eclipse.jnosql.diana.cassandra.column.UDT;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -308,7 +308,7 @@ public class CassandraColumnEntityConverterTest {
         ColumnEntity entity = converter.toColumn(person);
         assertEquals("Person", entity.getName());
         Column column = entity.find("home").get();
-        org.jnosql.diana.cassandra.column.UDT udt = org.jnosql.diana.cassandra.column.UDT.class.cast(column);
+        org.eclipse.jnosql.diana.cassandra.column.UDT udt = org.eclipse.jnosql.diana.cassandra.column.UDT.class.cast(column);
 
         assertEquals("address", udt.getUserType());
         assertEquals("home", udt.getName());

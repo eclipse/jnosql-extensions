@@ -17,8 +17,8 @@ package org.eclipse.jnosql.artemis.cassandra.column;
 
 import jakarta.nosql.column.Column;
 import jakarta.nosql.column.ColumnEntity;
-import org.jnosql.diana.cassandra.column.CassandraColumnFamilyManager;
-import org.jnosql.diana.cassandra.column.CassandraColumnFamilyManagerAsync;
+import org.eclipse.jnosql.diana.cassandra.column.CassandraColumnFamilyManager;
+import org.eclipse.jnosql.diana.cassandra.column.CassandraColumnFamilyManagerAsync;
 import org.mockito.Mockito;
 
 import javax.enterprise.inject.Produces;

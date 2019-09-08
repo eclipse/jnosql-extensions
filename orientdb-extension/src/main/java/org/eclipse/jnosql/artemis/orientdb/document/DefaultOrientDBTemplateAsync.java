@@ -20,8 +20,8 @@ import jakarta.nosql.document.DocumentEntity;
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.document.DocumentEntityConverter;
 import jakarta.nosql.mapping.reflection.ClassMappings;
-import org.jnosql.artemis.document.AbstractDocumentTemplateAsync;
-import org.jnosql.diana.orientdb.document.OrientDBDocumentCollectionManagerAsync;
+import org.eclipse.jnosql.artemis.document.AbstractDocumentTemplateAsync;
+import org.eclipse.jnosql.diana.orientdb.document.OrientDBDocumentCollectionManagerAsync;
 
 import javax.enterprise.inject.Instance;
 import javax.enterprise.inject.Typed;

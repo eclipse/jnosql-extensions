@@ -23,8 +23,8 @@ import jakarta.nosql.column.ColumnQuery;
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.column.ColumnEntityConverter;
 import jakarta.nosql.mapping.reflection.ClassMappings;
-import org.jnosql.artemis.column.AbstractColumnTemplateAsync;
-import org.jnosql.diana.cassandra.column.CassandraColumnFamilyManagerAsync;
+import org.eclipse.jnosql.artemis.column.AbstractColumnTemplateAsync;
+import org.eclipse.jnosql.diana.cassandra.column.CassandraColumnFamilyManagerAsync;
 
 import javax.enterprise.inject.Instance;
 import javax.enterprise.inject.Typed;

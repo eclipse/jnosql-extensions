@@ -26,9 +26,9 @@ import jakarta.nosql.mapping.column.ColumnEntityConverter;
 import jakarta.nosql.mapping.column.ColumnEventPersistManager;
 import jakarta.nosql.mapping.column.ColumnWorkflow;
 import jakarta.nosql.mapping.reflection.ClassMappings;
-import org.jnosql.artemis.column.AbstractColumnTemplate;
-import org.jnosql.diana.cassandra.column.CassandraColumnFamilyManager;
-import org.jnosql.diana.cassandra.column.CassandraPrepareStatment;
+import org.eclipse.jnosql.artemis.column.AbstractColumnTemplate;
+import org.eclipse.jnosql.diana.cassandra.column.CassandraColumnFamilyManager;
+import org.eclipse.jnosql.diana.cassandra.column.CassandraPrepareStatment;
 
 import javax.enterprise.inject.Instance;
 import javax.enterprise.inject.Typed;

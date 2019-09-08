@@ -16,7 +16,7 @@ package org.eclipse.jnosql.artemis.cassandra.column;
 
 import jakarta.nosql.mapping.column.ColumnEntityConverter;
 import jakarta.nosql.mapping.column.ColumnEventPersistManager;
-import org.jnosql.artemis.column.AbstractColumnWorkflow;
+import org.eclipse.jnosql.artemis.column.AbstractColumnWorkflow;
 
 import javax.enterprise.inject.Typed;
 import javax.inject.Inject;

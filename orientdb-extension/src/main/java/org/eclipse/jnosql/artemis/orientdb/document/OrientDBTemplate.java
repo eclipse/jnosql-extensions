@@ -17,7 +17,7 @@ package org.eclipse.jnosql.artemis.orientdb.document;
 
 import jakarta.nosql.document.DocumentQuery;
 import jakarta.nosql.mapping.document.DocumentTemplate;
-import org.jnosql.diana.orientdb.document.OrientDBLiveCallback;
+import org.eclipse.jnosql.diana.orientdb.document.OrientDBLiveCallback;
 
 import java.util.Map;
 import java.util.stream.Stream;

@@ -17,8 +17,8 @@ package org.eclipse.jnosql.artemis.orientdb.document;
 
 import jakarta.nosql.document.Document;
 import jakarta.nosql.document.DocumentEntity;
-import org.jnosql.diana.orientdb.document.OrientDBDocumentCollectionManager;
-import org.jnosql.diana.orientdb.document.OrientDBDocumentCollectionManagerAsync;
+import org.eclipse.jnosql.diana.orientdb.document.OrientDBDocumentCollectionManager;
+import org.eclipse.jnosql.diana.orientdb.document.OrientDBDocumentCollectionManagerAsync;
 import org.mockito.Mockito;
 
 import javax.enterprise.inject.Produces;

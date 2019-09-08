@@ -16,7 +16,7 @@ package org.eclipse.jnosql.artemis.couchbase.document;
 
 import jakarta.nosql.mapping.RepositoryAsync;
 import jakarta.nosql.mapping.document.DocumentRepositoryAsyncProducer;
-import org.jnosql.artemis.spi.AbstractBean;
+import org.eclipse.jnosql.artemis.spi.AbstractBean;
 
 import javax.enterprise.context.spi.CreationalContext;
 import javax.enterprise.inject.Default;

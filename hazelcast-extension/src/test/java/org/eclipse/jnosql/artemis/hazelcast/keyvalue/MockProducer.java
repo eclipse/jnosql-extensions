@@ -17,7 +17,7 @@ package org.eclipse.jnosql.artemis.hazelcast.keyvalue;
 
 import com.hazelcast.query.Predicate;
 import jakarta.nosql.Value;
-import org.jnosql.diana.hazelcast.keyvalue.HazelcastBucketManager;
+import org.eclipse.jnosql.diana.hazelcast.keyvalue.HazelcastBucketManager;
 
 import javax.enterprise.inject.Produces;
 import java.util.List;

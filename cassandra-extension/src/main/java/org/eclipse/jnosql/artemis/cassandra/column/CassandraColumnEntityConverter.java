@@ -20,9 +20,9 @@ import jakarta.nosql.mapping.column.ColumnEntityConverter;
 import jakarta.nosql.mapping.reflection.ClassMappings;
 import jakarta.nosql.mapping.reflection.FieldMapping;
 import jakarta.nosql.column.Column;
-import org.jnosql.artemis.column.AbstractColumnEntityConverter;
-import org.jnosql.artemis.column.ColumnFieldValue;
-import org.jnosql.artemis.reflection.GenericFieldMapping;
+import org.eclipse.jnosql.artemis.column.AbstractColumnEntityConverter;
+import org.eclipse.jnosql.artemis.column.ColumnFieldValue;
+import org.eclipse.jnosql.artemis.reflection.GenericFieldMapping;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Typed;
@@ -70,8 +70,8 @@ class CassandraColumnEntityConverter extends AbstractColumnEntityConverter imple
     }
 
     private <T> void setUDTField(T instance, Optional<Column> column, FieldMapping field) {
-        if (column.isPresent() && org.jnosql.diana.cassandra.column.UDT.class.isInstance(column.get())) {
-            org.jnosql.diana.cassandra.column.UDT udt = org.jnosql.diana.cassandra.column.UDT.class.cast(column.get());
+        if (column.isPresent() && org.eclipse.jnosql.diana.cassandra.column.UDT.class.isInstance(column.get())) {
+            org.eclipse.jnosql.diana.cassandra.column.UDT udt = org.eclipse.jnosql.diana.cassandra.column.UDT.class.cast(column.get());
             Object columns = udt.get();
             if (StreamSupport.stream(Iterable.class.cast(columns).spliterator(), false).allMatch(Iterable.class::isInstance)) {
                 GenericFieldMapping genericField = GenericFieldMapping.class.cast(field);

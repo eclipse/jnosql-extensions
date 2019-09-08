@@ -17,7 +17,7 @@ package org.eclipse.jnosql.artemis.couchbase.document;
 
 import com.couchbase.client.java.document.json.JsonObject;
 import jakarta.nosql.mapping.Repository;
-import org.jnosql.artemis.reflection.DynamicReturn;
+import org.eclipse.jnosql.artemis.reflection.DynamicReturn;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -25,7 +25,7 @@ import java.lang.reflect.ParameterizedType;
 import java.util.Objects;
 import java.util.stream.Stream;
 
-import static org.jnosql.artemis.reflection.DynamicReturn.toSingleResult;
+import static org.eclipse.jnosql.artemis.reflection.DynamicReturn.toSingleResult;
 
 class CouchbaseocumentRepositoryProxy<T> implements InvocationHandler {
 

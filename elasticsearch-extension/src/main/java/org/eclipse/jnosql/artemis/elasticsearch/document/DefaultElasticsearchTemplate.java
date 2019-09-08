@@ -23,8 +23,8 @@ import jakarta.nosql.mapping.document.DocumentEventPersistManager;
 import jakarta.nosql.mapping.document.DocumentWorkflow;
 import jakarta.nosql.mapping.reflection.ClassMappings;
 import org.elasticsearch.index.query.QueryBuilder;
-import org.jnosql.artemis.document.AbstractDocumentTemplate;
-import org.jnosql.diana.elasticsearch.document.ElasticsearchDocumentCollectionManager;
+import org.eclipse.jnosql.artemis.document.AbstractDocumentTemplate;
+import org.eclipse.jnosql.diana.elasticsearch.document.ElasticsearchDocumentCollectionManager;
 
 import javax.enterprise.inject.Instance;
 import javax.enterprise.inject.Typed;

@@ -23,10 +23,10 @@ import jakarta.nosql.mapping.document.DocumentEntityConverter;
 import jakarta.nosql.mapping.document.DocumentEventPersistManager;
 import jakarta.nosql.mapping.document.DocumentWorkflow;
 import jakarta.nosql.mapping.reflection.ClassMappings;
-import org.jnosql.artemis.document.AbstractDocumentTemplate;
-import org.jnosql.diana.orientdb.document.OrientDBDocumentCollectionManager;
-import org.jnosql.diana.orientdb.document.OrientDBLiveCallback;
-import org.jnosql.diana.orientdb.document.OrientDBLiveCallbackBuilder;
+import org.eclipse.jnosql.artemis.document.AbstractDocumentTemplate;
+import org.eclipse.jnosql.diana.orientdb.document.OrientDBDocumentCollectionManager;
+import org.eclipse.jnosql.diana.orientdb.document.OrientDBLiveCallback;
+import org.eclipse.jnosql.diana.orientdb.document.OrientDBLiveCallbackBuilder;
 
 import javax.enterprise.inject.Instance;
 import javax.enterprise.inject.Typed;
