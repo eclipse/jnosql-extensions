@@ -12,4 +12,4 @@
 #
 #   Otavio Santana
 #
-org.jnosql.artemis.cassandra.column.CassandraExtension
+org.eclipse.jnosql.artemis.cassandra.column.CassandraExtension

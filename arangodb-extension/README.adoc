@@ -12,7 +12,7 @@ ArangoDB extension has implementations to use specific behavior that is beyond t
 ----
 
   <dependency>
-     <groupId>org.jnosql.artemis</groupId>
+     <groupId>org.eclipse.jnosql.artemis</groupId>
      <artifactId>aragangodb-extension</artifactId>
      <version>${jnosql.version}</version>
   </dependency>

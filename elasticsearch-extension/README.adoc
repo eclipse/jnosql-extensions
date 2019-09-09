@@ -13,7 +13,7 @@ Elasticsearch extension has implementations to use specific behavior that is bey
 ----
 
   <dependency>
-     <groupId>org.jnosql.artemis</groupId>
+     <groupId>org.eclipse.jnosql.artemis</groupId>
      <artifactId>elasticsearch-extension</artifactId>
      <version>${jnosql.version}</version>
   </dependency>

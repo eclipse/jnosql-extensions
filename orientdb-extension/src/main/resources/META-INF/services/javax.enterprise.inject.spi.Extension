@@ -12,4 +12,4 @@
 #
 #   Otavio Santana
 #
-org.jnosql.artemis.orientdb.document.OrientDBExtension
+org.eclipse.jnosql.artemis.orientdb.document.OrientDBExtension
