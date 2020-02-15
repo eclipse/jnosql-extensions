@@ -14,8 +14,8 @@
  */
 package org.eclipse.jnosql.artemis.hazelcast.keyvalue;
 
+import org.eclipse.jnosql.artemis.test.CDIExtension;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 
 import javax.inject.Inject;
 import java.util.Collection;
@@ -25,7 +25,7 @@ import static java.util.Collections.singletonMap;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@ExtendWith(CDIExtension.class)
+@CDIExtension
 public class DefaultHazelcastTemplateTest {
 
     @Inject
