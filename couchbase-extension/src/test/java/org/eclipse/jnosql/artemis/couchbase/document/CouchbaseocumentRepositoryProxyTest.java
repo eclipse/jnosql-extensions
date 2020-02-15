@@ -16,9 +16,9 @@ package org.eclipse.jnosql.artemis.couchbase.document;
 
 import com.couchbase.client.java.document.json.JsonObject;
 import jakarta.nosql.mapping.document.DocumentRepositoryProducer;
+import org.eclipse.jnosql.artemis.test.CDIExtension;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
@@ -33,7 +33,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 
-@ExtendWith(CDIExtension.class)
+@CDIExtension
 public class CouchbaseocumentRepositoryProxyTest {
 
     private CouchbaseTemplate template;

@@ -14,15 +14,15 @@
  */
 package org.eclipse.jnosql.artemis.orientdb.document;
 
+import jakarta.nosql.document.Document;
+import jakarta.nosql.document.DocumentEntity;
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.document.DocumentEntityConverter;
 import jakarta.nosql.mapping.reflection.ClassMappings;
-import jakarta.nosql.document.Document;
-import jakarta.nosql.document.DocumentEntity;
+import org.eclipse.jnosql.artemis.test.CDIExtension;
 import org.eclipse.jnosql.diana.orientdb.document.OrientDBDocumentCollectionManagerAsync;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 
 import javax.enterprise.inject.Instance;
@@ -32,7 +32,7 @@ import java.util.function.Consumer;
 
 import static org.mockito.Mockito.when;
 
-@ExtendWith(CDIExtension.class)
+@CDIExtension
 public class DefaultOrientDBTemplateAsyncTest {
 
     @Inject

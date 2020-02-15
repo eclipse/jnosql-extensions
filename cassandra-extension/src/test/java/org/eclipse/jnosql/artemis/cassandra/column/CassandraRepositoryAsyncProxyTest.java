@@ -17,9 +17,9 @@ package org.eclipse.jnosql.artemis.cassandra.column;
 import jakarta.nosql.column.ColumnDeleteQuery;
 import jakarta.nosql.column.ColumnQuery;
 import jakarta.nosql.mapping.column.ColumnRepositoryAsyncProducer;
+import org.eclipse.jnosql.artemis.test.CDIExtension;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
@@ -33,7 +33,7 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.verify;
 
-@ExtendWith(CDIExtension.class)
+@CDIExtension
 public class CassandraRepositoryAsyncProxyTest {
 
 

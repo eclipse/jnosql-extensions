@@ -16,10 +16,14 @@ package org.eclipse.jnosql.artemis.hazelcast.keyvalue;
 
 import com.hazelcast.query.Predicate;
 import jakarta.nosql.mapping.Repository;
+import org.eclipse.jnosql.artemis.test.CDIExtension;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 
 import java.lang.reflect.Proxy;
 import java.util.Collection;
@@ -36,7 +40,9 @@ import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+@CDIExtension
 @ExtendWith(MockitoExtension.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
 public class HazelcastRepositoryProxyTest {
 
     @Mock
@@ -53,11 +59,9 @@ public class HazelcastRepositoryProxyTest {
         Collection<Object> people = asList(new Person("Poliana", 25), new Person("Otavio", 28));
 
         when(template.sql(anyString())).thenReturn(people);
-        when(template.sql(anyString(), any(Map.class))).thenReturn(people);
-        when(template.sql(any(Predicate.class))).thenReturn(people);
-
-
         HazelcastRepositoryProxy handler = new HazelcastRepositoryProxy(template, PersonRepository.class, repository);
+
+        when(template.sql(anyString(), any(Map.class))).thenReturn(people);
 
         personRepository = (PersonRepository) Proxy.newProxyInstance(PersonRepository.class.getClassLoader(),
                 new Class[]{PersonRepository.class},
