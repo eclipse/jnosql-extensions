@@ -17,16 +17,16 @@ package org.eclipse.jnosql.artemis.cassandra.column;
 import com.datastax.driver.core.ConsistencyLevel;
 import com.datastax.driver.core.Statement;
 import com.datastax.driver.core.querybuilder.QueryBuilder;
-import jakarta.nosql.mapping.Converters;
-import jakarta.nosql.mapping.reflection.ClassMappings;
 import jakarta.nosql.column.Column;
 import jakarta.nosql.column.ColumnDeleteQuery;
 import jakarta.nosql.column.ColumnEntity;
 import jakarta.nosql.column.ColumnQuery;
+import jakarta.nosql.mapping.Converters;
+import jakarta.nosql.mapping.reflection.ClassMappings;
+import org.eclipse.jnosql.artemis.test.CDIExtension;
 import org.eclipse.jnosql.diana.cassandra.column.CassandraColumnFamilyManagerAsync;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
@@ -44,7 +44,7 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
 
-@ExtendWith(CDIExtension.class)
+@CDIExtension
 public class DefaultCassandraTemplateAsyncTest {
 
     @Inject

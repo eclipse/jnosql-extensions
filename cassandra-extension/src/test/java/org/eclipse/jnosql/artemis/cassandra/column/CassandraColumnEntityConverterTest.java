@@ -14,7 +14,10 @@
  */
 package org.eclipse.jnosql.artemis.cassandra.column;
 
+import jakarta.nosql.TypeReference;
 import jakarta.nosql.Value;
+import jakarta.nosql.column.Column;
+import jakarta.nosql.column.ColumnEntity;
 import org.eclipse.jnosql.artemis.cassandra.column.model.Actor;
 import org.eclipse.jnosql.artemis.cassandra.column.model.AppointmentBook;
 import org.eclipse.jnosql.artemis.cassandra.column.model.Artist;
@@ -26,13 +29,11 @@ import org.eclipse.jnosql.artemis.cassandra.column.model.Job;
 import org.eclipse.jnosql.artemis.cassandra.column.model.Money;
 import org.eclipse.jnosql.artemis.cassandra.column.model.Movie;
 import org.eclipse.jnosql.artemis.cassandra.column.model.Worker;
-import jakarta.nosql.column.Column;
-import jakarta.nosql.column.ColumnEntity;
+import org.eclipse.jnosql.artemis.test.CDIExtension;
 import org.eclipse.jnosql.diana.cassandra.column.UDT;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 
 import javax.inject.Inject;
 import java.math.BigDecimal;
@@ -50,8 +51,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import jakarta.nosql.TypeReference;
-
 import static java.util.Arrays.asList;
 import static java.util.Collections.singleton;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -60,7 +59,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@ExtendWith(CDIExtension.class)
+@CDIExtension
 public class CassandraColumnEntityConverterTest {
 
     @Inject
