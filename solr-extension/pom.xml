@@ -39,5 +39,11 @@
             <artifactId>artemis-document</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.eclipse.jnosql.artemis</groupId>
+            <artifactId>artemis-test</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 </project>
