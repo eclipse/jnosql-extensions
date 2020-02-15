@@ -14,12 +14,12 @@
  */
 package org.eclipse.jnosql.artemis.couchbase.document;
 
+import org.eclipse.jnosql.artemis.test.CDIExtension;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 
 import javax.inject.Inject;
 
-@ExtendWith(CDIExtension.class)
+@CDIExtension
 public class CouchbaseExtensionTest {
 
     @Inject
