@@ -29,9 +29,8 @@ public interface ElasticsearchTemplate extends DocumentTemplate {
      * Find entities from {@link QueryBuilder}
      *
      * @param query the query
-     * @param types the types
      * @return the objects from query
      * @throws NullPointerException when query is null
      */
-    <T> Stream<T> search(QueryBuilder query, String... types);
+    <T> Stream<T> search(QueryBuilder query);
 }

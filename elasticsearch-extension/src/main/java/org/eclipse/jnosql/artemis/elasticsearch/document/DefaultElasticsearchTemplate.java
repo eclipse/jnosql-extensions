@@ -100,9 +100,9 @@ class DefaultElasticsearchTemplate extends AbstractDocumentTemplate
     }
 
     @Override
-    public <T> Stream<T> search(QueryBuilder query, String... types) {
+    public <T> Stream<T> search(QueryBuilder query) {
         Objects.requireNonNull(query, "query is required");
-        Stream<DocumentEntity> entities = manager.get().search(query, types);
+        Stream<DocumentEntity> entities = manager.get().search(query);
         return entities.map(converter::toEntity).map(e -> (T) e);
     }
 }
