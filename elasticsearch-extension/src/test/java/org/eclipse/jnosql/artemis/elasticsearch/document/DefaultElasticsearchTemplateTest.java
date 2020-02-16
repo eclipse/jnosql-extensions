@@ -76,17 +76,17 @@ public class DefaultElasticsearchTemplateTest {
         DocumentEntity entity = DocumentEntity.of("Person");
         entity.add(Document.of("name", "Ada"));
         entity.add(Document.of("age", 10));
-        when(manager.search(Mockito.any(QueryBuilder.class), Mockito.any(String.class)))
+        when(manager.search(Mockito.any(QueryBuilder.class)))
                 .thenReturn(Stream.of(entity));
     }
 
     @Test
     public void shouldFindQuery() {
         QueryBuilder queryBuilder = boolQuery().filter(termQuery("name", "Ada"));
-        List<Person> people = template.<Person>search(queryBuilder, "Person").collect(Collectors.toList());
+        List<Person> people = template.<Person>search(queryBuilder).collect(Collectors.toList());
 
         assertThat(people, contains(new Person("Ada", 10)));
-        Mockito.verify(manager).search(Mockito.eq(queryBuilder), Mockito.eq("Person"));
+        Mockito.verify(manager).search(Mockito.eq(queryBuilder));
     }
 
     @Test
