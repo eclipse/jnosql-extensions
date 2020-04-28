@@ -31,8 +31,6 @@ public class ArangoDBExtension implements Extension {
 
     private final Collection<Class<?>> crudTypes = new HashSet<>();
 
-    private final Collection<Class<?>> crudAsyncTypes = new HashSet<>();
-
 
     <T extends ArangoDBRepository> void onProcessAnnotatedType(@Observes final ProcessAnnotatedType<T> repo) {
         Class<T> javaClass = repo.getAnnotatedType().getJavaClass();
@@ -47,26 +45,11 @@ public class ArangoDBExtension implements Extension {
         }
     }
 
-    <T extends ArangoDBRepositoryAsync> void onProcessAnnotatedTypeAsync(@Observes final ProcessAnnotatedType<T> repo) {
-        Class<T> javaClass = repo.getAnnotatedType().getJavaClass();
-
-        if(ArangoDBRepositoryAsync.class.equals(javaClass)) {
-            return;
-        }
-
-        if (Stream.of(javaClass.getInterfaces()).anyMatch(ArangoDBRepositoryAsync.class::equals)
-                && Modifier.isInterface(javaClass.getModifiers())) {
-            crudAsyncTypes.add(javaClass);
-        }
-    }
-
 
     void onAfterBeanDiscovery(@Observes final AfterBeanDiscovery afterBeanDiscovery, final BeanManager beanManager) {
         LOGGER.info("Starting the onAfterBeanDiscovery with elements number: " + crudTypes.size());
 
         crudTypes.forEach(type -> afterBeanDiscovery.addBean(new ArangoDBRepositoryBean(type, beanManager)));
-
-        crudAsyncTypes.forEach(type -> afterBeanDiscovery.addBean(new ArangoDBRepositoryAsyncBean(type, beanManager)));
 
         LOGGER.info("Finished the onAfterBeanDiscovery");
     }

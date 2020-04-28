@@ -31,9 +31,6 @@ public class CouchbaseExtension implements Extension {
 
     private final Collection<Class<?>> crudTypes = new HashSet<>();
 
-    private final Collection<Class<?>> crudAsyncTypes = new HashSet<>();
-
-
     <T extends CouchbaseRepository> void onProcessAnnotatedType(@Observes final ProcessAnnotatedType<T> repo) {
         Class<T> javaClass = repo.getAnnotatedType().getJavaClass();
 
@@ -47,26 +44,10 @@ public class CouchbaseExtension implements Extension {
         }
     }
 
-    <T extends CouchbaseRepositoryAsync> void onProcessAnnotatedTypeAsync(@Observes final ProcessAnnotatedType<T> repo) {
-        Class<T> javaClass = repo.getAnnotatedType().getJavaClass();
-
-        if(CouchbaseRepositoryAsync.class.equals(javaClass)) {
-            return;
-        }
-
-        if (Stream.of(javaClass.getInterfaces()).anyMatch(CouchbaseRepositoryAsync.class::equals)
-                && Modifier.isInterface(javaClass.getModifiers())) {
-            crudAsyncTypes.add(javaClass);
-        }
-    }
-
-
     void onAfterBeanDiscovery(@Observes final AfterBeanDiscovery afterBeanDiscovery, final BeanManager beanManager) {
         LOGGER.info("Starting the onAfterBeanDiscovery with elements number: " + crudTypes.size());
 
         crudTypes.forEach(type -> afterBeanDiscovery.addBean(new CouchbaseRepositoryBean(type, beanManager)));
-
-        crudAsyncTypes.forEach(type -> afterBeanDiscovery.addBean(new CouchbaseRepositoryAsyncBean(type, beanManager)));
 
         LOGGER.info("Finished the onAfterBeanDiscovery");
     }

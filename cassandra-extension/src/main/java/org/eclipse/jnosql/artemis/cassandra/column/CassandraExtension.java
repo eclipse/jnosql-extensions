@@ -32,9 +32,6 @@ public class CassandraExtension implements Extension {
 
     private final Collection<Class<?>> crudTypes = new HashSet<>();
 
-    private final Collection<Class<?>> crudAsyncTypes = new HashSet<>();
-
-
     <T extends CassandraRepository> void onProcessAnnotatedType(@Observes final ProcessAnnotatedType<T> repo) {
         Class<T> javaClass = repo.getAnnotatedType().getJavaClass();
 
@@ -48,26 +45,12 @@ public class CassandraExtension implements Extension {
         }
     }
 
-    <T extends CassandraRepositoryAsync> void onProcessAnnotatedTypeAsync(@Observes final ProcessAnnotatedType<T> repo) {
-        Class<T> javaClass = repo.getAnnotatedType().getJavaClass();
-
-        if(CassandraRepositoryAsync.class.equals(javaClass)) {
-            return;
-        }
-
-        if (Stream.of(javaClass.getInterfaces()).anyMatch(CassandraRepositoryAsync.class::equals)
-                && Modifier.isInterface(javaClass.getModifiers())) {
-            crudAsyncTypes.add(javaClass);
-        }
-    }
 
 
     void onAfterBeanDiscovery(@Observes final AfterBeanDiscovery afterBeanDiscovery, final BeanManager beanManager) {
         LOGGER.info("Starting the onAfterBeanDiscovery with elements number: " + crudTypes.size());
 
         crudTypes.forEach(type -> afterBeanDiscovery.addBean(new CassandraRepositoryBean(type, beanManager)));
-
-        crudAsyncTypes.forEach(type -> afterBeanDiscovery.addBean(new CassandraRepositoryAsyncBean(type, beanManager)));
 
         LOGGER.info("Finished the onAfterBeanDiscovery");
     }
