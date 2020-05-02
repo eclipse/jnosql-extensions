@@ -22,8 +22,6 @@ import javax.inject.Inject;
 @CDIExtension
 public class OrientDBExtensionTest {
 
-    @Inject
-    private PersonRepositoryAsync personRepositoryAsync;
 
     @Inject
     private PersonRepository personRepository;
@@ -32,6 +30,5 @@ public class OrientDBExtensionTest {
     public void shouldSaveOrientDB() {
         Person person = new Person("Ada", 10);
         personRepository.deleteById(person.getName());
-        personRepositoryAsync.deleteById(person.getName());
     }
 }

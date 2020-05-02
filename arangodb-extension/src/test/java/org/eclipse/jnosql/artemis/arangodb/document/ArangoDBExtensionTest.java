@@ -23,15 +23,11 @@ import javax.inject.Inject;
 public class ArangoDBExtensionTest {
 
     @Inject
-    private PersonRepositoryAsync personRepositoryAsync;
-
-    @Inject
     private PersonRepository personRepository;
 
     @Test
     public void shouldSaveOrientDB() {
         Person person = new Person("Ada", 10);
         personRepository.deleteById(person.getName());
-        personRepositoryAsync.deleteById(person.getName());
     }
 }

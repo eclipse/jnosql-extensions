@@ -18,13 +18,11 @@ package org.eclipse.jnosql.artemis.orientdb.document;
 import jakarta.nosql.document.Document;
 import jakarta.nosql.document.DocumentEntity;
 import org.eclipse.jnosql.diana.orientdb.document.OrientDBDocumentCollectionManager;
-import org.eclipse.jnosql.diana.orientdb.document.OrientDBDocumentCollectionManagerAsync;
 import org.mockito.Mockito;
 
 import javax.enterprise.inject.Produces;
 
 public class MockProducer {
-
 
     @Produces
     public OrientDBDocumentCollectionManager getManager() {
@@ -33,10 +31,5 @@ public class MockProducer {
         entity.add(Document.of("name", "Ada"));
         Mockito.when(manager.update(Mockito.any(DocumentEntity.class))).thenReturn(entity);
         return manager;
-    }
-
-    @Produces
-    public OrientDBDocumentCollectionManagerAsync getManagerAsync() {
-        return Mockito.mock(OrientDBDocumentCollectionManagerAsync.class);
     }
 }

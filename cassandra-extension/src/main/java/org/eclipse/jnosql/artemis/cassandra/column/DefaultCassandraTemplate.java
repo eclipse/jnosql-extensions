@@ -28,7 +28,7 @@ import jakarta.nosql.mapping.column.ColumnWorkflow;
 import jakarta.nosql.mapping.reflection.ClassMappings;
 import org.eclipse.jnosql.artemis.column.AbstractColumnTemplate;
 import org.eclipse.jnosql.diana.cassandra.column.CassandraColumnFamilyManager;
-import org.eclipse.jnosql.diana.cassandra.column.CassandraPrepareStatment;
+import org.eclipse.jnosql.diana.cassandra.column.CassandraPreparedStatement;
 
 import javax.enterprise.inject.Instance;
 import javax.enterprise.inject.Typed;
@@ -181,7 +181,7 @@ class DefaultCassandraTemplate extends AbstractColumnTemplate implements Cassand
     @Override
     public <T> Stream<T> cql(String query, Object... params) {
         Objects.requireNonNull(query, "query is required");
-        CassandraPrepareStatment cassandraPrepareStatment = manager.get().nativeQueryPrepare(query);
+        CassandraPreparedStatement cassandraPrepareStatment = manager.get().nativeQueryPrepare(query);
         Stream<ColumnEntity> entities = cassandraPrepareStatment.bind(params).executeQuery();
         return entities.map(converter::toEntity).map(e -> (T) e);
     }

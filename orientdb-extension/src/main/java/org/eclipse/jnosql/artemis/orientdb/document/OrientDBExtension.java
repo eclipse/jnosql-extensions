@@ -31,9 +31,6 @@ public class OrientDBExtension implements Extension {
 
     private final Collection<Class<?>> crudTypes = new HashSet<>();
 
-    private final Collection<Class<?>> crudAsyncTypes = new HashSet<>();
-
-
     <T extends OrientDBCrudRepository> void onProcessAnnotatedType(@Observes final ProcessAnnotatedType<T> repo) {
         Class<T> javaClass = repo.getAnnotatedType().getJavaClass();
 
@@ -47,26 +44,11 @@ public class OrientDBExtension implements Extension {
         }
     }
 
-    <T extends OrientDBCrudRepositoryAsync> void onProcessAnnotatedTypeAsync(@Observes final ProcessAnnotatedType<T> repo) {
-        Class<T> javaClass = repo.getAnnotatedType().getJavaClass();
-
-        if(OrientDBCrudRepositoryAsync.class.equals(javaClass)) {
-            return;
-        }
-
-        if (Stream.of(javaClass.getInterfaces()).anyMatch(OrientDBCrudRepositoryAsync.class::equals)
-                && Modifier.isInterface(javaClass.getModifiers())) {
-            crudAsyncTypes.add(javaClass);
-        }
-    }
-
 
     void onAfterBeanDiscovery(@Observes final AfterBeanDiscovery afterBeanDiscovery, final BeanManager beanManager) {
         LOGGER.info("Starting the onAfterBeanDiscovery with elements number: " + crudTypes.size());
 
         crudTypes.forEach(type -> afterBeanDiscovery.addBean(new OrientDBRepositoryBean(type, beanManager)));
-
-        crudAsyncTypes.forEach(type -> afterBeanDiscovery.addBean(new OrientDBRepositoryAsyncBean(type, beanManager)));
 
         LOGGER.info("Finished the onAfterBeanDiscovery");
     }

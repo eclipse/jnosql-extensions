@@ -18,7 +18,6 @@ package org.eclipse.jnosql.artemis.couchbase.document;
 import jakarta.nosql.document.Document;
 import jakarta.nosql.document.DocumentEntity;
 import org.eclipse.jnosql.diana.couchbase.document.CouchbaseDocumentCollectionManager;
-import org.eclipse.jnosql.diana.couchbase.document.CouchbaseDocumentCollectionManagerAsync;
 import org.mockito.Mockito;
 
 import javax.enterprise.inject.Produces;
@@ -35,8 +34,4 @@ public class MockProducer {
         return manager;
     }
 
-    @Produces
-    public CouchbaseDocumentCollectionManagerAsync getManagerAsync() {
-        return Mockito.mock(CouchbaseDocumentCollectionManagerAsync.class);
-    }
 }

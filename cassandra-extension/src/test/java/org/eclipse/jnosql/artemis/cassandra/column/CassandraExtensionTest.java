@@ -22,8 +22,6 @@ import javax.inject.Inject;
 @CDIExtension
 public class CassandraExtensionTest {
 
-    @Inject
-    private PersonRepositoryAsync personRepositoryAsync;
 
     @Inject
     private PersonRepository personRepository;
@@ -32,6 +30,5 @@ public class CassandraExtensionTest {
     public void shouldSaveCassandra() {
         Person person = new Person("Ada", 10);
         personRepository.save(person);
-        personRepositoryAsync.save(person);
     }
 }

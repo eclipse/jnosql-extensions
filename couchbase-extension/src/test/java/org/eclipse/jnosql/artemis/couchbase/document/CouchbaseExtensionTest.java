@@ -21,10 +21,6 @@ import javax.inject.Inject;
 
 @CDIExtension
 public class CouchbaseExtensionTest {
-
-    @Inject
-    private PersonRepositoryAsync personRepositoryAsync;
-
     @Inject
     private PersonRepository personRepository;
 
@@ -32,6 +28,5 @@ public class CouchbaseExtensionTest {
     public void shouldSaveOrientDB() {
         Person person = new Person("Ada", 10);
         personRepository.deleteById(person.getName());
-        personRepositoryAsync.deleteById(person.getName());
     }
 }

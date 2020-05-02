@@ -18,7 +18,6 @@ package org.eclipse.jnosql.artemis.arangodb.document;
 import jakarta.nosql.document.Document;
 import jakarta.nosql.document.DocumentEntity;
 import org.eclipse.jnosql.diana.arangodb.document.ArangoDBDocumentCollectionManager;
-import org.eclipse.jnosql.diana.arangodb.document.ArangoDBDocumentCollectionManagerAsync;
 import org.mockito.Mockito;
 
 import javax.enterprise.inject.Produces;
@@ -35,8 +34,4 @@ public class MockProducer {
         return manager;
     }
 
-    @Produces
-    public ArangoDBDocumentCollectionManagerAsync getManagerAsync() {
-        return Mockito.mock(ArangoDBDocumentCollectionManagerAsync.class);
-    }
 }
