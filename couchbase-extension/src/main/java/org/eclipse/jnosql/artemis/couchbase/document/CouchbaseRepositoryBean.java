@@ -56,7 +56,7 @@ class CouchbaseRepositoryBean extends AbstractBean<CouchbaseRepository> {
         CouchbaseTemplate template = getInstance(CouchbaseTemplate.class);
         DocumentRepositoryProducer producer = getInstance(DocumentRepositoryProducer.class);
         Repository<Object, Object> repository = producer.get((Class<Repository<Object, Object>>) type, template);
-        CouchbaseocumentRepositoryProxy handler = new CouchbaseocumentRepositoryProxy(template, type, repository);
+        CouchbaseDocumentRepositoryProxy handler = new CouchbaseDocumentRepositoryProxy(template, type, repository);
         return (CouchbaseRepository) Proxy.newProxyInstance(type.getClassLoader(),
                 new Class[]{type},
                 handler);

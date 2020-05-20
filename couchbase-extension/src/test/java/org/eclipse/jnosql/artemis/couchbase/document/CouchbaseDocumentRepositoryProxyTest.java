@@ -34,7 +34,7 @@ import static org.mockito.Mockito.when;
 
 
 @CDIExtension
-public class CouchbaseocumentRepositoryProxyTest {
+public class CouchbaseDocumentRepositoryProxyTest {
 
     private CouchbaseTemplate template;
 
@@ -48,7 +48,7 @@ public class CouchbaseocumentRepositoryProxyTest {
     public void setUp() {
         this.template = Mockito.mock(CouchbaseTemplate.class);
 
-        CouchbaseocumentRepositoryProxy handler = new CouchbaseocumentRepositoryProxy(template,
+        CouchbaseDocumentRepositoryProxy handler = new CouchbaseDocumentRepositoryProxy(template,
                 PersonRepository.class, producer.get(PersonRepository.class, template));
 
         when(template.insert(any(Person.class))).thenReturn(new Person());

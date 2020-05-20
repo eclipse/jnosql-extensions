@@ -16,7 +16,7 @@ package org.eclipse.jnosql.artemis.orientdb.document;
 
 
 import jakarta.nosql.mapping.Repository;
-import org.eclipse.jnosql.artemis.reflection.DynamicReturn;
+import org.eclipse.jnosql.artemis.repository.DynamicReturn;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -25,7 +25,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Stream;
 
-import static org.eclipse.jnosql.artemis.reflection.DynamicReturn.toSingleResult;
+import static org.eclipse.jnosql.artemis.repository.DynamicReturn.toSingleResult;
+
 
 class OrientDBDocumentRepositoryProxy<T> implements InvocationHandler {
 

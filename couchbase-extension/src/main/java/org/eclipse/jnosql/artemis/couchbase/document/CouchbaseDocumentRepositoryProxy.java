@@ -17,7 +17,7 @@ package org.eclipse.jnosql.artemis.couchbase.document;
 
 import com.couchbase.client.java.document.json.JsonObject;
 import jakarta.nosql.mapping.Repository;
-import org.eclipse.jnosql.artemis.reflection.DynamicReturn;
+import org.eclipse.jnosql.artemis.repository.DynamicReturn;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -25,9 +25,10 @@ import java.lang.reflect.ParameterizedType;
 import java.util.Objects;
 import java.util.stream.Stream;
 
-import static org.eclipse.jnosql.artemis.reflection.DynamicReturn.toSingleResult;
+import static org.eclipse.jnosql.artemis.repository.DynamicReturn.toSingleResult;
 
-class CouchbaseocumentRepositoryProxy<T> implements InvocationHandler {
+
+class CouchbaseDocumentRepositoryProxy<T> implements InvocationHandler {
 
     private final Class<T> typeClass;
 
@@ -36,7 +37,7 @@ class CouchbaseocumentRepositoryProxy<T> implements InvocationHandler {
     private final Repository<?, ?> repository;
 
 
-    CouchbaseocumentRepositoryProxy(CouchbaseTemplate template, Class<?> repositoryType, Repository<?, ?> repository) {
+    CouchbaseDocumentRepositoryProxy(CouchbaseTemplate template, Class<?> repositoryType, Repository<?, ?> repository) {
         this.template = template;
         this.typeClass = Class.class.cast(ParameterizedType.class.cast(repositoryType.getGenericInterfaces()[0])
                 .getActualTypeArguments()[0]);
