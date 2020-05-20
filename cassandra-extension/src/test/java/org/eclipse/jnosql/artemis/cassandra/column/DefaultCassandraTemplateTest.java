@@ -14,9 +14,9 @@
  */
 package org.eclipse.jnosql.artemis.cassandra.column;
 
-import com.datastax.driver.core.ConsistencyLevel;
-import com.datastax.driver.core.Statement;
-import com.datastax.driver.core.querybuilder.QueryBuilder;
+import com.datastax.oss.driver.api.core.ConsistencyLevel;
+import com.datastax.oss.driver.api.core.cql.SimpleStatement;
+import com.datastax.oss.driver.api.querybuilder.QueryBuilder;
 import jakarta.nosql.column.Column;
 import jakarta.nosql.column.ColumnDeleteQuery;
 import jakarta.nosql.column.ColumnEntity;
@@ -206,8 +206,8 @@ public class DefaultCassandraTemplateTest {
     }
     
     @Test
-    public void shouldFindStatment() {
-        Statement statement = QueryBuilder.select().from("Person");
+    public void shouldFindSimpleStatement() {
+        SimpleStatement statement = QueryBuilder.selectFrom("Person").all().build();
         Person person = new Person();
         person.setName("Name");
         person.setAge(20);

@@ -15,8 +15,8 @@
 package org.eclipse.jnosql.artemis.cassandra.column;
 
 
-import com.datastax.driver.core.ConsistencyLevel;
-import com.datastax.driver.core.Statement;
+import com.datastax.oss.driver.api.core.ConsistencyLevel;
+import com.datastax.oss.driver.api.core.cql.SimpleStatement;
 import jakarta.nosql.column.ColumnDeleteQuery;
 import jakarta.nosql.column.ColumnEntity;
 import jakarta.nosql.column.ColumnFamilyManager;
@@ -187,7 +187,7 @@ class DefaultCassandraTemplate extends AbstractColumnTemplate implements Cassand
     }
 
     @Override
-    public <T> Stream<T> execute(Statement statement) {
+    public <T> Stream<T> execute(SimpleStatement statement) {
         return manager.get().execute(statement)
                 .map(c -> (T) converter.toEntity(c));
     }

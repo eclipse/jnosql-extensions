@@ -36,15 +36,12 @@ import static org.mockito.Mockito.when;
 @CDIExtension
 public class CassandraRepositoryProxyTest {
 
-
     private CassandraTemplate template;
-
 
     @Inject
     private ColumnRepositoryProducer producer;
 
     private PersonRepository personRepository;
-
 
     @BeforeEach
     public void setUp() {

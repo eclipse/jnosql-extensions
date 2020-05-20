@@ -23,7 +23,6 @@ import org.eclipse.jnosql.artemis.cassandra.column.model.AppointmentBook;
 import org.eclipse.jnosql.artemis.cassandra.column.model.Artist;
 import org.eclipse.jnosql.artemis.cassandra.column.model.Contact;
 import org.eclipse.jnosql.artemis.cassandra.column.model.Director;
-import org.eclipse.jnosql.artemis.cassandra.column.model.History;
 import org.eclipse.jnosql.artemis.cassandra.column.model.History2;
 import org.eclipse.jnosql.artemis.cassandra.column.model.Job;
 import org.eclipse.jnosql.artemis.cassandra.column.model.Money;
@@ -32,7 +31,6 @@ import org.eclipse.jnosql.artemis.cassandra.column.model.Worker;
 import org.eclipse.jnosql.artemis.test.CDIExtension;
 import org.eclipse.jnosql.diana.cassandra.column.UDT;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import javax.inject.Inject;
@@ -47,8 +45,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static java.util.Arrays.asList;
@@ -96,9 +92,6 @@ public class CassandraColumnEntityConverterTest {
         ColumnEntity entity = converter.toColumn(artist);
         assertEquals("Artist", entity.getName());
         assertEquals(4, entity.size());
-        /*Assert.assertThat(entity.getColumns(), containsInAnyOrder(Document.of("_id", 12L),
-                Document.of("age", 10), Document.of("name", "Otavio"), Document.of("phones", Arrays.asList("234", "2342"))));*/
-
     }
 
     @Test
@@ -268,30 +261,6 @@ public class CassandraColumnEntityConverterTest {
         assertEquals(job.getDescription(), worker1.getJob().getDescription());
     }
 
-    @Test
-    @Disabled
-    public void shouldSupportLocalDateConverter() {
-        History history = new History();
-        history.setCalendar(Calendar.getInstance());
-        history.setLocalDate(LocalDate.now());
-        history.setLocalDateTime(LocalDateTime.now());
-        history.setZonedDateTime(ZonedDateTime.now());
-        history.setNumber(new java.util.Date().getTime());
-
-        ColumnEntity entity = converter.toColumn(history);
-        assertEquals("History", entity.getName());
-
-        Set<Object> collect = entity.getColumns().stream()
-                .map(Column::get).collect(Collectors.toSet());
-        assertThat(collect,
-                containsInAnyOrder(com.datastax.driver.core.LocalDate
-                        .fromMillisSinceEpoch(new java.util.Date().getTime())));
-
-        History historyConverted = converter.toEntity(entity);
-        assertNotNull(historyConverted);
-
-
-    }
 
     @Test
     public void shouldSupportUDT() {

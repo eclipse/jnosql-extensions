@@ -16,8 +16,8 @@
 package org.eclipse.jnosql.artemis.cassandra.column;
 
 
-import com.datastax.driver.core.ConsistencyLevel;
-import com.datastax.driver.core.Statement;
+import com.datastax.oss.driver.api.core.ConsistencyLevel;
+import com.datastax.oss.driver.api.core.cql.SimpleStatement;
 import jakarta.nosql.column.ColumnDeleteQuery;
 import jakarta.nosql.column.ColumnQuery;
 import jakarta.nosql.mapping.column.ColumnTemplate;
@@ -142,6 +142,6 @@ public interface CassandraTemplate extends ColumnTemplate {
      * @return the result of this query
      * @throws NullPointerException when statement is null
      */
-    <T> Stream<T> execute(Statement statement);
+    <T> Stream<T> execute(SimpleStatement statement);
 
 }
