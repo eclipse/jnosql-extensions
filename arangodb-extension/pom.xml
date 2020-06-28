@@ -25,7 +25,6 @@
     </parent>
 
     <artifactId>arangodb-extension</artifactId>
-    <name>${project.groupId}:${project.artifactId}</name>
     <description>Eclipse JNoSQL mapping layer, Artemis, to ArangoDB</description>
 
     <dependencies>

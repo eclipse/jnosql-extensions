@@ -27,7 +27,6 @@
     <artifactId>artemis-extension</artifactId>
     <packaging>pom</packaging>
 
-    <name>${project.groupId}:${project.artifactId}</name>
     <description>Eclipse JNoSQL mapping layer, Artemis, extensions</description>
     <url>http://jnosql.org/</url>
 
