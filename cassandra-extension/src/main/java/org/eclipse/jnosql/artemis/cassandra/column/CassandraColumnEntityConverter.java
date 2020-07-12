@@ -17,11 +17,12 @@ package org.eclipse.jnosql.artemis.cassandra.column;
 
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.column.ColumnEntityConverter;
-import jakarta.nosql.mapping.reflection.ClassMappings;
-import jakarta.nosql.mapping.reflection.FieldMapping;
+import org.eclipse.jnosql.artemis.reflection.ClassMappings;
+import org.eclipse.jnosql.artemis.reflection.FieldMapping;
 import jakarta.nosql.column.Column;
 import org.eclipse.jnosql.artemis.column.AbstractColumnEntityConverter;
 import org.eclipse.jnosql.artemis.column.ColumnFieldValue;
+
 import org.eclipse.jnosql.artemis.reflection.GenericFieldMapping;
 
 import javax.enterprise.context.ApplicationScoped;
