@@ -23,7 +23,7 @@ import jakarta.nosql.column.ColumnEntity;
 import jakarta.nosql.column.ColumnQuery;
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.column.ColumnEventPersistManager;
-import jakarta.nosql.mapping.reflection.ClassMappings;
+import org.eclipse.jnosql.artemis.reflection.ClassMappings;
 import org.eclipse.jnosql.artemis.test.CDIExtension;
 import org.eclipse.jnosql.diana.cassandra.column.CassandraColumnFamilyManager;
 import org.hamcrest.Matchers;

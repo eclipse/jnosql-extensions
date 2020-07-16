@@ -25,8 +25,9 @@ import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.column.ColumnEntityConverter;
 import jakarta.nosql.mapping.column.ColumnEventPersistManager;
 import jakarta.nosql.mapping.column.ColumnWorkflow;
-import jakarta.nosql.mapping.reflection.ClassMappings;
+import org.eclipse.jnosql.artemis.reflection.ClassMappings;
 import org.eclipse.jnosql.artemis.column.AbstractColumnTemplate;
+
 import org.eclipse.jnosql.diana.cassandra.column.CassandraColumnFamilyManager;
 import org.eclipse.jnosql.diana.cassandra.column.CassandraPreparedStatement;
 
