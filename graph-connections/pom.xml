@@ -71,7 +71,7 @@
         <dependency>
             <groupId>org.janusgraph</groupId>
             <artifactId>janusgraph-core</artifactId>
-            <version>0.3.2</version>
+            <version>0.5.2</version>
             <optional>true</optional>
         </dependency>
         <dependency>
