@@ -59,7 +59,7 @@
         <dependency>
             <groupId>com.steelbridgelabs.oss</groupId>
             <artifactId>neo4j-gremlin-bolt</artifactId>
-            <version>0.2.25</version>
+            <version>0.4.2</version>
             <optional>true</optional>
         </dependency>
         <dependency>
