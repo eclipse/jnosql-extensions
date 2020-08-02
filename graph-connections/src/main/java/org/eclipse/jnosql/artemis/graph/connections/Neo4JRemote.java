@@ -20,16 +20,16 @@ import com.steelbridgelabs.oss.neo4j.structure.providers.Neo4JNativeElementIdPro
 import jakarta.nosql.Settings;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.eclipse.jnosql.artemis.graph.GraphConfiguration;
-import org.neo4j.driver.v1.AuthToken;
-import org.neo4j.driver.v1.AuthTokens;
-import org.neo4j.driver.v1.Driver;
+import org.neo4j.driver.AuthToken;
+import org.neo4j.driver.AuthTokens;
+import org.neo4j.driver.Driver;
+import org.neo4j.driver.GraphDatabase;
 
 import java.util.Objects;
 
 import static jakarta.nosql.Configurations.HOST;
 import static jakarta.nosql.Configurations.PASSWORD;
 import static jakarta.nosql.Configurations.USER;
-import static org.neo4j.driver.v1.GraphDatabase.driver;
 
 /**
  * Creates the connection to {@link Graph} using Neo4J remote.
@@ -45,7 +45,7 @@ public class Neo4JRemote implements GraphConfiguration {
         String password = settings.getOrDefault(PASSWORD.get(), "neo4j").toString();
 
         AuthToken basic = AuthTokens.basic(user, password);
-        Driver driver = driver(url, basic);
+        Driver driver = GraphDatabase.driver(url, basic);
         Neo4JElementIdProvider<Long> vertexIdProvider = new Neo4JNativeElementIdProvider();
         Neo4JElementIdProvider<Long> edgeIdProvider = new Neo4JNativeElementIdProvider();
         return new Neo4JGraph(driver, vertexIdProvider, edgeIdProvider);
