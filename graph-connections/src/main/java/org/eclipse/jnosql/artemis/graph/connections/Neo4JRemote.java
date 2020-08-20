@@ -26,7 +26,6 @@ import org.neo4j.driver.Driver;
 import org.neo4j.driver.GraphDatabase;
 
 import java.util.Objects;
-import java.util.Optional;
 
 import static jakarta.nosql.Configurations.HOST;
 import static jakarta.nosql.Configurations.PASSWORD;
