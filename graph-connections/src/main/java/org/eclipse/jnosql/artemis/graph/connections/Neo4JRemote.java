@@ -17,7 +17,6 @@ package org.eclipse.jnosql.artemis.graph.connections;
 import com.steelbridgelabs.oss.neo4j.structure.Neo4JElementIdProvider;
 import com.steelbridgelabs.oss.neo4j.structure.Neo4JGraph;
 import com.steelbridgelabs.oss.neo4j.structure.providers.Neo4JNativeElementIdProvider;
-import jakarta.nosql.Configurations;
 import jakarta.nosql.Settings;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.eclipse.jnosql.artemis.graph.GraphConfiguration;
