@@ -17,6 +17,7 @@ package org.eclipse.jnosql.artemis.graph.connections;
 import com.steelbridgelabs.oss.neo4j.structure.Neo4JElementIdProvider;
 import com.steelbridgelabs.oss.neo4j.structure.Neo4JGraph;
 import com.steelbridgelabs.oss.neo4j.structure.providers.Neo4JNativeElementIdProvider;
+import jakarta.nosql.Configurations;
 import jakarta.nosql.Settings;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.eclipse.jnosql.artemis.graph.GraphConfiguration;
@@ -26,6 +27,7 @@ import org.neo4j.driver.Driver;
 import org.neo4j.driver.GraphDatabase;
 
 import java.util.Objects;
+import java.util.Optional;
 
 import static jakarta.nosql.Configurations.HOST;
 import static jakarta.nosql.Configurations.PASSWORD;
@@ -43,7 +45,7 @@ public class Neo4JRemote implements GraphConfiguration {
         String url = settings.getOrDefault(HOST.get(), "bolt://localhost:7687").toString();
         String user = settings.getOrDefault(USER.get(), "neo4j").toString();
         String password = settings.getOrDefault(PASSWORD.get(), "neo4j").toString();
-
+        Optional<String> database = settings.get("database", String.class);
         AuthToken basic = AuthTokens.basic(user, password);
         Driver driver = GraphDatabase.driver(url, basic);
         Neo4JElementIdProvider<Long> vertexIdProvider = new Neo4JNativeElementIdProvider();
