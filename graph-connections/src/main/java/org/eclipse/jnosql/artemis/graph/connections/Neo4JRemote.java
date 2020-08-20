@@ -44,11 +44,10 @@ public class Neo4JRemote implements GraphConfiguration {
         String url = settings.getOrDefault(HOST.get(), "bolt://localhost:7687").toString();
         String user = settings.getOrDefault(USER.get(), "neo4j").toString();
         String password = settings.getOrDefault(PASSWORD.get(), "neo4j").toString();
-        Optional<String> database = settings.get("database", String.class);
         AuthToken basic = AuthTokens.basic(user, password);
         Driver driver = GraphDatabase.driver(url, basic);
         Neo4JElementIdProvider<Long> vertexIdProvider = new Neo4JNativeElementIdProvider();
         Neo4JElementIdProvider<Long> edgeIdProvider = new Neo4JNativeElementIdProvider();
-        return new Neo4JGraph(driver, database.orElse(null), vertexIdProvider, edgeIdProvider);
+        return new Neo4JGraph(driver, vertexIdProvider, edgeIdProvider);
     }
 }
