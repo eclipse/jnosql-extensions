@@ -50,6 +50,6 @@ public class Neo4JRemote implements GraphConfiguration {
         Driver driver = GraphDatabase.driver(url, basic);
         Neo4JElementIdProvider<Long> vertexIdProvider = new Neo4JNativeElementIdProvider();
         Neo4JElementIdProvider<Long> edgeIdProvider = new Neo4JNativeElementIdProvider();
-        return new Neo4JGraph(driver, vertexIdProvider, edgeIdProvider);
+        return new Neo4JGraph(driver, database.orElse(null), vertexIdProvider, edgeIdProvider);
     }
 }
