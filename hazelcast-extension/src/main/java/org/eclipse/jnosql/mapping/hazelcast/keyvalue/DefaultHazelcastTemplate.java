@@ -18,7 +18,7 @@ import com.hazelcast.query.Predicate;
 import jakarta.nosql.keyvalue.BucketManager;
 import jakarta.nosql.mapping.keyvalue.KeyValueEntityConverter;
 import jakarta.nosql.mapping.keyvalue.KeyValueWorkflow;
-import org.eclipse.jnosql.artemis.keyvalue.AbstractKeyValueTemplate;
+import org.eclipse.jnosql.mapping.keyvalue.AbstractKeyValueTemplate;
 import org.eclipse.jnosql.diana.hazelcast.keyvalue.HazelcastBucketManager;
 
 import javax.enterprise.inject.Instance;

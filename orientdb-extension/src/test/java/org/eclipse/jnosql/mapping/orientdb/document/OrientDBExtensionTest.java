@@ -14,7 +14,7 @@
  */
 package org.eclipse.jnosql.mapping.orientdb.document;
 
-import org.eclipse.jnosql.artemis.test.CDIExtension;
+import org.eclipse.jnosql.mapping.test.CDIExtension;
 import org.junit.jupiter.api.Test;
 
 import javax.inject.Inject;

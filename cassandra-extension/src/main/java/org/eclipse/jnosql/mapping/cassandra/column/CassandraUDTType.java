@@ -16,9 +16,9 @@ package org.eclipse.jnosql.mapping.cassandra.column;
 
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.column.ColumnEntityConverter;
-import org.eclipse.jnosql.artemis.reflection.FieldMapping;
+import org.eclipse.jnosql.mapping.reflection.FieldMapping;
 import jakarta.nosql.column.Column;
-import org.eclipse.jnosql.artemis.column.ColumnFieldValue;
+import org.eclipse.jnosql.mapping.column.ColumnFieldValue;
 import org.eclipse.jnosql.diana.cassandra.column.UDT;
 
 import java.util.ArrayList;

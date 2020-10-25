@@ -28,7 +28,7 @@ import org.eclipse.jnosql.mapping.cassandra.column.model.Job;
 import org.eclipse.jnosql.mapping.cassandra.column.model.Money;
 import org.eclipse.jnosql.mapping.cassandra.column.model.Movie;
 import org.eclipse.jnosql.mapping.cassandra.column.model.Worker;
-import org.eclipse.jnosql.artemis.test.CDIExtension;
+import org.eclipse.jnosql.mapping.test.CDIExtension;
 import org.eclipse.jnosql.diana.cassandra.column.UDT;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

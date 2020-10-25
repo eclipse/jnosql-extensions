@@ -16,7 +16,7 @@ package org.eclipse.jnosql.mapping.cassandra.column;
 
 import jakarta.nosql.mapping.Repository;
 import jakarta.nosql.mapping.column.ColumnRepositoryProducer;
-import org.eclipse.jnosql.artemis.spi.AbstractBean;
+import org.eclipse.jnosql.mapping.spi.AbstractBean;
 
 import javax.enterprise.context.spi.CreationalContext;
 import javax.enterprise.inject.Default;

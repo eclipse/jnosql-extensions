@@ -16,7 +16,7 @@ package org.eclipse.jnosql.mapping.cassandra.column;
 
 import jakarta.nosql.column.ColumnDeleteQuery;
 import jakarta.nosql.mapping.column.ColumnRepositoryProducer;
-import org.eclipse.jnosql.artemis.test.CDIExtension;
+import org.eclipse.jnosql.mapping.test.CDIExtension;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;

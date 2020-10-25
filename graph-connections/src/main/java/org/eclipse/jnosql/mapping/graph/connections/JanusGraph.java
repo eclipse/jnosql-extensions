@@ -19,7 +19,7 @@ import org.apache.commons.configuration.BaseConfiguration;
 import org.apache.commons.configuration.Configuration;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.janusgraph.core.JanusGraphFactory;
-import org.eclipse.jnosql.artemis.graph.GraphConfiguration;
+import org.eclipse.jnosql.mapping.graph.GraphConfiguration;
 
 import java.util.Objects;
 

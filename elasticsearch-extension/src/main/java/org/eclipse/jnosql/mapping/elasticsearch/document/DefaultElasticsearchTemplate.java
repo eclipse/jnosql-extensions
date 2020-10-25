@@ -21,9 +21,9 @@ import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.document.DocumentEntityConverter;
 import jakarta.nosql.mapping.document.DocumentEventPersistManager;
 import jakarta.nosql.mapping.document.DocumentWorkflow;
-import org.eclipse.jnosql.artemis.reflection.ClassMappings;
+import org.eclipse.jnosql.mapping.reflection.ClassMappings;
 import org.elasticsearch.index.query.QueryBuilder;
-import org.eclipse.jnosql.artemis.document.AbstractDocumentTemplate;
+import org.eclipse.jnosql.mapping.document.AbstractDocumentTemplate;
 import org.eclipse.jnosql.diana.elasticsearch.document.ElasticsearchDocumentCollectionManager;
 
 import javax.enterprise.inject.Instance;

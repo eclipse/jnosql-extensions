@@ -18,7 +18,7 @@ import com.arangodb.tinkerpop.gremlin.utils.ArangoDBConfigurationBuilder;
 import jakarta.nosql.Settings;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.util.GraphFactory;
-import org.eclipse.jnosql.artemis.graph.GraphConfiguration;
+import org.eclipse.jnosql.mapping.graph.GraphConfiguration;
 
 import java.util.Objects;
 
