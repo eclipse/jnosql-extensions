@@ -19,15 +19,15 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>org.eclipse.jnosql.artemis</groupId>
-        <artifactId>artemis-parent</artifactId>
+        <groupId>org.eclipse.jnosql.mapping</groupId>
+        <artifactId>mapping-parent</artifactId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>artemis-extension</artifactId>
+    <artifactId>mapping-extension</artifactId>
     <packaging>pom</packaging>
 
-    <description>Eclipse JNoSQL mapping layer, Artemis, extensions</description>
+    <description>Eclipse JNoSQL mapping layer extensions</description>
     <url>http://jnosql.org/</url>
 
     <scm>
