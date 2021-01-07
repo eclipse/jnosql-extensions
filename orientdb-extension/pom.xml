@@ -28,7 +28,7 @@
     <description>Eclipse JNoSQL mapping layer extension to Couchbase</description>
     <dependencies>
         <dependency>
-            <groupId>org.eclipse.jnosql.diana</groupId>
+            <groupId>org.eclipse.jnosql.communication</groupId>
             <artifactId>orientdb-driver</artifactId>
             <version>${project.version}</version>
         </dependency>

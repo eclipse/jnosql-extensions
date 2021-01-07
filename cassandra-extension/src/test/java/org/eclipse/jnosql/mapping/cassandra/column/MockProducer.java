@@ -17,7 +17,7 @@ package org.eclipse.jnosql.mapping.cassandra.column;
 
 import jakarta.nosql.column.Column;
 import jakarta.nosql.column.ColumnEntity;
-import org.eclipse.jnosql.diana.cassandra.column.CassandraColumnFamilyManager;
+import org.eclipse.jnosql.communication.cassandra.column.CassandraColumnFamilyManager;
 import org.mockito.Mockito;
 
 import javax.enterprise.inject.Produces;

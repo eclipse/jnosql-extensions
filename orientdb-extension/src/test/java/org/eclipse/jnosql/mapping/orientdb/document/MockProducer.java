@@ -17,7 +17,7 @@ package org.eclipse.jnosql.mapping.orientdb.document;
 
 import jakarta.nosql.document.Document;
 import jakarta.nosql.document.DocumentEntity;
-import org.eclipse.jnosql.diana.orientdb.document.OrientDBDocumentCollectionManager;
+import org.eclipse.jnosql.communication.orientdb.document.OrientDBDocumentCollectionManager;
 import org.mockito.Mockito;
 
 import javax.enterprise.inject.Produces;

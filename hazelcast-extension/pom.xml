@@ -30,7 +30,7 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.eclipse.jnosql.diana</groupId>
+            <groupId>org.eclipse.jnosql.communication</groupId>
             <artifactId>hazelcast-driver</artifactId>
             <version>${project.version}</version>
         </dependency>

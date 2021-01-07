@@ -15,10 +15,10 @@
  */
 package org.eclipse.jnosql.mapping.orientdb.document;
 
-import org.eclipse.jnosql.diana.orientdb.document.OrientDBLiveCallback;
-import org.eclipse.jnosql.diana.orientdb.document.OrientDBLiveCreateCallback;
-import org.eclipse.jnosql.diana.orientdb.document.OrientDBLiveDeleteCallback;
-import org.eclipse.jnosql.diana.orientdb.document.OrientDBLiveUpdateCallback;
+import org.eclipse.jnosql.communication.orientdb.document.OrientDBLiveCallback;
+import org.eclipse.jnosql.communication.orientdb.document.OrientDBLiveCreateCallback;
+import org.eclipse.jnosql.communication.orientdb.document.OrientDBLiveDeleteCallback;
+import org.eclipse.jnosql.communication.orientdb.document.OrientDBLiveUpdateCallback;
 
 import static java.util.Objects.requireNonNull;
 

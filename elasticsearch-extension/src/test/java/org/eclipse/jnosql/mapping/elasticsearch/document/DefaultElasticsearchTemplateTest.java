@@ -22,7 +22,7 @@ import jakarta.nosql.mapping.document.DocumentEventPersistManager;
 import jakarta.nosql.mapping.document.DocumentWorkflow;
 import org.eclipse.jnosql.mapping.reflection.ClassMappings;
 import org.eclipse.jnosql.mapping.test.CDIExtension;
-import org.eclipse.jnosql.diana.elasticsearch.document.ElasticsearchDocumentCollectionManager;
+import org.eclipse.jnosql.communication.elasticsearch.document.ElasticsearchDocumentCollectionManager;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

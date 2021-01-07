@@ -24,9 +24,9 @@ import jakarta.nosql.mapping.document.DocumentEventPersistManager;
 import jakarta.nosql.mapping.document.DocumentWorkflow;
 import org.eclipse.jnosql.mapping.reflection.ClassMappings;
 import org.eclipse.jnosql.mapping.document.AbstractDocumentTemplate;
-import org.eclipse.jnosql.diana.orientdb.document.OrientDBDocumentCollectionManager;
-import org.eclipse.jnosql.diana.orientdb.document.OrientDBLiveCallback;
-import org.eclipse.jnosql.diana.orientdb.document.OrientDBLiveCallbackBuilder;
+import org.eclipse.jnosql.communication.orientdb.document.OrientDBDocumentCollectionManager;
+import org.eclipse.jnosql.communication.orientdb.document.OrientDBLiveCallback;
+import org.eclipse.jnosql.communication.orientdb.document.OrientDBLiveCallbackBuilder;
 
 import javax.enterprise.inject.Instance;
 import javax.enterprise.inject.Typed;

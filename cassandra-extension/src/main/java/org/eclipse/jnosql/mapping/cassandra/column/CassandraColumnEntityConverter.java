@@ -71,8 +71,8 @@ class CassandraColumnEntityConverter extends AbstractColumnEntityConverter imple
     }
 
     private <T> void setUDTField(T instance, Optional<Column> column, FieldMapping field) {
-        if (column.isPresent() && org.eclipse.jnosql.diana.cassandra.column.UDT.class.isInstance(column.get())) {
-            org.eclipse.jnosql.diana.cassandra.column.UDT udt = org.eclipse.jnosql.diana.cassandra.column.UDT.class.cast(column.get());
+        if (column.isPresent() && org.eclipse.jnosql.communication.cassandra.column.UDT.class.isInstance(column.get())) {
+            org.eclipse.jnosql.communication.cassandra.column.UDT udt = org.eclipse.jnosql.communication.cassandra.column.UDT.class.cast(column.get());
             Object columns = udt.get();
             if (StreamSupport.stream(Iterable.class.cast(columns).spliterator(), false).allMatch(Iterable.class::isInstance)) {
                 GenericFieldMapping genericField = GenericFieldMapping.class.cast(field);

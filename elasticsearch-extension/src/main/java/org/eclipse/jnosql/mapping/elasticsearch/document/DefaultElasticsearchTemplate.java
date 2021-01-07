@@ -24,7 +24,7 @@ import jakarta.nosql.mapping.document.DocumentWorkflow;
 import org.eclipse.jnosql.mapping.reflection.ClassMappings;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.eclipse.jnosql.mapping.document.AbstractDocumentTemplate;
-import org.eclipse.jnosql.diana.elasticsearch.document.ElasticsearchDocumentCollectionManager;
+import org.eclipse.jnosql.communication.elasticsearch.document.ElasticsearchDocumentCollectionManager;
 
 import javax.enterprise.inject.Instance;
 import javax.enterprise.inject.Typed;

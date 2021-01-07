@@ -29,7 +29,7 @@ import org.eclipse.jnosql.mapping.cassandra.column.model.Money;
 import org.eclipse.jnosql.mapping.cassandra.column.model.Movie;
 import org.eclipse.jnosql.mapping.cassandra.column.model.Worker;
 import org.eclipse.jnosql.mapping.test.CDIExtension;
-import org.eclipse.jnosql.diana.cassandra.column.UDT;
+import org.eclipse.jnosql.communication.cassandra.column.UDT;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -276,7 +276,7 @@ public class CassandraColumnEntityConverterTest {
         ColumnEntity entity = converter.toColumn(person);
         assertEquals("Person", entity.getName());
         Column column = entity.find("home").get();
-        org.eclipse.jnosql.diana.cassandra.column.UDT udt = org.eclipse.jnosql.diana.cassandra.column.UDT.class.cast(column);
+        org.eclipse.jnosql.communication.cassandra.column.UDT udt = org.eclipse.jnosql.communication.cassandra.column.UDT.class.cast(column);
 
         assertEquals("address", udt.getUserType());
         assertEquals("home", udt.getName());

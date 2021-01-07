@@ -17,7 +17,7 @@ package org.eclipse.jnosql.mapping.arangodb.document;
 
 import jakarta.nosql.document.Document;
 import jakarta.nosql.document.DocumentEntity;
-import org.eclipse.jnosql.diana.arangodb.document.ArangoDBDocumentCollectionManager;
+import org.eclipse.jnosql.communication.arangodb.document.ArangoDBDocumentCollectionManager;
 import org.mockito.Mockito;
 
 import javax.enterprise.inject.Produces;

@@ -30,7 +30,7 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.eclipse.jnosql.diana</groupId>
+            <groupId>org.eclipse.jnosql.communication</groupId>
             <artifactId>solr-driver</artifactId>
             <version>${project.version}</version>
         </dependency>

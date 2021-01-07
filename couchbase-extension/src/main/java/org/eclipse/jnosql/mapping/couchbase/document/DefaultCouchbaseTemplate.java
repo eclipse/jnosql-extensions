@@ -25,7 +25,7 @@ import jakarta.nosql.mapping.document.DocumentEventPersistManager;
 import jakarta.nosql.mapping.document.DocumentWorkflow;
 import org.eclipse.jnosql.mapping.reflection.ClassMappings;
 import org.eclipse.jnosql.mapping.document.AbstractDocumentTemplate;
-import org.eclipse.jnosql.diana.couchbase.document.CouchbaseDocumentCollectionManager;
+import org.eclipse.jnosql.communication.couchbase.document.CouchbaseDocumentCollectionManager;
 
 import javax.enterprise.inject.Instance;
 import javax.enterprise.inject.Typed;

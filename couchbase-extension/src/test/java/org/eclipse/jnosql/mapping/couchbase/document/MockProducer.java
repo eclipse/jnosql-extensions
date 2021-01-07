@@ -17,7 +17,7 @@ package org.eclipse.jnosql.mapping.couchbase.document;
 
 import jakarta.nosql.document.Document;
 import jakarta.nosql.document.DocumentEntity;
-import org.eclipse.jnosql.diana.couchbase.document.CouchbaseDocumentCollectionManager;
+import org.eclipse.jnosql.communication.couchbase.document.CouchbaseDocumentCollectionManager;
 import org.mockito.Mockito;
 
 import javax.enterprise.inject.Produces;

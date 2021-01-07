@@ -19,7 +19,7 @@ import jakarta.nosql.mapping.column.ColumnEntityConverter;
 import org.eclipse.jnosql.mapping.reflection.FieldMapping;
 import jakarta.nosql.column.Column;
 import org.eclipse.jnosql.mapping.column.ColumnFieldValue;
-import org.eclipse.jnosql.diana.cassandra.column.UDT;
+import org.eclipse.jnosql.communication.cassandra.column.UDT;
 
 import java.util.ArrayList;
 import java.util.List;
