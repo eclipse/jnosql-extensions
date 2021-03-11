@@ -291,7 +291,8 @@ public class CassandraColumnEntityConverterTest {
         ColumnEntity entity = ColumnEntity.of("Person");
         entity.add(Column.of("name", "Poliana"));
         entity.add(Column.of("age", 20));
-        List<Column> columns = asList(Column.of("city", "Salvador"), Column.of("street", "Jose Anasoh"));
+        List<Column> columns = asList(Column.of("city", "Salvador"),
+                Column.of("street", "Jose Anasoh"));
         UDT udt = UDT.builder("address").withName("home")
                 .addUDT(columns).build();
         entity.add(udt);
