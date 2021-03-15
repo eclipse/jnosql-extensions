@@ -164,19 +164,19 @@ class DefaultCassandraTemplate extends AbstractColumnTemplate implements Cassand
         persistManager.firePreQuery(query);
 
         return manager.get().select(query, level)
-                .map(c -> (T) converter.toEntity(c));
+                .map(c -> converter.toEntity(c));
     }
 
     @Override
     public <T> Stream<T> cql(String query) {
         return manager.get().cql(query)
-                .map(c -> (T) converter.toEntity(c));
+                .map(c -> converter.toEntity(c));
     }
 
     @Override
     public <T> Stream<T> cql(String query, Map<String, Object> values) {
         return manager.get().cql(query, values)
-                .map(c -> (T) converter.toEntity(c));
+                .map(c -> converter.toEntity(c));
     }
 
     @Override
@@ -190,7 +190,7 @@ class DefaultCassandraTemplate extends AbstractColumnTemplate implements Cassand
     @Override
     public <T> Stream<T> execute(SimpleStatement statement) {
         return manager.get().execute(statement)
-                .map(c -> (T) converter.toEntity(c));
+                .map(c -> converter.toEntity(c));
     }
 
 }
