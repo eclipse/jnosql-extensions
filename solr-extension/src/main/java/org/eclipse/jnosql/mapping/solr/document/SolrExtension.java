@@ -20,10 +20,10 @@ import javax.enterprise.inject.spi.BeanManager;
 import javax.enterprise.inject.spi.Extension;
 import javax.enterprise.inject.spi.ProcessAnnotatedType;
 import java.lang.reflect.Modifier;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.logging.Logger;
-import java.util.stream.Stream;
 
 public class SolrExtension implements Extension {
 
@@ -38,7 +38,7 @@ public class SolrExtension implements Extension {
             return;
         }
 
-        if (Stream.of(javaClass.getInterfaces()).anyMatch(SolrRepository.class::equals)
+        if (Arrays.asList(javaClass.getInterfaces()).contains(SolrRepository.class)
                 && Modifier.isInterface(javaClass.getModifiers())) {
             crudTypes.add(javaClass);
         }
