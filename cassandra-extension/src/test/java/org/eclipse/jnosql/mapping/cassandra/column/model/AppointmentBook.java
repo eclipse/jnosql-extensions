@@ -69,10 +69,9 @@ public class AppointmentBook {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("AppointmentBook{");
-        sb.append("user='").append(user).append('\'');
-        sb.append(", contacts=").append(contacts);
-        sb.append('}');
-        return sb.toString();
+        String sb = "AppointmentBook{" + "user='" + user + '\'' +
+                ", contacts=" + contacts +
+                '}';
+        return sb;
     }
 }

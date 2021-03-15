@@ -64,10 +64,9 @@ public class Contact {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("Contact{");
-        sb.append("name='").append(name).append('\'');
-        sb.append(", description='").append(description).append('\'');
-        sb.append('}');
-        return sb.toString();
+        String sb = "Contact{" + "name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                '}';
+        return sb;
     }
 }

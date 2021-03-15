@@ -70,10 +70,9 @@ public class Person {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("Person{");
-        sb.append("name='").append(name).append('\'');
-        sb.append(", age=").append(age);
-        sb.append('}');
-        return sb.toString();
+        String sb = "Person{" + "name='" + name + '\'' +
+                ", age=" + age +
+                '}';
+        return sb;
     }
 }

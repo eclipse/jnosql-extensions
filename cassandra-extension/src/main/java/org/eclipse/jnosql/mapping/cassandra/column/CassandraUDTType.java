@@ -76,11 +76,10 @@ class CassandraUDTType implements ColumnFieldValue {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("CassandraUDTType{");
-        sb.append("type='").append(type).append('\'');
-        sb.append(", value=").append(value);
-        sb.append(", field=").append(field);
-        sb.append('}');
-        return sb.toString();
+        String sb = "CassandraUDTType{" + "type='" + type + '\'' +
+                ", value=" + value +
+                ", field=" + field +
+                '}';
+        return sb;
     }
 }
