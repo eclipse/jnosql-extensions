@@ -60,8 +60,8 @@ class SolrRepositoryProxy<T> implements InvocationHandler {
             return DynamicReturn.builder()
                     .withClassSource(typeClass)
                     .withMethodSource(method)
-                    .withResult(() -> result.stream())
-                    .withSingleResult(toSingleResult(method).apply(() -> result.stream()))
+                    .withResult(result::stream)
+                    .withSingleResult(toSingleResult(method).apply(result::stream))
                     .build().execute();
         }
         return method.invoke(repository, args);
