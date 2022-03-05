@@ -345,8 +345,10 @@ public class CassandraColumnEntityConverterTest {
     @Test
     public void shouldConvertListUDTToEntity() {
         List<Iterable<Column>> columns = new ArrayList<>();
-        columns.add(asList(Column.of("name", "Poliana"), Column.of("description", "poliana")));
-        columns.add(asList(Column.of("name", "Ada"), Column.of("description", "ada@lovelace.com")));
+        columns.add(asList(Column.of("name", "Poliana"),
+                Column.of("description", "poliana")));
+        columns.add(asList(Column.of("name", "Ada"),
+                Column.of("description", "ada@lovelace.com")));
 
         ColumnEntity entity = ColumnEntity.of("AppointmentBook");
         entity.add(Column.of("user", "otaviojava"));
