@@ -39,6 +39,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
@@ -193,9 +194,11 @@ public class CassandraColumnEntityConverterTest {
 
         ColumnEntity entity = converter.toColumn(director);
         entity.remove("movie");
-        entity.add(Column.of("title", "Matrix"));
-        entity.add(Column.of("year", 2012));
-        entity.add(Column.of("actors", singleton("Actor")));
+        entity.add("movie",
+                Arrays.asList(Column.of("title", "Matrix"),
+                        Column.of("year", 2012),
+                        Column.of("actors", singleton("Actor"))));
+
         Director director1 = converter.toEntity(entity);
 
         assertEquals(movie, director1.getMovie());
