@@ -14,13 +14,7 @@
  */
 
 /**
- * Apache Cassandra is a free and open-source distributed database management system designed to handle large amounts of
- * data across many commodity servers, providing high availability with no single point of failure. Cassandra offers
- * robust support for clusters spanning multiple datacenters, with asynchronous masterless replication allowing low
- * latency operations for all clients.
- * Cassandra also places a high value on performance. In 2012,
- * University of Toronto researchers studying NoSQL systems concluded that "In terms of scalability, there is a clear
- * winner throughout our experiments. Cassandra achieves the highest throughput for the maximum number
- * of nodes in all experiments" although "this comes at the price of high write and read latencies.
+ * MongoDB is a source-available cross-platform document-oriented database program.
+ * Classified as a NoSQL database program, MongoDB uses JSON-like documents with optional schemas
  */
 package org.eclipse.jnosql.mapping.mongodb;
