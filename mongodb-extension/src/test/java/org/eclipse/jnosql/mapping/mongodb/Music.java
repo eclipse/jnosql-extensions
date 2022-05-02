@@ -16,6 +16,8 @@
 package org.eclipse.jnosql.mapping.mongodb;
 
 
+import jakarta.nosql.mapping.Column;
+import jakarta.nosql.mapping.Convert;
 import jakarta.nosql.mapping.Entity;
 import jakarta.nosql.mapping.Id;
 
@@ -23,9 +25,12 @@ import jakarta.nosql.mapping.Id;
 public class Music {
 
     @Id
+    @Convert()
     private String id;
 
+    @Column
     private String name;
 
+    @Column
     private int year;
 }
