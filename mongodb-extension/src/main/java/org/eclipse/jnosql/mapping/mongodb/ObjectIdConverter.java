@@ -18,7 +18,7 @@ package org.eclipse.jnosql.mapping.mongodb;
 import jakarta.nosql.mapping.AttributeConverter;
 import org.bson.types.ObjectId;
 
-public class ObjectIDConverter implements AttributeConverter<String, ObjectId> {
+public class ObjectIdConverter implements AttributeConverter<String, ObjectId> {
     @Override
     public ObjectId convertToDatabaseColumn(String attribute) {
         return null;
