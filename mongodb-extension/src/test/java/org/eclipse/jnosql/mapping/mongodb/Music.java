@@ -25,7 +25,7 @@ import jakarta.nosql.mapping.Id;
 public class Music {
 
     @Id
-    @Convert()
+    @Convert(ObjectIdConverter.class)
     private String id;
 
     @Column
