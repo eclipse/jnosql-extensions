@@ -17,3 +17,19 @@ MongoDB extension has implementations to use specific behavior that is beyond th
      <version>${jnosql.version}</version>
   </dependency>
 ----
+
+## Converter
+
+In this extension you have the option to convert to/from MongoDB ```ObjectID```
+
+[source,java]
+----
+@Entity
+public class Music {
+
+    @Id
+    @Convert(ObjectIdConverter.class)
+    private String id;
+
+}
+----
