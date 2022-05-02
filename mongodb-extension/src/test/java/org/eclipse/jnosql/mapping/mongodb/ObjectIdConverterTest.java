@@ -16,6 +16,7 @@ package org.eclipse.jnosql.mapping.mongodb;
 
 import jakarta.nosql.mapping.AttributeConverter;
 import org.bson.types.ObjectId;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -32,21 +33,28 @@ class ObjectIdConverterTest {
 
     @Test
     public void shouldReturnNullWhenAttributeIsNull() {
-
+        Assertions.assertNull(this.converter.convertToDatabaseColumn(null));
     }
 
     @Test
     public void shouldReturnNullWhenDataIsNull() {
-
+        Assertions.assertNull(this.converter.convertToEntityAttribute(null));
     }
 
     @Test
     public void shouldConvertToEntity() {
-
+        ObjectId id = new ObjectId();
+        String entityAttribute = this.converter.convertToEntityAttribute(id);
+        Assertions.assertNotNull(entityAttribute);
+        Assertions.assertEquals(id.toString(), entityAttribute);
     }
 
     @Test
     public void shouldConvertToDatabase() {
-
+        ObjectId objectId = new ObjectId();
+        String entityAttribute = objectId.toString();
+        ObjectId id = this.converter.convertToDatabaseColumn(entityAttribute);
+        Assertions.assertNotNull(id);
+        Assertions.assertEquals(objectId, id);
     }
 }
