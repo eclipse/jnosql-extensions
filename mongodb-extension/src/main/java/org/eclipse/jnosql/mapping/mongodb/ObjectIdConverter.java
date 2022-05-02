@@ -18,14 +18,27 @@ package org.eclipse.jnosql.mapping.mongodb;
 import jakarta.nosql.mapping.AttributeConverter;
 import org.bson.types.ObjectId;
 
+import java.util.Objects;
+
+/**
+ * An implementation of AttributeConverter where it converts the {@link ObjectId}
+ * from/to {@link String}
+ */
 public class ObjectIdConverter implements AttributeConverter<String, ObjectId> {
+
     @Override
     public ObjectId convertToDatabaseColumn(String attribute) {
+        if(Objects.nonNull(attribute)) {
+            return new ObjectId(attribute);
+        }
         return null;
     }
 
     @Override
     public String convertToEntityAttribute(ObjectId dbData) {
+        if(Objects.nonNull(dbData)) {
+           return dbData.toString();
+        }
         return null;
     }
 }
