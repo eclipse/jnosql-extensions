@@ -35,7 +35,7 @@
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>mapping-column</artifactId>
+            <artifactId>mapping-document</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
