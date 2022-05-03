@@ -33,4 +33,35 @@ public class Music {
 
     @Column
     private int year;
+
+    Music() {
+    }
+
+
+    Music(String id, String name, int year) {
+        this.id = id;
+        this.name = name;
+        this.year = year;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getYear() {
+        return year;
+    }
+
+    @Override
+    public String toString() {
+        return "Music{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", year=" + year +
+                '}';
+    }
 }
