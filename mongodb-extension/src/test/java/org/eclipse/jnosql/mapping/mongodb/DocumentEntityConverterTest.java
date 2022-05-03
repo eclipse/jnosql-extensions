@@ -42,4 +42,19 @@ public class DocumentEntityConverterTest {
         Assertions.assertEquals("Music", entity.find("name", String.class).get());
         Assertions.assertEquals(2021, entity.find("year", int.class).get());
     }
+
+    @Test
+    public void shouldConvertToEntity() {
+        ObjectId id = new ObjectId();
+        DocumentEntity entity = DocumentEntity.of("Music");
+        entity.add("name", "Music");
+        entity.add("year", 2022);
+        entity.add("_id", id);
+
+        Music music = converter.toEntity(entity);
+        Assertions.assertNotNull(music);
+        Assertions.assertEquals("Music", music.getName());
+        Assertions.assertEquals(2022, music.getYear());
+        Assertions.assertEquals(id.toString(), music.getId());
+    }
 }
