@@ -40,11 +40,12 @@ public interface MongoDBTemplate extends DocumentTemplate {
     long delete(String collectionName, Bson filter);
 
     /**
-     *  Removes all documents from the collection that match the given query filter.
-     *  If no documents match, the collection is not modified.
+     * Removes all documents from the collection that match the given query filter.
+     * If no documents match, the collection is not modified.
+     *
      * @param entity the entity to take the collection name
      * @param filter the delete filter
-     * @param <T> the entity type
+     * @param <T>    the entity type
      * @return the number of documents deleted.
      * @throws NullPointerException when there is any null parameter
      */
@@ -56,7 +57,7 @@ public interface MongoDBTemplate extends DocumentTemplate {
      *
      * @param collectionName the collection name
      * @param filter         the query filter
-     * @param <T> the entity type
+     * @param <T>            the entity type
      * @return the stream result
      * @throws NullPointerException when filter or collectionName is null
      */
@@ -66,10 +67,10 @@ public interface MongoDBTemplate extends DocumentTemplate {
      * Finds all documents in the collection.
      *
      * @param entity the collection name
-     * @param filter         the query filter
-     * @param <T> the entity type
+     * @param filter the query filter
+     * @param <T>    the entity type
      * @return the stream result
-     * @throws NullPointerException when filter or collectionName is null
+     * @throws NullPointerException when filter or entity is null
      */
     <T> Stream<T> select(Class<T> entity, Bson filter);
 
@@ -77,9 +78,20 @@ public interface MongoDBTemplate extends DocumentTemplate {
      * Aggregates documents according to the specified aggregation pipeline.
      *
      * @param collectionName the collection name
-     * @param pipeline the aggregation pipeline
+     * @param pipeline       the aggregation pipeline
      * @return the number of documents deleted.
      * @throws NullPointerException when filter or collectionName is null
      */
     Stream<Map<String, BsonValue>> aggregate(String collectionName, List<Bson> pipeline);
+
+    /**
+     * Aggregates documents according to the specified aggregation pipeline.
+     *
+     * @param entity the collection name
+     * @param <T>            the entity type
+     * @param pipeline       the aggregation pipeline
+     * @return the number of documents deleted.
+     * @throws NullPointerException when filter or entity is null
+     */
+    <T> Stream<Map<String, BsonValue>> aggregate(Class<T> entity, List<Bson> pipeline);
 }
