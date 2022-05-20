@@ -138,4 +138,12 @@ class DefaultMongoDBTemplate extends AbstractDocumentTemplate implements MongoDB
         Objects.requireNonNull(pipeline, "pipeline is required");
         return this.getManager().aggregate(collectionName, pipeline);
     }
+
+    @Override
+    public <T> Stream<Map<String, BsonValue>> aggregate(Class<T> entity, List<Bson> pipeline) {
+        Objects.requireNonNull(entity, "entity is required");
+        Objects.requireNonNull(pipeline, "pipeline is required");
+        ClassMapping mapping = this.mappings.get(entity);
+        return this.getManager().aggregate(mapping.getName(), pipeline);
+    }
 }

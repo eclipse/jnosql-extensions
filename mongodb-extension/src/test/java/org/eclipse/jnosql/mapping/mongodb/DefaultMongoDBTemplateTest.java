@@ -154,14 +154,18 @@ class DefaultMongoDBTemplateTest {
 
     @Test
     public void shouldReturnErrorOnAggregateMethod() {
-        assertThrows(NullPointerException.class, () -> template.aggregate(null, null));
+        assertThrows(NullPointerException.class, () -> template.aggregate((String) null, null));
         assertThrows(NullPointerException.class, () -> template.aggregate("Collection", null));
-        assertThrows(NullPointerException.class, () -> template.aggregate( null,
+        assertThrows(NullPointerException.class, () -> template.aggregate((String) null,
+                Collections.singletonList(eq("name", "Poliana"))));
+
+        assertThrows(NullPointerException.class, () -> template.aggregate(Person.class, null));
+        assertThrows(NullPointerException.class, () -> template.aggregate((Class<Object>) null,
                 Collections.singletonList(eq("name", "Poliana"))));
     }
 
     @Test
-    public void shouldAggregate() {
+    public void shouldAggregateWithCollectionName() {
         List<Bson> predicates = Arrays.asList(
                 Aggregates.match(eq("name", "Poliana")),
                 Aggregates.group("$stars", Accumulators.sum("count", 1))
@@ -171,5 +175,15 @@ class DefaultMongoDBTemplateTest {
         Mockito.verify(manager).aggregate("Person", predicates);
     }
 
+    @Test
+    public void shouldAggregateWithEntity() {
+        List<Bson> predicates = Arrays.asList(
+                Aggregates.match(eq("name", "Poliana")),
+                Aggregates.group("$stars", Accumulators.sum("count", 1))
+        );
+
+        template.aggregate(Person.class, predicates);
+        Mockito.verify(manager).aggregate("Person", predicates);
+    }
 
 }
