@@ -14,6 +14,8 @@
  */
 package org.eclipse.jnosql.mapping.mongodb;
 
+import com.mongodb.client.model.Accumulators;
+import com.mongodb.client.model.Aggregates;
 import com.mongodb.client.model.Filters;
 import jakarta.nosql.document.Document;
 import jakarta.nosql.document.DocumentEntity;
@@ -21,6 +23,7 @@ import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.document.DocumentEntityConverter;
 import jakarta.nosql.mapping.document.DocumentEventPersistManager;
 import jakarta.nosql.mapping.document.DocumentWorkflow;
+import org.bson.BsonValue;
 import org.bson.conversions.Bson;
 import org.eclipse.jnosql.communication.mongodb.document.MongoDBDocumentCollectionManager;
 import org.eclipse.jnosql.mapping.reflection.ClassMappings;
@@ -35,6 +38,7 @@ import javax.inject.Inject;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Stream;
 
 import static com.mongodb.client.model.Filters.eq;
@@ -153,6 +157,17 @@ class DefaultMongoDBTemplateTest {
         assertThrows(NullPointerException.class, () -> template.aggregate("Collection", null));
         assertThrows(NullPointerException.class, () -> template.aggregate( null,
                 Arrays.asList(eq("name", "Poliana"))));
+    }
+
+    @Test
+    public void shouldAggregate() {
+        List<Bson> predicates = Arrays.asList(
+                Aggregates.match(eq("name", "Poliana")),
+                Aggregates.group("$stars", Accumulators.sum("count", 1))
+        );
+
+        template.aggregate("Person", predicates);
+        Mockito.verify(manager).aggregate("Person", predicates);
     }
 
 
