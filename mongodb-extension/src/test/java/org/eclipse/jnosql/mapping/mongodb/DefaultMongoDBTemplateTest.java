@@ -14,11 +14,49 @@
  */
 package org.eclipse.jnosql.mapping.mongodb;
 
+import jakarta.nosql.mapping.Converters;
+import jakarta.nosql.mapping.document.DocumentEntityConverter;
+import jakarta.nosql.mapping.document.DocumentEventPersistManager;
+import jakarta.nosql.mapping.document.DocumentWorkflow;
+import org.eclipse.jnosql.communication.mongodb.document.MongoDBDocumentCollectionManager;
+import org.eclipse.jnosql.mapping.reflection.ClassMappings;
 import org.eclipse.jnosql.mapping.test.CDIExtension;
+import org.junit.jupiter.api.BeforeEach;
+
+import javax.enterprise.inject.Instance;
+import javax.inject.Inject;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 @CDIExtension
 class DefaultMongoDBTemplateTest {
 
+    @Inject
+    private DocumentEntityConverter converter;
+
+    @Inject
+    private DocumentWorkflow flow;
+
+    @Inject
+    private DocumentEventPersistManager persistManager;
+
+    @Inject
+    private ClassMappings mappings;
+
+    @Inject
+    private Converters converters;
+
+    private MongoDBTemplate template;
+
+    private MongoDBDocumentCollectionManager manager;
+
+    @BeforeEach
+    public void setUp() {
+        this.manager = mock(MongoDBDocumentCollectionManager.class);
+        Instance instance = mock(Instance.class);
+        when(instance.get()).thenReturn(manager);
+        template = new DefaultMongoDBTemplate(instance, converter, flow, mappings, converters, persistManager);
+    }
 }
