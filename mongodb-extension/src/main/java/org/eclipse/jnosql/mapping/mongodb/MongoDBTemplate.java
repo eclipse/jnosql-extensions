@@ -23,6 +23,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
+/**
+ * A MongoDB extension of {@link DocumentTemplate}
+ */
 public interface MongoDBTemplate extends DocumentTemplate {
 
     /**
