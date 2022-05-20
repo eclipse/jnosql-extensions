@@ -15,6 +15,7 @@
 package org.eclipse.jnosql.mapping.mongodb;
 
 import jakarta.nosql.document.DocumentCollectionManager;
+import jakarta.nosql.document.DocumentEntity;
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.document.DocumentEntityConverter;
 import jakarta.nosql.mapping.document.DocumentEventPersistManager;
@@ -116,16 +117,25 @@ class DefaultMongoDBTemplate extends AbstractDocumentTemplate implements MongoDB
 
     @Override
     public <T> Stream<T> select(String collectionName, Bson filter) {
-        return null;
+        Objects.requireNonNull(collectionName, "collectionName is required");
+        Objects.requireNonNull(filter, "filter is required");
+        Stream<DocumentEntity> entityStream = this.getManager().select(collectionName, filter);
+        return entityStream.map(this.converter::toEntity);
     }
 
     @Override
     public <T> Stream<T> select(Class<T> entity, Bson filter) {
-        return null;
+        Objects.requireNonNull(entity, "entity is required");
+        Objects.requireNonNull(filter, "filter is required");
+        ClassMapping mapping = this.mappings.get(entity);
+        Stream<DocumentEntity> entityStream = this.getManager().select(mapping.getName(), filter);
+        return entityStream.map(this.converter::toEntity);
     }
 
     @Override
     public Stream<Map<String, BsonValue>> aggregate(String collectionName, List<Bson> pipeline) {
+        Objects.requireNonNull(collectionName, "collectionName is required");
+        Objects.requireNonNull(pipeline, "pipeline is required");
         return null;
     }
 }

@@ -91,4 +91,17 @@ class DefaultMongoDBTemplateTest {
         template.delete(Person.class, filter);
         Mockito.verify(manager).delete("Person", filter);
     }
+
+    @Test
+    public void shouldReturnErrorOnSelectMethod() {
+        assertThrows(NullPointerException.class, () -> template.select((String) null, null));
+        assertThrows(NullPointerException.class, () -> template.select("Collection", null));
+        assertThrows(NullPointerException.class, () -> template.select((String) null,
+                eq("name", "Poliana")));
+
+        assertThrows(NullPointerException.class, () -> template.select(Person.class, null));
+        assertThrows(NullPointerException.class, () -> template.select((Class<Object>) null,
+                eq("name", "Poliana")));
+    }
+
 }
