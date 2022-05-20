@@ -136,6 +136,6 @@ class DefaultMongoDBTemplate extends AbstractDocumentTemplate implements MongoDB
     public Stream<Map<String, BsonValue>> aggregate(String collectionName, List<Bson> pipeline) {
         Objects.requireNonNull(collectionName, "collectionName is required");
         Objects.requireNonNull(pipeline, "pipeline is required");
-        return null;
+        return this.getManager().aggregate(collectionName, pipeline);
     }
 }
