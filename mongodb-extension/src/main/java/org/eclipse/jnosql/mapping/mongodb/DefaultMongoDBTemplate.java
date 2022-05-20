@@ -23,12 +23,14 @@ import org.bson.BsonValue;
 import org.bson.conversions.Bson;
 import org.eclipse.jnosql.communication.mongodb.document.MongoDBDocumentCollectionManager;
 import org.eclipse.jnosql.mapping.document.AbstractDocumentTemplate;
+import org.eclipse.jnosql.mapping.reflection.ClassMapping;
 import org.eclipse.jnosql.mapping.reflection.ClassMappings;
 
 import javax.enterprise.inject.Instance;
 import javax.enterprise.inject.Typed;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Stream;
 
 @Typed(MongoDBTemplate.class)
@@ -73,7 +75,7 @@ class DefaultMongoDBTemplate extends AbstractDocumentTemplate implements MongoDB
     }
 
     @Override
-    protected DocumentCollectionManager getManager() {
+    protected MongoDBDocumentCollectionManager getManager() {
         return manager.get();
     }
 
@@ -99,12 +101,17 @@ class DefaultMongoDBTemplate extends AbstractDocumentTemplate implements MongoDB
 
     @Override
     public long delete(String collectionName, Bson filter) {
-        return 0;
+        Objects.requireNonNull(collectionName, "collectionName is required");
+        Objects.requireNonNull(filter, "filter is required");
+        return this.getManager().delete(collectionName, filter);
     }
 
     @Override
     public <T> long delete(Class<T> entity, Bson filter) {
-        return 0;
+        Objects.requireNonNull(entity, "Entity is required");
+        Objects.requireNonNull(filter, "filter is required");
+        ClassMapping mapping = this.mappings.get(entity);
+        return this.getManager().delete(mapping.getName(), filter);
     }
 
     @Override
