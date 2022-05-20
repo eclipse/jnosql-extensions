@@ -15,7 +15,6 @@
 
 package org.eclipse.jnosql.mapping.mongodb;
 
-import jakarta.nosql.document.DocumentEntity;
 import jakarta.nosql.mapping.document.DocumentTemplate;
 import org.bson.BsonValue;
 import org.bson.conversions.Bson;
