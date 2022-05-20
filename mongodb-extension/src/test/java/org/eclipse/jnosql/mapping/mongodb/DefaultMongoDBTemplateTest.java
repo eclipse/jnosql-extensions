@@ -15,6 +15,8 @@
 package org.eclipse.jnosql.mapping.mongodb;
 
 import com.mongodb.client.model.Filters;
+import jakarta.nosql.document.Document;
+import jakarta.nosql.document.DocumentEntity;
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.document.DocumentEntityConverter;
 import jakarta.nosql.mapping.document.DocumentEventPersistManager;
@@ -23,12 +25,16 @@ import org.bson.conversions.Bson;
 import org.eclipse.jnosql.communication.mongodb.document.MongoDBDocumentCollectionManager;
 import org.eclipse.jnosql.mapping.reflection.ClassMappings;
 import org.eclipse.jnosql.mapping.test.CDIExtension;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
+
+import java.util.Arrays;
+import java.util.stream.Stream;
 
 import static com.mongodb.client.model.Filters.eq;
 import static org.junit.jupiter.api.Assertions.*;
@@ -102,6 +108,42 @@ class DefaultMongoDBTemplateTest {
         assertThrows(NullPointerException.class, () -> template.select(Person.class, null));
         assertThrows(NullPointerException.class, () -> template.select((Class<Object>) null,
                 eq("name", "Poliana")));
+    }
+
+    @Test
+    public void shouldSelectWithCollectionName() {
+        DocumentEntity entity = DocumentEntity.of("Person", Arrays
+                .asList(Document.of("_id", "Poliana"),
+                        Document.of("age", 30)));
+        Bson filter = eq("name", "Poliana");
+        Mockito.when(manager.select("Person", filter))
+                .thenReturn(Stream.of(entity));
+        Stream<Person> stream = template.select("Person", filter);
+        Assertions.assertNotNull(stream);
+        Person poliana = stream.findFirst()
+                .orElseThrow(() -> new IllegalStateException("There is an issue on the test"));
+
+        Assertions.assertNotNull(poliana);
+        assertEquals("Poliana", poliana.getName());
+        assertEquals(30, poliana.getAge());
+    }
+
+    @Test
+    public void shouldSelectWithEntity() {
+        DocumentEntity entity = DocumentEntity.of("Person", Arrays
+                .asList(Document.of("_id", "Poliana"),
+                        Document.of("age", 30)));
+        Bson filter = eq("name", "Poliana");
+        Mockito.when(manager.select("Person", filter))
+                .thenReturn(Stream.of(entity));
+        Stream<Person> stream = template.select(Person.class, filter);
+        Assertions.assertNotNull(stream);
+        Person poliana = stream.findFirst()
+                .orElseThrow(() -> new IllegalStateException("There is an issue on the test"));
+
+        Assertions.assertNotNull(poliana);
+        assertEquals("Poliana", poliana.getName());
+        assertEquals(30, poliana.getAge());
     }
 
 }
