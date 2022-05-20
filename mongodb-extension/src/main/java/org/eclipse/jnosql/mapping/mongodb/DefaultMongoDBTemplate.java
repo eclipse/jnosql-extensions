@@ -14,8 +14,111 @@
  */
 package org.eclipse.jnosql.mapping.mongodb;
 
+import jakarta.nosql.document.DocumentCollectionManager;
+import jakarta.nosql.mapping.Converters;
+import jakarta.nosql.mapping.document.DocumentEntityConverter;
+import jakarta.nosql.mapping.document.DocumentEventPersistManager;
+import jakarta.nosql.mapping.document.DocumentWorkflow;
+import org.bson.BsonValue;
+import org.bson.conversions.Bson;
+import org.eclipse.jnosql.communication.mongodb.document.MongoDBDocumentCollectionManager;
+import org.eclipse.jnosql.mapping.document.AbstractDocumentTemplate;
+import org.eclipse.jnosql.mapping.reflection.ClassMappings;
+
+import javax.enterprise.inject.Instance;
 import javax.enterprise.inject.Typed;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Stream;
 
 @Typed(MongoDBTemplate.class)
-class DefaultMongoDBTemplate extends AbstractColumnTemplate implements CassandraTemplate{
+class DefaultMongoDBTemplate extends AbstractDocumentTemplate implements MongoDBTemplate {
+
+    private Instance<MongoDBDocumentCollectionManager> manager;
+
+    private DocumentEntityConverter converter;
+
+    private DocumentWorkflow workflow;
+
+    private ClassMappings mappings;
+
+    private Converters converters;
+
+    private DocumentEventPersistManager persistManager;
+
+    /**
+     * To CDI only
+     */
+    @Deprecated
+    DefaultMongoDBTemplate() {
+    }
+
+    DefaultMongoDBTemplate(Instance<MongoDBDocumentCollectionManager> manager,
+                           DocumentEntityConverter converter,
+                           DocumentWorkflow workflow,
+                           ClassMappings mappings,
+                           Converters converters,
+                           DocumentEventPersistManager persistManager) {
+        this.manager = manager;
+        this.converter = converter;
+        this.workflow = workflow;
+        this.mappings = mappings;
+        this.converters = converters;
+        this.persistManager = persistManager;
+    }
+
+    @Override
+    protected DocumentEntityConverter getConverter() {
+        return converter;
+    }
+
+    @Override
+    protected DocumentCollectionManager getManager() {
+        return manager.get();
+    }
+
+    @Override
+    protected DocumentWorkflow getWorkflow() {
+        return workflow;
+    }
+
+    @Override
+    protected DocumentEventPersistManager getPersistManager() {
+        return persistManager;
+    }
+
+    @Override
+    protected ClassMappings getClassMappings() {
+        return mappings;
+    }
+
+    @Override
+    protected Converters getConverters() {
+        return converters;
+    }
+
+    @Override
+    public long delete(String collectionName, Bson filter) {
+        return 0;
+    }
+
+    @Override
+    public <T> long delete(Class<T> entity, Bson filter) {
+        return 0;
+    }
+
+    @Override
+    public <T> Stream<T> select(String collectionName, Bson filter) {
+        return null;
+    }
+
+    @Override
+    public <T> Stream<T> select(Class<T> entity, Bson filter) {
+        return null;
+    }
+
+    @Override
+    public Stream<Map<String, BsonValue>> aggregate(String collectionName, List<Bson> pipeline) {
+        return null;
+    }
 }
