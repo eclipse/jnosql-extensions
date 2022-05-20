@@ -34,6 +34,7 @@ import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Stream;
 
 import static com.mongodb.client.model.Filters.eq;
@@ -145,5 +146,14 @@ class DefaultMongoDBTemplateTest {
         assertEquals("Poliana", poliana.getName());
         assertEquals(30, poliana.getAge());
     }
+
+    @Test
+    public void shouldReturnErrorOnAggregateMethod() {
+        assertThrows(NullPointerException.class, () -> template.aggregate(null, null));
+        assertThrows(NullPointerException.class, () -> template.aggregate("Collection", null));
+        assertThrows(NullPointerException.class, () -> template.aggregate( null,
+                Arrays.asList(eq("name", "Poliana"))));
+    }
+
 
 }
