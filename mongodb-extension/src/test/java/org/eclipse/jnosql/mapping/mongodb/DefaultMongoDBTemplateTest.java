@@ -37,6 +37,7 @@ import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
@@ -156,7 +157,7 @@ class DefaultMongoDBTemplateTest {
         assertThrows(NullPointerException.class, () -> template.aggregate(null, null));
         assertThrows(NullPointerException.class, () -> template.aggregate("Collection", null));
         assertThrows(NullPointerException.class, () -> template.aggregate( null,
-                Arrays.asList(eq("name", "Poliana"))));
+                Collections.singletonList(eq("name", "Poliana"))));
     }
 
     @Test
