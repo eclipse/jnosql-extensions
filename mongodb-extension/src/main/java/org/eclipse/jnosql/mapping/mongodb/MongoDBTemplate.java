@@ -15,6 +15,9 @@
 
 package org.eclipse.jnosql.mapping.mongodb;
 
+import jakarta.nosql.criteria.CriteriaQuery;
+import jakarta.nosql.criteria.CriteriaQueryResult;
+import jakarta.nosql.criteria.ExecutableQuery;
 import jakarta.nosql.mapping.document.DocumentTemplate;
 import org.bson.BsonValue;
 import org.bson.conversions.Bson;
@@ -94,4 +97,27 @@ public interface MongoDBTemplate extends DocumentTemplate {
      * @throws NullPointerException when filter or entity is null
      */
     <T> Stream<Map<String, BsonValue>> aggregate(Class<T> entity, List<Bson> pipeline);
+    
+    /**
+     * Create a <code>CriteriaQuery</code> object with the specified result
+     * type.
+     *
+     * @param <T> type of the query result
+     * @param type type of the query result
+     * @return criteria query object
+     * @throws NullPointerException query is null
+     */
+    <T> CriteriaQuery<T> createQuery(Class<T> type);
+    
+    /**
+     * Executes a {@link CriteriaQuery}
+     *
+     * @param criteriaQuery - the query
+     * @param <T>   the instance type of the query {@link jakarta.nosql.criteria.Root}
+     * @param <R>   the result type of the query
+     * @return query result
+     * @throws NullPointerException when criteriaQuery is null
+     */
+    <T, R extends CriteriaQueryResult<T>> R executeQuery(ExecutableQuery<T, R> criteriaQuery);
+    
 }

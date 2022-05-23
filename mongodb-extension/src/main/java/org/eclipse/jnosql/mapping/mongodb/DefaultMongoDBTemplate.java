@@ -14,7 +14,12 @@
  */
 package org.eclipse.jnosql.mapping.mongodb;
 
+import jakarta.nosql.criteria.CriteriaQuery;
+import jakarta.nosql.criteria.CriteriaQueryResult;
+import jakarta.nosql.criteria.ExecutableQuery;
+import jakarta.nosql.criteria.SelectQuery;
 import jakarta.nosql.document.DocumentEntity;
+import jakarta.nosql.document.DocumentQuery;
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.document.DocumentEntityConverter;
 import jakarta.nosql.mapping.document.DocumentEventPersistManager;
@@ -31,7 +36,11 @@ import javax.enterprise.inject.Typed;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import static java.util.Objects.requireNonNull;
+import java.util.function.Function;
 import java.util.stream.Stream;
+import org.eclipse.jnosql.communication.criteria.DefaultCriteriaQuery;
+import org.eclipse.jnosql.mapping.document.criteria.CriteriaQueryUtils;
 
 @Typed(MongoDBTemplate.class)
 class DefaultMongoDBTemplate extends AbstractDocumentTemplate implements MongoDBTemplate {
@@ -145,4 +154,32 @@ class DefaultMongoDBTemplate extends AbstractDocumentTemplate implements MongoDB
         ClassMapping mapping = this.mappings.get(entity);
         return this.getManager().aggregate(mapping.getName(), pipeline);
     }
+    
+    @Override
+    public <T> CriteriaQuery<T> createQuery(Class<T> type) {
+        return new DefaultCriteriaQuery<>(type);
+    }
+    
+    private <T> Stream<T> executeQuery(DocumentQuery query) {
+        requireNonNull(query, "query is required");
+        getPersistManager().firePreQuery(query);
+        Stream<DocumentEntity> entities = getManager().select(query);
+        Function<DocumentEntity, T> function = e -> getConverter().toEntity(e);
+        return entities.map(function);
+    }
+
+    @Override
+    public <T, R extends CriteriaQueryResult<T>> R executeQuery(ExecutableQuery<T, R> criteriaQuery) {
+        requireNonNull(criteriaQuery, "query is required");
+        if (criteriaQuery instanceof SelectQuery) {
+            SelectQuery<T> selectQuery = SelectQuery.class.cast(criteriaQuery);
+            DocumentQuery documentQuery = CriteriaQueryUtils.convert(selectQuery);
+            getPersistManager().firePreQuery(documentQuery);
+            selectQuery.feed(executeQuery(documentQuery));
+        } else {
+            throw new UnsupportedOperationException("Not supported yet.");
+        }
+        return criteriaQuery.getResult();
+    }
+    
 }
