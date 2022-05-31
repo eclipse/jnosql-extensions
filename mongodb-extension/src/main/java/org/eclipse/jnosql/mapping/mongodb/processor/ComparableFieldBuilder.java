@@ -16,35 +16,19 @@ package org.eclipse.jnosql.mapping.mongodb.processor;
 
 import com.sun.codemodel.JCodeModel;
 import com.sun.codemodel.JDefinedClass;
-import com.sun.codemodel.JExpr;
 import jakarta.nosql.metamodel.ComparableAttribute;
-import java.util.Arrays;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
 import org.eclipse.jnosql.mapping.mongodb.metamodel.DefaultComparableAttribute;
 
-public class ComparableFieldBuilder extends AbstractSimpleFieldBuilder {
+/**
+ * Field builder for comparable attributes.
+ */
+public class ComparableFieldBuilder extends AbstractSimpleFieldBuilder<ComparableAttribute, DefaultComparableAttribute> {
 
     @Override
     public void buildField(JCodeModel codeModel, JDefinedClass jClass, TypeElement typeElement, Element element) {
-        super.buildField(
-                jClass,
-                element,
-                codeModel.ref(
-                        ComparableAttribute.class
-                ).narrow(
-                        codeModel.ref(typeElement.getQualifiedName().toString())
-                ),
-                buildInvocation(
-                        codeModel.ref(
-                                DefaultComparableAttribute.class
-                        ),
-                        Arrays.asList(
-                                codeModel.ref(typeElement.getQualifiedName().toString()).dotclass(),
-                                JExpr.lit(element.getSimpleName().toString())
-                        )
-                )
-        );
+        super.buildField(codeModel, jClass, typeElement, element, ComparableAttribute.class, DefaultComparableAttribute.class);
     }
 
 }

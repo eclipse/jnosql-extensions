@@ -16,11 +16,40 @@ package org.eclipse.jnosql.mapping.mongodb.processor;
 
 import com.sun.codemodel.JCodeModel;
 import com.sun.codemodel.JDefinedClass;
+import com.sun.codemodel.JExpr;
+import jakarta.nosql.metamodel.Attribute;
+import java.util.Arrays;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
+import org.eclipse.jnosql.mapping.mongodb.metamodel.DefaultAttribute;
 
-public abstract class AbstractSimpleFieldBuilder extends AbstractFieldBuilder {
-    
+/**
+ * Utility class to extend for simple field builders.
+ * @param <A> attribute interface 
+ * @param <D> attribute implementation 
+ */
+public abstract class AbstractSimpleFieldBuilder<A extends Attribute, D extends DefaultAttribute> extends AbstractFieldBuilder {
+
     public abstract void buildField(JCodeModel codeModel, JDefinedClass jClass, TypeElement typeElement, Element element);
-    
+
+    protected void buildField(JCodeModel codeModel, JDefinedClass jClass, TypeElement typeElement, Element element, Class<A> attributeInterface, Class<D> attributeClass) {
+        super.buildField(jClass,
+                element,
+                codeModel.ref(
+                        attributeInterface
+                ).narrow(
+                        codeModel.ref(typeElement.getQualifiedName().toString())
+                ),
+                buildInvocation(
+                        codeModel.ref(
+                                attributeClass
+                        ),
+                        Arrays.asList(
+                                codeModel.ref(typeElement.getQualifiedName().toString()).dotclass(),
+                                JExpr.lit(element.getSimpleName().toString())
+                        )
+                )
+        );
+    }
+
 }

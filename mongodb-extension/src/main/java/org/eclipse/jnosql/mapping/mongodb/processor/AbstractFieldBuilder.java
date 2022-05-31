@@ -23,6 +23,9 @@ import com.sun.codemodel.JMod;
 import java.util.List;
 import javax.lang.model.element.Element;
 
+/**
+ * Utility class to extend for field builders.
+ */
 public abstract class AbstractFieldBuilder {
 
     protected JInvocation buildInvocation(

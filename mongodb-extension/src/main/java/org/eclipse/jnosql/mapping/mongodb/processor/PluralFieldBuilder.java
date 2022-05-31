@@ -16,35 +16,19 @@ package org.eclipse.jnosql.mapping.mongodb.processor;
 
 import com.sun.codemodel.JCodeModel;
 import com.sun.codemodel.JDefinedClass;
-import com.sun.codemodel.JExpr;
 import jakarta.nosql.metamodel.PluralAttribute;
-import java.util.Arrays;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
 import org.eclipse.jnosql.mapping.mongodb.metamodel.DefaultPluralAttribute;
 
-public class PluralFieldBuilder extends AbstractSimpleFieldBuilder {
+/**
+ * Field builder for plural attributes.
+ */
+public class PluralFieldBuilder extends AbstractSimpleFieldBuilder<PluralAttribute, DefaultPluralAttribute> {
 
     @Override
     public void buildField(JCodeModel codeModel, JDefinedClass jClass, TypeElement typeElement, Element element) {
-        super.buildField(
-                jClass,
-                element,
-                codeModel.ref(
-                        PluralAttribute.class
-                ).narrow(
-                        codeModel.ref(typeElement.getQualifiedName().toString())
-                ),
-                buildInvocation(
-                        codeModel.ref(
-                                DefaultPluralAttribute.class
-                        ),
-                        Arrays.asList(
-                                codeModel.ref(typeElement.getQualifiedName().toString()).dotclass(),
-                                JExpr.lit(element.getSimpleName().toString())
-                        )
-                )
-        );
+        super.buildField(codeModel, jClass, typeElement, element, PluralAttribute.class, DefaultPluralAttribute.class);
     }
 
 }

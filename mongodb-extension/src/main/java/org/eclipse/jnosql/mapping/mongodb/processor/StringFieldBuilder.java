@@ -16,35 +16,19 @@ package org.eclipse.jnosql.mapping.mongodb.processor;
 
 import com.sun.codemodel.JCodeModel;
 import com.sun.codemodel.JDefinedClass;
-import com.sun.codemodel.JExpr;
 import jakarta.nosql.metamodel.StringAttribute;
-import java.util.Arrays;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
 import org.eclipse.jnosql.mapping.mongodb.metamodel.DefaultStringAttribute;
 
-public class StringFieldBuilder extends AbstractSimpleFieldBuilder {
+/**
+ * Field builder for string attributes.
+ */
+public class StringFieldBuilder extends AbstractSimpleFieldBuilder<StringAttribute, DefaultStringAttribute> {
 
     @Override
     public void buildField(JCodeModel codeModel, JDefinedClass jClass, TypeElement typeElement, Element element) {
-        super.buildField(
-                jClass,
-                element,
-                codeModel.ref(
-                        StringAttribute.class
-                ).narrow(
-                        codeModel.ref(typeElement.getQualifiedName().toString())
-                ),
-                buildInvocation(
-                        codeModel.ref(
-                                DefaultStringAttribute.class
-                        ),
-                        Arrays.asList(
-                                codeModel.ref(typeElement.getQualifiedName().toString()).dotclass(),
-                                JExpr.lit(element.getSimpleName().toString())
-                        )
-                )
-        );
+        super.buildField(codeModel, jClass, typeElement, element, StringAttribute.class, DefaultStringAttribute.class);
     }
 
 }

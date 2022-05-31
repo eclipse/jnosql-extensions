@@ -44,6 +44,9 @@ import java.util.stream.Collectors;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
 
+/**
+ * Metamodel processor to automagically generate motamodel attributes for JNoSql entities.
+ */
 @AutoService(Processor.class)
 @SupportedSourceVersion(SourceVersion.RELEASE_8)
 public class MetamodelProcessor extends AbstractProcessor {

@@ -24,6 +24,9 @@ import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
 import org.eclipse.jnosql.mapping.mongodb.metamodel.DefaultEntityAttribute;
 
+/**
+ * Field builder for comparable attributes.
+ */
 public class EntityFieldBuilder extends AbstractFieldBuilder {
 
     public void buildField(JCodeModel codeModel, JDefinedClass jClass, TypeElement typeElement, Element element, String toString) {

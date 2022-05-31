@@ -19,6 +19,10 @@ import com.sun.codemodel.JPackage;
 import java.io.IOException;
 import java.io.OutputStream;
 
+/**
+ * CodeWriter based on an output stream.
+ * This is used to write the metamodel source files.
+ */
 public class OutputStreamCodeWriter extends CodeWriter {
     
     private final OutputStream outputStream;
