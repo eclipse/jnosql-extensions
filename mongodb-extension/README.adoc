@@ -33,3 +33,19 @@ public class Music {
 
 }
 ----
+
+## Test
+
+In this extension you have the option to convert to/from MongoDB ```ObjectID```
+
+[source,java]
+----
+@Entity
+public class Music {
+
+    @Id
+    @Convert(ObjectIdConverter.class)
+    private String id;
+
+}
+----
