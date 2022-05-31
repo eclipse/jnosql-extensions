@@ -21,7 +21,7 @@ import jakarta.nosql.criteria.ExpressionQuery;
 import jakarta.nosql.criteria.FunctionQuery;
 import jakarta.nosql.criteria.Root;
 import jakarta.nosql.criteria.SelectQuery;
-import org.eclipse.jnosql.AbstractGenericType;
+import org.eclipse.jnosql.mapping.mongodb.AbstractGenericType;
 
 /**
  * Default implementation for {@link CriteriaQuery}

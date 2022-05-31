@@ -21,7 +21,7 @@ import jakarta.nosql.metamodel.ComparableAttribute;
 import jakarta.nosql.metamodel.EntityAttribute;
 import jakarta.nosql.metamodel.StringAttribute;
 import jakarta.nosql.metamodel.ValueAttribute;
-import org.eclipse.jnosql.AbstractGenericType;
+import org.eclipse.jnosql.mapping.mongodb.AbstractGenericType;
 import jakarta.nosql.criteria.ComparableExpression;
 import jakarta.nosql.criteria.NumberExpression;
 import jakarta.nosql.metamodel.Attribute;

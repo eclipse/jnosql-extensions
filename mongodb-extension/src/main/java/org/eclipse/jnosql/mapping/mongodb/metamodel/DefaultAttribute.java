@@ -15,7 +15,7 @@
 package org.eclipse.jnosql.mapping.mongodb.metamodel;
 
 import jakarta.nosql.metamodel.Attribute;
-import org.eclipse.jnosql.AbstractGenericType;
+import org.eclipse.jnosql.mapping.mongodb.AbstractGenericType;
 
 /**
  * Default metamodel attribute implementation

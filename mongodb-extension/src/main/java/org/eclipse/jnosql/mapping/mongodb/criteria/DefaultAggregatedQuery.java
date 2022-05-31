@@ -19,7 +19,7 @@ import jakarta.nosql.criteria.AggregatedQueryResult;
 import jakarta.nosql.criteria.Expression;
 import java.util.Arrays;
 import java.util.Collection;
-import org.eclipse.jnosql.AbstractGenericType;
+import org.eclipse.jnosql.mapping.mongodb.AbstractGenericType;
 
 /**
  * Default implementation for {@link AggregatedQuery}

@@ -185,5 +185,23 @@ class DefaultMongoDBTemplateTest {
         template.aggregate(Person.class, predicates);
         Mockito.verify(manager).aggregate("Person", predicates);
     }
+    
+    @Test
+    public void shouldSelectWithCriteria() {
+        DocumentEntity entity = DocumentEntity.of("Person", Arrays
+                .asList(Document.of("_id", "Poliana"),
+                        Document.of("age", 30)));
+        Bson filter = eq("name", "Poliana");
+        Mockito.when(manager.select("Person", filter))
+                .thenReturn(Stream.of(entity));
+        Stream<Person> stream = template.select(Person.class, filter);
+        Assertions.assertNotNull(stream);
+        Person poliana = stream.findFirst()
+                .orElseThrow(() -> new IllegalStateException("There is an issue on the test"));
+
+        Assertions.assertNotNull(poliana);
+        assertEquals("Poliana", poliana.getName());
+        assertEquals(30, poliana.getAge());
+    }
 
 }

@@ -39,8 +39,8 @@ import java.util.Objects;
 import static java.util.Objects.requireNonNull;
 import java.util.function.Function;
 import java.util.stream.Stream;
-import org.eclipse.jnosql.communication.criteria.DefaultCriteriaQuery;
-import org.eclipse.jnosql.mapping.document.criteria.CriteriaQueryUtils;
+import org.eclipse.jnosql.mapping.mongodb.criteria.CriteriaQueryUtils;
+import org.eclipse.jnosql.mapping.mongodb.criteria.DefaultCriteriaQuery;
 
 @Typed(MongoDBTemplate.class)
 class DefaultMongoDBTemplate extends AbstractDocumentTemplate implements MongoDBTemplate {
