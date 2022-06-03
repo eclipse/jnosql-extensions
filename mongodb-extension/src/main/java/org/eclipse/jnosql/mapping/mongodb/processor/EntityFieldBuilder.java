@@ -18,11 +18,11 @@ package org.eclipse.jnosql.mapping.mongodb.processor;
 import com.sun.codemodel.JCodeModel;
 import com.sun.codemodel.JDefinedClass;
 import com.sun.codemodel.JExpr;
-import jakarta.nosql.metamodel.EntityAttribute;
+import org.eclipse.jnosql.mapping.mongodb.metamodel.api.EntityAttribute;
 import java.util.Arrays;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
-import org.eclipse.jnosql.mapping.mongodb.metamodel.DefaultEntityAttribute;
+import org.eclipse.jnosql.mapping.mongodb.metamodel.impl.DefaultEntityAttribute;
 
 /**
  * Field builder for comparable attributes.

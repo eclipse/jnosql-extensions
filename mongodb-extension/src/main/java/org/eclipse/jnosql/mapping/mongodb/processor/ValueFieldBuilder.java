@@ -16,41 +16,19 @@ package org.eclipse.jnosql.mapping.mongodb.processor;
 
 import com.sun.codemodel.JCodeModel;
 import com.sun.codemodel.JDefinedClass;
-import com.sun.codemodel.JExpr;
-import jakarta.nosql.metamodel.ValueAttribute;
-import java.util.Arrays;
+import org.eclipse.jnosql.mapping.mongodb.metamodel.api.ValueAttribute;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
-import org.eclipse.jnosql.mapping.mongodb.metamodel.DefaultValueAttribute;
+import org.eclipse.jnosql.mapping.mongodb.metamodel.impl.DefaultValueAttribute;
 
 /**
  * Field builder for value attributes.
  */
-public class ValueFieldBuilder extends AbstractFieldBuilder {
+public class ValueFieldBuilder extends AbstractValueFieldBuilder<ValueAttribute, DefaultValueAttribute> {
 
+    @Override
     public void buildField(JCodeModel codeModel, JDefinedClass jClass, TypeElement typeElement, Element element, Class<?> forName) {
-        super.buildField(
-                jClass,
-                element,
-                codeModel.ref(
-                        ValueAttribute.class
-                ).narrow(
-                        Arrays.asList(
-                                codeModel.ref(typeElement.getQualifiedName().toString()),
-                                codeModel.ref(forName)
-                        )
-                ),
-                buildInvocation(
-                        codeModel.ref(
-                                DefaultValueAttribute.class
-                        ),
-                        Arrays.asList(
-                                codeModel.ref(typeElement.getQualifiedName().toString()).dotclass(),
-                                codeModel.ref(forName).dotclass(),
-                                JExpr.lit(element.getSimpleName().toString())
-                        )
-                )
-        );
+        super.buildField(codeModel, jClass, typeElement, element, forName, ValueAttribute.class, DefaultValueAttribute.class);
     }
 
 }

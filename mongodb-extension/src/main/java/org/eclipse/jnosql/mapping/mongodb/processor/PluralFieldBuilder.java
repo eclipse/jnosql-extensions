@@ -16,10 +16,10 @@ package org.eclipse.jnosql.mapping.mongodb.processor;
 
 import com.sun.codemodel.JCodeModel;
 import com.sun.codemodel.JDefinedClass;
-import jakarta.nosql.metamodel.PluralAttribute;
+import org.eclipse.jnosql.mapping.mongodb.metamodel.api.PluralAttribute;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
-import org.eclipse.jnosql.mapping.mongodb.metamodel.DefaultPluralAttribute;
+import org.eclipse.jnosql.mapping.mongodb.metamodel.impl.DefaultPluralAttribute;
 
 /**
  * Field builder for plural attributes.

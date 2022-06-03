@@ -17,11 +17,11 @@ package org.eclipse.jnosql.mapping.mongodb.processor;
 import com.sun.codemodel.JCodeModel;
 import com.sun.codemodel.JDefinedClass;
 import com.sun.codemodel.JExpr;
-import jakarta.nosql.metamodel.Attribute;
+import org.eclipse.jnosql.mapping.mongodb.metamodel.api.Attribute;
 import java.util.Arrays;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
-import org.eclipse.jnosql.mapping.mongodb.metamodel.DefaultAttribute;
+import org.eclipse.jnosql.mapping.mongodb.metamodel.impl.DefaultAttribute;
 
 /**
  * Utility class to extend for simple field builders.

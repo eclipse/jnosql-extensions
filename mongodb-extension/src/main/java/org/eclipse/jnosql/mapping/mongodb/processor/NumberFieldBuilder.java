@@ -16,19 +16,19 @@ package org.eclipse.jnosql.mapping.mongodb.processor;
 
 import com.sun.codemodel.JCodeModel;
 import com.sun.codemodel.JDefinedClass;
-import jakarta.nosql.metamodel.NumberAttribute;
+import org.eclipse.jnosql.mapping.mongodb.metamodel.api.NumberAttribute;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
-import org.eclipse.jnosql.mapping.mongodb.metamodel.DefaultNumberAttribute;
+import org.eclipse.jnosql.mapping.mongodb.metamodel.impl.DefaultNumberAttribute;
 
 /**
  * Field builder for numerical attributes.
  */
-public class NumberFieldBuilder extends AbstractSimpleFieldBuilder<NumberAttribute, DefaultNumberAttribute> {
+public class NumberFieldBuilder extends AbstractValueFieldBuilder<NumberAttribute, DefaultNumberAttribute> {
 
     @Override
-    public void buildField(JCodeModel codeModel, JDefinedClass jClass, TypeElement typeElement, Element element) {
-        super.buildField(codeModel, jClass, typeElement, element, NumberAttribute.class, DefaultNumberAttribute.class);
+    public void buildField(JCodeModel codeModel, JDefinedClass jClass, TypeElement typeElement, Element element, Class<?> forName) {
+        super.buildField(codeModel, jClass, typeElement, element, forName, NumberAttribute.class, DefaultNumberAttribute.class);
     }
 
 }

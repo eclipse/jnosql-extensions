@@ -16,10 +16,10 @@ package org.eclipse.jnosql.mapping.mongodb.processor;
 
 import com.sun.codemodel.JCodeModel;
 import com.sun.codemodel.JDefinedClass;
-import jakarta.nosql.metamodel.StringAttribute;
+import org.eclipse.jnosql.mapping.mongodb.metamodel.api.StringAttribute;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
-import org.eclipse.jnosql.mapping.mongodb.metamodel.DefaultStringAttribute;
+import org.eclipse.jnosql.mapping.mongodb.metamodel.impl.DefaultStringAttribute;
 
 /**
  * Field builder for string attributes.

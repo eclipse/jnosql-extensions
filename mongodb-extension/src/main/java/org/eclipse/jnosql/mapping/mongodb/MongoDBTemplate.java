@@ -15,9 +15,9 @@
 
 package org.eclipse.jnosql.mapping.mongodb;
 
-import jakarta.nosql.criteria.CriteriaQuery;
-import jakarta.nosql.criteria.CriteriaQueryResult;
-import jakarta.nosql.criteria.ExecutableQuery;
+import org.eclipse.jnosql.mapping.mongodb.criteria.api.CriteriaQuery;
+import org.eclipse.jnosql.mapping.mongodb.criteria.api.CriteriaQueryResult;
+import org.eclipse.jnosql.mapping.mongodb.criteria.api.ExecutableQuery;
 import jakarta.nosql.mapping.document.DocumentTemplate;
 import org.bson.BsonValue;
 import org.bson.conversions.Bson;
@@ -113,11 +113,13 @@ public interface MongoDBTemplate extends DocumentTemplate {
      * Executes a {@link CriteriaQuery}
      *
      * @param criteriaQuery - the query
-     * @param <T>   the instance type of the query {@link jakarta.nosql.criteria.Root}
+     * @param <T>   the instance type of the query {@link org.eclipse.jnosql.mapping.mongodb.criteria.api.Root}
      * @param <R>   the result type of the query
+     * @param <Q> the type of the actual query
+     * @param <F> the type of data to feed the query with
      * @return query result
      * @throws NullPointerException when criteriaQuery is null
      */
-    <T, R extends CriteriaQueryResult<T>> R executeQuery(ExecutableQuery<T, R> criteriaQuery);
+    <T, R extends CriteriaQueryResult<T>, Q extends ExecutableQuery<T, R, Q, F>, F> R executeQuery(ExecutableQuery<T, R, Q, F> criteriaQuery);
     
 }
