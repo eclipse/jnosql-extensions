@@ -94,7 +94,7 @@ SelectQueryResult<Person> executeQuery = template.executeQuery(
 Stream<Person> stream = executeQuery.getEntities();
 ----
 
-## SelectQuery
+## ExpressionQuery
 
 You can fetch single columns/projections using an ExpressionQuery :
 
