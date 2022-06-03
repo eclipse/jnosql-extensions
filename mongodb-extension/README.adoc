@@ -69,7 +69,7 @@ public class Person_ {
 }
 ----
 
-## SelectQuery
+## EntityQuery
 
 You can fetch entities with an EntityQuery :
 
@@ -77,7 +77,7 @@ You can fetch entities with an EntityQuery :
 ----
 CriteriaQuery<Person> personQuery = template.createQuery(Person.class);
 
-SelectQueryResult<Person> executeQuery = template.executeQuery(
+EntityQueryResult<Person> executeQuery = template.executeQuery(
         personQuery.select().where(
                 personQuery.from().get(
                         Person_.name
