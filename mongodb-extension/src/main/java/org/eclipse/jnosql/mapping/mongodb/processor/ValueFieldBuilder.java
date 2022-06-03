@@ -19,7 +19,7 @@ import com.sun.codemodel.JDefinedClass;
 import org.eclipse.jnosql.mapping.mongodb.metamodel.api.ValueAttribute;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
-import org.eclipse.jnosql.mapping.mongodb.metamodel.impl.DefaultValueAttribute;
+import org.eclipse.jnosql.mapping.mongodb.metamodel.DefaultValueAttribute;
 
 /**
  * Field builder for value attributes.

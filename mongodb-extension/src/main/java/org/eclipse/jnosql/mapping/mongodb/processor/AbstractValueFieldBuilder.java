@@ -21,7 +21,7 @@ import org.eclipse.jnosql.mapping.mongodb.metamodel.api.Attribute;
 import java.util.Arrays;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
-import org.eclipse.jnosql.mapping.mongodb.metamodel.impl.DefaultAttribute;
+import org.eclipse.jnosql.mapping.mongodb.metamodel.DefaultAttribute;
 
 /**
  * Field builder for value attributes.

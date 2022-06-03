@@ -19,7 +19,7 @@ import com.sun.codemodel.JDefinedClass;
 import org.eclipse.jnosql.mapping.mongodb.metamodel.api.StringAttribute;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
-import org.eclipse.jnosql.mapping.mongodb.metamodel.impl.DefaultStringAttribute;
+import org.eclipse.jnosql.mapping.mongodb.metamodel.DefaultStringAttribute;
 
 /**
  * Field builder for string attributes.

@@ -46,7 +46,7 @@ import jakarta.nosql.document.DocumentQuery;
 import org.eclipse.jnosql.mapping.mongodb.metamodel.api.NumberAttribute;
 import org.eclipse.jnosql.mapping.mongodb.metamodel.api.StringAttribute;
 import java.util.Optional;
-import org.eclipse.jnosql.mapping.mongodb.criteria.impl.CriteriaQueryUtils;
+import org.eclipse.jnosql.mapping.mongodb.criteria.CriteriaQueryUtils;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;

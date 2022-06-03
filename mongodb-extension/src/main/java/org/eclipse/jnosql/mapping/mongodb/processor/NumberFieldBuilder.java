@@ -19,7 +19,7 @@ import com.sun.codemodel.JDefinedClass;
 import org.eclipse.jnosql.mapping.mongodb.metamodel.api.NumberAttribute;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
-import org.eclipse.jnosql.mapping.mongodb.metamodel.impl.DefaultNumberAttribute;
+import org.eclipse.jnosql.mapping.mongodb.metamodel.DefaultNumberAttribute;
 
 /**
  * Field builder for numerical attributes.

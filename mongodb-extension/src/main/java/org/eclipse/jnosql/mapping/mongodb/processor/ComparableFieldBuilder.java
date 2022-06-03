@@ -19,7 +19,7 @@ import com.sun.codemodel.JDefinedClass;
 import org.eclipse.jnosql.mapping.mongodb.metamodel.api.ComparableAttribute;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
-import org.eclipse.jnosql.mapping.mongodb.metamodel.impl.DefaultComparableAttribute;
+import org.eclipse.jnosql.mapping.mongodb.metamodel.DefaultComparableAttribute;
 
 /**
  * Field builder for comparable attributes.

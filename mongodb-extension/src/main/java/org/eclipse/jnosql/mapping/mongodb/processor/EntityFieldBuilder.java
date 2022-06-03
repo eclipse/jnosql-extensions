@@ -22,7 +22,7 @@ import org.eclipse.jnosql.mapping.mongodb.metamodel.api.EntityAttribute;
 import java.util.Arrays;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
-import org.eclipse.jnosql.mapping.mongodb.metamodel.impl.DefaultEntityAttribute;
+import org.eclipse.jnosql.mapping.mongodb.metamodel.DefaultEntityAttribute;
 
 /**
  * Field builder for comparable attributes.
