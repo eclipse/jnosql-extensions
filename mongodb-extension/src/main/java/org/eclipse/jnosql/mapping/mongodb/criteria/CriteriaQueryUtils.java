@@ -39,7 +39,6 @@ import static java.util.Objects.requireNonNull;
 import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 import org.eclipse.jnosql.mapping.util.StringUtils;
 
 /**
@@ -102,8 +101,6 @@ public class CriteriaQueryUtils {
             result = function.apply(
                     restrictions.stream().map(
                             restriction -> computeCondition(restriction)
-                    ).collect(
-                            Collectors.toList()
                     ).toArray(
                             DocumentCondition[]::new
                     )
