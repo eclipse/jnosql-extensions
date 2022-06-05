@@ -16,14 +16,12 @@ package org.eclipse.jnosql.mapping.mongodb;
 
 import com.mongodb.client.model.Accumulators;
 import com.mongodb.client.model.Aggregates;
-import com.mongodb.client.model.Filters;
 import jakarta.nosql.document.Document;
 import jakarta.nosql.document.DocumentEntity;
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.document.DocumentEntityConverter;
 import jakarta.nosql.mapping.document.DocumentEventPersistManager;
 import jakarta.nosql.mapping.document.DocumentWorkflow;
-import org.bson.BsonValue;
 import org.bson.conversions.Bson;
 import org.eclipse.jnosql.communication.mongodb.document.MongoDBDocumentCollectionManager;
 import org.eclipse.jnosql.mapping.reflection.ClassMappings;
@@ -39,14 +37,24 @@ import javax.inject.Inject;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Stream;
 
 import static com.mongodb.client.model.Filters.eq;
+import org.eclipse.jnosql.mapping.mongodb.criteria.api.CriteriaQuery;
+import jakarta.nosql.document.DocumentCondition;
+import jakarta.nosql.document.DocumentQuery;
+import org.eclipse.jnosql.mapping.mongodb.metamodel.api.NumberAttribute;
+import org.eclipse.jnosql.mapping.mongodb.metamodel.api.StringAttribute;
+import java.util.Optional;
+import org.eclipse.jnosql.mapping.mongodb.criteria.CriteriaQueryUtils;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.nullable;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import org.eclipse.jnosql.mapping.mongodb.criteria.api.EntityQueryResult;
+import org.eclipse.jnosql.mapping.mongodb.criteria.api.ExpressionQueryResult;
+import org.eclipse.jnosql.mapping.mongodb.criteria.api.ExpressionQueryResultRow;
+import org.eclipse.jnosql.mapping.mongodb.criteria.api.NumberExpression;
+import org.eclipse.jnosql.mapping.mongodb.criteria.api.StringExpression;
 
 @CDIExtension
 class DefaultMongoDBTemplateTest {
@@ -184,6 +192,223 @@ class DefaultMongoDBTemplateTest {
 
         template.aggregate(Person.class, predicates);
         Mockito.verify(manager).aggregate("Person", predicates);
+    }
+
+    @Test
+    public void shouldGenerateMetamodel() {
+
+        assertTrue(
+                Person_.name instanceof StringAttribute
+        );
+        assertTrue(
+                Person_.age instanceof NumberAttribute
+        );
+        assertTrue(
+                Music_.id instanceof StringAttribute
+        );
+        assertTrue(
+                Music_.name instanceof StringAttribute
+        );
+        assertTrue(
+                Music_.year instanceof NumberAttribute
+        );
+
+    }
+
+    @Test
+    public void shouldConvertCriterias() {
+
+        CriteriaQuery<Person> personQuery = template.createQuery(Person.class);
+
+        assertEquals(
+                CriteriaQueryUtils.computeCondition(
+                        personQuery.from().get(Person_.name).equal("Poliana").or(
+                                personQuery.from().get(Person_.age).greaterThanOrEqualTo(17)
+                        )
+                ),
+                DocumentCondition.or(
+                        DocumentCondition.eq(
+                                "name",
+                                "Poliana"
+                        ),
+                        DocumentCondition.gte(
+                                "age",
+                                17
+                        )
+                )
+        );
+
+        CriteriaQuery<Music> musicQuery = template.createQuery(Music.class);
+
+        assertEquals(
+                CriteriaQueryUtils.computeCondition(
+                        musicQuery.from().get(Music_.name).equal("SoFarSoGood").or(
+                                musicQuery.from().get(Music_.year).greaterThanOrEqualTo(2022)
+                        )
+                ),
+                DocumentCondition.or(
+                        DocumentCondition.eq(
+                                "name",
+                                "SoFarSoGood"
+                        ),
+                        DocumentCondition.gte(
+                                "year",
+                                2022
+                        )
+                )
+        );
+
+    }
+
+    @Test
+    public void shouldSelectEntitiesWithCriteria() {
+
+        DocumentEntity documentEntity = DocumentEntity.of(
+                "Person",
+                Arrays.asList(
+                        Document.of("_id", "Poliana"),
+                        Document.of("age", 17)
+                )
+        );
+
+        Mockito.when(
+                manager.select(
+                        DocumentQuery.builder().from(
+                                "Person"
+                        ).where(
+                                DocumentCondition.and(
+                                        new DocumentCondition[]{
+                                            DocumentCondition.or(
+                                                    DocumentCondition.eq(
+                                                            "name",
+                                                            "Poliana"
+                                                    ),
+                                                    DocumentCondition.gte(
+                                                            "age",
+                                                            17
+                                                    )
+                                            )
+                                        }
+                                )
+                        ).build()
+                )
+        ).thenReturn(
+                Stream.of(
+                        documentEntity
+                )
+        );
+
+        CriteriaQuery<Person> personQuery = template.createQuery(Person.class);
+
+        EntityQueryResult<Person> executeQuery = template.executeQuery(
+                personQuery.select().where(
+                        personQuery.from().get(
+                                Person_.name
+                        ).equal(
+                                "Poliana"
+                        ).or(
+                                personQuery.from().get(
+                                        Person_.age
+                                ).greaterThanOrEqualTo(17)
+                        )
+                )
+        );
+
+        Optional<Person> findFirst = executeQuery.getEntities().findFirst();
+        
+        assertTrue(
+                findFirst.isPresent()
+        );
+        assertEquals(
+                converter.toDocument(
+                        findFirst.get()
+                ),
+                documentEntity
+        );
+
+    }
+    
+    @Test
+    public void shouldSelectProjectionsWithCriteria() {
+
+        DocumentEntity documentEntity = DocumentEntity.of(
+                "Person",
+                Arrays.asList(
+                        Document.of("_id", "Poliana"),
+                        Document.of("age", 17)
+                )
+        );
+
+        Mockito.when(
+                manager.select(
+                        DocumentQuery.builder(
+                                "name",
+                                "age"
+                        ).from(
+                                "Person"
+                        ).where(
+                                DocumentCondition.and(
+                                        new DocumentCondition[]{
+                                            DocumentCondition.or(
+                                                    DocumentCondition.eq(
+                                                            "name",
+                                                            "Poliana"
+                                                    ),
+                                                    DocumentCondition.gte(
+                                                            "age",
+                                                            17
+                                                    )
+                                            )
+                                        }
+                                )
+                        ).build()
+                )
+        ).thenReturn(
+                Stream.of(
+                        documentEntity
+                )
+        );
+
+        CriteriaQuery<Person> personQuery = template.createQuery(Person.class);
+        
+        StringExpression<Person, Person> nameExpression = personQuery.from().get(
+                Person_.name
+        );
+        NumberExpression<Person, Person, Integer> ageExpression = personQuery.from().get(
+                Person_.age
+        );
+
+        ExpressionQueryResult<Person> executeQuery = template.executeQuery(
+                personQuery.select(
+                        nameExpression,
+                        ageExpression
+                ).where(
+                        nameExpression.equal(
+                                "Poliana"
+                        ).or(
+                                ageExpression.greaterThanOrEqualTo(17)
+                        )
+                )
+        );
+
+        Optional<ExpressionQueryResultRow<Person>> findFirst = executeQuery.getRows().findFirst();
+        
+        assertTrue(
+                findFirst.isPresent()
+        );
+        assertEquals(
+                findFirst.get().get(
+                        nameExpression
+                ),
+                "Poliana"
+        );
+        assertEquals(
+                findFirst.get().get(
+                        ageExpression
+                ),
+                17
+        );
+
     }
 
 }

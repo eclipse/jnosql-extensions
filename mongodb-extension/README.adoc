@@ -33,3 +33,103 @@ public class Music {
 
 }
 ----
+
+## CriteriaQuery API 
+
+Also, you can use the experimental Criteria API, largely inspired by the JPA one.
+Using this API you can execute queries built via CriteriaQuery.
+The CriteriaQuery is used in combination with Metamodel Attributes.
+These attributes are automagically generated from the defined NoSQL Entities, via included Annotation Processor.
+
+So, for example :
+
+[source,java]
+----
+@Entity
+public class Music {
+
+    @Id
+    private String name;
+
+    @Column
+    private Integer age;
+
+}
+----
+
+Will produce this Metamodel :
+
+[source,java]
+----
+public class Person_ {
+
+    public static volatile StringAttribute<org.eclipse.jnosql.mapping.mongodb.Person> name = new DefaultStringAttribute(org.eclipse.jnosql.mapping.mongodb.Person.class, "name");
+    public static volatile NumberAttribute<org.eclipse.jnosql.mapping.mongodb.Person, Integer> age = new DefaultNumberAttribute(org.eclipse.jnosql.mapping.mongodb.Person.class, Integer.class, "age");
+
+}
+----
+
+## EntityQuery
+
+You can fetch entities with an EntityQuery :
+
+[source,java]
+----
+CriteriaQuery<Person> personQuery = template.createQuery(Person.class);
+
+EntityQueryResult<Person> executeQuery = template.executeQuery(
+        personQuery.select().where(
+                personQuery.from().get(
+                        Person_.name
+                ).equal(
+                        "Poliana"
+                ).or(
+                        personQuery.from().get(
+                                Person_.age
+                        ).greaterThanOrEqualTo(17)
+                )
+        )
+);
+
+Stream<Person> stream = executeQuery.getEntities();
+----
+
+## ExpressionQuery
+
+You can fetch single columns/projections using an ExpressionQuery :
+
+[source,java]
+----
+CriteriaQuery<Person> personQuery = template.createQuery(Person.class);
+
+StringExpression<Person, Person> nameExpression = personQuery.from().get(
+        Person_.name
+);
+NumberExpression<Person, Person, Integer> ageExpression = personQuery.from().get(
+        Person_.age
+);
+
+ExpressionQueryResult<Person> executeQuery = template.executeQuery(
+        personQuery.select(
+                nameExpression,
+                ageExpression
+        ).where(
+                nameExpression.equal(
+                        "Poliana"
+                ).or(
+                        ageExpression.greaterThanOrEqualTo(17)
+                )
+        )
+);
+
+Optional<ExpressionQueryResultRow<Person>> findFirst = executeQuery.getRows().findFirst();
+
+String name = findFirst.get().get(
+        nameExpression
+);
+
+Integer age = findFirst.get().get(
+        ageExpression
+);
+
+----

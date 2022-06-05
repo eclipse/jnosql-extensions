@@ -14,7 +14,14 @@
  */
 package org.eclipse.jnosql.mapping.mongodb;
 
+import org.eclipse.jnosql.mapping.mongodb.criteria.api.CriteriaQuery;
+import org.eclipse.jnosql.mapping.mongodb.criteria.api.CriteriaQueryResult;
+import org.eclipse.jnosql.mapping.mongodb.criteria.api.EntityQuery;
+import org.eclipse.jnosql.mapping.mongodb.criteria.api.ExecutableQuery;
+import org.eclipse.jnosql.mapping.mongodb.criteria.api.ExpressionQuery;
+import org.eclipse.jnosql.mapping.mongodb.criteria.api.SelectQuery;
 import jakarta.nosql.document.DocumentEntity;
+import jakarta.nosql.document.DocumentQuery;
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.document.DocumentEntityConverter;
 import jakarta.nosql.mapping.document.DocumentEventPersistManager;
@@ -31,7 +38,11 @@ import javax.enterprise.inject.Typed;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import static java.util.Objects.requireNonNull;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import org.eclipse.jnosql.mapping.mongodb.criteria.CriteriaQueryUtils;
+import org.eclipse.jnosql.mapping.mongodb.criteria.DefaultCriteriaQuery;
 
 @Typed(MongoDBTemplate.class)
 class DefaultMongoDBTemplate extends AbstractDocumentTemplate implements MongoDBTemplate {
@@ -56,11 +67,11 @@ class DefaultMongoDBTemplate extends AbstractDocumentTemplate implements MongoDB
     }
 
     DefaultMongoDBTemplate(Instance<MongoDBDocumentCollectionManager> manager,
-                           DocumentEntityConverter converter,
-                           DocumentWorkflow workflow,
-                           ClassMappings mappings,
-                           Converters converters,
-                           DocumentEventPersistManager persistManager) {
+            DocumentEntityConverter converter,
+            DocumentWorkflow workflow,
+            ClassMappings mappings,
+            Converters converters,
+            DocumentEventPersistManager persistManager) {
         this.manager = manager;
         this.converter = converter;
         this.workflow = workflow;
@@ -145,4 +156,46 @@ class DefaultMongoDBTemplate extends AbstractDocumentTemplate implements MongoDB
         ClassMapping mapping = this.mappings.get(entity);
         return this.getManager().aggregate(mapping.getName(), pipeline);
     }
+
+    @Override
+    public <T> CriteriaQuery<T> createQuery(Class<T> type) {
+        return new DefaultCriteriaQuery<>(type);
+    }
+
+    @Override
+    public <T, R extends CriteriaQueryResult<T>, Q extends ExecutableQuery<T, R, Q, F>, F> R executeQuery(ExecutableQuery<T, R, Q, F> criteriaQuery) {
+        requireNonNull(criteriaQuery, "query is required");
+        if (criteriaQuery instanceof SelectQuery) {
+            SelectQuery<T, ?, ?, ?> selectQuery = SelectQuery.class.cast(criteriaQuery);
+            DocumentQuery documentQuery = CriteriaQueryUtils.convert(selectQuery);
+            getPersistManager().firePreQuery(documentQuery);
+            Stream<DocumentEntity> entityStream = getManager().select(
+                    documentQuery
+            );
+
+            if (selectQuery instanceof EntityQuery) {
+                EntityQuery.class.cast(selectQuery).feed(
+                        entityStream.map(
+                                documentEntity -> getConverter().toEntity(
+                                        documentEntity
+                                )
+                        )
+                );
+            } else if (selectQuery instanceof ExpressionQuery) {
+                ExpressionQuery.class.cast(selectQuery).feed(
+                        entityStream.map(
+                                documentEntity -> documentEntity.getDocuments().stream().map(
+                                        document -> document.getValue()
+                                ).collect(
+                                        Collectors.toList()
+                                )
+                        )
+                );
+            }
+        } else {
+            throw new UnsupportedOperationException("Not supported yet.");
+        }
+        return criteriaQuery.getResult();
+    }
+
 }
