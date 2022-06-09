@@ -106,7 +106,9 @@ public class CriteriaQueryUtils {
                     )
             );
         } else if (predicate instanceof NegationPredicate) {
-            throw new UnsupportedOperationException("Not supported yet.");
+            result = computeCondition(
+                    NegationPredicate.class.cast(predicate).getPredicate()
+            ).negate();
         } else if (predicate instanceof BinaryPredicate) {
             BinaryPredicate cast = BinaryPredicate.class.cast(predicate);
             String lhs = unfold(
