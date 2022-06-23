@@ -20,22 +20,22 @@
 
     <parent>
         <groupId>org.eclipse.jnosql.mapping</groupId>
-        <artifactId>mapping-extension</artifactId>
+        <artifactId>jnosql-mapping-extension</artifactId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>mongodb-extension</artifactId>
+    <artifactId>jnosql-mongodb-extension</artifactId>
     <description>Eclipse JNoSQL mapping layer to MongoDB</description>
 
     <dependencies>
         <dependency>
             <groupId>org.eclipse.jnosql.communication</groupId>
-            <artifactId>mongodb-driver</artifactId>
+            <artifactId>jnosql-mongodb-driver</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>mapping-document</artifactId>
+            <artifactId>jnosql-mapping-document</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>

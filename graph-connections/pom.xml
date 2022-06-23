@@ -20,11 +20,11 @@
 
     <parent>
         <groupId>org.eclipse.jnosql.mapping</groupId>
-        <artifactId>mapping-extension</artifactId>
+        <artifactId>jnosql-mapping-extension</artifactId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>graph-connections</artifactId>
+    <artifactId>jnosql-graph-connections</artifactId>
     <description>Eclipse JNoSQL connections to Graph</description>
 
     <properties>
@@ -35,7 +35,7 @@
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>mapping-graph</artifactId>
+            <artifactId>jnosql-mapping-graph</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>

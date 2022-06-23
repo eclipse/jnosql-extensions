@@ -20,23 +20,23 @@
 
      <parent>
         <groupId>org.eclipse.jnosql.mapping</groupId>
-        <artifactId>mapping-extension</artifactId>
+        <artifactId>jnosql-mapping-extension</artifactId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>solr-extension</artifactId>
+    <artifactId>jnosql-solr-extension</artifactId>
 
     <description>Eclipse JNoSQL mapping layer to Solr</description>
 
     <dependencies>
         <dependency>
             <groupId>org.eclipse.jnosql.communication</groupId>
-            <artifactId>solr-driver</artifactId>
+            <artifactId>jnosql-solr-driver</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>mapping-document</artifactId>
+            <artifactId>jnosql-mapping-document</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>

@@ -20,21 +20,21 @@
 
     <parent>
         <groupId>org.eclipse.jnosql.mapping</groupId>
-        <artifactId>mapping-extension</artifactId>
+        <artifactId>jnosql-mapping-extension</artifactId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>orientdb-extension</artifactId>
+    <artifactId>jnosql-orientdb-extension</artifactId>
     <description>Eclipse JNoSQL mapping layer extension to Couchbase</description>
     <dependencies>
         <dependency>
             <groupId>org.eclipse.jnosql.communication</groupId>
-            <artifactId>orientdb-driver</artifactId>
+            <artifactId>jnosql-orientdb-driver</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>mapping-document</artifactId>
+            <artifactId>jnosql-mapping-document</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>

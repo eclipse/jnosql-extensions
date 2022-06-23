@@ -20,22 +20,22 @@
 
     <parent>
         <groupId>org.eclipse.jnosql.mapping</groupId>
-        <artifactId>mapping-extension</artifactId>
+        <artifactId>jnosql-mapping-extension</artifactId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>cassandra-extension</artifactId>
+    <artifactId>jnosql-cassandra-extension</artifactId>
     <description>Eclipse JNoSQL mapping layer to Cassandra</description>
 
     <dependencies>
         <dependency>
             <groupId>org.eclipse.jnosql.communication</groupId>
-            <artifactId>cassandra-driver</artifactId>
+            <artifactId>jnosql-cassandra-driver</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>mapping-column</artifactId>
+            <artifactId>jnosql-mapping-column</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
