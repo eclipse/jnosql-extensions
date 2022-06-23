@@ -37,15 +37,15 @@
     </scm>
 
     <modules>
-        <module>cassandra-extension</module>
-        <module>elasticsearch-extension</module>
-        <module>orientdb-extension</module>
-        <module>couchbase-extension</module>
-        <module>arangodb-extension</module>
-        <module>hazelcast-extension</module>
-        <module>solr-extension</module>
-        <module>mongodb-extension</module>
-        <module>graph-connections</module>
+        <module>jnosql-cassandra-extension</module>
+        <module>jnosql-elasticsearch-extension</module>
+        <module>jnosql-orientdb-extension</module>
+        <module>jnosql-couchbase-extension</module>
+        <module>jnosql-arangodb-extension</module>
+        <module>jnosql-hazelcast-extension</module>
+        <module>jnosql-solr-extension</module>
+        <module>jnosql-mongodb-extension</module>
+        <module>jnosql-graph-connections</module>
     </modules>
 
     <repositories>
