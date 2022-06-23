@@ -24,7 +24,7 @@ import jakarta.nosql.column.ColumnQuery;
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.column.ColumnEventPersistManager;
 import org.eclipse.jnosql.mapping.reflection.ClassMappings;
-import org.eclipse.jnosql.mapping.test.CDIExtension;
+import jakarta.nosql.tck.test.CDIExtension;
 import org.eclipse.jnosql.communication.cassandra.column.CassandraColumnFamilyManager;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;

@@ -25,7 +25,7 @@ import jakarta.nosql.mapping.document.DocumentWorkflow;
 import org.bson.conversions.Bson;
 import org.eclipse.jnosql.communication.mongodb.document.MongoDBDocumentCollectionManager;
 import org.eclipse.jnosql.mapping.reflection.ClassMappings;
-import org.eclipse.jnosql.mapping.test.CDIExtension;
+import jakarta.nosql.tck.test.CDIExtension;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

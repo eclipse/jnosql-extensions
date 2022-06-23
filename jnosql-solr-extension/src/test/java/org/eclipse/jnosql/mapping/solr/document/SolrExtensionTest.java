@@ -14,7 +14,7 @@
  */
 package org.eclipse.jnosql.mapping.solr.document;
 
-import org.eclipse.jnosql.mapping.test.CDIExtension;
+import jakarta.nosql.tck.test.CDIExtension;
 import org.junit.jupiter.api.Test;
 
 import javax.inject.Inject;

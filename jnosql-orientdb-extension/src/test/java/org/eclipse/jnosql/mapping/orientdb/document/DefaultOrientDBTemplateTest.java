@@ -22,7 +22,7 @@ import jakarta.nosql.mapping.document.DocumentEntityConverter;
 import jakarta.nosql.mapping.document.DocumentEventPersistManager;
 import jakarta.nosql.mapping.document.DocumentWorkflow;
 import org.eclipse.jnosql.mapping.reflection.ClassMappings;
-import org.eclipse.jnosql.mapping.test.CDIExtension;
+import jakarta.nosql.tck.test.CDIExtension;
 import org.eclipse.jnosql.communication.orientdb.document.OrientDBDocumentCollectionManager;
 import org.eclipse.jnosql.communication.orientdb.document.OrientDBLiveCallback;
 import org.eclipse.jnosql.communication.orientdb.document.OrientDBLiveCreateCallback;
