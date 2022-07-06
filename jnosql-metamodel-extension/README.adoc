@@ -1,0 +1,4 @@
+= Metamodel Layer
+
+This extension contains Metamodel class definitions, used to describe a type annotated with JNoSql annotations such as Entity, MappedSupertype or Embeddable.
+These classes are not meant to be used directly, metamodel-processor will do that for you.

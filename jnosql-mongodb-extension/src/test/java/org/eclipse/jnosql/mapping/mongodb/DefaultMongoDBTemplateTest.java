@@ -11,6 +11,7 @@
  *   Contributors:
  *
  *   Otavio Santana
+ *   Alessandro Moscatelli
  */
 package org.eclipse.jnosql.mapping.mongodb;
 
@@ -43,8 +44,6 @@ import static com.mongodb.client.model.Filters.eq;
 import org.eclipse.jnosql.mapping.mongodb.criteria.api.CriteriaQuery;
 import jakarta.nosql.document.DocumentCondition;
 import jakarta.nosql.document.DocumentQuery;
-import org.eclipse.jnosql.mapping.mongodb.metamodel.api.NumberAttribute;
-import org.eclipse.jnosql.mapping.mongodb.metamodel.api.StringAttribute;
 import java.util.Optional;
 import org.eclipse.jnosql.mapping.mongodb.criteria.CriteriaQueryUtils;
 import static org.junit.jupiter.api.Assertions.*;
@@ -192,27 +191,6 @@ class DefaultMongoDBTemplateTest {
 
         template.aggregate(Person.class, predicates);
         Mockito.verify(manager).aggregate("Person", predicates);
-    }
-
-    @Test
-    public void shouldGenerateMetamodel() {
-
-        assertTrue(
-                Person_.name instanceof StringAttribute
-        );
-        assertTrue(
-                Person_.age instanceof NumberAttribute
-        );
-        assertTrue(
-                Music_.id instanceof StringAttribute
-        );
-        assertTrue(
-                Music_.name instanceof StringAttribute
-        );
-        assertTrue(
-                Music_.year instanceof NumberAttribute
-        );
-
     }
 
     @Test

@@ -14,12 +14,12 @@
  */
 package org.eclipse.jnosql.mapping.mongodb.criteria.api;
 
-import org.eclipse.jnosql.mapping.mongodb.metamodel.api.Attribute;
-import org.eclipse.jnosql.mapping.mongodb.metamodel.api.ComparableAttribute;
-import org.eclipse.jnosql.mapping.mongodb.metamodel.api.EntityAttribute;
-import org.eclipse.jnosql.mapping.mongodb.metamodel.api.NumberAttribute;
-import org.eclipse.jnosql.mapping.mongodb.metamodel.api.StringAttribute;
-import org.eclipse.jnosql.mapping.mongodb.metamodel.api.ValueAttribute;
+import org.eclipse.jnosql.mapping.metamodel.api.Attribute;
+import org.eclipse.jnosql.mapping.metamodel.api.ComparableAttribute;
+import org.eclipse.jnosql.mapping.metamodel.api.EntityAttribute;
+import org.eclipse.jnosql.mapping.metamodel.api.NumberAttribute;
+import org.eclipse.jnosql.mapping.metamodel.api.StringAttribute;
+import org.eclipse.jnosql.mapping.metamodel.api.ValueAttribute;
 
 /**
  * The Entity type representing a path from the root type in a {@link CriteriaQuery}

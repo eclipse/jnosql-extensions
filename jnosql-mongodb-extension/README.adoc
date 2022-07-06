@@ -39,34 +39,8 @@ public class Music {
 Also, you can use the experimental Criteria API, largely inspired by the JPA one.
 Using this API you can execute queries built via CriteriaQuery.
 The CriteriaQuery is used in combination with Metamodel Attributes.
-These attributes are automagically generated from the defined NoSQL Entities, via included Annotation Processor.
+These attributes are automagically generated from the defined NoSQL Entities, by including the Metamodel Processor extension as an optional dependency.
 
-So, for example :
-
-[source,java]
-----
-@Entity
-public class Music {
-
-    @Id
-    private String name;
-
-    @Column
-    private Integer age;
-
-}
-----
-
-Will produce this Metamodel :
-
-[source,java]
-----
-public class Person_ {
-
-    public static volatile StringAttribute<org.eclipse.jnosql.mapping.mongodb.Person> name = new DefaultStringAttribute(org.eclipse.jnosql.mapping.mongodb.Person.class, "name");
-    public static volatile NumberAttribute<org.eclipse.jnosql.mapping.mongodb.Person, Integer> age = new DefaultNumberAttribute(org.eclipse.jnosql.mapping.mongodb.Person.class, Integer.class, "age");
-
-}
 ----
 
 ## EntityQuery

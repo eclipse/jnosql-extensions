@@ -20,7 +20,7 @@ import org.eclipse.jnosql.mapping.mongodb.criteria.api.Expression;
 import org.eclipse.jnosql.mapping.mongodb.criteria.api.Order;
 import org.eclipse.jnosql.mapping.mongodb.criteria.api.Path;
 import org.eclipse.jnosql.mapping.mongodb.criteria.api.RangePredicate;
-import org.eclipse.jnosql.mapping.mongodb.metamodel.api.ComparableAttribute;
+import org.eclipse.jnosql.mapping.metamodel.api.ComparableAttribute;
 
 /**
  * Default implementation for {@link ComparableExpression}

@@ -17,7 +17,7 @@ package org.eclipse.jnosql.mapping.mongodb.criteria;
 import org.eclipse.jnosql.mapping.mongodb.criteria.api.ExpressionFunction;
 import org.eclipse.jnosql.mapping.mongodb.criteria.api.NumberExpression;
 import org.eclipse.jnosql.mapping.mongodb.criteria.api.Path;
-import org.eclipse.jnosql.mapping.mongodb.metamodel.api.NumberAttribute;
+import org.eclipse.jnosql.mapping.metamodel.api.NumberAttribute;
 
 /**
  * Default implementation for {@link NumberExpression}
