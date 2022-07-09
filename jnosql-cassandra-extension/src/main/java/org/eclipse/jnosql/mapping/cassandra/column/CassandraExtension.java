@@ -17,7 +17,6 @@ package org.eclipse.jnosql.mapping.cassandra.column;
 
 import javax.enterprise.event.Observes;
 import javax.enterprise.inject.spi.AfterBeanDiscovery;
-import javax.enterprise.inject.spi.BeanManager;
 import javax.enterprise.inject.spi.Extension;
 import javax.enterprise.inject.spi.ProcessAnnotatedType;
 import java.lang.reflect.Modifier;
@@ -46,11 +45,10 @@ public class CassandraExtension implements Extension {
     }
 
 
-
-    void onAfterBeanDiscovery(@Observes final AfterBeanDiscovery afterBeanDiscovery, final BeanManager beanManager) {
+    void onAfterBeanDiscovery(@Observes final AfterBeanDiscovery afterBeanDiscovery) {
         LOGGER.info("Starting the onAfterBeanDiscovery with elements number: " + crudTypes.size());
 
-        crudTypes.forEach(type -> afterBeanDiscovery.addBean(new CassandraRepositoryBean(type, beanManager)));
+        crudTypes.forEach(type -> afterBeanDiscovery.addBean(new CassandraRepositoryBean(type)));
 
         LOGGER.info("Finished the onAfterBeanDiscovery");
     }
