@@ -20,7 +20,6 @@ import org.eclipse.jnosql.mapping.spi.AbstractBean;
 
 import javax.enterprise.context.spi.CreationalContext;
 import javax.enterprise.inject.Default;
-import javax.enterprise.inject.spi.BeanManager;
 import javax.enterprise.util.AnnotationLiteral;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Proxy;
@@ -31,16 +30,14 @@ import java.util.Set;
 
 class CassandraRepositoryBean extends AbstractBean<CassandraRepository> {
 
-    private final Class type;
-
+    private final Class<?> type;
 
     private final Set<Type> types;
 
     private final Set<Annotation> qualifiers = Collections.singleton(new AnnotationLiteral<Default>() {
     });
 
-    CassandraRepositoryBean(Class type, BeanManager beanManager) {
-        super(beanManager);
+    CassandraRepositoryBean(Class<?> type) {
         this.type = type;
         this.types = Collections.singleton(type);
     }

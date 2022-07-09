@@ -20,7 +20,6 @@ import org.eclipse.jnosql.mapping.spi.AbstractBean;
 
 import javax.enterprise.context.spi.CreationalContext;
 import javax.enterprise.inject.Default;
-import javax.enterprise.inject.spi.BeanManager;
 import javax.enterprise.util.AnnotationLiteral;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Proxy;
@@ -39,8 +38,7 @@ class CouchbaseRepositoryBean extends AbstractBean<CouchbaseRepository> {
     private final Set<Annotation> qualifiers = Collections.singleton(new AnnotationLiteral<Default>() {
     });
 
-    CouchbaseRepositoryBean(Class type, BeanManager beanManager) {
-        super(beanManager);
+    CouchbaseRepositoryBean(Class type) {
         this.type = type;
         this.types = Collections.singleton(type);
     }
