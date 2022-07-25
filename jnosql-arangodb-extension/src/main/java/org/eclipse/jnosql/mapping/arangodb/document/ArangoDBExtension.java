@@ -16,7 +16,6 @@ package org.eclipse.jnosql.mapping.arangodb.document;
 
 import javax.enterprise.event.Observes;
 import javax.enterprise.inject.spi.AfterBeanDiscovery;
-import javax.enterprise.inject.spi.BeanManager;
 import javax.enterprise.inject.spi.Extension;
 import javax.enterprise.inject.spi.ProcessAnnotatedType;
 import java.lang.reflect.Modifier;
@@ -46,10 +45,10 @@ public class ArangoDBExtension implements Extension {
     }
 
 
-    void onAfterBeanDiscovery(@Observes final AfterBeanDiscovery afterBeanDiscovery, final BeanManager beanManager) {
+    void onAfterBeanDiscovery(@Observes final AfterBeanDiscovery afterBeanDiscovery) {
         LOGGER.info("Starting the onAfterBeanDiscovery with elements number: " + crudTypes.size());
 
-        crudTypes.forEach(type -> afterBeanDiscovery.addBean(new ArangoDBRepositoryBean(type, beanManager)));
+        crudTypes.forEach(type -> afterBeanDiscovery.addBean(new ArangoDBRepositoryBean(type)));
 
         LOGGER.info("Finished the onAfterBeanDiscovery");
     }
