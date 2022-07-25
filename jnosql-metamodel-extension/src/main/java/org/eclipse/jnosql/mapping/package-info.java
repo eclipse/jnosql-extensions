@@ -14,7 +14,8 @@
  */
 
 /**
- * MongoDB is a source-available cross-platform document-oriented database program.
- * Classified as a NoSQL database program, MongoDB uses JSON-like documents with optional schemas
+ * Metamodel is what describes a model, a Java class, enumerating its attributes in a stronly typed manner.
+ * This metamodel can be used for operations needing to programmatically access such attributes,
+ * for example a stronly typed query builder.
  */
 package org.eclipse.jnosql.mapping.metamodel;

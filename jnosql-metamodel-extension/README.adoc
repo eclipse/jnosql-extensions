@@ -2,3 +2,26 @@
 
 This extension contains Metamodel class definitions, used to describe a type annotated with JNoSql annotations such as Entity, MappedSupertype or Embeddable.
 These classes are not meant to be used directly, metamodel-processor will do that for you.
+
+Anyway, if you want, you can manually describe the following example class :
+
+[source,java]
+----
+@Entity
+public class Person {
+
+    @Id
+    private String name;
+
+    @Column
+    private Integer age;
+
+}
+----
+
+By doing this :
+
+[source,java]
+----
+StringAttribute<org.eclipse.jnosql.mapping.metamodel.processor.Person> name = new DefaultStringAttribute(org.eclipse.jnosql.mapping.mongodb.Person.class, "name");
+NumberAttribute<org.eclipse.jnosql.mapping.metamodel.processor.Person, Integer> age = new DefaultNumberAttribute(org.eclipse.jnosql.mapping.mongodb.Person.class, Integer.class, "age");
