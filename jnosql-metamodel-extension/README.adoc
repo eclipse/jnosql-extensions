@@ -23,5 +23,5 @@ By doing this :
 
 [source,java]
 ----
-StringAttribute<org.eclipse.jnosql.mapping.metamodel.processor.Person> name = new DefaultStringAttribute(org.eclipse.jnosql.mapping.mongodb.Person.class, "name");
-NumberAttribute<org.eclipse.jnosql.mapping.metamodel.processor.Person, Integer> age = new DefaultNumberAttribute(org.eclipse.jnosql.mapping.mongodb.Person.class, Integer.class, "age");
+StringAttribute<Person> name = new DefaultStringAttribute(Person.class, "name");
+NumberAttribute<Person, Integer> age = new DefaultNumberAttribute(Person.class, Integer.class, "age");
