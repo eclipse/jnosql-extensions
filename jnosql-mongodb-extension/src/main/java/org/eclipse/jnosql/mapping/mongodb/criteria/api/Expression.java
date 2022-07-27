@@ -14,7 +14,7 @@
  */
 package org.eclipse.jnosql.mapping.mongodb.criteria.api;
 
-import org.eclipse.jnosql.mapping.mongodb.metamodel.api.Attribute;
+import org.eclipse.jnosql.mapping.metamodel.api.Attribute;
 import java.util.Collection;
 
 /**

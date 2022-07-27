@@ -1,0 +1,31 @@
+= Metamodel Processor
+
+This extension contains the Metamodel processor which, using the Metamodel layer, is able to automatically create description of a type annotated with JNoSql annotations such as Entity, MappedSupertype or Embeddable.
+Include this library as an optional dependency to automatically activate the metamodel generation at compile time.
+
+So, for example :
+
+[source,java]
+----
+@Entity
+public class Person {
+
+    @Id
+    private String name;
+
+    @Column
+    private Integer age;
+
+}
+----
+
+Will produce this Metamodel :
+
+[source,java]
+----
+public class Person_ {
+
+    public static volatile StringAttribute<org.eclipse.jnosql.mapping.metamodel.processor.Person> name = new DefaultStringAttribute(org.eclipse.jnosql.mapping.metamodel.processor.Person.class, "name");
+    public static volatile NumberAttribute<org.eclipse.jnosql.mapping.metamodel.processor.Person, Integer> age = new DefaultNumberAttribute(org.eclipse.jnosql.mapping.metamodel.processor.Person.class, Integer.class, "age");
+
+}

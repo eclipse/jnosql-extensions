@@ -17,7 +17,7 @@ package org.eclipse.jnosql.mapping.mongodb.criteria;
 import org.eclipse.jnosql.mapping.mongodb.criteria.api.BinaryPredicate;
 import org.eclipse.jnosql.mapping.mongodb.criteria.api.Path;
 import org.eclipse.jnosql.mapping.mongodb.criteria.api.StringExpression;
-import org.eclipse.jnosql.mapping.mongodb.metamodel.api.StringAttribute;
+import org.eclipse.jnosql.mapping.metamodel.api.StringAttribute;
 
 /**
  * Default implementation for {@link StringExpression}

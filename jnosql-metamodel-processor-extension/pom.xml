@@ -11,7 +11,6 @@
 ~
 ~   Contributors:
 ~
-~   Otavio Santana
 ~   Alessandro Moscatelli
 -->
 
@@ -25,14 +24,14 @@
         <version>1.0.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>jnosql-mongodb-extension</artifactId>
-    <description>Eclipse JNoSQL mapping layer to MongoDB</description>
+    <artifactId>jnosql-metamodel-processor-extension</artifactId>
+    <description>Eclipse JNoSQL mapping metamodel layer processor</description>
 
     <dependencies>
         <dependency>
-            <groupId>org.eclipse.jnosql.communication</groupId>
-            <artifactId>jnosql-mongodb-driver</artifactId>
-            <version>${project.version}</version>
+            <groupId>org.eclipse.jnosql.mapping</groupId>
+            <artifactId>jnosql-metamodel-extension</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
@@ -40,15 +39,16 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.eclipse.jnosql.mapping</groupId>
-            <artifactId>jnosql-metamodel-extension</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
+            <groupId>com.google.auto.service</groupId>
+            <artifactId>auto-service</artifactId>
+            <version>1.0.1</version>
+            <optional>true</optional>
         </dependency>
         <dependency>
-            <groupId>org.eclipse.jnosql.mapping</groupId>
-            <artifactId>jnosql-metamodel-processor-extension</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
-            <optional>true</optional>
+            <groupId>com.sun.codemodel</groupId>
+            <artifactId>codemodel</artifactId>
+            <version>2.6</version>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>jakarta.nosql.tck.mapping</groupId>

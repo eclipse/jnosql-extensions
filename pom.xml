@@ -37,6 +37,8 @@
     </scm>
 
     <modules>
+        <module>jnosql-metamodel-extension</module>
+        <module>jnosql-metamodel-processor-extension</module>
         <module>jnosql-cassandra-extension</module>
         <module>jnosql-elasticsearch-extension</module>
         <module>jnosql-orientdb-extension</module>
