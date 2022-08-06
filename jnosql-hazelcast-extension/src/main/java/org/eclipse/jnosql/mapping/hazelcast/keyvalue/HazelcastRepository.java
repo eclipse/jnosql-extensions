@@ -18,7 +18,7 @@ package org.eclipse.jnosql.mapping.hazelcast.keyvalue;
 import jakarta.nosql.mapping.Repository;
 
 /**
- * The hazelcat {@link Repository}
+ * The hazelcast {@link Repository}
  *
  * @param <T> the entity type
  * @param <K> the id entity type
