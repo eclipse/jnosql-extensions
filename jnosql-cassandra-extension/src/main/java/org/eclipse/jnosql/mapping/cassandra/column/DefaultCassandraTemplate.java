@@ -182,8 +182,8 @@ class DefaultCassandraTemplate extends AbstractColumnTemplate implements Cassand
     @Override
     public <T> Stream<T> cql(String query, Object... params) {
         Objects.requireNonNull(query, "query is required");
-        CassandraPreparedStatement cassandraPrepareStatment = manager.get().nativeQueryPrepare(query);
-        Stream<ColumnEntity> entities = cassandraPrepareStatment.bind(params).executeQuery();
+        CassandraPreparedStatement cassandraPrepareStatement = manager.get().nativeQueryPrepare(query);
+        Stream<ColumnEntity> entities = cassandraPrepareStatement.bind(params).executeQuery();
         return entities.map(converter::toEntity).map(e -> (T) e);
     }
 

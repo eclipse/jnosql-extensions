@@ -46,7 +46,7 @@ import javax.lang.model.type.PrimitiveType;
 import javax.lang.model.type.TypeMirror;
 
 /**
- * Metamodel processor to automagically generate motamodel attributes for JNoSql
+ * Metamodel processor to automagically generate metamodel attributes for JNoSql
  * entities.
  */
 @AutoService(Processor.class)

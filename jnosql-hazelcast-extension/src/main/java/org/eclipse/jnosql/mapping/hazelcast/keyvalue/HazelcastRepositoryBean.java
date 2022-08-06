@@ -73,7 +73,7 @@ class HazelcastRepositoryBean extends AbstractBean<HazelcastRepository> {
 
     @Override
     public String getId() {
-        return type.getName() + '@' + "hazelcast";
+        return type.getName() + "@hazelcast";
     }
 
 }
