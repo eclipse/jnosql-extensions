@@ -20,7 +20,7 @@ import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.document.DocumentEntityConverter;
 import jakarta.nosql.mapping.document.DocumentEventPersistManager;
 import jakarta.nosql.mapping.document.DocumentWorkflow;
-import org.eclipse.jnosql.mapping.reflection.ClassMappings;
+import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.document.AbstractDocumentTemplate;
 import org.eclipse.jnosql.communication.solr.document.SolrDocumentCollectionManager;
 
@@ -47,7 +47,7 @@ class DefaultSolrTemplate extends AbstractDocumentTemplate implements SolrTempla
 
     private DocumentEventPersistManager persistManager;
 
-    private ClassMappings mappings;
+    private EntitiesMetadata entities;
 
     private Converters converters;
 
@@ -55,13 +55,13 @@ class DefaultSolrTemplate extends AbstractDocumentTemplate implements SolrTempla
     DefaultSolrTemplate(Instance<SolrDocumentCollectionManager> manager,
                         DocumentEntityConverter converter, DocumentWorkflow flow,
                         DocumentEventPersistManager persistManager,
-                        ClassMappings mappings,
+                        EntitiesMetadata entities,
                         Converters converters) {
         this.manager = manager;
         this.converter = converter;
         this.flow = flow;
         this.persistManager = persistManager;
-        this.mappings = mappings;
+        this.entities = entities;
         this.converters = converters;
     }
 
@@ -89,8 +89,8 @@ class DefaultSolrTemplate extends AbstractDocumentTemplate implements SolrTempla
     }
 
     @Override
-    protected ClassMappings getClassMappings() {
-        return mappings;
+    protected EntitiesMetadata getEntities() {
+        return entities;
     }
 
     @Override

@@ -25,7 +25,7 @@ import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.column.ColumnEntityConverter;
 import jakarta.nosql.mapping.column.ColumnEventPersistManager;
 import jakarta.nosql.mapping.column.ColumnWorkflow;
-import org.eclipse.jnosql.mapping.reflection.ClassMappings;
+import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.column.AbstractColumnTemplate;
 
 import org.eclipse.jnosql.communication.cassandra.column.CassandraColumnFamilyManager;
@@ -53,7 +53,7 @@ class DefaultCassandraTemplate extends AbstractColumnTemplate implements Cassand
 
     private ColumnEventPersistManager persistManager;
 
-    private ClassMappings mappings;
+    private EntitiesMetadata entities;
 
     private Converters converters;
 
@@ -62,13 +62,13 @@ class DefaultCassandraTemplate extends AbstractColumnTemplate implements Cassand
                              CassandraColumnEntityConverter converter,
                              CassandraColumnWorkflow flow,
                              ColumnEventPersistManager persistManager,
-                             ClassMappings mappings,
+                             EntitiesMetadata entities,
                              Converters converters) {
         this.manager = manager;
         this.converter = converter;
         this.flow = flow;
         this.persistManager = persistManager;
-        this.mappings = mappings;
+        this.entities = entities;
         this.converters = converters;
     }
 
@@ -97,8 +97,8 @@ class DefaultCassandraTemplate extends AbstractColumnTemplate implements Cassand
     }
 
     @Override
-    protected ClassMappings getClassMappings() {
-        return mappings;
+    protected EntitiesMetadata getEntities() {
+        return entities;
     }
 
     @Override

@@ -23,7 +23,7 @@ import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.document.DocumentEntityConverter;
 import jakarta.nosql.mapping.document.DocumentEventPersistManager;
 import jakarta.nosql.mapping.document.DocumentWorkflow;
-import org.eclipse.jnosql.mapping.reflection.ClassMappings;
+import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import jakarta.nosql.tck.test.CDIExtension;
 import org.eclipse.jnosql.communication.couchbase.document.CouchbaseDocumentCollectionManager;
 import org.junit.jupiter.api.BeforeEach;
@@ -55,7 +55,7 @@ public class DefaultCouchbaseTemplateTest {
     private DocumentEventPersistManager persistManager;
 
     @Inject
-    private ClassMappings mappings;
+    private EntitiesMetadata entities;
 
     @Inject
     private Converters converters;
@@ -70,7 +70,7 @@ public class DefaultCouchbaseTemplateTest {
         manager = Mockito.mock(CouchbaseDocumentCollectionManager.class);
         Instance instance = Mockito.mock(Instance.class);
         when(instance.get()).thenReturn(manager);
-        template = new DefaultCouchbaseTemplate(instance, converter, flow, persistManager, mappings, converters);
+        template = new DefaultCouchbaseTemplate(instance, converter, flow, persistManager, entities, converters);
 
         DocumentEntity entity = DocumentEntity.of("Person");
         entity.add(Document.of("_id", "Ada"));

@@ -17,7 +17,7 @@ package org.eclipse.jnosql.mapping.cassandra.column;
 
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.column.ColumnEntityConverter;
-import org.eclipse.jnosql.mapping.reflection.ClassMappings;
+import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.reflection.FieldMapping;
 import jakarta.nosql.column.Column;
 import org.eclipse.jnosql.mapping.column.AbstractColumnEntityConverter;
@@ -41,15 +41,15 @@ import java.util.stream.StreamSupport;
 class CassandraColumnEntityConverter extends AbstractColumnEntityConverter implements ColumnEntityConverter {
 
     @Inject
-    private ClassMappings mappings;
+    private EntitiesMetadata entities;
 
     @Inject
     private Converters converters;
 
 
     @Override
-    protected ClassMappings getClassMappings() {
-        return mappings;
+    protected EntitiesMetadata getEntities() {
+        return entities;
     }
 
     @Override

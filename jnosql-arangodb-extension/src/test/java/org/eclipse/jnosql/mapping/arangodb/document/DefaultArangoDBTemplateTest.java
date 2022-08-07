@@ -20,7 +20,7 @@ import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.document.DocumentEntityConverter;
 import jakarta.nosql.mapping.document.DocumentEventPersistManager;
 import jakarta.nosql.mapping.document.DocumentWorkflow;
-import org.eclipse.jnosql.mapping.reflection.ClassMappings;
+import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import jakarta.nosql.tck.test.CDIExtension;
 import org.eclipse.jnosql.communication.arangodb.document.ArangoDBDocumentCollectionManager;
 import org.junit.jupiter.api.BeforeEach;
@@ -48,7 +48,7 @@ public class DefaultArangoDBTemplateTest {
     private DocumentEventPersistManager persistManager;
 
     @Inject
-    private ClassMappings mappings;
+    private EntitiesMetadata entities;
     @Inject
     private Converters converters;
 
@@ -62,7 +62,7 @@ public class DefaultArangoDBTemplateTest {
         manager = Mockito.mock(ArangoDBDocumentCollectionManager.class);
         Instance instance = Mockito.mock(Instance.class);
         when(instance.get()).thenReturn(manager);
-        template = new DefaultArangoDBTemplate(instance, converter, flow, persistManager, mappings, converters);
+        template = new DefaultArangoDBTemplate(instance, converter, flow, persistManager, entities, converters);
 
         DocumentEntity entity = DocumentEntity.of("Person");
         entity.add(Document.of("_id", "Ada"));

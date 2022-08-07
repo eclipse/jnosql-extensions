@@ -14,12 +14,6 @@
  */
 package org.eclipse.jnosql.mapping.mongodb;
 
-import org.eclipse.jnosql.mapping.mongodb.criteria.api.CriteriaQuery;
-import org.eclipse.jnosql.mapping.mongodb.criteria.api.CriteriaQueryResult;
-import org.eclipse.jnosql.mapping.mongodb.criteria.api.EntityQuery;
-import org.eclipse.jnosql.mapping.mongodb.criteria.api.ExecutableQuery;
-import org.eclipse.jnosql.mapping.mongodb.criteria.api.ExpressionQuery;
-import org.eclipse.jnosql.mapping.mongodb.criteria.api.SelectQuery;
 import jakarta.nosql.document.DocumentEntity;
 import jakarta.nosql.document.DocumentQuery;
 import jakarta.nosql.mapping.Converters;
@@ -30,19 +24,26 @@ import org.bson.BsonValue;
 import org.bson.conversions.Bson;
 import org.eclipse.jnosql.communication.mongodb.document.MongoDBDocumentCollectionManager;
 import org.eclipse.jnosql.mapping.document.AbstractDocumentTemplate;
-import org.eclipse.jnosql.mapping.reflection.ClassMapping;
-import org.eclipse.jnosql.mapping.reflection.ClassMappings;
+import org.eclipse.jnosql.mapping.mongodb.criteria.CriteriaQueryUtils;
+import org.eclipse.jnosql.mapping.mongodb.criteria.DefaultCriteriaQuery;
+import org.eclipse.jnosql.mapping.mongodb.criteria.api.CriteriaQuery;
+import org.eclipse.jnosql.mapping.mongodb.criteria.api.CriteriaQueryResult;
+import org.eclipse.jnosql.mapping.mongodb.criteria.api.EntityQuery;
+import org.eclipse.jnosql.mapping.mongodb.criteria.api.ExecutableQuery;
+import org.eclipse.jnosql.mapping.mongodb.criteria.api.ExpressionQuery;
+import org.eclipse.jnosql.mapping.mongodb.criteria.api.SelectQuery;
+import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
+import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 
 import javax.enterprise.inject.Instance;
 import javax.enterprise.inject.Typed;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import static java.util.Objects.requireNonNull;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import org.eclipse.jnosql.mapping.mongodb.criteria.CriteriaQueryUtils;
-import org.eclipse.jnosql.mapping.mongodb.criteria.DefaultCriteriaQuery;
+
+import static java.util.Objects.requireNonNull;
 
 @Typed(MongoDBTemplate.class)
 class DefaultMongoDBTemplate extends AbstractDocumentTemplate implements MongoDBTemplate {
@@ -53,7 +54,7 @@ class DefaultMongoDBTemplate extends AbstractDocumentTemplate implements MongoDB
 
     private DocumentWorkflow workflow;
 
-    private ClassMappings mappings;
+    private EntitiesMetadata entities;
 
     private Converters converters;
 
@@ -69,13 +70,13 @@ class DefaultMongoDBTemplate extends AbstractDocumentTemplate implements MongoDB
     DefaultMongoDBTemplate(Instance<MongoDBDocumentCollectionManager> manager,
             DocumentEntityConverter converter,
             DocumentWorkflow workflow,
-            ClassMappings mappings,
+            EntitiesMetadata entities,
             Converters converters,
             DocumentEventPersistManager persistManager) {
         this.manager = manager;
         this.converter = converter;
         this.workflow = workflow;
-        this.mappings = mappings;
+        this.entities = entities;
         this.converters = converters;
         this.persistManager = persistManager;
     }
@@ -101,8 +102,8 @@ class DefaultMongoDBTemplate extends AbstractDocumentTemplate implements MongoDB
     }
 
     @Override
-    protected ClassMappings getClassMappings() {
-        return mappings;
+    protected EntitiesMetadata getEntities() {
+        return entities;
     }
 
     @Override
@@ -121,8 +122,8 @@ class DefaultMongoDBTemplate extends AbstractDocumentTemplate implements MongoDB
     public <T> long delete(Class<T> entity, Bson filter) {
         Objects.requireNonNull(entity, "Entity is required");
         Objects.requireNonNull(filter, "filter is required");
-        ClassMapping mapping = this.mappings.get(entity);
-        return this.getManager().delete(mapping.getName(), filter);
+        EntityMetadata entityMetadata = this.entities.get(entity);
+        return this.getManager().delete(entityMetadata.getName(), filter);
     }
 
     @Override
@@ -137,8 +138,8 @@ class DefaultMongoDBTemplate extends AbstractDocumentTemplate implements MongoDB
     public <T> Stream<T> select(Class<T> entity, Bson filter) {
         Objects.requireNonNull(entity, "entity is required");
         Objects.requireNonNull(filter, "filter is required");
-        ClassMapping mapping = this.mappings.get(entity);
-        Stream<DocumentEntity> entityStream = this.getManager().select(mapping.getName(), filter);
+        EntityMetadata entityMetadata = this.entities.get(entity);
+        Stream<DocumentEntity> entityStream = this.getManager().select(entityMetadata.getName(), filter);
         return entityStream.map(this.converter::toEntity);
     }
 
@@ -153,8 +154,8 @@ class DefaultMongoDBTemplate extends AbstractDocumentTemplate implements MongoDB
     public <T> Stream<Map<String, BsonValue>> aggregate(Class<T> entity, List<Bson> pipeline) {
         Objects.requireNonNull(entity, "entity is required");
         Objects.requireNonNull(pipeline, "pipeline is required");
-        ClassMapping mapping = this.mappings.get(entity);
-        return this.getManager().aggregate(mapping.getName(), pipeline);
+        EntityMetadata entityMetadata = this.entities.get(entity);
+        return this.getManager().aggregate(entityMetadata.getName(), pipeline);
     }
 
     @Override
