@@ -63,7 +63,7 @@ public class DefaultSolrTemplateTest {
         manager = Mockito.mock(SolrDocumentCollectionManager.class);
         Instance instance = Mockito.mock(Instance.class);
         when(instance.get()).thenReturn(manager);
-        template = new DefaultSolrTemplate(instance, converter, flow, persistManager, mappings, converters);
+        template = new DefaultSolrTemplate(instance, converter, flow, persistManager, entities, converters);
 
         DocumentEntity entity = DocumentEntity.of("Person");
         entity.add(Document.of("_id", "Ada"));

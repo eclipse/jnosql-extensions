@@ -82,7 +82,7 @@ class DefaultMongoDBTemplateTest {
         this.manager = mock(MongoDBDocumentCollectionManager.class);
         Instance instance = mock(Instance.class);
         when(instance.get()).thenReturn(manager);
-        template = new DefaultMongoDBTemplate(instance, converter, flow, mappings, converters, persistManager);
+        template = new DefaultMongoDBTemplate(instance, converter, flow, entities, converters, persistManager);
     }
 
     @Test
