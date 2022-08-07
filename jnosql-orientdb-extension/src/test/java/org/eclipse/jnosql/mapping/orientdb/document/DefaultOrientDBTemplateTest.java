@@ -70,7 +70,7 @@ public class DefaultOrientDBTemplateTest {
         manager = Mockito.mock(OrientDBDocumentCollectionManager.class);
         Instance instance = Mockito.mock(Instance.class);
         when(instance.get()).thenReturn(manager);
-        template = new DefaultOrientDBTemplate(instance, converter, flow, persistManager, mappings, converters);
+        template = new DefaultOrientDBTemplate(instance, converter, flow, persistManager, entities, converters);
 
         DocumentEntity entity = DocumentEntity.of("Person");
         entity.add(Document.of("name", "Ada"));
