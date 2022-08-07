@@ -23,9 +23,9 @@ import jakarta.nosql.column.ColumnEntity;
 import jakarta.nosql.column.ColumnQuery;
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.column.ColumnEventPersistManager;
-import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import jakarta.nosql.tck.test.CDIExtension;
 import org.eclipse.jnosql.communication.cassandra.column.CassandraColumnFamilyManager;
+import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -75,12 +75,11 @@ public class DefaultCassandraTemplateTest {
         this.manager = mock(CassandraColumnFamilyManager.class);
         Instance instance = mock(Instance.class);
         when(instance.get()).thenReturn(manager);
-        template = new DefaultCassandraTemplate(instance, converter, flow, persistManager, mappings, converters);
+        template = new DefaultCassandraTemplate(instance, converter, flow, persistManager, entities, converters);
     }
 
-
     @Test
-    public void shouldSaveConsntency() {
+    public void shouldSaveConsistency() {
         ColumnEntity entity = ColumnEntity.of("Person", asList(Column.of("name", "Name"), Column.of("age", 20)));
 
         ArgumentCaptor<ColumnEntity> captor = ArgumentCaptor.forClass(ColumnEntity.class);
