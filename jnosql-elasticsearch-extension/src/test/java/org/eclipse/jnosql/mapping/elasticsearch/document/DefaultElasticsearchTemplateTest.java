@@ -20,9 +20,9 @@ import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.document.DocumentEntityConverter;
 import jakarta.nosql.mapping.document.DocumentEventPersistManager;
 import jakarta.nosql.mapping.document.DocumentWorkflow;
-import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import jakarta.nosql.tck.test.CDIExtension;
 import org.eclipse.jnosql.communication.elasticsearch.document.ElasticsearchDocumentCollectionManager;
+import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -71,7 +71,7 @@ public class DefaultElasticsearchTemplateTest {
         manager = Mockito.mock(ElasticsearchDocumentCollectionManager.class);
         Instance instance = Mockito.mock(Instance.class);
         when(instance.get()).thenReturn(manager);
-        template = new DefaultElasticsearchTemplate(instance, converter, flow, persistManager, mappings, converters);
+        template = new DefaultElasticsearchTemplate(instance, converter, flow, persistManager, entities, converters);
 
         DocumentEntity entity = DocumentEntity.of("Person");
         entity.add(Document.of("name", "Ada"));
@@ -117,8 +117,8 @@ public class DefaultElasticsearchTemplateTest {
 
     @Test
     public void shouldGetClassMappings() {
-        assertNotNull(template.getClassMappings());
-        assertEquals(mappings, template.getClassMappings());
+        assertNotNull(template.getEntities());
+        assertEquals(entities, template.getEntities());
     }
 
     @Test
