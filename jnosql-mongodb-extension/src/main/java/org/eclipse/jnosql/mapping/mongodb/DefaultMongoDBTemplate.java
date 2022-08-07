@@ -31,7 +31,7 @@ import org.bson.conversions.Bson;
 import org.eclipse.jnosql.communication.mongodb.document.MongoDBDocumentCollectionManager;
 import org.eclipse.jnosql.mapping.document.AbstractDocumentTemplate;
 import org.eclipse.jnosql.mapping.reflection.ClassMapping;
-import org.eclipse.jnosql.mapping.reflection.ClassMappings;
+import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 
 import javax.enterprise.inject.Instance;
 import javax.enterprise.inject.Typed;
@@ -53,7 +53,7 @@ class DefaultMongoDBTemplate extends AbstractDocumentTemplate implements MongoDB
 
     private DocumentWorkflow workflow;
 
-    private ClassMappings mappings;
+    private EntitiesMetadata entities;
 
     private Converters converters;
 
@@ -69,13 +69,13 @@ class DefaultMongoDBTemplate extends AbstractDocumentTemplate implements MongoDB
     DefaultMongoDBTemplate(Instance<MongoDBDocumentCollectionManager> manager,
             DocumentEntityConverter converter,
             DocumentWorkflow workflow,
-            ClassMappings mappings,
+            EntitiesMetadata entities,
             Converters converters,
             DocumentEventPersistManager persistManager) {
         this.manager = manager;
         this.converter = converter;
         this.workflow = workflow;
-        this.mappings = mappings;
+        this.entities = entities;
         this.converters = converters;
         this.persistManager = persistManager;
     }

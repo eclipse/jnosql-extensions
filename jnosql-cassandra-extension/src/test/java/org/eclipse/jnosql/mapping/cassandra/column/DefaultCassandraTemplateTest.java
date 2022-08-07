@@ -23,7 +23,7 @@ import jakarta.nosql.column.ColumnEntity;
 import jakarta.nosql.column.ColumnQuery;
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.column.ColumnEventPersistManager;
-import org.eclipse.jnosql.mapping.reflection.ClassMappings;
+import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import jakarta.nosql.tck.test.CDIExtension;
 import org.eclipse.jnosql.communication.cassandra.column.CassandraColumnFamilyManager;
 import org.hamcrest.Matchers;
@@ -61,7 +61,7 @@ public class DefaultCassandraTemplateTest {
     private ColumnEventPersistManager persistManager;
 
     @Inject
-    private ClassMappings mappings;
+    private EntitiesMetadata entities;
 
     @Inject
     private Converters converters;
