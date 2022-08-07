@@ -88,8 +88,8 @@ class DefaultArangoDBTemplate extends AbstractDocumentTemplate implements Arango
     }
 
     @Override
-    protected ClassMappings getClassMappings() {
-        return mappings;
+    protected EntitiesMetadata getEntities() {
+        return entities;
     }
 
     @Override

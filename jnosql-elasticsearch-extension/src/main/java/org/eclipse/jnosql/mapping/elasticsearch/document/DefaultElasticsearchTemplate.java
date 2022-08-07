@@ -90,8 +90,8 @@ class DefaultElasticsearchTemplate extends AbstractDocumentTemplate
     }
 
     @Override
-    protected ClassMappings getClassMappings() {
-        return mappings;
+    protected EntitiesMetadata getEntities() {
+        return entities;
     }
 
     @Override

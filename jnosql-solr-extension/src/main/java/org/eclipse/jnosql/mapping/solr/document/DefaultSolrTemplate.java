@@ -89,8 +89,8 @@ class DefaultSolrTemplate extends AbstractDocumentTemplate implements SolrTempla
     }
 
     @Override
-    protected ClassMappings getClassMappings() {
-        return mappings;
+    protected EntitiesMetadata getEntities() {
+        return entities;
     }
 
     @Override
