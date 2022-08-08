@@ -14,13 +14,12 @@
  */
 package org.eclipse.jnosql.mapping.metamodel.processor;
 
-import jakarta.nosql.tck.test.CDIExtension;
 import org.eclipse.jnosql.mapping.metamodel.api.NumberAttribute;
 import org.eclipse.jnosql.mapping.metamodel.api.StringAttribute;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
 
-@CDIExtension
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 class MetamodelTest {
 
     @Test
