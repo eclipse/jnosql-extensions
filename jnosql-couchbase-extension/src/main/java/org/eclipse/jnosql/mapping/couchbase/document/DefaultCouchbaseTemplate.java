@@ -15,8 +15,7 @@
 package org.eclipse.jnosql.mapping.couchbase.document;
 
 
-import com.couchbase.client.java.document.json.JsonObject;
-import com.couchbase.client.java.query.Statement;
+import com.couchbase.client.java.json.JsonObject;
 import com.couchbase.client.java.search.SearchQuery;
 import jakarta.nosql.document.DocumentCollectionManager;
 import jakarta.nosql.mapping.Converters;
@@ -110,15 +109,6 @@ class DefaultCouchbaseTemplate extends AbstractDocumentTemplate
     }
 
     @Override
-    public <T> Stream<T> n1qlQuery(Statement n1qlQuery, JsonObject params) {
-        requireNonNull(n1qlQuery, "n1qlQuery is required");
-        requireNonNull(params, "params is required");
-        return manager.get().n1qlQuery(n1qlQuery, params)
-                .map(converter::toEntity)
-                .map(d -> (T) d);
-    }
-
-    @Override
     public <T> Stream<T> n1qlQuery(String n1qlQuery) {
         requireNonNull(n1qlQuery, "n1qlQuery is required");
         return manager.get().n1qlQuery(n1qlQuery)
@@ -134,11 +124,4 @@ class DefaultCouchbaseTemplate extends AbstractDocumentTemplate
                 .map(d -> (T) d);
     }
 
-    @Override
-    public <T> Stream<T> n1qlQuery(Statement n1qlQuery) {
-        requireNonNull(n1qlQuery, "n1qlQuery is required");
-        return manager.get().n1qlQuery(n1qlQuery)
-                .map(converter::toEntity)
-                .map(d -> (T) d);
-    }
 }
