@@ -15,8 +15,7 @@
 package org.eclipse.jnosql.mapping.couchbase.document;
 
 
-import com.couchbase.client.java.document.json.JsonObject;
-import com.couchbase.client.java.query.Statement;
+import com.couchbase.client.java.json.JsonObject;
 import com.couchbase.client.java.search.SearchQuery;
 import jakarta.nosql.mapping.document.DocumentTemplate;
 
@@ -38,18 +37,9 @@ public interface CouchbaseTemplate extends DocumentTemplate {
      */
     <T> Stream<T> n1qlQuery(String n1qlQuery, JsonObject params);
 
-    /**
-     * Executes the n1qlquery  with params and then result que result
-     *
-     * @param n1qlQuery the query
-     * @param params    the params
-     * @return the query result
-     * @throws NullPointerException when either n1qlQuery or params are null
-     */
-    <T> Stream<T> n1qlQuery(Statement n1qlQuery, JsonObject params);
 
     /**
-     * Executes the n1qlquery  plain query and then result que result
+     * Executes the n1ql  plain query and then result que result
      *
      * @param n1qlQuery the query
      * @return the query result
@@ -67,12 +57,4 @@ public interface CouchbaseTemplate extends DocumentTemplate {
      */
     <T> Stream<T> search(SearchQuery query);
 
-    /**
-     * Executes the n1qlquery  plain query and then result que result
-     *
-     * @param n1qlQuery the query
-     * @return the query result
-     * @throws NullPointerException when either n1qlQuery or params are null
-     */
-    <T> Stream<T> n1qlQuery(Statement n1qlQuery);
 }

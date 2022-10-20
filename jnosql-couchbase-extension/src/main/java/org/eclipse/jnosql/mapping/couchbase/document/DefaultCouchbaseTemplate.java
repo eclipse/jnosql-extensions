@@ -15,8 +15,6 @@
 package org.eclipse.jnosql.mapping.couchbase.document;
 
 
-import com.couchbase.client.java.document.json.JsonObject;
-import com.couchbase.client.java.query.Statement;
 import com.couchbase.client.java.search.SearchQuery;
 import jakarta.nosql.document.DocumentCollectionManager;
 import jakarta.nosql.mapping.Converters;
