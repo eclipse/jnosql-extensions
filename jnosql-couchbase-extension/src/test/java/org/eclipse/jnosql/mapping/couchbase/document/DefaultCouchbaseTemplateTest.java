@@ -14,8 +14,7 @@
  */
 package org.eclipse.jnosql.mapping.couchbase.document;
 
-import com.couchbase.client.java.document.json.JsonObject;
-import com.couchbase.client.java.query.Statement;
+import com.couchbase.client.java.json.JsonObject;
 import com.couchbase.client.java.search.SearchQuery;
 import jakarta.nosql.document.Document;
 import jakarta.nosql.document.DocumentEntity;
@@ -88,25 +87,9 @@ public class DefaultCouchbaseTemplateTest {
     }
 
     @Test
-    public void shouldFindN1qlStatment() {
-        Statement statement = Mockito.mock(Statement.class);
-        JsonObject params = JsonObject.create().put("name", "Ada");
-        template.n1qlQuery(statement, params);
-        Mockito.verify(manager).n1qlQuery(statement, params);
-    }
-
-
-    @Test
     public void shouldFindN1ql2() {
         template.n1qlQuery("select * from Person where name = $name");
         Mockito.verify(manager).n1qlQuery("select * from Person where name = $name");
-    }
-
-    @Test
-    public void shouldFindN1qlStatment2() {
-        Statement statement = Mockito.mock(Statement.class);
-        template.n1qlQuery(statement);
-        Mockito.verify(manager).n1qlQuery(statement);
     }
 
     @Test
