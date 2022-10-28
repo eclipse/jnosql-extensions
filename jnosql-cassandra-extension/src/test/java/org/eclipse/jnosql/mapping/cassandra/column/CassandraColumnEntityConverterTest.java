@@ -18,6 +18,7 @@ import jakarta.nosql.TypeReference;
 import jakarta.nosql.Value;
 import jakarta.nosql.column.Column;
 import jakarta.nosql.column.ColumnEntity;
+import org.assertj.core.api.Assertions;
 import org.eclipse.jnosql.mapping.cassandra.column.model.Actor;
 import org.eclipse.jnosql.mapping.cassandra.column.model.AppointmentBook;
 import org.eclipse.jnosql.mapping.cassandra.column.model.Artist;
@@ -50,8 +51,7 @@ import java.util.stream.Stream;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.singleton;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -104,7 +104,7 @@ public class CassandraColumnEntityConverterTest {
         assertEquals(6, entity.size());
 
 
-        assertThat(entity.getColumns(), containsInAnyOrder(columns));
+        assertThat(entity.getColumns()).contains(columns);
     }
 
     @Test
@@ -283,8 +283,8 @@ public class CassandraColumnEntityConverterTest {
 
         assertEquals("address", udt.getUserType());
         assertEquals("home", udt.getName());
-        assertThat((List<Column>) udt.get(),
-                containsInAnyOrder(Column.of("city", "California"), Column.of("street", "Street")));
+        assertThat((List<Column>) udt.get())
+                .contains(Column.of("city", "California"), Column.of("street", "Street"));
 
     }
 
@@ -360,8 +360,8 @@ public class CassandraColumnEntityConverterTest {
         List<Contact> contacts = appointmentBook.getContacts();
         assertEquals("otaviojava", appointmentBook.getUser());
 
-        assertThat(contacts, containsInAnyOrder(new Contact("Poliana", "poliana"),
-                new Contact("Ada", "ada@lovelace.com")));
+        assertThat(contacts).contains(new Contact("Poliana", "poliana"),
+                new Contact("Ada", "ada@lovelace.com"));
 
 
     }
