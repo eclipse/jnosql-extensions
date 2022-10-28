@@ -14,6 +14,7 @@
  */
 package org.eclipse.jnosql.mapping.mongodb;
 
+import jakarta.nosql.document.Document;
 import jakarta.nosql.document.DocumentEntity;
 import jakarta.nosql.document.DocumentQuery;
 import jakarta.nosql.mapping.Converters;
@@ -186,7 +187,7 @@ class DefaultMongoDBTemplate extends AbstractDocumentTemplate implements MongoDB
                 ExpressionQuery.class.cast(selectQuery).feed(
                         entityStream.map(
                                 documentEntity -> documentEntity.getDocuments().stream().map(
-                                        document -> document.getValue()
+                                        Document::getValue
                                 ).collect(
                                         Collectors.toList()
                                 )

@@ -100,7 +100,7 @@ public class CriteriaQueryUtils {
                     : DocumentCondition::and;
             result = function.apply(
                     restrictions.stream().map(
-                            restriction -> computeCondition(restriction)
+                            CriteriaQueryUtils::computeCondition
                     ).toArray(
                             DocumentCondition[]::new
                     )
@@ -183,7 +183,7 @@ public class CriteriaQueryUtils {
             ExpressionQuery<X> expressionQuery = ExpressionQuery.class.cast(selectQuery);
             builder = DocumentQuery.builder(
                     expressionQuery.getExpressions().stream().map(
-                            expression -> unfold(expression)
+                            CriteriaQueryUtils::unfold
                     ).toArray(
                             String[]::new
                     )
@@ -201,9 +201,7 @@ public class CriteriaQueryUtils {
                         ).orElse(
                                 Collections.<Predicate<X>>emptyList()
                         ).stream().map(
-                                restriction -> computeCondition(
-                                        restriction
-                                )
+                                CriteriaQueryUtils::computeCondition
                         ).toArray(
                                 DocumentCondition[]::new
                         )
@@ -226,13 +224,13 @@ public class CriteriaQueryUtils {
         DocumentQuery.DocumentQueryBuilder limit = Optional.ofNullable(
                 selectQuery.getMaxResults()
         ).map(
-                maxResults -> where.limit(maxResults)
+                where::limit
         ).orElse(where);
 
         DocumentQuery.DocumentQueryBuilder skip = Optional.ofNullable(
                 selectQuery.getFirstResult()
         ).map(
-                firstResult -> limit.skip(firstResult)
+                limit::skip
         ).orElse(limit);
 
         return skip.build();

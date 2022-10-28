@@ -36,8 +36,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static jakarta.nosql.document.DocumentQuery.select;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.contains;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -83,7 +82,7 @@ public class DefaultOrientDBTemplateTest {
     public void shouldFindQuery() {
         Stream<Person> people = template.sql("sql * from Person where name = ?", "Ada");
 
-        assertThat(people.collect(Collectors.toList()), contains(new Person("Ada", 10)));
+        assertThat(people.collect(Collectors.toList())).contains(new Person("Ada", 10));
         verify(manager).sql(Mockito.eq("sql * from Person where name = ?"), Mockito.eq("Ada"));
     }
 

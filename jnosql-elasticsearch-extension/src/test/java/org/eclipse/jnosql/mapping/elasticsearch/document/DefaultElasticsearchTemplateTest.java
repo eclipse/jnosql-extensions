@@ -34,10 +34,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
 import static org.elasticsearch.index.query.QueryBuilders.termQuery;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.contains;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.when;
@@ -85,7 +84,7 @@ public class DefaultElasticsearchTemplateTest {
         QueryBuilder queryBuilder = boolQuery().filter(termQuery("name", "Ada"));
         List<Person> people = template.<Person>search(queryBuilder).collect(Collectors.toList());
 
-        assertThat(people, contains(new Person("Ada", 10)));
+        assertThat(people).contains(new Person("Ada", 10));
         Mockito.verify(manager).search(Mockito.eq(queryBuilder));
     }
 

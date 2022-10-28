@@ -15,7 +15,6 @@
 package org.eclipse.jnosql.mapping.mongodb;
 
 
-import io.smallrye.common.constraint.Assert;
 import jakarta.nosql.document.DocumentEntity;
 import jakarta.nosql.mapping.document.DocumentEntityConverter;
 import org.bson.types.ObjectId;
