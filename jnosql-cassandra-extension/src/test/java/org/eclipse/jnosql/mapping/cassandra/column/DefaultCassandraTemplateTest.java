@@ -26,7 +26,6 @@ import jakarta.nosql.mapping.column.ColumnEventPersistManager;
 import jakarta.nosql.tck.test.CDIExtension;
 import org.eclipse.jnosql.communication.cassandra.column.CassandraColumnFamilyManager;
 import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
-import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -42,7 +41,7 @@ import java.util.stream.Stream;
 
 import static jakarta.nosql.column.ColumnQuery.select;
 import static java.util.Arrays.asList;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -101,7 +100,7 @@ public class DefaultCassandraTemplateTest {
     }
 
     @Test
-    public void shouldSaveConsntencyIterable() {
+    public void shouldSaveConsistencyIterable() {
         ColumnEntity entity = ColumnEntity.of("Person", asList(Column.of("name", "Name"), Column.of("age", 20)));
 
         ArgumentCaptor<ColumnEntity> captor = ArgumentCaptor.forClass(ColumnEntity.class);
@@ -115,7 +114,7 @@ public class DefaultCassandraTemplateTest {
         Person person = new Person();
         person.setName("Name");
         person.setAge(20);
-        assertThat(template.save(Collections.singletonList(person), level), Matchers.contains(person));
+        assertThat(template.save(Collections.singletonList(person), level)).contains(person);
         Mockito.verify(manager).save(captor.capture(), Mockito.eq(level));
         assertEquals(entity, captor.getValue());
 
@@ -159,7 +158,7 @@ public class DefaultCassandraTemplateTest {
         Person person = new Person();
         person.setName("Name");
         person.setAge(20);
-        assertThat(template.save(Collections.singletonList(person), duration, level), Matchers.contains(person));
+        assertThat(template.save(Collections.singletonList(person), duration, level)).contains(person);
         Mockito.verify(manager).save(captor.capture(), Mockito.eq(duration), Mockito.eq(level));
         assertEquals(entity, captor.getValue());
     }
@@ -187,7 +186,7 @@ public class DefaultCassandraTemplateTest {
         when(manager.select(query, level)).thenReturn(Stream.of(entity));
 
         Stream<Person> people = template.find(query, level);
-        assertThat(people.collect(Collectors.toList()), Matchers.contains(person));
+        assertThat(people.collect(Collectors.toList())).contains(person);
     }
 
     @Test
@@ -201,7 +200,7 @@ public class DefaultCassandraTemplateTest {
         when(manager.cql(cql)).thenReturn(Stream.of(entity));
 
         List<Person> people = template.<Person>cql(cql).collect(Collectors.toList());
-        assertThat(people, Matchers.contains(person));
+        assertThat(people).contains(person);
     }
     
     @Test
@@ -215,7 +214,7 @@ public class DefaultCassandraTemplateTest {
         when(manager.execute(statement)).thenReturn(Stream.of(entity));
 
         List<Person> people = template.<Person>execute(statement).collect(Collectors.toList());
-        assertThat(people, Matchers.contains(person));
+        assertThat(people).contains(person);
     }
 
 }
