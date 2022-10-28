@@ -21,7 +21,6 @@ import jakarta.nosql.mapping.document.DocumentEntityConverter;
 import jakarta.nosql.mapping.document.DocumentEventPersistManager;
 import jakarta.nosql.mapping.document.DocumentWorkflow;
 import jakarta.nosql.tck.test.CDIExtension;
-import org.assertj.core.api.Assertions;
 import org.eclipse.jnosql.communication.elasticsearch.document.ElasticsearchDocumentCollectionManager;
 import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import org.elasticsearch.index.query.QueryBuilder;

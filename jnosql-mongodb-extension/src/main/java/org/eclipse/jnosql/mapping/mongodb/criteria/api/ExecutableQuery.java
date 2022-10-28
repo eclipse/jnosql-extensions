@@ -42,7 +42,7 @@ public interface ExecutableQuery<T, R extends CriteriaQueryResult<T>, Q extends 
     /**
      * Feed the results specific for this kind of query.
      *
-     * @param results
+     * @param the params
      * @return the same query instance
      * @throws NullPointerException if the argument is null
      */

@@ -21,7 +21,6 @@ import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.document.DocumentEntityConverter;
 import jakarta.nosql.mapping.document.DocumentEventPersistManager;
 import jakarta.nosql.mapping.document.DocumentWorkflow;
-import org.assertj.core.api.Assertions;
 import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import jakarta.nosql.tck.test.CDIExtension;
 import org.eclipse.jnosql.communication.orientdb.document.OrientDBDocumentCollectionManager;

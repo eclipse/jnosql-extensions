@@ -18,7 +18,6 @@ import jakarta.nosql.TypeReference;
 import jakarta.nosql.Value;
 import jakarta.nosql.column.Column;
 import jakarta.nosql.column.ColumnEntity;
-import org.assertj.core.api.Assertions;
 import org.eclipse.jnosql.mapping.cassandra.column.model.Actor;
 import org.eclipse.jnosql.mapping.cassandra.column.model.AppointmentBook;
 import org.eclipse.jnosql.mapping.cassandra.column.model.Artist;
@@ -155,7 +154,7 @@ public class CassandraColumnEntityConverterTest {
 
 
         Column subColumn = entity.find("movie").get();
-        List<Column> columns = subColumn.get(new TypeReference<List<Column>>() {
+        List<Column> columns = subColumn.get(new TypeReference<>() {
         });
 
         assertEquals(3, columns.size());
