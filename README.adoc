@@ -180,6 +180,11 @@ template.save(person, ConsistencyLevel.ONE);
 
 == Couchbase
 
+image::https://jnosql.github.io/img/logos/couchbase.svg[Couchbase Project,align="center"width=25%, height=25%]
+
+
+Couchbase extension has implementations to use specific behavior that is beyond the API such as N1QL.
+
 === How To Install
 
 You can use either, maven or Gradle dependency:
@@ -188,10 +193,61 @@ You can use either, maven or Gradle dependency:
 ----
 <dependency>
   <groupId>org.eclipse.jnosql.mapping</groupId>
-  <artifactId>aragangodb-extension</artifactId>
+  <artifactId>couchbase-extension</artifactId>
   <version>1.0.0-b4</version>
 </dependency>
 ----
+
+=== Make Couchbase manager available to container
+
+[source,java]
+----
+
+public class CouchbaseProducer {
+
+
+    @Produces
+    public CouchbaseDocumentCollectionManager getManager() {
+        CouchbaseDocumentCollectionManager manager = ...;
+        return manager;
+    }
+
+}
+
+
+----
+
+
+=== Repository
+
+CouchbaseRepository is an extension of Repository that allows using N1QL annotation that executes N1QL.
+
+
+[source,java]
+----
+interface PersonRepository extends CouchbaseRepository<Person, String> {
+
+@N1QL("select * from Person")
+List<Person> findAll();
+
+@N1QL("select * from Person where name = $name")
+List<Person> findByName(@Param("name") String name);
+
+}
+----
+
+
+=== Template
+
+CouchbaseTemplate is a specialization of Document Template that allows using N1QL both synchronous and asynchronous.
+
+[source,java]
+----
+
+List<Person> people = template.n1qlQuery("select * from Person where name = $name", params);
+
+----
+
 
 == Elasticsearch
 
