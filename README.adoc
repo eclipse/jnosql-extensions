@@ -302,6 +302,10 @@ List<Person> people = template.search(queryBuilder, "Person");
 
 == Hazelcast
 
+image::https://jnosql.github.io/img/logos/hazelcast.svg[Hazelcast Project,align="center" width=25%, height=25%]
+
+Hazelcast extension has implementations to use specific behavior that is beyond the API such as Hazelcast Query.
+
 === How To Install
 
 You can use either, maven or Gradle dependency:
@@ -310,10 +314,56 @@ You can use either, maven or Gradle dependency:
 ----
 <dependency>
   <groupId>org.eclipse.jnosql.mapping</groupId>
-  <artifactId>aragangodb-extension</artifactId>
+  <artifactId>hazelcast-extension</artifactId>
   <version>1.0.0-b4</version>
 </dependency>
 ----
+
+
+== Make Hazelcast manager available to container
+
+[source,java]
+----
+
+public class HazelcastProducer {
+
+
+    @Produces
+    public HazelcastBucketManager getManager() {
+        HazelcastBucketManager manager = ...;
+        return manager;
+    }
+}
+
+
+----
+
+=== Repository
+
+[source,java]
+----
+interface PersonRepository extends HazelcastRepository<Person, String> {
+
+        @Query("active")
+        List<Person> findActive();
+
+        @Query("name = :name AND age = :age")
+        Set<Person> findByAgeAndInteger(@Param("name") String name, @Param("age") Integer age);
+    }
+----
+
+
+=== Template
+
+HazelcastTemplate is a specialization of Key-value Template that allows using hazelcast query.
+
+[source,java]
+----
+Collection<Person> people = template.query("active");
+Collection<Person> people2 = template.query("age = :age", singletonMap("age", 10));
+Collection<Person> people3 = template.query(Predicates.equal("name",  "Poliana"));
+----
+
 
 == MongoDB
 
