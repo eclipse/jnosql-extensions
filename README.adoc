@@ -267,13 +267,13 @@ You can use either, maven or Gradle dependency:
   <version>1.0.0-b4</version>
 </dependency>
 ----
-= Make Elasticsearch manager available to container
+
+== Make Elasticsearch manager available to container
 
 [source,java]
 ----
 
 public class ElasticsearchProducer {
-
 
     @Produces
     public ElasticsearchDocumentCollectionManager getManager() {
@@ -298,21 +298,6 @@ ElasticsearchTemplate template;
 
 QueryBuilder queryBuilder = boolQuery().filter(termQuery("name", "Ada"));
 List<Person> people = template.search(queryBuilder, "Person");
-----
-
-== Graph connections
-
-=== How To Install
-
-You can use either, maven or Gradle dependency:
-
-[source,xml]
-----
-<dependency>
-  <groupId>org.eclipse.jnosql.mapping</groupId>
-  <artifactId>aragangodb-extension</artifactId>
-  <version>1.0.0-b4</version>
-</dependency>
 ----
 
 == Hazelcast
