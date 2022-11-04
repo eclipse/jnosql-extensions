@@ -18,12 +18,13 @@ MongoDB extension has implementations to use specific behavior that is beyond th
   </dependency>
 ----
 
-## Converter
+=== Converter
 
-In this extension you have the option to convert to/from MongoDB ```ObjectID```
+In this extension you have the option to convert to/from MongoDB ```ObjectID```.
 
 [source,java]
 ----
+
 @Entity
 public class Music {
 
@@ -34,18 +35,17 @@ public class Music {
 }
 ----
 
-## CriteriaQuery API 
+=== CriteriaQuery API
 
 Also, you can use the experimental Criteria API, largely inspired by the JPA one.
 Using this API you can execute queries built via CriteriaQuery.
 The CriteriaQuery is used in combination with Metamodel Attributes.
 These attributes are automagically generated from the defined NoSQL Entities, by including the Metamodel Processor extension as an optional dependency.
 
-----
 
-## EntityQuery
+=== EntityQuery
 
-You can fetch entities with an EntityQuery :
+You can fetch entities with an EntityQuery:
 
 [source,java]
 ----
@@ -68,7 +68,7 @@ EntityQueryResult<Person> executeQuery = template.executeQuery(
 Stream<Person> stream = executeQuery.getEntities();
 ----
 
-## ExpressionQuery
+=== ExpressionQuery
 
 You can fetch single columns/projections using an ExpressionQuery :
 

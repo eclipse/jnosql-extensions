@@ -367,6 +367,10 @@ Collection<Person> people3 = template.query(Predicates.equal("name",  "Poliana")
 
 == MongoDB
 
+image::https://jnosql.github.io/img/logos/mongodb.png[Cassandra Project,align="center" width=25%, height=25%]
+
+MongoDB extension has implementations to use specific behavior that is beyond the API such as Cassandra Query Language, consistency level.
+
 === How To Install
 
 You can use either, maven or Gradle dependency:
@@ -375,9 +379,99 @@ You can use either, maven or Gradle dependency:
 ----
 <dependency>
   <groupId>org.eclipse.jnosql.mapping</groupId>
-  <artifactId>aragangodb-extension</artifactId>
+  <artifactId>mongodb-extension</artifactId>
   <version>1.0.0-b4</version>
 </dependency>
+----
+
+=== Converter
+
+In this extension you have the option to convert to/from MongoDB ```ObjectID```.
+
+[source,java]
+----
+
+@Entity
+public class Music {
+
+    @Id
+    @Convert(ObjectIdConverter.class)
+    private String id;
+
+}
+----
+
+=== CriteriaQuery API
+
+Also, you can use the experimental Criteria API, largely inspired by the JPA one.
+Using this API you can execute queries built via CriteriaQuery.
+The CriteriaQuery is used in combination with Metamodel Attributes.
+These attributes are automagically generated from the defined NoSQL Entities, by including the Metamodel Processor extension as an optional dependency.
+
+
+=== EntityQuery
+
+You can fetch entities with an EntityQuery:
+
+[source,java]
+----
+CriteriaQuery<Person> personQuery = template.createQuery(Person.class);
+
+EntityQueryResult<Person> executeQuery = template.executeQuery(
+        personQuery.select().where(
+                personQuery.from().get(
+                        Person_.name
+                ).equal(
+                        "Poliana"
+                ).or(
+                        personQuery.from().get(
+                                Person_.age
+                        ).greaterThanOrEqualTo(17)
+                )
+        )
+);
+
+Stream<Person> stream = executeQuery.getEntities();
+----
+
+=== ExpressionQuery
+
+You can fetch single columns/projections using an ExpressionQuery :
+
+[source,java]
+----
+CriteriaQuery<Person> personQuery = template.createQuery(Person.class);
+
+StringExpression<Person, Person> nameExpression = personQuery.from().get(
+        Person_.name
+);
+NumberExpression<Person, Person, Integer> ageExpression = personQuery.from().get(
+        Person_.age
+);
+
+ExpressionQueryResult<Person> executeQuery = template.executeQuery(
+        personQuery.select(
+                nameExpression,
+                ageExpression
+        ).where(
+                nameExpression.equal(
+                        "Poliana"
+                ).or(
+                        ageExpression.greaterThanOrEqualTo(17)
+                )
+        )
+);
+
+Optional<ExpressionQueryResultRow<Person>> findFirst = executeQuery.getRows().findFirst();
+
+String name = findFirst.get().get(
+        nameExpression
+);
+
+Integer age = findFirst.get().get(
+        ageExpression
+);
+
 ----
 
 == Orientdb
