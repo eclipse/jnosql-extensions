@@ -1,15 +1,24 @@
 = Mappings Extension
+:toc: auto
 
 This project contains all specialization to Eclipse JNoSQL Mapping. The specific behavior in a NoSQL database matters, that's why there are Eclipse JNoSQL Mapping specializations.
 
 == Extensions 
 
-* arangodb-extension:
-* cassandra-extension:
-* couchbase-extension:
-* elasticsearch-extension:
-* graph-connections:
-* hazelcast-extension:
-* mongodb-extension:
-* orientdb-extension:
-* solr-extension:
+== Arangodb
+
+== Cassandra
+
+== Couchbase
+
+== Elasticsearch
+
+== Graph connections
+
+== Hazelcast
+
+== MongoDB
+
+== Orientdb
+
+== Solr
