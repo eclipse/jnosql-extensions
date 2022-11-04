@@ -16,7 +16,7 @@ You can use either, maven or Gradle dependency:
 [source,xml]
 ----
 <dependency>
-  <groupId>org.eclipse.jnosql.artemis</groupId>
+  <groupId>org.eclipse.jnosql.mapping</groupId>
   <artifactId>aragangodb-extension</artifactId>
   <version>1.0.0-b4</version>
 </dependency>
@@ -69,19 +69,216 @@ private ArangoDBTemplate template;
 List<Person> people = template.aql("FOR p IN Person FILTER p.name = @name RETURN p", params);
 ----
 
-
 == Cassandra
+
+image::https://jnosql.github.io/img/logos/cassandra.png[Apache Cassandra,align="center"width=25%, height=25%]
+
+Cassandra extension has implementations to use specific behavior that is beyond the API such as Cassandra Query Language, consistency level.
+
+=== How To Install
+
+You can use either, maven or Gradle dependency:
+
+[source,xml]
+----
+<dependency>
+  <groupId>org.eclipse.jnosql.mapping</groupId>
+  <artifactId>cassandra-extension</artifactId>
+  <version>1.0.0-b4</version>
+</dependency>
+----
+
+=== Make Cassandra manager available to container
+
+[source,java]
+----
+
+public class CassandraProducer {
+
+
+    @Produces
+    public CassandraColumnFamilyManager getManager() {
+        CassandraColumnFamilyManager manager = ...;
+        return manager;
+    }
+}
+
+
+----
+
+=== Repository
+
+CassandraRepository is an extension of Repository that allows using CQL annotation that executes Cassandra Query Language and also Consistency Level.
+
+
+[source,java]
+----
+    interface PersonRepository extends CassandraRepository<Person, String> {
+
+        @CQL("select * from Person")
+        List<Person> findAll();
+
+        @CQL("select * from Person where name = ?")
+        List<Person> findByName(String name);
+
+        @CQL("select * from Person where age = :age")
+        List<Person> findByAge(@Param("age") Integer age);
+ }
+----
+
+
+=== @UDT
+
+The UDT annotations is a mapping annotation that allows defining a field to be stored as User defined type in Cassandra.
+
+[source,java]
+----
+@Entity
+public class Person {
+
+    @Id("name")
+    private String name;
+
+    @Column
+    private Integer age;
+
+    @UDT("address")
+    @Column
+    private Address home;
+ }
+----
+
+=== Converts
+
+* TimestampConverter: That converts to/from java.util.Date
+* LocalDateConverter: That converts to/from com.datastax.driver.core.LocalDate
+
+[source,java]
+----
+
+    @Column
+    @Convert(value = TimestampConverter.class)
+    private LocalDateTime localDateTime;
+
+    @Column
+    @Convert(value = LocalDateConverter.class)
+    private Calendar calendar;
+
+----
+
+=== Template
+
+CassandraTemplate is a specializations of Column Template that allows using CQL.
+
+[source,java]
+----
+@Inject
+CassandraTemplate template;
+...
+template.save(person, ConsistencyLevel.ONE);
+----
 
 == Couchbase
 
+=== How To Install
+
+You can use either, maven or Gradle dependency:
+
+[source,xml]
+----
+<dependency>
+  <groupId>org.eclipse.jnosql.mapping</groupId>
+  <artifactId>aragangodb-extension</artifactId>
+  <version>1.0.0-b4</version>
+</dependency>
+----
+
 == Elasticsearch
+
+=== How To Install
+
+You can use either, maven or Gradle dependency:
+
+[source,xml]
+----
+<dependency>
+  <groupId>org.eclipse.jnosql.mapping</groupId>
+  <artifactId>aragangodb-extension</artifactId>
+  <version>1.0.0-b4</version>
+</dependency>
+----
 
 == Graph connections
 
+=== How To Install
+
+You can use either, maven or Gradle dependency:
+
+[source,xml]
+----
+<dependency>
+  <groupId>org.eclipse.jnosql.mapping</groupId>
+  <artifactId>aragangodb-extension</artifactId>
+  <version>1.0.0-b4</version>
+</dependency>
+----
+
 == Hazelcast
+
+=== How To Install
+
+You can use either, maven or Gradle dependency:
+
+[source,xml]
+----
+<dependency>
+  <groupId>org.eclipse.jnosql.mapping</groupId>
+  <artifactId>aragangodb-extension</artifactId>
+  <version>1.0.0-b4</version>
+</dependency>
+----
 
 == MongoDB
 
+=== How To Install
+
+You can use either, maven or Gradle dependency:
+
+[source,xml]
+----
+<dependency>
+  <groupId>org.eclipse.jnosql.mapping</groupId>
+  <artifactId>aragangodb-extension</artifactId>
+  <version>1.0.0-b4</version>
+</dependency>
+----
+
 == Orientdb
 
+=== How To Install
+
+You can use either, maven or Gradle dependency:
+
+[source,xml]
+----
+<dependency>
+  <groupId>org.eclipse.jnosql.mapping</groupId>
+  <artifactId>aragangodb-extension</artifactId>
+  <version>1.0.0-b4</version>
+</dependency>
+----
+
 == Solr
+
+=== How To Install
+
+You can use either, maven or Gradle dependency:
+
+[source,xml]
+----
+<dependency>
+  <groupId>org.eclipse.jnosql.mapping</groupId>
+  <artifactId>aragangodb-extension</artifactId>
+  <version>1.0.0-b4</version>
+</dependency>
+----
