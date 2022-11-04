@@ -5,6 +5,8 @@ This project contains all specialization to Eclipse JNoSQL Mapping. The specific
 
 == Arangodb
 
+image::https://jnosql.github.io/img/logos/ArangoDB.png[Arangodb Project,align="center"width=25%, height=25%]
+
 ArangoDB extension has implementations to use specific behavior that is beyond the API such as AQL.
 
 === How To Install
