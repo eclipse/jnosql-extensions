@@ -3,8 +3,6 @@
 
 This project contains all specialization to Eclipse JNoSQL Mapping. The specific behavior in a NoSQL database matters, that's why there are Eclipse JNoSQL Mapping specializations.
 
-== Extensions 
-
 == Arangodb
 
 == Cassandra
