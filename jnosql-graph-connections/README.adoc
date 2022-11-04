@@ -1,3 +1,0 @@
-= Graph-connections
-
-This project contains several GraphConfiguration that allows a conversation of Settings to Graph smoothly.
