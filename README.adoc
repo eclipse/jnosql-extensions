@@ -5,6 +5,69 @@ This project contains all specialization to Eclipse JNoSQL Mapping. The specific
 
 == Arangodb
 
+ArangoDB extension has implementations to use specific behavior that is beyond the API such as AQL.
+
+=== How To Install
+
+You can use either, maven or Gradle dependency:
+
+[source,xml]
+----
+<dependency>
+  <groupId>org.eclipse.jnosql.artemis</groupId>
+  <artifactId>aragangodb-extension</artifactId>
+  <version>1.0.0-b4</version>
+</dependency>
+----
+
+=== Make ArangoDB manager available to container
+
+The next step is to make it available at CDI container.
+
+[source,java]
+----
+
+public class ArangoDBProducer {
+
+
+    @Produces
+    public ArangoDBDocumentCollectionManager getManager() {
+        ArangoDBDocumentCollectionManager manager = ...;
+        return manager;
+    }
+}
+----
+
+=== Repository
+
+ArangoDBRepository is an extension of Repository that allows using AQL annotation that executes AQL.
+
+
+[source,java]
+----
+    interface PersonRepository extends ArangoDBRepository<Person, String> {
+
+        @AQL("FOR p IN Person RETURN p")
+        List<Person> findAll();
+
+        @AQL("FOR p IN Person FILTER p.name = @name RETURN p")
+        List<Person> findByName(@Param("name") String name);
+    }
+----
+
+=== Template
+
+ArangoDBTemplate is a specialization of Document Template that allows using AQL both synchronous and asynchronous.
+
+[source,java]
+----
+@Inject
+private ArangoDBTemplate template;
+
+List<Person> people = template.aql("FOR p IN Person FILTER p.name = @name RETURN p", params);
+----
+
+
 == Cassandra
 
 == Couchbase
