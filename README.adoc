@@ -251,6 +251,10 @@ List<Person> people = template.n1qlQuery("select * from Person where name = $nam
 
 == Elasticsearch
 
+image::https://jnosql.github.io/img/logos/elastic.svg[Elasticsearch Project,align="center"width=25%, height=25%]
+
+Elasticsearch extension has implementations to use specific behavior that is beyond the API such as search Engine.
+
 === How To Install
 
 You can use either, maven or Gradle dependency:
@@ -259,9 +263,41 @@ You can use either, maven or Gradle dependency:
 ----
 <dependency>
   <groupId>org.eclipse.jnosql.mapping</groupId>
-  <artifactId>aragangodb-extension</artifactId>
+  <artifactId>elasticsearch-extension</artifactId>
   <version>1.0.0-b4</version>
 </dependency>
+----
+= Make Elasticsearch manager available to container
+
+[source,java]
+----
+
+public class ElasticsearchProducer {
+
+
+    @Produces
+    public ElasticsearchDocumentCollectionManager getManager() {
+        ElasticsearchDocumentCollectionManager manager = ...;
+        return manager;
+    }
+}
+
+
+----
+
+=== Template
+
+ElasticsearchTemplate is a specialization of Document Template that allows using search engine on both synchronous and asynchronous.
+
+[source,java]
+----
+
+@Inject
+ElasticsearchTemplate template;
+...
+
+QueryBuilder queryBuilder = boolQuery().filter(termQuery("name", "Ada"));
+List<Person> people = template.search(queryBuilder, "Person");
 ----
 
 == Graph connections
