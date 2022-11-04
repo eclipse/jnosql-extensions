@@ -516,7 +516,7 @@ public class OrientDBProducer {
 ----
 
 
-== OrientDBCrudRepository
+== Repository
 
 OrientDBCrudRepository is an extension of Repository that allows using SQL annotation that executes SQL Query.
 
@@ -536,19 +536,6 @@ OrientDBCrudRepository is an extension of Repository that allows using SQL annot
     }
 ----
 
-== OrientDBCrudRepositoryAsync
-
-OrientDBCrudRepositoryAsync is an extension of RepositoryAsync that allows using N1QL annotation that executes SQL Query.
-
-
-[source,java]
-----
-    interface PersonAsyncRepository extends OrientDBCrudRepositoryAsync<Person, String> {
-
-        @SQL("select * from Person where name = ?")
-        void queryName(String name, Consumer<List<Person>> callBack);
-    }
-----
 
 
 === Template
@@ -568,6 +555,11 @@ template.live("select from Person where name = ?", callBack, "Ada");
 
 == Solr
 
+image::https://jnosql.github.io/img/logos/riak.png[Solr Project,align="center" width=25%, height=25%]
+
+Apache Solr extension has implementations to use specific behavior that is beyond the API such as Search query.
+
+
 === How To Install
 
 You can use either, maven or Gradle dependency:
@@ -576,7 +568,58 @@ You can use either, maven or Gradle dependency:
 ----
 <dependency>
   <groupId>org.eclipse.jnosql.mapping</groupId>
-  <artifactId>aragangodb-extension</artifactId>
+  <artifactId>solr-extension</artifactId>
   <version>1.0.0-b4</version>
 </dependency>
+----
+
+== Make Couchbase manager available to container
+
+[source,java]
+----
+
+public class SolrProducer {
+
+
+    @Produces
+    public SolrDocumentCollectionManager getManager() {
+        CouchbaseDocumentCollectionManager manager = ...;
+        return manager;
+    }
+
+}
+
+
+----
+
+
+=== Repository
+
+SolrRepository is an extension of Repository that allows using Solr query annotation that executes Solr query.
+
+
+[source,java]
+----
+    interface PersonRepository extends SolrRepository<Person, String> {
+
+        @Solr("select * from Person")
+        List<Person> findAll();
+
+        @Solr("select * from Person where name = $name")
+        List<Person> findByName(@Param("name") String name);
+    }
+----
+
+
+
+=== Template
+
+SolrTemplate is a specialization of Document Template that allows to execute Solr query.
+
+[source,java]
+----
+@Inject
+SolrTemplate template;
+...
+List<Person> people = template.solr("age:@age AND type:@type AND _entity:@entity", params);
 ----
