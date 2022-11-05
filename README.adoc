@@ -1,15 +1,625 @@
 = Mappings Extension
+:toc: auto
 
 This project contains all specialization to Eclipse JNoSQL Mapping. The specific behavior in a NoSQL database matters, that's why there are Eclipse JNoSQL Mapping specializations.
 
-== Extensions 
+== Arangodb
 
-* arangodb-extension:
-* cassandra-extension:
-* couchbase-extension:
-* elasticsearch-extension:
-* graph-connections:
-* hazelcast-extension:
-* mongodb-extension:
-* orientdb-extension:
-* solr-extension:
+image::https://jnosql.github.io/img/logos/ArangoDB.png[Arangodb Project,align="center"width=25%, height=25%]
+
+ArangoDB extension has implementations to use specific behavior that is beyond the API such as AQL.
+
+=== How To Install
+
+You can use either, maven or Gradle dependency:
+
+[source,xml]
+----
+<dependency>
+  <groupId>org.eclipse.jnosql.mapping</groupId>
+  <artifactId>aragangodb-extension</artifactId>
+  <version>1.0.0-b4</version>
+</dependency>
+----
+
+=== Make ArangoDB manager available to container
+
+The next step is to make it available at CDI container.
+
+[source,java]
+----
+
+public class ArangoDBProducer {
+
+
+    @Produces
+    public ArangoDBDocumentCollectionManager getManager() {
+        ArangoDBDocumentCollectionManager manager = ...;
+        return manager;
+    }
+}
+----
+
+=== Repository
+
+ArangoDBRepository is an extension of Repository that allows using AQL annotation that executes AQL.
+
+
+[source,java]
+----
+    interface PersonRepository extends ArangoDBRepository<Person, String> {
+
+        @AQL("FOR p IN Person RETURN p")
+        List<Person> findAll();
+
+        @AQL("FOR p IN Person FILTER p.name = @name RETURN p")
+        List<Person> findByName(@Param("name") String name);
+    }
+----
+
+=== Template
+
+ArangoDBTemplate is a specialization of Document Template that allows using AQL both synchronous and asynchronous.
+
+[source,java]
+----
+@Inject
+private ArangoDBTemplate template;
+...
+List<Person> people = template.aql("FOR p IN Person FILTER p.name = @name RETURN p", params);
+----
+
+== Cassandra
+
+image::https://jnosql.github.io/img/logos/cassandra.png[Apache Cassandra,align="center"width=25%, height=25%]
+
+Cassandra extension has implementations to use specific behavior that is beyond the API such as Cassandra Query Language, consistency level.
+
+=== How To Install
+
+You can use either, maven or Gradle dependency:
+
+[source,xml]
+----
+<dependency>
+  <groupId>org.eclipse.jnosql.mapping</groupId>
+  <artifactId>cassandra-extension</artifactId>
+  <version>1.0.0-b4</version>
+</dependency>
+----
+
+=== Make Cassandra manager available to container
+
+[source,java]
+----
+
+public class CassandraProducer {
+
+
+    @Produces
+    public CassandraColumnFamilyManager getManager() {
+        CassandraColumnFamilyManager manager = ...;
+        return manager;
+    }
+}
+
+
+----
+
+=== Repository
+
+CassandraRepository is an extension of Repository that allows using CQL annotation that executes Cassandra Query Language and also Consistency Level.
+
+
+[source,java]
+----
+    interface PersonRepository extends CassandraRepository<Person, String> {
+
+        @CQL("select * from Person")
+        List<Person> findAll();
+
+        @CQL("select * from Person where name = ?")
+        List<Person> findByName(String name);
+
+        @CQL("select * from Person where age = :age")
+        List<Person> findByAge(@Param("age") Integer age);
+ }
+----
+
+
+=== @UDT
+
+The UDT annotations is a mapping annotation that allows defining a field to be stored as User defined type in Cassandra.
+
+[source,java]
+----
+@Entity
+public class Person {
+
+    @Id("name")
+    private String name;
+
+    @Column
+    private Integer age;
+
+    @UDT("address")
+    @Column
+    private Address home;
+ }
+----
+
+=== Converts
+
+* TimestampConverter: That converts to/from java.util.Date
+* LocalDateConverter: That converts to/from com.datastax.driver.core.LocalDate
+
+[source,java]
+----
+
+    @Column
+    @Convert(value = TimestampConverter.class)
+    private LocalDateTime localDateTime;
+
+    @Column
+    @Convert(value = LocalDateConverter.class)
+    private Calendar calendar;
+
+----
+
+=== Template
+
+CassandraTemplate is a specializations of Column Template that allows using CQL.
+
+[source,java]
+----
+@Inject
+CassandraTemplate template;
+...
+template.save(person, ConsistencyLevel.ONE);
+----
+
+== Couchbase
+
+image::https://jnosql.github.io/img/logos/couchbase.svg[Couchbase Project,align="center"width=25%, height=25%]
+
+
+Couchbase extension has implementations to use specific behavior that is beyond the API such as N1QL.
+
+=== How To Install
+
+You can use either, maven or Gradle dependency:
+
+[source,xml]
+----
+<dependency>
+  <groupId>org.eclipse.jnosql.mapping</groupId>
+  <artifactId>couchbase-extension</artifactId>
+  <version>1.0.0-b4</version>
+</dependency>
+----
+
+=== Make Couchbase manager available to container
+
+[source,java]
+----
+
+public class CouchbaseProducer {
+
+
+    @Produces
+    public CouchbaseDocumentCollectionManager getManager() {
+        CouchbaseDocumentCollectionManager manager = ...;
+        return manager;
+    }
+
+}
+
+
+----
+
+
+=== Repository
+
+CouchbaseRepository is an extension of Repository that allows using N1QL annotation that executes N1QL.
+
+
+[source,java]
+----
+interface PersonRepository extends CouchbaseRepository<Person, String> {
+
+@N1QL("select * from Person")
+List<Person> findAll();
+
+@N1QL("select * from Person where name = $name")
+List<Person> findByName(@Param("name") String name);
+
+}
+----
+
+
+=== Template
+
+CouchbaseTemplate is a specialization of Document Template that allows using N1QL both synchronous and asynchronous.
+
+[source,java]
+----
+
+List<Person> people = template.n1qlQuery("select * from Person where name = $name", params);
+
+----
+
+
+== Elasticsearch
+
+image::https://jnosql.github.io/img/logos/elastic.svg[Elasticsearch Project,align="center"width=25%, height=25%]
+
+Elasticsearch extension has implementations to use specific behavior that is beyond the API such as search Engine.
+
+=== How To Install
+
+You can use either, maven or Gradle dependency:
+
+[source,xml]
+----
+<dependency>
+  <groupId>org.eclipse.jnosql.mapping</groupId>
+  <artifactId>elasticsearch-extension</artifactId>
+  <version>1.0.0-b4</version>
+</dependency>
+----
+
+== Make Elasticsearch manager available to container
+
+[source,java]
+----
+
+public class ElasticsearchProducer {
+
+    @Produces
+    public ElasticsearchDocumentCollectionManager getManager() {
+        ElasticsearchDocumentCollectionManager manager = ...;
+        return manager;
+    }
+}
+
+
+----
+
+=== Template
+
+ElasticsearchTemplate is a specialization of Document Template that allows using search engine on both synchronous and asynchronous.
+
+[source,java]
+----
+
+@Inject
+ElasticsearchTemplate template;
+...
+
+QueryBuilder queryBuilder = boolQuery().filter(termQuery("name", "Ada"));
+List<Person> people = template.search(queryBuilder, "Person");
+----
+
+== Hazelcast
+
+image::https://jnosql.github.io/img/logos/hazelcast.svg[Hazelcast Project,align="center" width=25%, height=25%]
+
+Hazelcast extension has implementations to use specific behavior that is beyond the API such as Hazelcast Query.
+
+=== How To Install
+
+You can use either, maven or Gradle dependency:
+
+[source,xml]
+----
+<dependency>
+  <groupId>org.eclipse.jnosql.mapping</groupId>
+  <artifactId>hazelcast-extension</artifactId>
+  <version>1.0.0-b4</version>
+</dependency>
+----
+
+
+== Make Hazelcast manager available to container
+
+[source,java]
+----
+
+public class HazelcastProducer {
+
+
+    @Produces
+    public HazelcastBucketManager getManager() {
+        HazelcastBucketManager manager = ...;
+        return manager;
+    }
+}
+
+
+----
+
+=== Repository
+
+[source,java]
+----
+interface PersonRepository extends HazelcastRepository<Person, String> {
+
+        @Query("active")
+        List<Person> findActive();
+
+        @Query("name = :name AND age = :age")
+        Set<Person> findByAgeAndInteger(@Param("name") String name, @Param("age") Integer age);
+    }
+----
+
+
+=== Template
+
+HazelcastTemplate is a specialization of Key-value Template that allows using hazelcast query.
+
+[source,java]
+----
+Collection<Person> people = template.query("active");
+Collection<Person> people2 = template.query("age = :age", singletonMap("age", 10));
+Collection<Person> people3 = template.query(Predicates.equal("name",  "Poliana"));
+----
+
+
+== MongoDB
+
+image::https://jnosql.github.io/img/logos/mongodb.png[Cassandra Project,align="center" width=25%, height=25%]
+
+MongoDB extension has implementations to use specific behavior that is beyond the API such as Cassandra Query Language, consistency level.
+
+=== How To Install
+
+You can use either, maven or Gradle dependency:
+
+[source,xml]
+----
+<dependency>
+  <groupId>org.eclipse.jnosql.mapping</groupId>
+  <artifactId>mongodb-extension</artifactId>
+  <version>1.0.0-b4</version>
+</dependency>
+----
+
+=== Converter
+
+In this extension you have the option to convert to/from MongoDB ```ObjectID```.
+
+[source,java]
+----
+
+@Entity
+public class Music {
+
+    @Id
+    @Convert(ObjectIdConverter.class)
+    private String id;
+
+}
+----
+
+=== CriteriaQuery API
+
+Also, you can use the experimental Criteria API, largely inspired by the JPA one.
+Using this API you can execute queries built via CriteriaQuery.
+The CriteriaQuery is used in combination with Metamodel Attributes.
+These attributes are automagically generated from the defined NoSQL Entities, by including the Metamodel Processor extension as an optional dependency.
+
+
+=== EntityQuery
+
+You can fetch entities with an EntityQuery:
+
+[source,java]
+----
+CriteriaQuery<Person> personQuery = template.createQuery(Person.class);
+
+EntityQueryResult<Person> executeQuery = template.executeQuery(
+        personQuery.select().where(
+                personQuery.from().get(
+                        Person_.name
+                ).equal(
+                        "Poliana"
+                ).or(
+                        personQuery.from().get(
+                                Person_.age
+                        ).greaterThanOrEqualTo(17)
+                )
+        )
+);
+
+Stream<Person> stream = executeQuery.getEntities();
+----
+
+=== ExpressionQuery
+
+You can fetch single columns/projections using an ExpressionQuery :
+
+[source,java]
+----
+CriteriaQuery<Person> personQuery = template.createQuery(Person.class);
+
+StringExpression<Person, Person> nameExpression = personQuery.from().get(
+        Person_.name
+);
+NumberExpression<Person, Person, Integer> ageExpression = personQuery.from().get(
+        Person_.age
+);
+
+ExpressionQueryResult<Person> executeQuery = template.executeQuery(
+        personQuery.select(
+                nameExpression,
+                ageExpression
+        ).where(
+                nameExpression.equal(
+                        "Poliana"
+                ).or(
+                        ageExpression.greaterThanOrEqualTo(17)
+                )
+        )
+);
+
+Optional<ExpressionQueryResultRow<Person>> findFirst = executeQuery.getRows().findFirst();
+
+String name = findFirst.get().get(
+        nameExpression
+);
+
+Integer age = findFirst.get().get(
+        ageExpression
+);
+
+----
+
+== Orientdb
+
+image::https://jnosql.github.io/img/logos/orientdb.png[OriendtDB Project,align="center" ,align="center" width=25%, height=25%]
+
+=== How To Install
+
+You can use either, maven or Gradle dependency:
+
+[source,xml]
+----
+<dependency>
+  <groupId>org.eclipse.jnosql.mapping</groupId>
+  <artifactId>orientdb-extension</artifactId>
+  <version>1.0.0-b4</version>
+</dependency>
+----
+
+== Make OrientDB manager available to container
+
+[source,java]
+----
+
+public class OrientDBProducer {
+
+
+    @Produces
+    public OrientDBDocumentCollectionManager getManager() {
+        OrientDBDocumentCollectionManager manager = ...;
+        return manager;
+    }
+
+    @Produces
+    public OrientDBDocumentCollectionManagerAsync getManagerAsync() {
+        OrientDBDocumentCollectionManagerAsync managerAsync = ...;
+        return managerAsync;
+    }
+}
+
+
+----
+
+
+== Repository
+
+OrientDBCrudRepository is an extension of Repository that allows using SQL annotation that executes SQL Query.
+
+
+[source,java]
+----
+    interface PersonRepository extends OrientDBCrudRepository<Person, String> {
+
+        @SQL("select * from Person")
+        List<Person> findAll();
+
+        @SQL("select * from Person where name = ?")
+        List<Person> findByName(String name);
+
+        @SQL("select * from Person where age = :age")
+        List<Person> findByAge(@Param("age") Integer age);
+    }
+----
+
+
+
+=== Template
+
+OrientDBTemplate ais a specialization of Document Template that allows using SQL query and live query on both synchronous and asynchronous.
+
+[source,java]
+----
+@Inject
+OrientDBTemplate template;
+...
+
+Stream<Person> stream = template.sql("select * from Person where name = ?", "Ada");
+template.live("select from Person where name = ?", callBack, "Ada");
+----
+
+
+== Solr
+
+image::https://jnosql.github.io/img/logos/riak.png[Solr Project,align="center" width=25%, height=25%]
+
+Apache Solr extension has implementations to use specific behavior that is beyond the API such as Search query.
+
+
+=== How To Install
+
+You can use either, maven or Gradle dependency:
+
+[source,xml]
+----
+<dependency>
+  <groupId>org.eclipse.jnosql.mapping</groupId>
+  <artifactId>solr-extension</artifactId>
+  <version>1.0.0-b4</version>
+</dependency>
+----
+
+== Make Couchbase manager available to container
+
+[source,java]
+----
+
+public class SolrProducer {
+
+
+    @Produces
+    public SolrDocumentCollectionManager getManager() {
+        CouchbaseDocumentCollectionManager manager = ...;
+        return manager;
+    }
+
+}
+
+
+----
+
+
+=== Repository
+
+SolrRepository is an extension of Repository that allows using Solr query annotation that executes Solr query.
+
+
+[source,java]
+----
+    interface PersonRepository extends SolrRepository<Person, String> {
+
+        @Solr("select * from Person")
+        List<Person> findAll();
+
+        @Solr("select * from Person where name = $name")
+        List<Person> findByName(@Param("name") String name);
+    }
+----
+
+
+
+=== Template
+
+SolrTemplate is a specialization of Document Template that allows to execute Solr query.
+
+[source,java]
+----
+@Inject
+SolrTemplate template;
+...
+List<Person> people = template.solr("age:@age AND type:@type AND _entity:@entity", params);
+----
