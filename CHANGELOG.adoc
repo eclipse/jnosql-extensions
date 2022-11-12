@@ -1,0 +1,180 @@
+= Changelog
+:toc: auto
+
+All notable changes to this project will be documented in this file.
+
+The format is based on https://keepachangelog.com/en/1.0.0/[Keep a Changelog],
+and this project adheres to https://semver.org/spec/v2.0.0.html[Semantic Versioning].
+
+== [Unreleased]
+
+=== Added
+- Create a CHANGELOG file to track the specification evolution
+
+=== Changed
+- Move the default documentation to ASCIIDOC
+
+== [1.0.0-b4] - 2022-06-04
+
+=== Added
+- Add MongoDB specific version
+
+== [1.0.0-b3] - 2021-03-01
+
+=== Changed
+- Remove JNoSQL logo from repositories
+- Remove "Artemis" references in the package and use "mapping" instead.
+- Remove "diana" references in the package name and use "communication" instead.
+- Update Cassandra library to use DataStax OSS
+
+=== Fixed
+- Fixes HashMap issue in the mapping API
+
+== [1.0.0-b2] - 2020-06-07
+
+=== Added
+- Creates TCK Mapping
+- Creates TCK Communication
+- Creates TCK Driver
+- Defines Reactive API as an extension
+
+=== Changed
+- Update the MongoDB, Cassandra drivers
+- Update Javadoc documentation
+- Update Ref documentation
+- Remove Async APIs
+- Keep the compatibility with Java 11 and Java 8
+
+== [1.0.0-b1] - 2019-12-01
+
+=== Added
+- Creates Integration with Eclipse MicroProfile Configuration
+
+=== Changed
+- Split the project into API/implementation
+- Updates the API to use Jakarta NoSQL
+- Moves the Jakarta NoSQL API to the right project
+
+== [0.0.9] - 2019-05-16
+
+=== Added
+- Allows Repository with pagination
+- Allows update query with column using JSON
+- Allows insert query with column using JSON
+- Allows update query with a document using JSON
+- Allows insert query with a document using JSON
+- Define alias configuration in the communication layer
+- Allow cryptography in the settings
+
+=== Changed
+- Improves ConfigurationUnit annotation to inject Repository and RepositoryAsync
+- Make Settings an immutable instance
+
+=== Fixed
+- Native ArangoDB driver uses the type metadata which might cause class cast exception
+
+== [0.0.8] - 2019-02-20
+
+=== Added
+- Defines GraphFactory
+- Creates GraphFactory implementations
+- Support to DynamoDB
+
+=== Changed
+- Improve performance to access instance creation beyond reading and writing attributes
+- Improve documentation in Class and Field metadata
+- Join projects as one single repository
+- Allows inject by Template and repositories classes from @ConfigurationUnit
+
+=== Fixed
+- Fixes repository default configuration
+- Fixes test scope
+
+== [0.0.7] - 2018-10-29
+
+=== Added
+- Adds support to CouchDB
+
+=== Changed
+- Updates OrientDB to version 3.0
+- Improves query to Column
+- Improves query to Document
+- Improves Cassandra query with paging state
+- Optimizes Query cache to avoid memory leak
+- Improves performance of a query method
+
+=== Fixed
+- Fixes MongoDB driver
+- Fixes NPE at Redis Configuration
+
+== [0.0.6] - 2018-06-23
+
+=== Added
+- Adds support to ravenDB
+- Adds support to syntax query with String in Column, Key-value, and document.
+- Adds integration with gremlin as String in Mapper layer
+- Adds support to syntax query in Repository and template class to Mapper
+- Adds support to Repository Producer
+
+=== Break compatibility
+- Changes start to skip when need to jump elements in either Document or Column query
+- Changes maxResult to limit to define the maximum of items that must return in a query in either Document or Column query
+
+=== Fixed
+- Fixes MongoDB limit and start a query
+- Fixes MongoDB order query
+- Avoid duplication injection on repository bean
+
+== [0.0.5] - 2018-04-07
+
+=== Added
+- Adds support to findAll in Graph
+- Adds support to yaml file
+
+=== Changed
+- Graph improves getSingleResult
+- Graph improves getResultList
+- Improves performance in Graph
+    
+== [0.0.4] - 2018-01-18
+
+=== Added
+- Modules at Artemis
+- Add Cassandra query with named params
+- Enables findAll from proxy
+- Adds query with param to OrientDB
+- Adds the findBy Id in ColumnTemplate and DocumentTemplate
+- Adds the delete Id in ColumnTemplate and DocumentTemplate
+- Adds Graph loop resource
+- Adds Hazelcast extension
+
+=== Fixed
+- Fixes Embedded on Collection
+- Fixes async issues at MongoDB
+
+== [0.0.3] - 2017-10-14
+
+=== Added
+- Defines Qualifier on Artemis Extension Cassandra
+- Defines Qualifier on Artemis Extension Couchbase
+- Defines Qualifier on Artemis Extension Elasticsearch
+- Adds Graph Extension
+
+=== Changed
+- Improves extension to Cassandra, Couchbase, Elasticsearch
+
+== [0.0.2] - 2017-06-25
+
+=== Added
+- Adds an extension to Cassandra (to use specific behavior, beyond the API, such as CQL, consistency level and UDT).
+- Adds an extension to Couchbase (to use specific behavior, beyond the API, such as N1QL).
+- Adds an extension to Elasticsearch (to use specific behavior, beyond the API, such as Search engine).
+- Adds an extension to OrientDB (to use specific behavior, beyond the API, such as live query and SQL).
+
+== [0.0.1] - 2017-03-15
+
+=== Added
+- Cassandra with consistency level and UDT
+- Elasticsearch extension
+- Couchbase extension
+- OrientDB extension with live query
