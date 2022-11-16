@@ -17,7 +17,7 @@ package org.eclipse.jnosql.mapping.arangodb.document;
 
 import jakarta.nosql.document.Document;
 import jakarta.nosql.document.DocumentEntity;
-import org.eclipse.jnosql.communication.arangodb.document.ArangoDBDocumentCollectionManager;
+import org.eclipse.jnosql.communication.arangodb.document.ArangoDBDocumentManager;
 import org.mockito.Mockito;
 
 import javax.enterprise.inject.Produces;
@@ -26,8 +26,8 @@ public class MockProducer {
 
 
     @Produces
-    public ArangoDBDocumentCollectionManager getManager() {
-        ArangoDBDocumentCollectionManager manager = Mockito.mock(ArangoDBDocumentCollectionManager.class);
+    public ArangoDBDocumentManager getManager() {
+        ArangoDBDocumentManager manager = Mockito.mock(ArangoDBDocumentManager.class);
         DocumentEntity entity = DocumentEntity.of("Person");
         entity.add(Document.of("name", "Ada"));
         Mockito.when(manager.insert(Mockito.any(DocumentEntity.class))).thenReturn(entity);
