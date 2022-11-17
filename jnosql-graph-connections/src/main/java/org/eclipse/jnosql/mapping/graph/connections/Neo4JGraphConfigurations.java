@@ -20,9 +20,21 @@ import java.util.function.Supplier;
  */
 public enum Neo4JGraphConfigurations implements Supplier<String> {
 
-    HOST("jnosql.neo4j.host"), USER("jnosql.neo4j.user"), PASSWORD("jnosql.neo4j.password");
+    /**
+     * The database host
+     */
+    HOST("jnosql.neo4j.host"),
+    /**
+     * The user's credential
+     */
+    USER("jnosql.neo4j.user"),
+    /**
+     * The password's credential
+     */
+    PASSWORD("jnosql.neo4j.password");
 
     private final String value;
+
     Neo4JGraphConfigurations(String value) {
         this.value = value;
     }
