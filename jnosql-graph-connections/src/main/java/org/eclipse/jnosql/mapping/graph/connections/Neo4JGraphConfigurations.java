@@ -21,15 +21,15 @@ import java.util.function.Supplier;
 public enum Neo4JGraphConfigurations implements Supplier<String> {
 
     /**
-     * The database host
+     * The database host. Default: "bolt://localhost:7687"
      */
     HOST("jnosql.neo4j.host"),
     /**
-     * The user's credential
+     * The user's credential. Default: "neo4j"
      */
     USER("jnosql.neo4j.user"),
     /**
-     * The password's credential
+     * The password's credential. Default: "neo4j"
      */
     PASSWORD("jnosql.neo4j.password");
 
