@@ -20,12 +20,21 @@ import jakarta.nosql.document.DocumentEntity;
 import org.eclipse.jnosql.communication.orientdb.document.OrientDBDocumentManager;
 import org.mockito.Mockito;
 
+import javax.annotation.Priority;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.Alternative;
 import javax.enterprise.inject.Produces;
+import javax.interceptor.Interceptor;
+import java.util.function.Supplier;
 
-public class MockProducer {
+@ApplicationScoped
+@Alternative
+@Priority(Interceptor.Priority.APPLICATION)
+public class MockProducer implements Supplier<OrientDBDocumentManager> {
 
     @Produces
-    public OrientDBDocumentManager getManager() {
+    @Override
+    public OrientDBDocumentManager get() {
         OrientDBDocumentManager manager = Mockito.mock(OrientDBDocumentManager.class);
         DocumentEntity entity = DocumentEntity.of("Person");
         entity.add(Document.of("name", "Ada"));
