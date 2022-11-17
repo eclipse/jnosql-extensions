@@ -32,7 +32,9 @@ public class Titan implements GraphConfiguration {
     public Graph apply(Settings settings) {
         Objects.requireNonNull(settings, "settings is required");
         Configuration configuration = new BaseConfiguration();
-        settings.entrySet().forEach(e -> configuration.addProperty(e.getKey(), e.getValue()));
+        for (String key : settings.keySet()) {
+            configuration.addProperty(key, settings.get(key, String.class).orElseThrow());
+        }
         return TitanFactory.open(configuration);
     }
 }
