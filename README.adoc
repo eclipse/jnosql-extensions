@@ -752,6 +752,16 @@ jnosql.arangodb.graph.edge.configuration.1=knows|Person|Person
 
 === Janus
 
+This is an example using Janus's Graph API with MicroProfile Config.
+
+WARNING: The API will pass and use the properties from `org.janusgraph.graphdb.configuration.GraphDatabaseConfiguration`
+[source,properties]
+----
+jnosql.graph.provider=org.eclipse.jnosql.mapping.graph.connections.JanusGraphConfiguration
+graphname=name
+allow-upgrade=false
+----
+
 === Neo4j
 
 === Neo4j Remote
