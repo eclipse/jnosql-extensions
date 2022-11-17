@@ -14,7 +14,6 @@
  */
 package org.eclipse.jnosql.mapping.graph.connections;
 
-import jakarta.nosql.Configurations;
 import jakarta.nosql.Settings;
 import org.apache.commons.configuration.BaseConfiguration;
 import org.apache.commons.configuration.Configuration;
@@ -23,6 +22,8 @@ import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.eclipse.jnosql.mapping.graph.GraphConfiguration;
 
 import java.util.Objects;
+
+import static org.eclipse.jnosql.mapping.graph.connections.Neo4JGraphConfigurations.HOST;
 
 /**
  * Creates the connection to {@link Graph} using Neo4J Embedded.
@@ -38,7 +39,7 @@ public class Neo4JEmbeddedGraphConfiguration implements GraphConfiguration {
         for (String key : settings.keySet()) {
             config.addProperty(key, settings.get(key, String.class).orElseThrow());
         }
-        settings.get(Configurations.HOST.get())
+        settings.get(HOST.get())
                 .map(Object::toString)
                 .ifPresent(h -> config.addProperty(HOST_KEY, h));
         return Neo4jGraph.open(config);
