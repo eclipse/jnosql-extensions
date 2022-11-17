@@ -34,6 +34,7 @@ The config settings are the default behavior; nevertheless, there is an option t
 
 [source,java]
 ----
+@ApplicationScoped
 @Alternative
 @Priority(Interceptor.Priority.APPLICATION)
 public class ManagerSupplier implements Supplier<ArangoDBDocumentManager> {
@@ -110,6 +111,7 @@ The config settings are the default behavior; nevertheless, there is an option t
 
 [source,java]
 ----
+@ApplicationScoped
 @Alternative
 @Priority(Interceptor.Priority.APPLICATION)
 public class ManagerSupplier implements Supplier<CassandraColumnManager> {
