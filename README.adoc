@@ -772,8 +772,32 @@ WARNING: The API will pass and use the properties from `com.thinkaurelius.titan.
 jnosql.graph.provider=org.eclipse.jnosql.mapping.graph.connections.TitanGraphConfiguration
 ----
 
-
 === Neo4j
+
+[cols="Neo4j Properties"]
+|===
+|Configuration property |Description
+
+|`jnosql.neo4j.host`
+|The database host. Default: "bolt://localhost:7687"
+
+|`jnosql.neo4j.user`
+|The user's credential. Default: "neo4j"
+
+|`jnosql.neo4j.password`
+|The password's credential. Default: "neo4j"
+
+|===
+
+This is an example using Neo4J's Graph API with MicroProfile Config.
+
+[source,properties]
+----
+jnosql.graph.provider=org.eclipse.jnosql.mapping.graph.connections.Neo4JGraphConfiguration
+jnosql.neo4j.user=neo4j
+jnosql.neo4j.password=neo4j
+jnosql.neo4j.host=bolt://localhost:7687
+----
 
 === Neo4j Remote
 
