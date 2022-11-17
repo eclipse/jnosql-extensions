@@ -36,13 +36,13 @@ The config settings are the default behavior; nevertheless, there is an option t
 ----
 @Alternative
 @Priority(Interceptor.Priority.APPLICATION)
-public class ManagerSupplier implements Supplier<DocumentManager> {
+public class ManagerSupplier implements Supplier<ArangoDBDocumentManager> {
 
     @Produces
-    public DocumentManager get() {
+    public ArangoDBDocumentManager get() {
         Settings settings = Settings.builder().put("credential", "value").build();
-        DocumentConfiguration configuration = new NoSQLDocumentProvider();
-        DocumentManagerFactory factory = configuration.apply(settings);
+        ArangoDBDocumentConfiguration configuration = new ArangoDBDocumentConfiguration();
+        ArangoDBDocumentManagerFactory factory = configuration.apply(settings);
         return factory.apply("database");
     }
 }
