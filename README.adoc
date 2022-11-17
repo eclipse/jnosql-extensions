@@ -352,19 +352,35 @@ You can use either the Maven or Gradle dependencies:
 </dependency>
 ----
 
-=== Provide Hazelcast Manager to the CDI Container
+
+You can define the database settings using Eclipse MicroProfile Config, so you can put it in the properties and overwrite it in the environment following the https://12factor.net/config[Twelve-Factor App].
+
+[source,properties]
+----
+jnosql.document.database=<DATABASE>
+jnosql.hazelcast.instance.name=name
+jnosql.hazelcast.host.1=localhost
+----
+
+The config settings are the default behavior; nevertheless, there is an option to do it programmatically. Create a class that implements the `Supplier<HazelcastBucketManager>` and then defines it as an `@Alternative` and the `Priority`.
 
 [source,java]
 ----
-public class HazelcastProducer {
+@ApplicationScoped
+@Alternative
+@Priority(Interceptor.Priority.APPLICATION)
+public class ManagerSupplier implements Supplier<HazelcastBucketManager> {
 
     @Produces
-    public HazelcastBucketManager getManager() {
-        HazelcastBucketManager manager = // instance
-        return manager;
+    public HazelcastBucketManager get() {
+        Settings settings = Settings.builder().put("credential", "value").build();
+        HazelcastKeyValueConfiguration configuration = new HazelcastKeyValueConfiguration();
+        HazelcastBucketManagerFactory factory = configuration.apply(settings);
+        return factory.apply("database");
     }
 }
 ----
+
 
 === Repository
 
