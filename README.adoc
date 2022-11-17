@@ -291,6 +291,34 @@ You can use either the Maven or Gradle dependencies:
 ----
 
 
+You can define the database settings using Eclipse MicroProfile Config, so you can put it in the properties and overwrite it in the environment following the https://12factor.net/config[Twelve-Factor App].
+
+[source,properties]
+----
+jnosql.document.database=<DATABASE>
+jnosql.elasticsearch.host.1=localhost:9200
+----
+
+The config settings are the default behavior; nevertheless, there is an option to do it programmatically. Create a class that implements the `Supplier<ElasticsearchDocumentManager>` and then defines it as an `@Alternative` and the `Priority`.
+
+[source,java]
+----
+@ApplicationScoped
+@Alternative
+@Priority(Interceptor.Priority.APPLICATION)
+public class ManagerSupplier implements Supplier<ElasticsearchDocumentManager> {
+
+    @Produces
+    public ElasticsearchDocumentManager get() {
+        Settings settings = Settings.builder().put("credential", "value").build();
+        ElasticsearchDocumentConfiguration configuration = new ElasticsearchDocumentConfiguration();
+        ElasticsearchDocumentManagerFactory factory = configuration.apply(settings);
+        return factory.apply("database");
+    }
+}
+----
+
+
 === Template
 
 The ```ElasticsearchTemplate``` interface is a specialization of the ```DocumentTemplate``` interface that allows using a search engine on both synchronous and asynchronous.
