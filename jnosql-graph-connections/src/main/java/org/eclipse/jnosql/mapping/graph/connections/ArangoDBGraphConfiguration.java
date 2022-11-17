@@ -22,19 +22,19 @@ import org.eclipse.jnosql.mapping.graph.GraphConfiguration;
 
 import java.util.Objects;
 
-import static jakarta.nosql.Configurations.HOST;
-import static jakarta.nosql.Configurations.PASSWORD;
-import static jakarta.nosql.Configurations.USER;
+import static org.eclipse.jnosql.mapping.graph.connections.ArangoDBGraphConfigurations.EDGE;
+import static org.eclipse.jnosql.mapping.graph.connections.ArangoDBGraphConfigurations.EDGE_CONFIGURATION;
+import static org.eclipse.jnosql.mapping.graph.connections.ArangoDBGraphConfigurations.GRAPH;
+import static org.eclipse.jnosql.mapping.graph.connections.ArangoDBGraphConfigurations.HOST;
+import static org.eclipse.jnosql.mapping.graph.connections.ArangoDBGraphConfigurations.PASSWORD;
+import static org.eclipse.jnosql.mapping.graph.connections.ArangoDBGraphConfigurations.USER;
+import static org.eclipse.jnosql.mapping.graph.connections.ArangoDBGraphConfigurations.VERTEX;
 
 /**
  * Creates the connection to {@link Graph} using ArangoDB.
  */
 public class ArangoDBGraphConfiguration implements GraphConfiguration {
 
-    private static final String EDGE = "jnosql.arangodb.graph.edge";
-    private static final String EDGE_CONFIGURATION = "jnosql.arangodb.graph.edge.configuration";
-    private static final String VERTEX = "jnosql.arangodb.graph.vertex";
-    private static final String GRAPH = "jnosql.arangodb.graph.graph";
 
     @Override
     public Graph apply(Settings settings) {
@@ -57,11 +57,11 @@ public class ArangoDBGraphConfiguration implements GraphConfiguration {
                 .forEach(builder::withEdgeCollection);
 
 
-        settings.get(USER.get())
+        settings.get(USER)
                 .map(Object::toString)
                 .ifPresent(builder::arangoUser);
 
-        settings.get(PASSWORD.get())
+        settings.get(PASSWORD)
                 .map(Object::toString)
                 .ifPresent(builder::arangoPassword);
 
