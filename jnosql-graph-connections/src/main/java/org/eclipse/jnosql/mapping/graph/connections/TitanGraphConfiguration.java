@@ -26,7 +26,7 @@ import java.util.Objects;
 /**
  * Creates the connection to {@link Graph} using Titan.
  */
-public class Titan implements GraphConfiguration {
+public class TitanGraphConfiguration implements GraphConfiguration {
 
     @Override
     public Graph apply(Settings settings) {
