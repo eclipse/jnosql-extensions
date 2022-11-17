@@ -31,10 +31,10 @@ import static jakarta.nosql.Configurations.USER;
  */
 public class ArangoDB implements GraphConfiguration {
 
-    private static final String EDGE = "arangodb.graph.edge";
-    private static final String EDGE_CONFIGURATION = "arangodb.graph.edge.configuration";
-    private static final String VERTEX = "arangodb.graph.vertex";
-    private static final String GRAPH = "arangodb.graph.graph";
+    private static final String EDGE = "jnosql.arangodb.graph.edge";
+    private static final String EDGE_CONFIGURATION = "jnosql.arangodb.graph.edge.configuration";
+    private static final String VERTEX = "jnosql.arangodb.graph.vertex";
+    private static final String GRAPH = "jnosql.arangodb.graph.graph";
 
     @Override
     public Graph apply(Settings settings) {
