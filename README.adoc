@@ -30,7 +30,7 @@ jnosql.document.database=<DATABASE>
 jnosql.arangodb.host=localhost:8529
 ----
 
-The config settings are the default behavior; nevertheless, there is an option to do it programmatically. Create a class that implements the `Supplier<DocumentManager>` and then defines it as an `@Alternative` and the `Priority`.
+The config settings are the default behavior; nevertheless, there is an option to do it programmatically. Create a class that implements the `Supplier<ArangoDBDocumentManager>` and then defines it as an `@Alternative` and the `Priority`.
 
 [source,java]
 ----
@@ -96,16 +96,30 @@ You can use either the Maven or Gradle dependencies:
 </dependency>
 ----
 
-=== Provide Cassandra Manager to the CDI Container
+You can define the database settings using Eclipse MicroProfile Config, so you can put it in the properties and overwrite it in the environment following the https://12factor.net/config[Twelve-Factor App].
+
+[source,properties]
+----
+jnosql.document.database=<DATABASE>
+jnosql.cassandra.host.1=localhost
+jnosql.cassandra.port=9142
+jnosql.cassandra.query.1=CREATE KEYSPACE IF NOT EXISTS newKeySpace WITH replication = {'class': 'SimpleStrategy', 'replication_factor' : 3};
+----
+
+The config settings are the default behavior; nevertheless, there is an option to do it programmatically. Create a class that implements the `Supplier<CassandraColumnManager>` and then defines it as an `@Alternative` and the `Priority`.
 
 [source,java]
 ----
-public class CassandraProducer {
+@Alternative
+@Priority(Interceptor.Priority.APPLICATION)
+public class ManagerSupplier implements Supplier<CassandraColumnManager> {
 
     @Produces
-    public CassandraColumnFamilyManager getManager() {
-        CassandraColumnFamilyManager manager = ...;
-        return manager;
+    public CassandraColumnManager get() {
+        Settings settings = Settings.builder().put("credential", "value").build();
+        CassandraConfiguration configuration = new CassandraConfiguration();
+        CassandraColumnManagerFactory factory = configuration.apply(settings);
+        return factory.apply("database");
     }
 }
 ----
