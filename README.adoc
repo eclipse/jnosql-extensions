@@ -426,6 +426,35 @@ You can use either the Maven or Gradle dependencies:
 </dependency>
 ----
 
+
+You can define the database settings using Eclipse MicroProfile Config, so you can put it in the properties and overwrite it in the environment following the https://12factor.net/config[Twelve-Factor App].
+
+[source,properties]
+----
+jnosql.document.database=<DATABASE>
+jnosql.mongodb.host.1=localhost:27017
+----
+
+The config settings are the default behavior; nevertheless, there is an option to do it programmatically. Create a class that implements the `Supplier<MongoDBDocumentManager>` and then defines it as an `@Alternative` and the `Priority`.
+
+[source,java]
+----
+@ApplicationScoped
+@Alternative
+@Priority(Interceptor.Priority.APPLICATION)
+public class ManagerSupplier implements Supplier<MongoDBDocumentManager> {
+
+    @Produces
+    public MongoDBDocumentManager get() {
+        Settings settings = Settings.builder().put("credential", "value").build();
+        MongoDBDocumentConfiguration configuration = new MongoDBDocumentConfiguration();
+        MongoDBDocumentManagerFactory factory = configuration.apply(settings);
+        return factory.apply("database");
+    }
+}
+----
+
+
 === Converter
 
 In this extension, you have the option to convert to/from the MongoDB ```ObjectID```.
