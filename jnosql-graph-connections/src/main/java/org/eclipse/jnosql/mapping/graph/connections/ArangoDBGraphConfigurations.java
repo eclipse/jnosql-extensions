@@ -21,19 +21,21 @@ import java.util.function.Supplier;
 public enum ArangoDBGraphConfigurations implements Supplier<String> {
 
     /**
-     *
+     * The edge collection. It uses as a prefix. E.g.:jnosql.arangodb.graph.edge.1=edge
      */
     EDGE("jnosql.arangodb.graph.edge"),
     /**
-     *
+     * Edge collection, the source vertex collection and the target vertex collection split by pipe.
+     * It hou,It uses as a prefix.
+     * E.g.: jnosql.arangodb.graph.edge.configuration.1=knows|Person|Person
      */
     EDGE_CONFIGURATION("jnosql.arangodb.graph.edge.configuration"),
     /**
-     *
+     * The vertex collection. It uses as a prefix. E.g.: jnosql.arangodb.graph.vertex.1=vertex
      */
     VERTEX("jnosql.arangodb.graph.vertex"),
     /**
-     *
+     * Name of the graph to use.
      */
     GRAPH("jnosql.arangodb.graph.graph"),
     /**
