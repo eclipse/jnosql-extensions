@@ -15,18 +15,18 @@
 package org.eclipse.jnosql.mapping.orientdb.document;
 
 
-import jakarta.nosql.document.DocumentCollectionManager;
 import jakarta.nosql.document.DocumentEntity;
+import jakarta.nosql.document.DocumentManager;
 import jakarta.nosql.document.DocumentQuery;
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.document.DocumentEntityConverter;
 import jakarta.nosql.mapping.document.DocumentEventPersistManager;
 import jakarta.nosql.mapping.document.DocumentWorkflow;
-import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
-import org.eclipse.jnosql.mapping.document.AbstractDocumentTemplate;
-import org.eclipse.jnosql.communication.orientdb.document.OrientDBDocumentCollectionManager;
+import org.eclipse.jnosql.communication.orientdb.document.OrientDBDocumentManager;
 import org.eclipse.jnosql.communication.orientdb.document.OrientDBLiveCallback;
 import org.eclipse.jnosql.communication.orientdb.document.OrientDBLiveCallbackBuilder;
+import org.eclipse.jnosql.mapping.document.AbstractDocumentTemplate;
+import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 
 import javax.enterprise.inject.Instance;
 import javax.enterprise.inject.Typed;
@@ -42,7 +42,7 @@ import java.util.stream.Stream;
 class DefaultOrientDBTemplate extends AbstractDocumentTemplate
         implements OrientDBTemplate {
 
-    private Instance<OrientDBDocumentCollectionManager> manager;
+    private Instance<OrientDBDocumentManager> manager;
 
     private DocumentEntityConverter converter;
 
@@ -55,7 +55,7 @@ class DefaultOrientDBTemplate extends AbstractDocumentTemplate
     private Converters converters;
 
     @Inject
-    DefaultOrientDBTemplate(Instance<OrientDBDocumentCollectionManager> manager,
+    DefaultOrientDBTemplate(Instance<OrientDBDocumentManager> manager,
                             DocumentEntityConverter converter, DocumentWorkflow flow,
                             DocumentEventPersistManager persistManager,
                             EntitiesMetadata entities,
@@ -78,7 +78,7 @@ class DefaultOrientDBTemplate extends AbstractDocumentTemplate
     }
 
     @Override
-    protected DocumentCollectionManager getManager() {
+    protected DocumentManager getManager() {
         return manager.get();
     }
 
@@ -87,8 +87,9 @@ class DefaultOrientDBTemplate extends AbstractDocumentTemplate
         return flow;
     }
 
+
     @Override
-    protected DocumentEventPersistManager getPersistManager() {
+    protected DocumentEventPersistManager getEventManager() {
         return persistManager;
     }
 

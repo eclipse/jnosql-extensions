@@ -17,7 +17,7 @@ package org.eclipse.jnosql.mapping.orientdb.document;
 
 import jakarta.nosql.document.Document;
 import jakarta.nosql.document.DocumentEntity;
-import org.eclipse.jnosql.communication.orientdb.document.OrientDBDocumentCollectionManager;
+import org.eclipse.jnosql.communication.orientdb.document.OrientDBDocumentManager;
 import org.mockito.Mockito;
 
 import javax.enterprise.inject.Produces;
@@ -25,8 +25,8 @@ import javax.enterprise.inject.Produces;
 public class MockProducer {
 
     @Produces
-    public OrientDBDocumentCollectionManager getManager() {
-        OrientDBDocumentCollectionManager manager = Mockito.mock(OrientDBDocumentCollectionManager.class);
+    public OrientDBDocumentManager getManager() {
+        OrientDBDocumentManager manager = Mockito.mock(OrientDBDocumentManager.class);
         DocumentEntity entity = DocumentEntity.of("Person");
         entity.add(Document.of("name", "Ada"));
         Mockito.when(manager.update(Mockito.any(DocumentEntity.class))).thenReturn(entity);
