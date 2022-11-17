@@ -24,7 +24,7 @@ import jakarta.nosql.mapping.document.DocumentEventPersistManager;
 import jakarta.nosql.mapping.document.DocumentWorkflow;
 import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import jakarta.nosql.tck.test.CDIExtension;
-import org.eclipse.jnosql.communication.couchbase.document.CouchbaseDocumentCollectionManager;
+import org.eclipse.jnosql.communication.couchbase.document.CouchbaseDocumentManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -59,14 +59,14 @@ public class DefaultCouchbaseTemplateTest {
     @Inject
     private Converters converters;
 
-    private CouchbaseDocumentCollectionManager manager;
+    private CouchbaseDocumentManager manager;
 
     private CouchbaseTemplate template;
 
 
     @BeforeEach
     public void setup() {
-        manager = Mockito.mock(CouchbaseDocumentCollectionManager.class);
+        manager = Mockito.mock(CouchbaseDocumentManager.class);
         Instance instance = Mockito.mock(Instance.class);
         when(instance.get()).thenReturn(manager);
         template = new DefaultCouchbaseTemplate(instance, converter, flow, persistManager, entities, converters);

@@ -17,7 +17,7 @@ package org.eclipse.jnosql.mapping.couchbase.document;
 
 import jakarta.nosql.document.Document;
 import jakarta.nosql.document.DocumentEntity;
-import org.eclipse.jnosql.communication.couchbase.document.CouchbaseDocumentCollectionManager;
+import org.eclipse.jnosql.communication.couchbase.document.CouchbaseDocumentManager;
 import org.mockito.Mockito;
 
 import javax.enterprise.inject.Produces;
@@ -26,8 +26,8 @@ public class MockProducer {
 
 
     @Produces
-    public CouchbaseDocumentCollectionManager getManager() {
-        CouchbaseDocumentCollectionManager manager = Mockito.mock(CouchbaseDocumentCollectionManager.class);
+    public CouchbaseDocumentManager getManager() {
+        CouchbaseDocumentManager manager = Mockito.mock(CouchbaseDocumentManager.class);
         DocumentEntity entity = DocumentEntity.of("Person");
         entity.add(Document.of("name", "Ada"));
         Mockito.when(manager.insert(Mockito.any(DocumentEntity.class))).thenReturn(entity);
