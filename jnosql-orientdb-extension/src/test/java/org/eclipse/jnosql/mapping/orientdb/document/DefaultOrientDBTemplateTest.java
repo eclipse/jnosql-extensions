@@ -23,7 +23,7 @@ import jakarta.nosql.mapping.document.DocumentEventPersistManager;
 import jakarta.nosql.mapping.document.DocumentWorkflow;
 import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import jakarta.nosql.tck.test.CDIExtension;
-import org.eclipse.jnosql.communication.orientdb.document.OrientDBDocumentCollectionManager;
+import org.eclipse.jnosql.communication.orientdb.document.OrientDBDocumentManager;
 import org.eclipse.jnosql.communication.orientdb.document.OrientDBLiveCallback;
 import org.eclipse.jnosql.communication.orientdb.document.OrientDBLiveCreateCallback;
 import org.junit.jupiter.api.BeforeEach;
@@ -59,14 +59,14 @@ public class DefaultOrientDBTemplateTest {
     @Inject
     private Converters converters;
 
-    private OrientDBDocumentCollectionManager manager;
+    private OrientDBDocumentManager manager;
 
     private OrientDBTemplate template;
 
 
     @BeforeEach
     public void setup() {
-        manager = Mockito.mock(OrientDBDocumentCollectionManager.class);
+        manager = Mockito.mock(OrientDBDocumentManager.class);
         Instance instance = Mockito.mock(Instance.class);
         when(instance.get()).thenReturn(manager);
         template = new DefaultOrientDBTemplate(instance, converter, flow, persistManager, entities, converters);

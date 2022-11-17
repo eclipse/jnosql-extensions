@@ -20,9 +20,9 @@ import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.document.DocumentEntityConverter;
 import jakarta.nosql.mapping.document.DocumentEventPersistManager;
 import jakarta.nosql.mapping.document.DocumentWorkflow;
-import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import jakarta.nosql.tck.test.CDIExtension;
-import org.eclipse.jnosql.communication.solr.document.SolrDocumentCollectionManager;
+import org.eclipse.jnosql.communication.solr.document.SolrDocumentManager;
+import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -53,14 +53,14 @@ public class DefaultSolrTemplateTest {
     @Inject
     private Converters converters;
 
-    private SolrDocumentCollectionManager manager;
+    private SolrDocumentManager manager;
 
     private SolrTemplate template;
 
 
     @BeforeEach
     public void setup() {
-        manager = Mockito.mock(SolrDocumentCollectionManager.class);
+        manager = Mockito.mock(SolrDocumentManager.class);
         Instance instance = Mockito.mock(Instance.class);
         when(instance.get()).thenReturn(manager);
         template = new DefaultSolrTemplate(instance, converter, flow, persistManager, entities, converters);

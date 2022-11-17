@@ -17,22 +17,31 @@ package org.eclipse.jnosql.mapping.graph.connections;
 import jakarta.nosql.Settings;
 import org.apache.commons.configuration.BaseConfiguration;
 import org.apache.commons.configuration.Configuration;
+import org.apache.tinkerpop.gremlin.neo4j.structure.Neo4jGraph;
 import org.apache.tinkerpop.gremlin.structure.Graph;
-import org.janusgraph.core.JanusGraphFactory;
 import org.eclipse.jnosql.mapping.graph.GraphConfiguration;
 
 import java.util.Objects;
 
+import static org.eclipse.jnosql.mapping.graph.connections.Neo4JGraphConfigurations.HOST;
+
 /**
- * Creates the connection to {@link Graph} using JanusGraph.
+ * Creates the connection to {@link Graph} using Neo4J Embedded.
  */
-public class JanusGraph implements GraphConfiguration {
+public class Neo4JEmbeddedGraphConfiguration implements GraphConfiguration {
+
+    private static final String HOST_KEY = "gremlin.neo4j.directory";
 
     @Override
     public Graph apply(Settings settings) {
         Objects.requireNonNull(settings, "settings is required");
-        Configuration configuration = new BaseConfiguration();
-        settings.entrySet().forEach(e -> configuration.addProperty(e.getKey(), e.getValue()));
-        return JanusGraphFactory.open(configuration);
+        Configuration config = new BaseConfiguration();
+        for (String key : settings.keySet()) {
+            config.addProperty(key, settings.get(key, String.class).orElseThrow());
+        }
+        settings.get(HOST.get())
+                .map(Object::toString)
+                .ifPresent(h -> config.addProperty(HOST_KEY, h));
+        return Neo4jGraph.open(config);
     }
 }

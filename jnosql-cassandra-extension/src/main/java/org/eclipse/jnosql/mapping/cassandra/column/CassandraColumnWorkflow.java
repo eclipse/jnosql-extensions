@@ -32,7 +32,7 @@ class CassandraColumnWorkflow extends AbstractColumnWorkflow {
 
 
     @Override
-    protected ColumnEventPersistManager getColumnEventPersistManager() {
+    protected ColumnEventPersistManager getEventManager() {
         return columnEventPersistManager;
     }
 

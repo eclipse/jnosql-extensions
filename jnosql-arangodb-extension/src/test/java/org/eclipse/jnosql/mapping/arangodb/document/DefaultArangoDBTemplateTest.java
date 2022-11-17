@@ -22,7 +22,7 @@ import jakarta.nosql.mapping.document.DocumentEventPersistManager;
 import jakarta.nosql.mapping.document.DocumentWorkflow;
 import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import jakarta.nosql.tck.test.CDIExtension;
-import org.eclipse.jnosql.communication.arangodb.document.ArangoDBDocumentCollectionManager;
+import org.eclipse.jnosql.communication.arangodb.document.ArangoDBDocumentManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -52,14 +52,14 @@ public class DefaultArangoDBTemplateTest {
     @Inject
     private Converters converters;
 
-    private ArangoDBDocumentCollectionManager manager;
+    private ArangoDBDocumentManager manager;
 
     private ArangoDBTemplate template;
 
 
     @BeforeEach
     public void setup() {
-        manager = Mockito.mock(ArangoDBDocumentCollectionManager.class);
+        manager = Mockito.mock(ArangoDBDocumentManager.class);
         Instance instance = Mockito.mock(Instance.class);
         when(instance.get()).thenReturn(manager);
         template = new DefaultArangoDBTemplate(instance, converter, flow, persistManager, entities, converters);

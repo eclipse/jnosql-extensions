@@ -22,19 +22,33 @@ You can use either the Maven or Gradle dependencies:
 </dependency>
 ----
 
-=== Provide ArangoDB Manager to the CDI Container
+You can define the database settings using Eclipse MicroProfile Config, so you can put it in the properties and overwrite it in the environment following the https://12factor.net/config[Twelve-Factor App].
+
+[source,properties]
+----
+jnosql.document.database=<DATABASE>
+jnosql.arangodb.host=localhost:8529
+----
+
+The config settings are the default behavior; nevertheless, there is an option to do it programmatically. Create a class that implements the `Supplier<ArangoDBDocumentManager>` and then defines it as an `@Alternative` and the `Priority`.
 
 [source,java]
 ----
-public class ArangoDBProducer {
+@ApplicationScoped
+@Alternative
+@Priority(Interceptor.Priority.APPLICATION)
+public class ManagerSupplier implements Supplier<ArangoDBDocumentManager> {
 
     @Produces
-    public ArangoDBDocumentCollectionManager getManager() {
-        ArangoDBDocumentCollectionManager manager = ...;
-        return manager;
+    public ArangoDBDocumentManager get() {
+        Settings settings = Settings.builder().put("credential", "value").build();
+        ArangoDBDocumentConfiguration configuration = new ArangoDBDocumentConfiguration();
+        ArangoDBDocumentManagerFactory factory = configuration.apply(settings);
+        return factory.apply("database");
     }
 }
 ----
+
 
 === Repository
 
@@ -83,16 +97,31 @@ You can use either the Maven or Gradle dependencies:
 </dependency>
 ----
 
-=== Provide Cassandra Manager to the CDI Container
+You can define the database settings using Eclipse MicroProfile Config, so you can put it in the properties and overwrite it in the environment following the https://12factor.net/config[Twelve-Factor App].
+
+[source,properties]
+----
+jnosql.document.database=<DATABASE>
+jnosql.cassandra.host.1=localhost
+jnosql.cassandra.port=9142
+jnosql.cassandra.query.1=CREATE KEYSPACE IF NOT EXISTS newKeySpace WITH replication = {'class': 'SimpleStrategy', 'replication_factor' : 3};
+----
+
+The config settings are the default behavior; nevertheless, there is an option to do it programmatically. Create a class that implements the `Supplier<CassandraColumnManager>` and then defines it as an `@Alternative` and the `Priority`.
 
 [source,java]
 ----
-public class CassandraProducer {
+@ApplicationScoped
+@Alternative
+@Priority(Interceptor.Priority.APPLICATION)
+public class ManagerSupplier implements Supplier<CassandraColumnManager> {
 
     @Produces
-    public CassandraColumnFamilyManager getManager() {
-        CassandraColumnFamilyManager manager = ...;
-        return manager;
+    public CassandraColumnManager get() {
+        Settings settings = Settings.builder().put("credential", "value").build();
+        CassandraConfiguration configuration = new CassandraConfiguration();
+        CassandraColumnManagerFactory factory = configuration.apply(settings);
+        return factory.apply("database");
     }
 }
 ----
@@ -185,16 +214,31 @@ You can use either the Maven or Gradle dependencies:
 </dependency>
 ----
 
-=== Provide Couchbase Manager to the CDI Container
+You can define the database settings using Eclipse MicroProfile Config, so you can put it in the properties and overwrite it in the environment following the https://12factor.net/config[Twelve-Factor App].
+
+[source,properties]
+----
+jnosql.document.database=<DATABASE>
+jnosql.couchbase.host=couchbase://localhost
+jnosql.couchbase.user=root
+jnosql.couchbase.password=123456
+----
+
+The config settings are the default behavior; nevertheless, there is an option to do it programmatically. Create a class that implements the `Supplier<CouchbaseDocumentManager>` and then defines it as an `@Alternative` and the `Priority`.
 
 [source,java]
 ----
-public class CouchbaseProducer {
+@ApplicationScoped
+@Alternative
+@Priority(Interceptor.Priority.APPLICATION)
+public class ManagerSupplier implements Supplier<CouchbaseDocumentManager> {
 
     @Produces
-    public CouchbaseDocumentCollectionManager getManager() {
-        CouchbaseDocumentCollectionManager manager = // instance;
-        return manager;
+    public CouchbaseDocumentManager get() {
+        Settings settings = Settings.builder().put("credential", "value").build();
+        CouchbaseDocumentConfiguration configuration = new CouchbaseDocumentConfiguration();
+        CouchbaseDocumentManagerFactory factory = configuration.apply(settings);
+        return factory.apply("database");
     }
 }
 ----
@@ -246,19 +290,34 @@ You can use either the Maven or Gradle dependencies:
 </dependency>
 ----
 
-=== Provide Elasticsearch Manager to the CDI Container
+
+You can define the database settings using Eclipse MicroProfile Config, so you can put it in the properties and overwrite it in the environment following the https://12factor.net/config[Twelve-Factor App].
+
+[source,properties]
+----
+jnosql.document.database=<DATABASE>
+jnosql.elasticsearch.host.1=localhost:9200
+----
+
+The config settings are the default behavior; nevertheless, there is an option to do it programmatically. Create a class that implements the `Supplier<ElasticsearchDocumentManager>` and then defines it as an `@Alternative` and the `Priority`.
 
 [source,java]
 ----
-public class ElasticsearchProducer {
+@ApplicationScoped
+@Alternative
+@Priority(Interceptor.Priority.APPLICATION)
+public class ManagerSupplier implements Supplier<ElasticsearchDocumentManager> {
 
     @Produces
-    public ElasticsearchDocumentCollectionManager getManager() {
-        ElasticsearchDocumentCollectionManager manager = // instance
-        return manager;
+    public ElasticsearchDocumentManager get() {
+        Settings settings = Settings.builder().put("credential", "value").build();
+        ElasticsearchDocumentConfiguration configuration = new ElasticsearchDocumentConfiguration();
+        ElasticsearchDocumentManagerFactory factory = configuration.apply(settings);
+        return factory.apply("database");
     }
 }
 ----
+
 
 === Template
 
@@ -293,19 +352,35 @@ You can use either the Maven or Gradle dependencies:
 </dependency>
 ----
 
-=== Provide Hazelcast Manager to the CDI Container
+
+You can define the database settings using Eclipse MicroProfile Config, so you can put it in the properties and overwrite it in the environment following the https://12factor.net/config[Twelve-Factor App].
+
+[source,properties]
+----
+jnosql.document.database=<DATABASE>
+jnosql.hazelcast.instance.name=name
+jnosql.hazelcast.host.1=localhost
+----
+
+The config settings are the default behavior; nevertheless, there is an option to do it programmatically. Create a class that implements the `Supplier<HazelcastBucketManager>` and then defines it as an `@Alternative` and the `Priority`.
 
 [source,java]
 ----
-public class HazelcastProducer {
+@ApplicationScoped
+@Alternative
+@Priority(Interceptor.Priority.APPLICATION)
+public class ManagerSupplier implements Supplier<HazelcastBucketManager> {
 
     @Produces
-    public HazelcastBucketManager getManager() {
-        HazelcastBucketManager manager = // instance
-        return manager;
+    public HazelcastBucketManager get() {
+        Settings settings = Settings.builder().put("credential", "value").build();
+        HazelcastKeyValueConfiguration configuration = new HazelcastKeyValueConfiguration();
+        HazelcastBucketManagerFactory factory = configuration.apply(settings);
+        return factory.apply("database");
     }
 }
 ----
+
 
 === Repository
 
@@ -350,6 +425,35 @@ You can use either the Maven or Gradle dependencies:
   <version>1.0.0-b4</version>
 </dependency>
 ----
+
+
+You can define the database settings using Eclipse MicroProfile Config, so you can put it in the properties and overwrite it in the environment following the https://12factor.net/config[Twelve-Factor App].
+
+[source,properties]
+----
+jnosql.document.database=<DATABASE>
+jnosql.mongodb.host.1=localhost:27017
+----
+
+The config settings are the default behavior; nevertheless, there is an option to do it programmatically. Create a class that implements the `Supplier<MongoDBDocumentManager>` and then defines it as an `@Alternative` and the `Priority`.
+
+[source,java]
+----
+@ApplicationScoped
+@Alternative
+@Priority(Interceptor.Priority.APPLICATION)
+public class ManagerSupplier implements Supplier<MongoDBDocumentManager> {
+
+    @Produces
+    public MongoDBDocumentManager get() {
+        Settings settings = Settings.builder().put("credential", "value").build();
+        MongoDBDocumentConfiguration configuration = new MongoDBDocumentConfiguration();
+        MongoDBDocumentManagerFactory factory = configuration.apply(settings);
+        return factory.apply("database");
+    }
+}
+----
+
 
 === Converter
 
@@ -455,22 +559,32 @@ You can use either the Maven or Gradle dependencies:
 </dependency>
 ----
 
-=== Provide OrientDB Manager to the CDI Container
+You can define the database settings using Eclipse MicroProfile Config, so you can put it in the properties and overwrite it in the environment following the https://12factor.net/config[Twelve-Factor App].
+
+[source,properties]
+----
+jnosql.document.database=<DATABASE>
+jnosql.orientdb.host=localhost:27017
+jnosql.orientdb.user=root
+jnosql.orientdb.password=rootpwd
+jnosql.orientdb.storageType=plocal
+----
+
+The config settings are the default behavior; nevertheless, there is an option to do it programmatically. Create a class that implements the `Supplier<OrientDBDocumentManager>` and then defines it as an `@Alternative` and the `Priority`.
 
 [source,java]
 ----
-public class OrientDBProducer {
+@ApplicationScoped
+@Alternative
+@Priority(Interceptor.Priority.APPLICATION)
+public class ManagerSupplier implements Supplier<OrientDBDocumentManager> {
 
     @Produces
-    public OrientDBDocumentCollectionManager getManager() {
-        OrientDBDocumentCollectionManager manager = // instance
-        return manager;
-    }
-
-    @Produces
-    public OrientDBDocumentCollectionManagerAsync getManagerAsync() {
-        OrientDBDocumentCollectionManagerAsync managerAsync = // instance
-        return managerAsync;
+    public OrientDBDocumentManager get() {
+        Settings settings = Settings.builder().put("credential", "value").build();
+        OrientDBDocumentConfiguration configuration = new OrientDBDocumentConfiguration();
+        OrientDBDocumentManagerFactory factory = configuration.apply(settings);
+        return factory.apply("database");
     }
 }
 ----
@@ -527,16 +641,29 @@ You can use either the Maven or Gradle dependencies:
 </dependency>
 ----
 
-=== Provide Couchbase Manager to the CDI Container
+You can define the database settings using Eclipse MicroProfile Config, so you can put it in the properties and overwrite it in the environment following the https://12factor.net/config[Twelve-Factor App].
+
+[source,properties]
+----
+jnosql.document.database=<DATABASE>
+jnosql.solr.host.1=HOST
+----
+
+The config settings are the default behavior; nevertheless, there is an option to do it programmatically. Create a class that implements the `Supplier<SolrDocumentManager>` and then defines it as an `@Alternative` and the `Priority`.
 
 [source,java]
 ----
-public class SolrProducer {
+@ApplicationScoped
+@Alternative
+@Priority(Interceptor.Priority.APPLICATION)
+public class ManagerSupplier implements Supplier<SolrDocumentManager> {
 
     @Produces
-    public SolrDocumentCollectionManager getManager() {
-        CouchbaseDocumentCollectionManager manager = // instance
-        return manager;
+    public SolrDocumentManager get() {
+        Settings settings = Settings.builder().put("credential", "value").build();
+        SolrDocumentConfiguration configuration = new SolrDocumentConfiguration();
+        SolrDocumentManagerFactory factory = configuration.apply(settings);
+        return factory.apply("database");
     }
 }
 ----
@@ -567,4 +694,126 @@ The ```SolrTemplate``` interface is a specialization of the ```DocumentTemplate`
 SolrTemplate template;
 ...
 List<Person> people = template.solr("age:@age AND type:@type AND _entity:@entity", params);
+----
+
+== Graph Connections
+
+Graph connections is a project that contains several `GraphConfiguration` implementations.
+
+[source,xml]
+----
+<dependency>
+  <groupId>org.eclipse.jnosql.mapping</groupId>
+  <artifactId>jnosql-graph-connections</artifactId>
+  <version>1.0.0-b4</version>
+</dependency>
+----
+
+=== ArangoDB
+
+
+[cols="ArangoDB Properties"]
+|===
+|Configuration property |Description
+
+|`jnosql.arangodb.graph.edge`
+|The edge collection. It uses as a prefix. E.g.:jnosql.arangodb.graph.edge.1=edge
+
+|`jnosql.arangodb.graph.edge.configuration`
+|Edge collection, the source vertex collection and the target vertex collection split by pipe. It hou,It uses as a prefix. E.g.: jnosq.arangodb.graph.edge.configuration.1=knows\|Person\|Person
+
+|`jnosql.arangodb.graph.vertex`
+|The vertex collection. It uses as a prefix. E.g.: jnosql.arangodb.graph.vertex.1=vertex
+
+|`jnosql.arangodb.graph.graph`
+|Name of the graph to use.
+
+|`jnosql.arangodb.graph.host`
+|The database host.
+
+|`jnosql.arangodb.graph.user`
+|The user's credential.
+
+|`jnosql.arangodb.graph.password`
+|The password's credential.
+
+|===
+
+This is an example using ArangoDB's Graph API with MicroProfile Config.
+
+[source,properties]
+----
+jnosql.graph.provider=org.eclipse.jnosql.mapping.graph.connections.ArangoDBGraphConfiguration
+jnosql.arangodb.graph.graph=marketing
+jnosql.arangodb.graph.vertex.1=Person
+jnosql.arangodb.graph.edge.1=knows
+jnosql.arangodb.graph.edge.configuration.1=knows|Person|Person
+----
+
+=== Janus
+
+This is an example using Janus's Graph API with MicroProfile Config.
+
+WARNING: The API will pass and use the properties from `org.janusgraph.graphdb.configuration.GraphDatabaseConfiguration`
+[source,properties]
+----
+jnosql.graph.provider=org.eclipse.jnosql.mapping.graph.connections.JanusGraphConfiguration
+graphname=name
+allow-upgrade=false
+----
+
+=== Titan
+
+This is an example using Titan's Graph API with MicroProfile Config.
+
+WARNING: The API will pass and use the properties from `com.thinkaurelius.titan.graphdb.configuration.GraphDatabaseConfiguration`
+[source,properties]
+----
+jnosql.graph.provider=org.eclipse.jnosql.mapping.graph.connections.TitanGraphConfiguration
+----
+
+=== Neo4j
+
+[cols="Neo4j Properties"]
+|===
+|Configuration property |Description
+
+|`jnosql.neo4j.host`
+|The database host. Default: "bolt://localhost:7687"
+
+|`jnosql.neo4j.user`
+|The user's credential. Default: "neo4j"
+
+|`jnosql.neo4j.password`
+|The password's credential. Default: "neo4j"
+
+|===
+
+This is an example using Neo4J's Graph API with MicroProfile Config.
+
+[source,properties]
+----
+jnosql.graph.provider=org.eclipse.jnosql.mapping.graph.connections.Neo4JGraphConfiguration
+jnosql.neo4j.user=neo4j
+jnosql.neo4j.password=neo4j
+jnosql.neo4j.host=bolt://localhost:7687
+----
+
+=== Neo4j Remote
+
+[cols="Neo4j Remote Properties"]
+|===
+|Configuration property |Description
+
+|`jnosql.neo4j.host`
+|The database host. Default: "bolt://localhost:7687"
+
+|===
+
+This is an example using Neo4J's Graph API with MicroProfile Config.
+
+[source,properties]
+----
+jnosql.graph.provider=org.eclipse.jnosql.mapping.graph.connections.Neo4JEmbeddedGraphConfiguration
+jnosql.neo4j.host=/home/otaviojava/data/
 ----

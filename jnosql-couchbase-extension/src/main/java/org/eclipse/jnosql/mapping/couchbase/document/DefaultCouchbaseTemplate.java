@@ -17,14 +17,14 @@ package org.eclipse.jnosql.mapping.couchbase.document;
 
 import com.couchbase.client.java.json.JsonObject;
 import com.couchbase.client.java.search.SearchQuery;
-import jakarta.nosql.document.DocumentCollectionManager;
+import jakarta.nosql.document.DocumentManager;
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.document.DocumentEntityConverter;
 import jakarta.nosql.mapping.document.DocumentEventPersistManager;
 import jakarta.nosql.mapping.document.DocumentWorkflow;
 import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.document.AbstractDocumentTemplate;
-import org.eclipse.jnosql.communication.couchbase.document.CouchbaseDocumentCollectionManager;
+import org.eclipse.jnosql.communication.couchbase.document.CouchbaseDocumentManager;
 
 import javax.enterprise.inject.Instance;
 import javax.enterprise.inject.Typed;
@@ -40,7 +40,7 @@ import static java.util.Objects.requireNonNull;
 class DefaultCouchbaseTemplate extends AbstractDocumentTemplate
         implements CouchbaseTemplate {
 
-    private Instance<CouchbaseDocumentCollectionManager> manager;
+    private Instance<CouchbaseDocumentManager> manager;
 
     private DocumentEntityConverter converter;
 
@@ -53,7 +53,7 @@ class DefaultCouchbaseTemplate extends AbstractDocumentTemplate
     private Converters converters;
 
     @Inject
-    DefaultCouchbaseTemplate(Instance<CouchbaseDocumentCollectionManager> manager,
+    DefaultCouchbaseTemplate(Instance<CouchbaseDocumentManager> manager,
                              DocumentEntityConverter converter, DocumentWorkflow flow,
                              DocumentEventPersistManager persistManager,
                              EntitiesMetadata entities,
@@ -75,7 +75,7 @@ class DefaultCouchbaseTemplate extends AbstractDocumentTemplate
     }
 
     @Override
-    protected DocumentCollectionManager getManager() {
+    protected DocumentManager getManager() {
         return manager.get();
     }
 
@@ -85,7 +85,7 @@ class DefaultCouchbaseTemplate extends AbstractDocumentTemplate
     }
 
     @Override
-    protected DocumentEventPersistManager getPersistManager() {
+    protected DocumentEventPersistManager getEventManager() {
         return persistManager;
     }
 

@@ -23,7 +23,7 @@ import jakarta.nosql.mapping.document.DocumentEventPersistManager;
 import jakarta.nosql.mapping.document.DocumentWorkflow;
 import org.bson.BsonValue;
 import org.bson.conversions.Bson;
-import org.eclipse.jnosql.communication.mongodb.document.MongoDBDocumentCollectionManager;
+import org.eclipse.jnosql.communication.mongodb.document.MongoDBDocumentManager;
 import org.eclipse.jnosql.mapping.document.AbstractDocumentTemplate;
 import org.eclipse.jnosql.mapping.mongodb.criteria.CriteriaQueryUtils;
 import org.eclipse.jnosql.mapping.mongodb.criteria.DefaultCriteriaQuery;
@@ -49,7 +49,7 @@ import static java.util.Objects.requireNonNull;
 @Typed(MongoDBTemplate.class)
 class DefaultMongoDBTemplate extends AbstractDocumentTemplate implements MongoDBTemplate {
 
-    private Instance<MongoDBDocumentCollectionManager> manager;
+    private Instance<MongoDBDocumentManager> manager;
 
     private DocumentEntityConverter converter;
 
@@ -68,7 +68,7 @@ class DefaultMongoDBTemplate extends AbstractDocumentTemplate implements MongoDB
     DefaultMongoDBTemplate() {
     }
 
-    DefaultMongoDBTemplate(Instance<MongoDBDocumentCollectionManager> manager,
+    DefaultMongoDBTemplate(Instance<MongoDBDocumentManager> manager,
             DocumentEntityConverter converter,
             DocumentWorkflow workflow,
             EntitiesMetadata entities,
@@ -88,7 +88,7 @@ class DefaultMongoDBTemplate extends AbstractDocumentTemplate implements MongoDB
     }
 
     @Override
-    protected MongoDBDocumentCollectionManager getManager() {
+    protected MongoDBDocumentManager getManager() {
         return manager.get();
     }
 
@@ -98,7 +98,7 @@ class DefaultMongoDBTemplate extends AbstractDocumentTemplate implements MongoDB
     }
 
     @Override
-    protected DocumentEventPersistManager getPersistManager() {
+    protected DocumentEventPersistManager getEventManager() {
         return persistManager;
     }
 
@@ -170,7 +170,7 @@ class DefaultMongoDBTemplate extends AbstractDocumentTemplate implements MongoDB
         if (criteriaQuery instanceof SelectQuery) {
             SelectQuery<T, ?, ?, ?> selectQuery = SelectQuery.class.cast(criteriaQuery);
             DocumentQuery documentQuery = CriteriaQueryUtils.convert(selectQuery);
-            getPersistManager().firePreQuery(documentQuery);
+            getEventManager().firePreQuery(documentQuery);
             Stream<DocumentEntity> entityStream = getManager().select(
                     documentQuery
             );

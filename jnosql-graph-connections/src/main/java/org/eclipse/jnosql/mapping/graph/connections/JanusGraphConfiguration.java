@@ -14,25 +14,27 @@
  */
 package org.eclipse.jnosql.mapping.graph.connections;
 
-import com.thinkaurelius.titan.core.TitanFactory;
 import jakarta.nosql.Settings;
-import org.apache.commons.configuration.BaseConfiguration;
-import org.apache.commons.configuration.Configuration;
+import org.apache.commons.configuration2.BaseConfiguration;
+import org.apache.commons.configuration2.Configuration;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.eclipse.jnosql.mapping.graph.GraphConfiguration;
+import org.janusgraph.core.JanusGraphFactory;
 
 import java.util.Objects;
 
 /**
- * Creates the connection to {@link Graph} using Titan.
+ * Creates the connection to {@link Graph} using JanusGraph.
  */
-public class Titan implements GraphConfiguration {
+public class JanusGraphConfiguration implements GraphConfiguration {
 
     @Override
     public Graph apply(Settings settings) {
         Objects.requireNonNull(settings, "settings is required");
         Configuration configuration = new BaseConfiguration();
-        settings.entrySet().forEach(e -> configuration.addProperty(e.getKey(), e.getValue()));
-        return TitanFactory.open(configuration);
+        for (String key : settings.keySet()) {
+            configuration.addProperty(key, settings.get(key, String.class).orElseThrow());
+        }
+        return JanusGraphFactory.open(configuration);
     }
 }

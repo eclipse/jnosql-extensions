@@ -17,17 +17,26 @@ package org.eclipse.jnosql.mapping.solr.document;
 
 import jakarta.nosql.document.Document;
 import jakarta.nosql.document.DocumentEntity;
-import org.eclipse.jnosql.communication.solr.document.SolrDocumentCollectionManager;
+import org.eclipse.jnosql.communication.solr.document.SolrDocumentManager;
 import org.mockito.Mockito;
 
+import javax.annotation.Priority;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.Alternative;
 import javax.enterprise.inject.Produces;
+import javax.interceptor.Interceptor;
+import java.util.function.Supplier;
 
-public class MockProducer {
+@ApplicationScoped
+@Alternative
+@Priority(Interceptor.Priority.APPLICATION)
+public class MockProducer implements Supplier<SolrDocumentManager> {
 
 
     @Produces
-    public SolrDocumentCollectionManager getManager() {
-        SolrDocumentCollectionManager manager = Mockito.mock(SolrDocumentCollectionManager.class);
+    @Override
+    public SolrDocumentManager get() {
+        SolrDocumentManager manager = Mockito.mock(SolrDocumentManager.class);
         DocumentEntity entity = DocumentEntity.of("Person");
         entity.add(Document.of("name", "Ada"));
         Mockito.when(manager.insert(Mockito.any(DocumentEntity.class))).thenReturn(entity);

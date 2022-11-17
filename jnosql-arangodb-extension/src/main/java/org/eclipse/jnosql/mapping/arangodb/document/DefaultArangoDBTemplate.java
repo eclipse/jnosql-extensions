@@ -15,14 +15,14 @@
 package org.eclipse.jnosql.mapping.arangodb.document;
 
 
-import jakarta.nosql.document.DocumentCollectionManager;
+import jakarta.nosql.document.DocumentManager;
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.document.DocumentEntityConverter;
 import jakarta.nosql.mapping.document.DocumentEventPersistManager;
 import jakarta.nosql.mapping.document.DocumentWorkflow;
 import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.document.AbstractDocumentTemplate;
-import org.eclipse.jnosql.communication.arangodb.document.ArangoDBDocumentCollectionManager;
+import org.eclipse.jnosql.communication.arangodb.document.ArangoDBDocumentManager;
 
 import javax.enterprise.inject.Instance;
 import javax.enterprise.inject.Typed;
@@ -38,7 +38,7 @@ import static java.util.Objects.requireNonNull;
 @Typed(ArangoDBTemplate.class)
 class DefaultArangoDBTemplate extends AbstractDocumentTemplate implements ArangoDBTemplate {
 
-    private Instance<ArangoDBDocumentCollectionManager> manager;
+    private Instance<ArangoDBDocumentManager> manager;
 
     private DocumentEntityConverter converter;
 
@@ -51,7 +51,7 @@ class DefaultArangoDBTemplate extends AbstractDocumentTemplate implements Arango
     private Converters converters;
 
     @Inject
-    DefaultArangoDBTemplate(Instance<ArangoDBDocumentCollectionManager> manager,
+    DefaultArangoDBTemplate(Instance<ArangoDBDocumentManager> manager,
                             DocumentEntityConverter converter, DocumentWorkflow flow,
                             DocumentEventPersistManager persistManager,
                             EntitiesMetadata entities,
@@ -73,7 +73,7 @@ class DefaultArangoDBTemplate extends AbstractDocumentTemplate implements Arango
     }
 
     @Override
-    protected DocumentCollectionManager getManager() {
+    protected DocumentManager getManager() {
         return manager.get();
     }
 
@@ -83,7 +83,7 @@ class DefaultArangoDBTemplate extends AbstractDocumentTemplate implements Arango
     }
 
     @Override
-    protected DocumentEventPersistManager getPersistManager() {
+    protected DocumentEventPersistManager getEventManager() {
         return persistManager;
     }
 

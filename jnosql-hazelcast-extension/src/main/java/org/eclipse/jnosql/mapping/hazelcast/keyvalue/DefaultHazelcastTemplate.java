@@ -17,6 +17,7 @@ package org.eclipse.jnosql.mapping.hazelcast.keyvalue;
 import com.hazelcast.query.Predicate;
 import jakarta.nosql.keyvalue.BucketManager;
 import jakarta.nosql.mapping.keyvalue.KeyValueEntityConverter;
+import jakarta.nosql.mapping.keyvalue.KeyValueEventPersistManager;
 import jakarta.nosql.mapping.keyvalue.KeyValueWorkflow;
 import org.eclipse.jnosql.mapping.keyvalue.AbstractKeyValueTemplate;
 import org.eclipse.jnosql.communication.hazelcast.keyvalue.HazelcastBucketManager;
@@ -39,6 +40,9 @@ class DefaultHazelcastTemplate extends AbstractKeyValueTemplate implements Hazel
 
     @Inject
     private KeyValueEntityConverter converter;
+
+    @Inject
+    private KeyValueEventPersistManager persistManager;
 
 
     @Override
@@ -69,5 +73,10 @@ class DefaultHazelcastTemplate extends AbstractKeyValueTemplate implements Hazel
     @Override
     protected KeyValueWorkflow getFlow() {
         return flow;
+    }
+
+    @Override
+    protected KeyValueEventPersistManager getEventManager() {
+        return persistManager;
     }
 }

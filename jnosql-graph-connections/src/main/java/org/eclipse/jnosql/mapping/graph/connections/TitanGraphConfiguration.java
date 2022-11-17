@@ -14,31 +14,27 @@
  */
 package org.eclipse.jnosql.mapping.graph.connections;
 
-import jakarta.nosql.Configurations;
+import com.thinkaurelius.titan.core.TitanFactory;
 import jakarta.nosql.Settings;
 import org.apache.commons.configuration.BaseConfiguration;
 import org.apache.commons.configuration.Configuration;
-import org.apache.tinkerpop.gremlin.neo4j.structure.Neo4jGraph;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.eclipse.jnosql.mapping.graph.GraphConfiguration;
 
 import java.util.Objects;
 
 /**
- * Creates the connection to {@link Graph} using Neo4J Embedded.
+ * Creates the connection to {@link Graph} using Titan.
  */
-public class Neo4JEmbedded implements GraphConfiguration {
-
-    private static final String HOST_KEY = "gremlin.neo4j.directory";
+public class TitanGraphConfiguration implements GraphConfiguration {
 
     @Override
     public Graph apply(Settings settings) {
         Objects.requireNonNull(settings, "settings is required");
-        Configuration config = new BaseConfiguration();
-        settings.entrySet().forEach(e -> config.addProperty(e.getKey(), e.getValue()));
-        settings.get(Configurations.HOST.get())
-                .map(Object::toString)
-                .ifPresent(h -> config.addProperty(HOST_KEY, h));
-        return Neo4jGraph.open(config);
+        Configuration configuration = new BaseConfiguration();
+        for (String key : settings.keySet()) {
+            configuration.addProperty(key, settings.get(key, String.class).orElseThrow());
+        }
+        return TitanFactory.open(configuration);
     }
 }

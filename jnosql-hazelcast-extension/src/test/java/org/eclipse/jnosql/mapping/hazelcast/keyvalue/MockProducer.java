@@ -19,9 +19,14 @@ import com.hazelcast.query.Predicate;
 import jakarta.nosql.Value;
 import org.eclipse.jnosql.communication.hazelcast.keyvalue.HazelcastBucketManager;
 
+import javax.annotation.Priority;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.Alternative;
 import javax.enterprise.inject.Produces;
+import javax.interceptor.Interceptor;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Supplier;
 
 import static java.util.Arrays.asList;
 import static org.mockito.ArgumentMatchers.any;
@@ -29,11 +34,15 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class MockProducer {
+@ApplicationScoped
+@Alternative
+@Priority(Interceptor.Priority.APPLICATION)
+public class MockProducer implements Supplier<HazelcastBucketManager> {
 
 
     @Produces
-    public HazelcastBucketManager getManager() {
+    @Override
+    public HazelcastBucketManager get() {
         HazelcastBucketManager manager = mock(HazelcastBucketManager.class);
         List<Value> people = asList(Value.of(new Person("Poliana", 25)),
                 Value.of(new Person("Otavio", 28)));

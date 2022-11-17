@@ -15,14 +15,14 @@
 package org.eclipse.jnosql.mapping.solr.document;
 
 
-import jakarta.nosql.document.DocumentCollectionManager;
+import jakarta.nosql.document.DocumentManager;
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.document.DocumentEntityConverter;
 import jakarta.nosql.mapping.document.DocumentEventPersistManager;
 import jakarta.nosql.mapping.document.DocumentWorkflow;
 import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.document.AbstractDocumentTemplate;
-import org.eclipse.jnosql.communication.solr.document.SolrDocumentCollectionManager;
+import org.eclipse.jnosql.communication.solr.document.SolrDocumentManager;
 
 import javax.enterprise.inject.Instance;
 import javax.enterprise.inject.Typed;
@@ -39,7 +39,7 @@ import static java.util.Objects.requireNonNull;
 @Typed(SolrTemplate.class)
 class DefaultSolrTemplate extends AbstractDocumentTemplate implements SolrTemplate {
 
-    private Instance<SolrDocumentCollectionManager> manager;
+    private Instance<SolrDocumentManager> manager;
 
     private DocumentEntityConverter converter;
 
@@ -52,7 +52,7 @@ class DefaultSolrTemplate extends AbstractDocumentTemplate implements SolrTempla
     private Converters converters;
 
     @Inject
-    DefaultSolrTemplate(Instance<SolrDocumentCollectionManager> manager,
+    DefaultSolrTemplate(Instance<SolrDocumentManager> manager,
                         DocumentEntityConverter converter, DocumentWorkflow flow,
                         DocumentEventPersistManager persistManager,
                         EntitiesMetadata entities,
@@ -74,7 +74,7 @@ class DefaultSolrTemplate extends AbstractDocumentTemplate implements SolrTempla
     }
 
     @Override
-    protected DocumentCollectionManager getManager() {
+    protected DocumentManager getManager() {
         return manager.get();
     }
 
@@ -84,7 +84,7 @@ class DefaultSolrTemplate extends AbstractDocumentTemplate implements SolrTempla
     }
 
     @Override
-    protected DocumentEventPersistManager getPersistManager() {
+    protected DocumentEventPersistManager getEventManager() {
         return persistManager;
     }
 

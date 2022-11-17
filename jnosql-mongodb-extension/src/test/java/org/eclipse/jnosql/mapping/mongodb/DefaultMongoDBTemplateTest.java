@@ -24,7 +24,7 @@ import jakarta.nosql.mapping.document.DocumentEntityConverter;
 import jakarta.nosql.mapping.document.DocumentEventPersistManager;
 import jakarta.nosql.mapping.document.DocumentWorkflow;
 import org.bson.conversions.Bson;
-import org.eclipse.jnosql.communication.mongodb.document.MongoDBDocumentCollectionManager;
+import org.eclipse.jnosql.communication.mongodb.document.MongoDBDocumentManager;
 import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import jakarta.nosql.tck.test.CDIExtension;
 import org.junit.jupiter.api.Assertions;
@@ -75,11 +75,11 @@ class DefaultMongoDBTemplateTest {
 
     private MongoDBTemplate template;
 
-    private MongoDBDocumentCollectionManager manager;
+    private MongoDBDocumentManager manager;
 
     @BeforeEach
     public void setUp() {
-        this.manager = mock(MongoDBDocumentCollectionManager.class);
+        this.manager = mock(MongoDBDocumentManager.class);
         Instance instance = mock(Instance.class);
         when(instance.get()).thenReturn(manager);
         template = new DefaultMongoDBTemplate(instance, converter, flow, entities, converters, persistManager);

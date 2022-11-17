@@ -27,14 +27,14 @@ import org.neo4j.driver.GraphDatabase;
 
 import java.util.Objects;
 
-import static jakarta.nosql.Configurations.HOST;
-import static jakarta.nosql.Configurations.PASSWORD;
-import static jakarta.nosql.Configurations.USER;
+import static org.eclipse.jnosql.mapping.graph.connections.Neo4JGraphConfigurations.HOST;
+import static org.eclipse.jnosql.mapping.graph.connections.Neo4JGraphConfigurations.PASSWORD;
+import static org.eclipse.jnosql.mapping.graph.connections.Neo4JGraphConfigurations.USER;
 
 /**
  * Creates the connection to {@link Graph} using Neo4J remote.
  */
-public class Neo4JRemote implements GraphConfiguration {
+public class Neo4JGraphConfiguration implements GraphConfiguration {
 
     @Override
     public Graph apply(Settings settings) {
