@@ -30,7 +30,7 @@ import static org.eclipse.jnosql.mapping.config.MappingConfigurations.DOCUMENT_D
 @ApplicationScoped
 class DocumentManagerSupplier implements Supplier<ArangoDBDocumentManager> {
 
-    private static final Logger LOGGER = Logger.getLogger(ArangoDBDocumentManager.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(DocumentManagerSupplier.class.getName());
 
 
     @Override
