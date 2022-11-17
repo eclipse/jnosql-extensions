@@ -214,6 +214,8 @@ You can use either the Maven or Gradle dependencies:
 </dependency>
 ----
 
+You can define the database settings using Eclipse MicroProfile Config, so you can put it in the properties and overwrite it in the environment following the https://12factor.net/config[Twelve-Factor App].
+
 [source,properties]
 ----
 jnosql.document.database=<DATABASE>
@@ -288,19 +290,6 @@ You can use either the Maven or Gradle dependencies:
 </dependency>
 ----
 
-=== Provide Elasticsearch Manager to the CDI Container
-
-[source,java]
-----
-public class ElasticsearchProducer {
-
-    @Produces
-    public ElasticsearchDocumentCollectionManager getManager() {
-        ElasticsearchDocumentCollectionManager manager = // instance
-        return manager;
-    }
-}
-----
 
 === Template
 
