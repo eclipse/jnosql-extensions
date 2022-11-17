@@ -15,7 +15,7 @@
 package org.eclipse.jnosql.mapping.elasticsearch.document;
 
 
-import jakarta.nosql.document.DocumentCollectionManager;
+import jakarta.nosql.document.DocumentManager;
 import jakarta.nosql.document.DocumentEntity;
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.document.DocumentEntityConverter;
@@ -24,7 +24,7 @@ import jakarta.nosql.mapping.document.DocumentWorkflow;
 import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.eclipse.jnosql.mapping.document.AbstractDocumentTemplate;
-import org.eclipse.jnosql.communication.elasticsearch.document.ElasticsearchDocumentCollectionManager;
+import org.eclipse.jnosql.communication.elasticsearch.document.ElasticsearchDocumentManager;
 
 import javax.enterprise.inject.Instance;
 import javax.enterprise.inject.Typed;
@@ -40,7 +40,7 @@ import java.util.stream.Stream;
 class DefaultElasticsearchTemplate extends AbstractDocumentTemplate
         implements ElasticsearchTemplate {
 
-    private Instance<ElasticsearchDocumentCollectionManager> manager;
+    private Instance<ElasticsearchDocumentManager> manager;
 
     private DocumentEntityConverter converter;
 
@@ -53,7 +53,7 @@ class DefaultElasticsearchTemplate extends AbstractDocumentTemplate
     private Converters converters;
 
     @Inject
-    DefaultElasticsearchTemplate(Instance<ElasticsearchDocumentCollectionManager> manager,
+    DefaultElasticsearchTemplate(Instance<ElasticsearchDocumentManager> manager,
                                  DocumentEntityConverter converter, DocumentWorkflow flow,
                                  DocumentEventPersistManager persistManager,
                                  EntitiesMetadata entities,
@@ -75,7 +75,7 @@ class DefaultElasticsearchTemplate extends AbstractDocumentTemplate
     }
 
     @Override
-    protected DocumentCollectionManager getManager() {
+    protected DocumentManager getManager() {
         return manager.get();
     }
 
@@ -85,7 +85,7 @@ class DefaultElasticsearchTemplate extends AbstractDocumentTemplate
     }
 
     @Override
-    protected DocumentEventPersistManager getPersistManager() {
+    protected DocumentEventPersistManager getEventManager() {
         return persistManager;
     }
 
