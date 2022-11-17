@@ -22,19 +22,32 @@ You can use either the Maven or Gradle dependencies:
 </dependency>
 ----
 
-=== Provide ArangoDB Manager to the CDI Container
+You can define the database settings using Eclipse MicroProfile Config, so you can put it in the properties and overwrite it in the environment following the https://12factor.net/config[Twelve-Factor App].
+
+[source,properties]
+----
+jnosql.document.database=<DATABASE>
+jnosql.arangodb.host=localhost:8529
+----
+
+The config settings are the default behavior; nevertheless, there is an option to do it programmatically. Create a class that implements the `Supplier<DocumentManager>` and then defines it as an `@Alternative` and the `Priority`.
 
 [source,java]
 ----
-public class ArangoDBProducer {
+@Alternative
+@Priority(Interceptor.Priority.APPLICATION)
+public class ManagerSupplier implements Supplier<DocumentManager> {
 
     @Produces
-    public ArangoDBDocumentCollectionManager getManager() {
-        ArangoDBDocumentCollectionManager manager = ...;
-        return manager;
+    public DocumentManager get() {
+        Settings settings = Settings.builder().put("credential", "value").build();
+        DocumentConfiguration configuration = new NoSQLDocumentProvider();
+        DocumentManagerFactory factory = configuration.apply(settings);
+        return factory.apply("database");
     }
 }
 ----
+
 
 === Repository
 
