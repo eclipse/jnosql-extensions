@@ -762,6 +762,17 @@ graphname=name
 allow-upgrade=false
 ----
 
+=== Titan
+
+This is an example using Titan's Graph API with MicroProfile Config.
+
+WARNING: The API will pass and use the properties from `com.thinkaurelius.titan.graphdb.configuration.GraphDatabaseConfiguration`
+[source,properties]
+----
+jnosql.graph.provider=org.eclipse.jnosql.mapping.graph.connections.TitanGraphConfiguration
+----
+
+
 === Neo4j
 
 === Neo4j Remote
