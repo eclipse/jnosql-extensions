@@ -17,7 +17,7 @@ package org.eclipse.jnosql.mapping.cassandra.column;
 
 import jakarta.nosql.column.Column;
 import jakarta.nosql.column.ColumnEntity;
-import org.eclipse.jnosql.communication.cassandra.column.CassandraColumnFamilyManager;
+import org.eclipse.jnosql.communication.cassandra.column.CassandraColumnManager;
 import org.mockito.Mockito;
 
 import javax.enterprise.inject.Produces;
@@ -28,8 +28,8 @@ public class MockProducer {
 
 
     @Produces
-    public CassandraColumnFamilyManager getManager() {
-        CassandraColumnFamilyManager manager = Mockito.mock(CassandraColumnFamilyManager.class);
+    public CassandraColumnManager getManager() {
+        CassandraColumnManager manager = Mockito.mock(CassandraColumnManager.class);
         ColumnEntity entity = ColumnEntity.of("Person");
         entity.add(Column.of("name", "Ada"));
         when(manager.insert(Mockito.any(ColumnEntity.class))).thenReturn(entity);

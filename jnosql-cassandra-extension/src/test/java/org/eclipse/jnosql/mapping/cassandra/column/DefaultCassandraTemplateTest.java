@@ -24,7 +24,7 @@ import jakarta.nosql.column.ColumnQuery;
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.column.ColumnEventPersistManager;
 import jakarta.nosql.tck.test.CDIExtension;
-import org.eclipse.jnosql.communication.cassandra.column.CassandraColumnFamilyManager;
+import org.eclipse.jnosql.communication.cassandra.column.CassandraColumnManager;
 import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -67,11 +67,11 @@ public class DefaultCassandraTemplateTest {
 
     private CassandraTemplate template;
 
-    private CassandraColumnFamilyManager manager;
+    private CassandraColumnManager manager;
 
     @BeforeEach
     public void setUp() {
-        this.manager = mock(CassandraColumnFamilyManager.class);
+        this.manager = mock(CassandraColumnManager.class);
         Instance instance = mock(Instance.class);
         when(instance.get()).thenReturn(manager);
         template = new DefaultCassandraTemplate(instance, converter, flow, persistManager, entities, converters);

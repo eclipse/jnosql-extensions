@@ -19,7 +19,7 @@ import com.datastax.oss.driver.api.core.ConsistencyLevel;
 import com.datastax.oss.driver.api.core.cql.SimpleStatement;
 import jakarta.nosql.column.ColumnDeleteQuery;
 import jakarta.nosql.column.ColumnEntity;
-import jakarta.nosql.column.ColumnFamilyManager;
+import jakarta.nosql.column.ColumnManager;
 import jakarta.nosql.column.ColumnQuery;
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.column.ColumnEntityConverter;
@@ -28,7 +28,7 @@ import jakarta.nosql.mapping.column.ColumnWorkflow;
 import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.column.AbstractColumnTemplate;
 
-import org.eclipse.jnosql.communication.cassandra.column.CassandraColumnFamilyManager;
+import org.eclipse.jnosql.communication.cassandra.column.CassandraColumnManager;
 import org.eclipse.jnosql.communication.cassandra.column.CassandraPreparedStatement;
 
 import javax.enterprise.inject.Instance;
@@ -45,7 +45,7 @@ import java.util.stream.StreamSupport;
 @Typed(CassandraTemplate.class)
 class DefaultCassandraTemplate extends AbstractColumnTemplate implements CassandraTemplate {
 
-    private Instance<CassandraColumnFamilyManager> manager;
+    private Instance<CassandraColumnManager> manager;
 
     private CassandraColumnEntityConverter converter;
 
@@ -58,7 +58,7 @@ class DefaultCassandraTemplate extends AbstractColumnTemplate implements Cassand
     private Converters converters;
 
     @Inject
-    DefaultCassandraTemplate(Instance<CassandraColumnFamilyManager> manager,
+    DefaultCassandraTemplate(Instance<CassandraColumnManager> manager,
                              CassandraColumnEntityConverter converter,
                              CassandraColumnWorkflow flow,
                              ColumnEventPersistManager persistManager,
@@ -82,7 +82,7 @@ class DefaultCassandraTemplate extends AbstractColumnTemplate implements Cassand
     }
 
     @Override
-    protected ColumnFamilyManager getManager() {
+    protected ColumnManager getManager() {
         return manager.get();
     }
 
