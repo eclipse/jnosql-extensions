@@ -27,7 +27,7 @@ import java.util.Objects;
 /**
  * Creates the connection to {@link Graph} using Neo4J Embedded.
  */
-public class Neo4JEmbedded implements GraphConfiguration {
+public class Neo4JEmbeddedGraphConfiguration implements GraphConfiguration {
 
     private static final String HOST_KEY = "gremlin.neo4j.directory";
 

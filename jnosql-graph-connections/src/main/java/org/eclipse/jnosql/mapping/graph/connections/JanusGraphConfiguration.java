@@ -26,7 +26,7 @@ import java.util.Objects;
 /**
  * Creates the connection to {@link Graph} using JanusGraph.
  */
-public class JanusGraph implements GraphConfiguration {
+public class JanusGraphConfiguration implements GraphConfiguration {
 
     @Override
     public Graph apply(Settings settings) {

@@ -29,7 +29,7 @@ import static jakarta.nosql.Configurations.USER;
 /**
  * Creates the connection to {@link Graph} using ArangoDB.
  */
-public class ArangoDB implements GraphConfiguration {
+public class ArangoDBGraphConfiguration implements GraphConfiguration {
 
     private static final String EDGE = "jnosql.arangodb.graph.edge";
     private static final String EDGE_CONFIGURATION = "jnosql.arangodb.graph.edge.configuration";

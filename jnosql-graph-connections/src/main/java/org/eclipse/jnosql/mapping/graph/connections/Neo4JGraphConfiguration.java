@@ -34,7 +34,7 @@ import static org.eclipse.jnosql.mapping.graph.connections.Neo4JGraphConfigurati
 /**
  * Creates the connection to {@link Graph} using Neo4J remote.
  */
-public class Neo4JRemote implements GraphConfiguration {
+public class Neo4JGraphConfiguration implements GraphConfiguration {
 
     @Override
     public Graph apply(Settings settings) {
