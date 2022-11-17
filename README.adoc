@@ -801,3 +801,19 @@ jnosql.neo4j.host=bolt://localhost:7687
 
 === Neo4j Remote
 
+[cols="Neo4j Remote Properties"]
+|===
+|Configuration property |Description
+
+|`jnosql.neo4j.host`
+|The database host. Default: "bolt://localhost:7687"
+
+|===
+
+This is an example using Neo4J's Graph API with MicroProfile Config.
+
+[source,properties]
+----
+jnosql.graph.provider=org.eclipse.jnosql.mapping.graph.connections.Neo4JEmbeddedGraphConfiguration
+jnosql.neo4j.host=/home/otaviojava/data/
+----
