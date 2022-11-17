@@ -214,16 +214,29 @@ You can use either the Maven or Gradle dependencies:
 </dependency>
 ----
 
-=== Provide Couchbase Manager to the CDI Container
+[source,properties]
+----
+jnosql.document.database=<DATABASE>
+jnosql.couchbase.host=couchbase://localhost
+jnosql.couchbase.user=root
+jnosql.couchbase.password=123456
+----
+
+The config settings are the default behavior; nevertheless, there is an option to do it programmatically. Create a class that implements the `Supplier<CouchbaseDocumentManager>` and then defines it as an `@Alternative` and the `Priority`.
 
 [source,java]
 ----
-public class CouchbaseProducer {
+@ApplicationScoped
+@Alternative
+@Priority(Interceptor.Priority.APPLICATION)
+public class ManagerSupplier implements Supplier<CouchbaseDocumentManager> {
 
     @Produces
-    public CouchbaseDocumentCollectionManager getManager() {
-        CouchbaseDocumentCollectionManager manager = // instance;
-        return manager;
+    public CouchbaseDocumentManager get() {
+        Settings settings = Settings.builder().put("credential", "value").build();
+        CouchbaseDocumentConfiguration configuration = new CouchbaseDocumentConfiguration();
+        CouchbaseDocumentManagerFactory factory = configuration.apply(settings);
+        return factory.apply("database");
     }
 }
 ----
