@@ -695,3 +695,5 @@ SolrTemplate template;
 ...
 List<Person> people = template.solr("age:@age AND type:@type AND _entity:@entity", params);
 ----
+
+== Graph Connections
