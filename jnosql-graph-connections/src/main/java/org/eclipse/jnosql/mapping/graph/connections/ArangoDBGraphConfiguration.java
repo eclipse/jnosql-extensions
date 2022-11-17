@@ -41,7 +41,7 @@ public class ArangoDBGraphConfiguration implements GraphConfiguration {
         Objects.requireNonNull(settings, "settings is required");
         ArangoDBConfigurationBuilder builder = new ArangoDBConfigurationBuilder();
 
-        settings.prefix(HOST.get())
+        settings.prefix(HOST)
                 .stream()
                 .map(Object::toString)
                 .forEach(builder::arangoHosts);
