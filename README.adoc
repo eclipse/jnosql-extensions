@@ -697,3 +697,62 @@ List<Person> people = template.solr("age:@age AND type:@type AND _entity:@entity
 ----
 
 == Graph Connections
+
+Graph connections is a project that contains several `GraphConfiguration` implementations.
+
+[source,xml]
+----
+<dependency>
+  <groupId>org.eclipse.jnosql.mapping</groupId>
+  <artifactId>jnosql-graph-connections</artifactId>
+  <version>1.0.0-b4</version>
+</dependency>
+----
+
+=== ArangoDB
+
+
+[cols="ArangoDB Properties"]
+|===
+|Configuration property |Description
+
+|`jnosql.arangodb.graph.edge`
+|The edge collection. It uses as a prefix. E.g.:jnosql.arangodb.graph.edge.1=edge
+
+|`jnosql.arangodb.graph.edge.configuration`
+|Edge collection, the source vertex collection and the target vertex collection split by pipe. It hou,It uses as a prefix. E.g.: jnosq.arangodb.graph.edge.configuration.1=knows\|Person\|Person
+
+|`jnosql.arangodb.graph.vertex`
+|The vertex collection. It uses as a prefix. E.g.: jnosql.arangodb.graph.vertex.1=vertex
+
+|`jnosql.arangodb.graph.graph`
+|Name of the graph to use.
+
+|`jnosql.arangodb.graph.host`
+|The database host.
+
+|`jnosql.arangodb.graph.user`
+|The user's credential.
+
+|`jnosql.arangodb.graph.password`
+|The password's credential.
+
+|===
+
+This is an example using ArangoDB's Graph API with MicroProfile Config.
+
+[source,properties]
+----
+jnosql.graph.provider=org.eclipse.jnosql.mapping.graph.connections.ArangoDBGraphConfiguration
+jnosql.arangodb.graph.graph=marketing
+jnosql.arangodb.graph.vertex.1=Person
+jnosql.arangodb.graph.edge.1=knows
+jnosql.arangodb.graph.edge.configuration.1=knows|Person|Person
+----
+
+=== Janus
+
+=== Neo4j
+
+=== Neo4j Remote
+
