@@ -20,13 +20,19 @@ import jakarta.nosql.document.DocumentEntity;
 import org.eclipse.jnosql.communication.arangodb.document.ArangoDBDocumentManager;
 import org.mockito.Mockito;
 
+import javax.annotation.Priority;
+import javax.enterprise.inject.Alternative;
 import javax.enterprise.inject.Produces;
+import javax.interceptor.Interceptor;
+import java.util.function.Supplier;
 
-public class MockProducer {
-
+@Alternative
+@Priority(Interceptor.Priority.APPLICATION)
+public class MockProducer implements Supplier<ArangoDBDocumentManager> {
 
     @Produces
-    public ArangoDBDocumentManager getManager() {
+    @Override
+    public ArangoDBDocumentManager get() {
         ArangoDBDocumentManager manager = Mockito.mock(ArangoDBDocumentManager.class);
         DocumentEntity entity = DocumentEntity.of("Person");
         entity.add(Document.of("name", "Ada"));
