@@ -9,30 +9,38 @@ and this project adheres to https://semver.org/spec/v2.0.0.html[Semantic Version
 == [Unreleased]
 
 === Added
+
 - Create a CHANGELOG file to track the specification evolution
+- Add Eclipse Microprofile Config
 
 === Changed
+
 - Move the default documentation to ASCIIDOC
+- Replace Hamcrest by AssertJ
 
 == [1.0.0-b4] - 2022-06-04
 
 === Added
+
 - Add MongoDB specific version
 
 == [1.0.0-b3] - 2021-03-01
 
 === Changed
+
 - Remove JNoSQL logo from repositories
 - Remove "Artemis" references in the package and use "mapping" instead.
 - Remove "diana" references in the package name and use "communication" instead.
 - Update Cassandra library to use DataStax OSS
 
 === Fixed
+
 - Fixes HashMap issue in the mapping API
 
 == [1.0.0-b2] - 2020-06-07
 
 === Added
+
 - Creates TCK Mapping
 - Creates TCK Communication
 - Creates TCK Driver
