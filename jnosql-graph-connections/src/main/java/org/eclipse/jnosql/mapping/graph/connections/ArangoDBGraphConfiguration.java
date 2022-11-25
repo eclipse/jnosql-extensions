@@ -23,7 +23,7 @@ import org.eclipse.jnosql.mapping.graph.GraphConfiguration;
 import java.util.Objects;
 
 import static org.eclipse.jnosql.mapping.graph.connections.ArangoDBGraphConfigurations.EDGE;
-import static org.eclipse.jnosql.mapping.graph.connections.ArangoDBGraphConfigurations.EDGE_CONFIGURATION;
+import static org.eclipse.jnosql.mapping.graph.connections.ArangoDBGraphConfigurations.EDGE_RELATIONSHIP;
 import static org.eclipse.jnosql.mapping.graph.connections.ArangoDBGraphConfigurations.GRAPH;
 import static org.eclipse.jnosql.mapping.graph.connections.ArangoDBGraphConfigurations.HOST;
 import static org.eclipse.jnosql.mapping.graph.connections.ArangoDBGraphConfigurations.PASSWORD;
@@ -69,7 +69,7 @@ public class ArangoDBGraphConfiguration implements GraphConfiguration {
                 .map(Object::toString)
                 .ifPresent(builder::graph);
 
-        settings.prefix(EDGE_CONFIGURATION)
+        settings.prefix(EDGE_RELATIONSHIP)
                 .stream()
                 .map(EdgeConfiguration::parse)
                 .forEach(e -> e.add(builder));
