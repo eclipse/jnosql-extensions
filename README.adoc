@@ -17,7 +17,7 @@ You can use either the Maven or Gradle dependencies:
 ----
 <dependency>
   <groupId>org.eclipse.jnosql.mapping</groupId>
-  <artifactId>aragangodb-extension</artifactId>
+  <artifactId>jnosql-aragangodb-extension</artifactId>
   <version>1.0.0-b4</version>
 </dependency>
 ----
@@ -92,7 +92,7 @@ You can use either the Maven or Gradle dependencies:
 ----
 <dependency>
   <groupId>org.eclipse.jnosql.mapping</groupId>
-  <artifactId>cassandra-extension</artifactId>
+  <artifactId>jnosql-cassandra-extension</artifactId>
   <version>1.0.0-b4</version>
 </dependency>
 ----
@@ -209,7 +209,7 @@ You can use either the Maven or Gradle dependencies:
 ----
 <dependency>
   <groupId>org.eclipse.jnosql.mapping</groupId>
-  <artifactId>couchbase-extension</artifactId>
+  <artifactId>jnosql-couchbase-extension</artifactId>
   <version>1.0.0-b4</version>
 </dependency>
 ----
@@ -285,7 +285,7 @@ You can use either the Maven or Gradle dependencies:
 ----
 <dependency>
   <groupId>org.eclipse.jnosql.mapping</groupId>
-  <artifactId>elasticsearch-extension</artifactId>
+  <artifactId>jnosql-elasticsearch-extension</artifactId>
   <version>1.0.0-b4</version>
 </dependency>
 ----
@@ -347,7 +347,7 @@ You can use either the Maven or Gradle dependencies:
 ----
 <dependency>
   <groupId>org.eclipse.jnosql.mapping</groupId>
-  <artifactId>hazelcast-extension</artifactId>
+  <artifactId>jnosql-hazelcast-extension</artifactId>
   <version>1.0.0-b4</version>
 </dependency>
 ----
@@ -421,7 +421,7 @@ You can use either the Maven or Gradle dependencies:
 ----
 <dependency>
   <groupId>org.eclipse.jnosql.mapping</groupId>
-  <artifactId>mongodb-extension</artifactId>
+  <artifactId>jnosql-mongodb-extension</artifactId>
   <version>1.0.0-b4</version>
 </dependency>
 ----
@@ -554,7 +554,7 @@ You can use either the Maven or Gradle dependencies:
 ----
 <dependency>
   <groupId>org.eclipse.jnosql.mapping</groupId>
-  <artifactId>orientdb-extension</artifactId>
+  <artifactId>jnosql-orientdb-extension</artifactId>
   <version>1.0.0-b4</version>
 </dependency>
 ----
@@ -636,7 +636,7 @@ You can use either the Maven or Gradle dependencies:
 ----
 <dependency>
   <groupId>org.eclipse.jnosql.mapping</groupId>
-  <artifactId>solr-extension</artifactId>
+  <artifactId>jnosql-solr-extension</artifactId>
   <version>1.0.0-b4</version>
 </dependency>
 ----
@@ -704,7 +704,7 @@ Graph connections is a project that contains several `GraphConfiguration` implem
 ----
 <dependency>
   <groupId>org.eclipse.jnosql.mapping</groupId>
-  <artifactId>jnosql-graph-connections</artifactId>
+  <artifactId>jnosql-jnosql-graph-connections</artifactId>
   <version>1.0.0-b4</version>
 </dependency>
 ----
