@@ -719,8 +719,8 @@ Graph connections is a project that contains several `GraphConfiguration` implem
 |`jnosql.arangodb.graph.edge`
 |The edge collection. It uses as a prefix. E.g.:jnosql.arangodb.graph.edge.1=edge
 
-|`jnosql.arangodb.graph.edge.configuration`
-|Edge collection, the source vertex collection and the target vertex collection split by pipe. It hou,It uses as a prefix. E.g.: jnosq.arangodb.graph.edge.configuration.1=knows\|Person\|Person
+|`jnosql.arangodb.graph.relationship`
+|Edge collection, the source vertex collection and the target vertex collection split by pipe. It hou,It uses as a prefix. E.g.: jnosql.arangodb.graph.relationship.1=Person\|knows\|Person
 
 |`jnosql.arangodb.graph.vertex`
 |The vertex collection. It uses as a prefix. E.g.: jnosql.arangodb.graph.vertex.1=vertex
@@ -747,7 +747,7 @@ jnosql.graph.provider=org.eclipse.jnosql.mapping.graph.connections.ArangoDBGraph
 jnosql.arangodb.graph.graph=marketing
 jnosql.arangodb.graph.vertex.1=Person
 jnosql.arangodb.graph.edge.1=knows
-jnosql.arangodb.graph.edge.configuration.1=knows|Person|Person
+jnosql.arangodb.graph.relationship.1=Person|knows|Person
 ----
 
 === Janus
