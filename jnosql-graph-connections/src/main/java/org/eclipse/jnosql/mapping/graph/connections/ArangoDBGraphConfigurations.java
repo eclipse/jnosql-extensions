@@ -27,7 +27,7 @@ public enum ArangoDBGraphConfigurations implements Supplier<String> {
     /**
      * Edge collection, the source vertex collection and the target vertex collection split by pipe.
      * It hou,It uses as a prefix.
-     * E.g.: jnosql.arangodb.graph.relationship.1=knows|Person|Person
+     * E.g.: jnosql.arangodb.graph.relationship.1=Person|knows|Person
      */
     EDGE_RELATIONSHIP("jnosql.arangodb.graph.relationship"),
     /**
