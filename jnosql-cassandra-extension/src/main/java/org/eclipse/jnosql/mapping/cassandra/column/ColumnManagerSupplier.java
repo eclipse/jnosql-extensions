@@ -25,7 +25,7 @@ import java.util.function.Supplier;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static org.eclipse.jnosql.mapping.config.MappingConfigurations.DOCUMENT_DATABASE;
+import static org.eclipse.jnosql.mapping.config.MappingConfigurations.COLUMN_DATABASE;
 
 @ApplicationScoped
 class ColumnManagerSupplier implements Supplier<CassandraColumnManager> {
@@ -40,9 +40,9 @@ class ColumnManagerSupplier implements Supplier<CassandraColumnManager> {
         Settings settings = MicroProfileSettings.INSTANCE;
         CassandraConfiguration configuration = new CassandraConfiguration();
         CassandraColumnManagerFactory factory = configuration.apply(settings);
-        Optional<String> database = settings.get(DOCUMENT_DATABASE, String.class);
+        Optional<String> database = settings.get(COLUMN_DATABASE, String.class);
         String db = database.orElseThrow(() -> new MappingException("Please, inform the database filling up the property "
-                + DOCUMENT_DATABASE));
+                + COLUMN_DATABASE));
         CassandraColumnManager manager = factory.apply(db);
         LOGGER.log(Level.FINEST, "Starting  a CassandraColumnManager instance using Eclipse MicroProfile Config," +
                 " database name: " + db);
