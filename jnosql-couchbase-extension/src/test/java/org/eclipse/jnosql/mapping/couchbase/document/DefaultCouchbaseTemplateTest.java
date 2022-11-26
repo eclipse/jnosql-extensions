@@ -15,29 +15,22 @@
 package org.eclipse.jnosql.mapping.couchbase.document;
 
 import com.couchbase.client.java.json.JsonObject;
-import com.couchbase.client.java.search.SearchQuery;
 import jakarta.nosql.document.Document;
 import jakarta.nosql.document.DocumentEntity;
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.document.DocumentEntityConverter;
 import jakarta.nosql.mapping.document.DocumentEventPersistManager;
 import jakarta.nosql.mapping.document.DocumentWorkflow;
-import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import jakarta.nosql.tck.test.CDIExtension;
 import org.eclipse.jnosql.communication.couchbase.document.CouchbaseDocumentManager;
+import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 
@@ -75,7 +68,6 @@ public class DefaultCouchbaseTemplateTest {
         entity.add(Document.of("_id", "Ada"));
         entity.add(Document.of("age", 10));
 
-        when(manager.search(any(SearchQuery.class))).thenReturn(Stream.of(entity));
 
     }
 
@@ -90,19 +82,6 @@ public class DefaultCouchbaseTemplateTest {
     public void shouldFindN1ql2() {
         template.n1qlQuery("select * from Person where name = $name");
         Mockito.verify(manager).n1qlQuery("select * from Person where name = $name");
-    }
-
-    @Test
-    public void shouldSearch() {
-        SearchQuery query = Mockito.mock(SearchQuery.class);
-
-        List<Person> people = template.<Person>search(query).collect(Collectors.toList());
-
-        assertFalse(people.isEmpty());
-        assertEquals(1, people.size());
-        Person person = people.get(0);
-
-        assertEquals("Ada", person.getName());
     }
 
 }

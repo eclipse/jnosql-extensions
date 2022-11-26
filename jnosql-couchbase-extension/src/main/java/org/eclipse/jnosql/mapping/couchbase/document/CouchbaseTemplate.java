@@ -16,7 +16,6 @@ package org.eclipse.jnosql.mapping.couchbase.document;
 
 
 import com.couchbase.client.java.json.JsonObject;
-import com.couchbase.client.java.search.SearchQuery;
 import jakarta.nosql.mapping.document.DocumentTemplate;
 
 import java.util.stream.Stream;
@@ -47,14 +46,5 @@ public interface CouchbaseTemplate extends DocumentTemplate {
      */
     <T> Stream<T> n1qlQuery(String n1qlQuery);
 
-    /**
-     * Searches in Couchbase using Full Text Search
-     *
-     * @param <T>   the type
-     * @param query the query to be used
-     * @return the elements from the query
-     * @throws NullPointerException when either the query or index are null
-     */
-    <T> Stream<T> search(SearchQuery query);
 
 }

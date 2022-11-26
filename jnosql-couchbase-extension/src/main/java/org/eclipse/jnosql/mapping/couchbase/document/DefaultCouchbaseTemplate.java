@@ -16,15 +16,14 @@ package org.eclipse.jnosql.mapping.couchbase.document;
 
 
 import com.couchbase.client.java.json.JsonObject;
-import com.couchbase.client.java.search.SearchQuery;
 import jakarta.nosql.document.DocumentManager;
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.document.DocumentEntityConverter;
 import jakarta.nosql.mapping.document.DocumentEventPersistManager;
 import jakarta.nosql.mapping.document.DocumentWorkflow;
-import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
-import org.eclipse.jnosql.mapping.document.AbstractDocumentTemplate;
 import org.eclipse.jnosql.communication.couchbase.document.CouchbaseDocumentManager;
+import org.eclipse.jnosql.mapping.document.AbstractDocumentTemplate;
+import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 
 import javax.enterprise.inject.Instance;
 import javax.enterprise.inject.Typed;
@@ -112,14 +111,6 @@ class DefaultCouchbaseTemplate extends AbstractDocumentTemplate
     public <T> Stream<T> n1qlQuery(String n1qlQuery) {
         requireNonNull(n1qlQuery, "n1qlQuery is required");
         return manager.get().n1qlQuery(n1qlQuery)
-                .map(converter::toEntity)
-                .map(d -> (T) d);
-    }
-
-    @Override
-    public <T> Stream<T> search(SearchQuery query) {
-        requireNonNull(query, "query is required");
-        return manager.get().search(query)
                 .map(converter::toEntity)
                 .map(d -> (T) d);
     }
