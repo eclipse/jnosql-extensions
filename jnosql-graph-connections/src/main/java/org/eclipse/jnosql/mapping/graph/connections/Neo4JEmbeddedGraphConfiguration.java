@@ -37,7 +37,7 @@ public class Neo4JEmbeddedGraphConfiguration implements GraphConfiguration {
         Objects.requireNonNull(settings, "settings is required");
         Configuration config = new BaseConfiguration();
         for (String key : settings.keySet()) {
-            config.addProperty(key, settings.get(key, String.class).orElseThrow());
+            settings.get(key, String.class).ifPresent(v -> config.addProperty(key, v));
         }
         settings.get(HOST.get())
                 .map(Object::toString)

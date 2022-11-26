@@ -33,7 +33,7 @@ public class JanusGraphConfiguration implements GraphConfiguration {
         Objects.requireNonNull(settings, "settings is required");
         Configuration configuration = new BaseConfiguration();
         for (String key : settings.keySet()) {
-            configuration.addProperty(key, settings.get(key, String.class).orElseThrow());
+            settings.get(key, String.class).ifPresent(v -> configuration.addProperty(key, v));
         }
         return JanusGraphFactory.open(configuration);
     }
