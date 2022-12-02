@@ -15,6 +15,7 @@
 package org.eclipse.jnosql.mapping.cassandra.column;
 
 import jakarta.nosql.tck.test.CDIExtension;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import javax.inject.Inject;
@@ -24,11 +25,10 @@ public class CassandraExtensionTest {
 
 
     @Inject
-    private PersonRepository personRepository;
+    private PersonRepository repository;
 
     @Test
     public void shouldSaveCassandra() {
-        Person person = new Person("Ada", 10);
-        personRepository.save(person);
+        Assertions.assertNotNull(repository);
     }
 }
