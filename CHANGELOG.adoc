@@ -17,6 +17,7 @@ and this project adheres to https://semver.org/spec/v2.0.0.html[Semantic Version
 
 - Move the default documentation to ASCIIDOC
 - Replace Hamcrest by AssertJ
+- Define bean discovery to annotated instead of all
 
 == [1.0.0-b4] - 2022-06-04
 
