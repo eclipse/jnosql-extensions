@@ -15,6 +15,7 @@
 package org.eclipse.jnosql.mapping.orientdb.document;
 
 import jakarta.nosql.tck.test.CDIExtension;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import javax.inject.Inject;
@@ -24,11 +25,10 @@ public class OrientDBExtensionTest {
 
 
     @Inject
-    private PersonRepository personRepository;
+    private PersonRepository repository;
 
     @Test
     public void shouldSaveOrientDB() {
-        Person person = new Person("Ada", 10);
-        personRepository.deleteById(person.getName());
+        Assertions.assertNotNull(repository);
     }
 }

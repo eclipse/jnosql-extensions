@@ -36,6 +36,7 @@ import org.eclipse.jnosql.mapping.mongodb.criteria.api.SelectQuery;
 import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Instance;
 import javax.enterprise.inject.Typed;
 import java.util.List;
@@ -46,6 +47,7 @@ import java.util.stream.Stream;
 
 import static java.util.Objects.requireNonNull;
 
+@ApplicationScoped
 @Typed(MongoDBTemplate.class)
 class DefaultMongoDBTemplate extends AbstractDocumentTemplate implements MongoDBTemplate {
 
