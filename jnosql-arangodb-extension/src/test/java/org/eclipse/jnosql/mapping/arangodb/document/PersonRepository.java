@@ -15,5 +15,8 @@
 package org.eclipse.jnosql.mapping.arangodb.document;
 
 
+import javax.enterprise.context.ApplicationScoped;
+
+@ApplicationScoped
 public interface PersonRepository extends ArangoDBRepository<Person, String> {
 }
