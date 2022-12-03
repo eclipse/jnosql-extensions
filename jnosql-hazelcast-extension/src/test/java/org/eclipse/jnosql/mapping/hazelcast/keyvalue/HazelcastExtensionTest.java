@@ -15,6 +15,7 @@
 package org.eclipse.jnosql.mapping.hazelcast.keyvalue;
 
 import jakarta.nosql.tck.test.CDIExtension;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import javax.inject.Inject;
@@ -23,12 +24,11 @@ import javax.inject.Inject;
 public class HazelcastExtensionTest {
 
     @Inject
-    private PersonRepository personRepository;
+    private PersonRepository repository;
 
     @Test
     public void shouldSave() {
-        Person person = new Person("Ada", 10);
-        personRepository.deleteById(person.getName());
+        Assertions.assertNotNull(repository);
     }
 
 }
