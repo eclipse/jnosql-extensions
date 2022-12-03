@@ -15,5 +15,8 @@
 package org.eclipse.jnosql.mapping.couchbase.document;
 
 
+import javax.enterprise.context.ApplicationScoped;
+
+@ApplicationScoped
 public interface PersonRepository extends CouchbaseRepository<Person, String> {
 }

@@ -15,6 +15,7 @@
 package org.eclipse.jnosql.mapping.couchbase.document;
 
 import jakarta.nosql.tck.test.CDIExtension;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import javax.inject.Inject;
@@ -22,11 +23,10 @@ import javax.inject.Inject;
 @CDIExtension
 public class CouchbaseExtensionTest {
     @Inject
-    private PersonRepository personRepository;
+    private PersonRepository repository;
 
     @Test
     public void shouldSaveOrientDB() {
-        Person person = new Person("Ada", 10);
-        personRepository.deleteById(person.getName());
+        Assertions.assertNotNull(repository);
     }
 }
