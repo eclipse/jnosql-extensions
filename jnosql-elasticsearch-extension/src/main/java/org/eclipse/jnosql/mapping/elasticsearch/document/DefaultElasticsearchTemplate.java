@@ -37,6 +37,7 @@ import java.util.stream.Stream;
  */
 
 @Typed(ElasticsearchTemplate.class)
+@ApplicationScoped
 class DefaultElasticsearchTemplate extends AbstractDocumentTemplate
         implements ElasticsearchTemplate {
 
