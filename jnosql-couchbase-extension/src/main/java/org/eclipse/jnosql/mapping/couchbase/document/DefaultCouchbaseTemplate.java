@@ -36,6 +36,7 @@ import static java.util.Objects.requireNonNull;
  * The Default implementation of {@link CouchbaseTemplate}
  */
 @Typed(CouchbaseTemplate.class)
+@ApplicationScoped
 class DefaultCouchbaseTemplate extends AbstractDocumentTemplate
         implements CouchbaseTemplate {
 
