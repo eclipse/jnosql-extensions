@@ -26,6 +26,7 @@ import org.elasticsearch.index.query.QueryBuilder;
 import org.eclipse.jnosql.mapping.document.AbstractDocumentTemplate;
 import org.eclipse.jnosql.communication.elasticsearch.document.ElasticsearchDocumentManager;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Instance;
 import javax.enterprise.inject.Typed;
 import javax.inject.Inject;
