@@ -31,6 +31,7 @@ import org.eclipse.jnosql.mapping.column.AbstractColumnTemplate;
 import org.eclipse.jnosql.communication.cassandra.column.CassandraColumnManager;
 import org.eclipse.jnosql.communication.cassandra.column.CassandraPreparedStatement;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Instance;
 import javax.enterprise.inject.Typed;
 import javax.inject.Inject;
@@ -43,6 +44,7 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 @Typed(CassandraTemplate.class)
+@ApplicationScoped
 class DefaultCassandraTemplate extends AbstractColumnTemplate implements CassandraTemplate {
 
     private Instance<CassandraColumnManager> manager;
