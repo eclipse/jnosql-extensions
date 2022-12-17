@@ -37,6 +37,7 @@ import static java.util.Objects.requireNonNull;
  * The Default implementation of {@link SolrTemplate}
  */
 @Typed(SolrTemplate.class)
+@ApplicationScoped
 class DefaultSolrTemplate extends AbstractDocumentTemplate implements SolrTemplate {
 
     private Instance<SolrDocumentManager> manager;
