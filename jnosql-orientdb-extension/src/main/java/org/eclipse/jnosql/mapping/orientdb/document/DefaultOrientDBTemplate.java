@@ -39,6 +39,7 @@ import java.util.stream.Stream;
  * The Default implementation of {@link OrientDBTemplate}
  */
 @Typed(OrientDBTemplate.class)
+@ApplicationScoped
 class DefaultOrientDBTemplate extends AbstractDocumentTemplate
         implements OrientDBTemplate {
 
