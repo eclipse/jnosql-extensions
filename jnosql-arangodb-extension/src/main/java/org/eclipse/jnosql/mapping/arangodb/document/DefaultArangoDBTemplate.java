@@ -24,6 +24,7 @@ import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.document.AbstractDocumentTemplate;
 import org.eclipse.jnosql.communication.arangodb.document.ArangoDBDocumentManager;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Instance;
 import javax.enterprise.inject.Typed;
 import javax.inject.Inject;
@@ -36,6 +37,7 @@ import static java.util.Objects.requireNonNull;
  * The Default implementation of {@link ArangoDBTemplate}
  */
 @Typed(ArangoDBTemplate.class)
+@ApplicationScoped
 class DefaultArangoDBTemplate extends AbstractDocumentTemplate implements ArangoDBTemplate {
 
     private Instance<ArangoDBDocumentManager> manager;
