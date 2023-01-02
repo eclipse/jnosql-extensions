@@ -15,8 +15,8 @@
 package org.eclipse.jnosql.mapping.elasticsearch.document;
 
 
+import co.elastic.clients.elasticsearch.core.SearchRequest;
 import jakarta.nosql.mapping.document.DocumentTemplate;
-import org.elasticsearch.index.query.QueryBuilder;
 
 import java.util.stream.Stream;
 
@@ -26,11 +26,11 @@ import java.util.stream.Stream;
 public interface ElasticsearchTemplate extends DocumentTemplate {
 
     /**
-     * Find entities from {@link QueryBuilder}
+     * Find entities from {@link SearchRequest}
      *
      * @param query the query
      * @return the objects from query
      * @throws NullPointerException when query is null
      */
-    <T> Stream<T> search(QueryBuilder query);
+    <T> Stream<T> search(SearchRequest query);
 }
