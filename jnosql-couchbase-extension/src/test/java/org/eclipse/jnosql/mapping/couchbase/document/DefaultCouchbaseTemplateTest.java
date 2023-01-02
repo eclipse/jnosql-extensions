@@ -29,7 +29,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import jakarta.enterprise.inject.Instance;
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import static org.mockito.Mockito.when;
 

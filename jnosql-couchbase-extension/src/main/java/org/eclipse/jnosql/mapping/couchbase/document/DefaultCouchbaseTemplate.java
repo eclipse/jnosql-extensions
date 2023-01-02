@@ -28,7 +28,7 @@ import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Instance;
 import jakarta.enterprise.inject.Typed;
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 import java.util.stream.Stream;
 
 import static java.util.Objects.requireNonNull;

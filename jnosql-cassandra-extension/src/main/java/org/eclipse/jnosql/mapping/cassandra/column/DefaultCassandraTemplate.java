@@ -34,7 +34,7 @@ import org.eclipse.jnosql.communication.cassandra.column.CassandraPreparedStatem
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Instance;
 import jakarta.enterprise.inject.Typed;
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 import java.time.Duration;
 import java.util.Map;
 import java.util.Objects;

@@ -20,7 +20,7 @@ import org.eclipse.jnosql.mapping.column.AbstractColumnWorkflow;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Typed;
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 @Typed(CassandraColumnWorkflow.class)
 @ApplicationScoped

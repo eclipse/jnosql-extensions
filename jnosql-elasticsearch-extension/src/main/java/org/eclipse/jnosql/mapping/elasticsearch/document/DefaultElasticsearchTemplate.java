@@ -29,7 +29,7 @@ import org.eclipse.jnosql.communication.elasticsearch.document.ElasticsearchDocu
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Instance;
 import jakarta.enterprise.inject.Typed;
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 import java.util.Objects;
 import java.util.stream.Stream;
 

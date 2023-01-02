@@ -32,7 +32,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
 import jakarta.enterprise.inject.Instance;
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 import java.time.Duration;
 import java.util.Collections;
 import java.util.List;

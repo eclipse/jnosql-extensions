@@ -27,7 +27,7 @@ import org.eclipse.jnosql.communication.arangodb.document.ArangoDBDocumentManage
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Instance;
 import jakarta.enterprise.inject.Typed;
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 import java.util.Map;
 import java.util.stream.Stream;
 
