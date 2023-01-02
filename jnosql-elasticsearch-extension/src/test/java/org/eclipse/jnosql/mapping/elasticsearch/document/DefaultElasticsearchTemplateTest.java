@@ -85,7 +85,7 @@ public class DefaultElasticsearchTemplateTest {
     public void shouldFindQuery() {
         String searchText = "bike";
         Function<SearchRequest.Builder, ObjectBuilder<SearchRequest>> fn  =
-                q -> q.query(t -> t.match(MatchQuery.of(m -> m.field("field"))));
+                q -> q.query(t -> t.match(MatchQuery.of(m -> m.field("field").query(2))));
         SearchRequest request = fn.apply(new SearchRequest.Builder()).build();
         List<Person> people = template.<Person>search(request).collect(Collectors.toList());
 
