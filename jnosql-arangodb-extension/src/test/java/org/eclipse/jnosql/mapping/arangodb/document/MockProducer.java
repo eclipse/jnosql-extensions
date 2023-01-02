@@ -20,10 +20,10 @@ import jakarta.nosql.document.DocumentEntity;
 import org.eclipse.jnosql.communication.arangodb.document.ArangoDBDocumentManager;
 import org.mockito.Mockito;
 
-import javax.annotation.Priority;
+import jakarta.annotation.Priority;
 import jakarta.enterprise.inject.Alternative;
 import jakarta.enterprise.inject.Produces;
-import javax.interceptor.Interceptor;
+import jakarta.interceptor.Interceptor;
 import java.util.function.Supplier;
 
 @Alternative
