@@ -15,7 +15,7 @@
 package org.eclipse.jnosql.mapping.solr.document;
 
 
-import javax.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
 public interface PersonRepository extends SolrRepository<Person, String> {

@@ -22,9 +22,9 @@ import jakarta.nosql.mapping.keyvalue.KeyValueWorkflow;
 import org.eclipse.jnosql.mapping.keyvalue.AbstractKeyValueTemplate;
 import org.eclipse.jnosql.communication.hazelcast.keyvalue.HazelcastBucketManager;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.Instance;
-import javax.enterprise.inject.Typed;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.inject.Instance;
+import jakarta.enterprise.inject.Typed;
 import javax.inject.Inject;
 import java.util.Collection;
 import java.util.Map;

@@ -18,9 +18,9 @@ import jakarta.nosql.mapping.Repository;
 import jakarta.nosql.mapping.keyvalue.KeyValueRepositoryProducer;
 import org.eclipse.jnosql.mapping.spi.AbstractBean;
 
-import javax.enterprise.context.spi.CreationalContext;
-import javax.enterprise.inject.Default;
-import javax.enterprise.util.AnnotationLiteral;
+import jakarta.enterprise.context.spi.CreationalContext;
+import jakarta.enterprise.inject.Default;
+import jakarta.enterprise.util.AnnotationLiteral;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Proxy;
 import java.lang.reflect.Type;

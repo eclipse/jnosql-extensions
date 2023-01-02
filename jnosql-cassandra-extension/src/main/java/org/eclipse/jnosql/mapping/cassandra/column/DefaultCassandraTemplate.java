@@ -31,9 +31,9 @@ import org.eclipse.jnosql.mapping.column.AbstractColumnTemplate;
 import org.eclipse.jnosql.communication.cassandra.column.CassandraColumnManager;
 import org.eclipse.jnosql.communication.cassandra.column.CassandraPreparedStatement;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.Instance;
-import javax.enterprise.inject.Typed;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.inject.Instance;
+import jakarta.enterprise.inject.Typed;
 import javax.inject.Inject;
 import java.time.Duration;
 import java.util.Map;

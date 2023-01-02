@@ -30,7 +30,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import javax.enterprise.inject.Instance;
+import jakarta.enterprise.inject.Instance;
 import javax.inject.Inject;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;

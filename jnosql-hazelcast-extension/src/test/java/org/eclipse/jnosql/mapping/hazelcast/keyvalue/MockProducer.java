@@ -20,9 +20,9 @@ import jakarta.nosql.Value;
 import org.eclipse.jnosql.communication.hazelcast.keyvalue.HazelcastBucketManager;
 
 import javax.annotation.Priority;
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.Alternative;
-import javax.enterprise.inject.Produces;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.inject.Alternative;
+import jakarta.enterprise.inject.Produces;
 import javax.interceptor.Interceptor;
 import java.util.List;
 import java.util.Map;

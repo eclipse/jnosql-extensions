@@ -18,8 +18,8 @@ import jakarta.nosql.mapping.column.ColumnEntityConverter;
 import jakarta.nosql.mapping.column.ColumnEventPersistManager;
 import org.eclipse.jnosql.mapping.column.AbstractColumnWorkflow;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.Typed;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.inject.Typed;
 import javax.inject.Inject;
 
 @Typed(CassandraColumnWorkflow.class)

@@ -36,9 +36,9 @@ import org.eclipse.jnosql.mapping.mongodb.criteria.api.SelectQuery;
 import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.Instance;
-import javax.enterprise.inject.Typed;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.inject.Instance;
+import jakarta.enterprise.inject.Typed;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
