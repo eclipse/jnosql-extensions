@@ -16,10 +16,10 @@ import org.eclipse.jnosql.communication.solr.document.SolrDocumentManager;
 import org.eclipse.jnosql.communication.solr.document.SolrDocumentManagerFactory;
 import org.eclipse.jnosql.mapping.config.MicroProfileSettings;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.Disposes;
-import javax.enterprise.inject.Produces;
-import javax.enterprise.inject.Typed;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.inject.Disposes;
+import jakarta.enterprise.inject.Produces;
+import jakarta.enterprise.inject.Typed;
 import java.util.Optional;
 import java.util.function.Supplier;
 import java.util.logging.Level;

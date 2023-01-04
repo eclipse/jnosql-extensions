@@ -25,9 +25,9 @@ import org.eclipse.jnosql.mapping.column.ColumnFieldValue;
 
 import org.eclipse.jnosql.mapping.reflection.GenericFieldMapping;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.Typed;
-import javax.inject.Inject;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.inject.Typed;
+import jakarta.inject.Inject;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;

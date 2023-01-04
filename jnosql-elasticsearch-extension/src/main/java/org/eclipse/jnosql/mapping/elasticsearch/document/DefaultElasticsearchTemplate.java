@@ -15,6 +15,7 @@
 package org.eclipse.jnosql.mapping.elasticsearch.document;
 
 
+import co.elastic.clients.elasticsearch.core.SearchRequest;
 import jakarta.nosql.document.DocumentManager;
 import jakarta.nosql.document.DocumentEntity;
 import jakarta.nosql.mapping.Converters;
@@ -22,14 +23,13 @@ import jakarta.nosql.mapping.document.DocumentEntityConverter;
 import jakarta.nosql.mapping.document.DocumentEventPersistManager;
 import jakarta.nosql.mapping.document.DocumentWorkflow;
 import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
-import org.elasticsearch.index.query.QueryBuilder;
 import org.eclipse.jnosql.mapping.document.AbstractDocumentTemplate;
 import org.eclipse.jnosql.communication.elasticsearch.document.ElasticsearchDocumentManager;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.Instance;
-import javax.enterprise.inject.Typed;
-import javax.inject.Inject;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.inject.Instance;
+import jakarta.enterprise.inject.Typed;
+import jakarta.inject.Inject;
 import java.util.Objects;
 import java.util.stream.Stream;
 
@@ -102,7 +102,7 @@ class DefaultElasticsearchTemplate extends AbstractDocumentTemplate
     }
 
     @Override
-    public <T> Stream<T> search(QueryBuilder query) {
+    public <T> Stream<T> search(SearchRequest query) {
         Objects.requireNonNull(query, "query is required");
         Stream<DocumentEntity> entities = manager.get().search(query);
         return entities.map(converter::toEntity).map(e -> (T) e);

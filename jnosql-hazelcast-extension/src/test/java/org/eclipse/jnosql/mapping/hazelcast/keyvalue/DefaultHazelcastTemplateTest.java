@@ -17,7 +17,7 @@ package org.eclipse.jnosql.mapping.hazelcast.keyvalue;
 import jakarta.nosql.tck.test.CDIExtension;
 import org.junit.jupiter.api.Test;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 import java.util.Collection;
 
 import static com.hazelcast.query.Predicates.equal;
