@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2022 Otávio Santana and others
+ *  Copyright (c) 2022 Contributors to the Eclipse Foundation
  *   All rights reserved. This program and the accompanying materials
  *   are made available under the terms of the Eclipse Public License v1.0
  *   and Apache License v2.0 which accompanies this distribution.
@@ -42,7 +42,7 @@ public interface ExecutableQuery<T, R extends CriteriaQueryResult<T>, Q extends 
     /**
      * Feed the results specific for this kind of query.
      *
-     * @param results
+     * @param results the result
      * @return the same query instance
      * @throws NullPointerException if the argument is null
      */
