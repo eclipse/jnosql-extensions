@@ -48,6 +48,7 @@
         <module>jnosql-solr-extension</module>
         <module>jnosql-mongodb-extension</module>
         <module>jnosql-graph-connections</module>
+        <module>jnosql-criteria-extension</module>
     </modules>
 
     <repositories>
