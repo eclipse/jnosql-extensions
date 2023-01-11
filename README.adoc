@@ -471,77 +471,6 @@ public class Music {
 }
 ----
 
-=== CriteriaQuery API
-
-Also, you can use the experimental Criteria API, largely inspired by the JPA one.
-Using this API you can execute queries built via CriteriaQuery.
-The CriteriaQuery is used in combination with Metamodel Attributes.
-These attributes are automagically generated from the defined NoSQL Entities, by including the Metamodel Processor extension as an optional dependency.
-
-=== EntityQuery
-
-You can fetch entities with an EntityQuery:
-
-[source,java]
-----
-CriteriaQuery<Person> personQuery = template.createQuery(Person.class);
-
-EntityQueryResult<Person> executeQuery = template.executeQuery(
-        personQuery.select().where(
-                personQuery.from().get(
-                        Person_.name
-                ).equal(
-                        "Poliana"
-                ).or(
-                        personQuery.from().get(
-                                Person_.age
-                        ).greaterThanOrEqualTo(17)
-                )
-        )
-);
-
-Stream<Person> stream = executeQuery.getEntities();
-----
-
-=== ExpressionQuery
-
-You can fetch single columns/projections using an ExpressionQuery:
-
-[source,java]
-----
-CriteriaQuery<Person> personQuery = template.createQuery(Person.class);
-
-StringExpression<Person, Person> nameExpression = personQuery.from().get(
-        Person_.name
-);
-NumberExpression<Person, Person, Integer> ageExpression = personQuery.from().get(
-        Person_.age
-);
-
-ExpressionQueryResult<Person> executeQuery = template.executeQuery(
-        personQuery.select(
-                nameExpression,
-                ageExpression
-        ).where(
-                nameExpression.equal(
-                        "Poliana"
-                ).or(
-                        ageExpression.greaterThanOrEqualTo(17)
-                )
-        )
-);
-
-Optional<ExpressionQueryResultRow<Person>> findFirst = executeQuery.getRows().findFirst();
-
-String name = findFirst.get().get(
-        nameExpression
-);
-
-Integer age = findFirst.get().get(
-        ageExpression
-);
-----
-
 == OrientDB
 
 image::https://jnosql.github.io/img/logos/orientdb.png[OriendtDB Project,align="center" ,align="center" width=25%, height=25%]
@@ -816,4 +745,112 @@ This is an example using Neo4J's Graph API with MicroProfile Config.
 ----
 jnosql.graph.provider=org.eclipse.jnosql.mapping.graph.connections.Neo4JEmbeddedGraphConfiguration
 jnosql.neo4j.host=/home/otaviojava/data/
+----
+
+= CriteriaQuery API 
+
+This is the experimental Criteria API, largely inspired by the JPA one.
+Using this API you can execute queries built via CriteriaQuery.
+The CriteriaQuery is used in combination with Metamodel Attributes.
+These attributes are automagically generated from the defined NoSQL Entities.
+
+The Criteria API can be used via CriteriaDocumentTemplate.
+
+== Set dependency
+
+
+[source,xml]
+----
+  <dependency>
+    <groupId>org.eclipse.jnosql.mapping</groupId>
+    <artifactId>jnosql-metamodel-processor-extension</artifactId>
+    <version>1.0.0-b5</version>
+    <optional>true</optional>
+  </dependency>
+  <dependency>
+      <groupId>org.eclipse.jnosql.mapping</groupId>
+      <artifactId>jnosql-criteria-extension</artifactId>
+      <version>1.0.0-b5</version>
+  </dependency>
+----
+
+## Create a CriteriaDocumentTemplate
+
+[source,java]
+----
+    @Inject
+    private CriteriaDocumentTemplateProducer producer;
+
+    @Inject
+    private DocumentManager documentManager;
+----
+
+[source,java]
+----
+    CriteriaDocumentTemplate template = criteriaDocumentTemplateProducer.get(documentManager);
+----
+
+## EntityQuery
+
+You can fetch entities with an EntityQuery :
+
+[source,java]
+----
+CriteriaQuery<Person> personQuery = template.createQuery(Person.class);
+
+EntityQueryResult<Person> executeQuery = template.executeQuery(
+        personQuery.select().where(
+                personQuery.from().get(
+                        Person_.name
+                ).equal(
+                        "Poliana"
+                ).or(
+                        personQuery.from().get(
+                                Person_.age
+                        ).greaterThanOrEqualTo(17)
+                )
+        )
+);
+
+Stream<Person> stream = executeQuery.getEntities();
+----
+
+## ExpressionQuery
+
+You can fetch single columns/projections using an ExpressionQuery :
+
+[source,java]
+----
+CriteriaQuery<Person> personQuery = template.createQuery(Person.class);
+
+StringExpression<Person, Person> nameExpression = personQuery.from().get(
+        Person_.name
+);
+NumberExpression<Person, Person, Integer> ageExpression = personQuery.from().get(
+        Person_.age
+);
+
+ExpressionQueryResult<Person> executeQuery = template.executeQuery(
+        personQuery.select(
+                nameExpression,
+                ageExpression
+        ).where(
+                nameExpression.equal(
+                        "Poliana"
+                ).or(
+                        ageExpression.greaterThanOrEqualTo(17)
+                )
+        )
+);
+
+Optional<ExpressionQueryResultRow<Person>> findFirst = executeQuery.getRows().findFirst();
+
+String name = findFirst.get().get(
+        nameExpression
+);
+
+Integer age = findFirst.get().get(
+        ageExpression
+);
+
 ----

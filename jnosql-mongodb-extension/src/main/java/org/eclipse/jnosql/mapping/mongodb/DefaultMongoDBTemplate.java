@@ -14,9 +14,7 @@
  */
 package org.eclipse.jnosql.mapping.mongodb;
 
-import jakarta.nosql.document.Document;
 import jakarta.nosql.document.DocumentEntity;
-import jakarta.nosql.document.DocumentQuery;
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.document.DocumentEntityConverter;
 import jakarta.nosql.mapping.document.DocumentEventPersistManager;
@@ -25,14 +23,6 @@ import org.bson.BsonValue;
 import org.bson.conversions.Bson;
 import org.eclipse.jnosql.communication.mongodb.document.MongoDBDocumentManager;
 import org.eclipse.jnosql.mapping.document.AbstractDocumentTemplate;
-import org.eclipse.jnosql.mapping.mongodb.criteria.CriteriaQueryUtils;
-import org.eclipse.jnosql.mapping.mongodb.criteria.DefaultCriteriaQuery;
-import org.eclipse.jnosql.mapping.mongodb.criteria.api.CriteriaQuery;
-import org.eclipse.jnosql.mapping.mongodb.criteria.api.CriteriaQueryResult;
-import org.eclipse.jnosql.mapping.mongodb.criteria.api.EntityQuery;
-import org.eclipse.jnosql.mapping.mongodb.criteria.api.ExecutableQuery;
-import org.eclipse.jnosql.mapping.mongodb.criteria.api.ExpressionQuery;
-import org.eclipse.jnosql.mapping.mongodb.criteria.api.SelectQuery;
 import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 
@@ -42,10 +32,8 @@ import jakarta.enterprise.inject.Typed;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static java.util.Objects.requireNonNull;
 
 @ApplicationScoped
 @Typed(MongoDBTemplate.class)
@@ -159,47 +147,6 @@ class DefaultMongoDBTemplate extends AbstractDocumentTemplate implements MongoDB
         Objects.requireNonNull(pipeline, "pipeline is required");
         EntityMetadata entityMetadata = this.entities.get(entity);
         return this.getManager().aggregate(entityMetadata.getName(), pipeline);
-    }
-
-    @Override
-    public <T> CriteriaQuery<T> createQuery(Class<T> type) {
-        return new DefaultCriteriaQuery<>(type);
-    }
-
-    @Override
-    public <T, R extends CriteriaQueryResult<T>, Q extends ExecutableQuery<T, R, Q, F>, F> R executeQuery(ExecutableQuery<T, R, Q, F> criteriaQuery) {
-        requireNonNull(criteriaQuery, "query is required");
-        if (criteriaQuery instanceof SelectQuery) {
-            SelectQuery<T, ?, ?, ?> selectQuery = SelectQuery.class.cast(criteriaQuery);
-            DocumentQuery documentQuery = CriteriaQueryUtils.convert(selectQuery);
-            getEventManager().firePreQuery(documentQuery);
-            Stream<DocumentEntity> entityStream = getManager().select(
-                    documentQuery
-            );
-
-            if (selectQuery instanceof EntityQuery) {
-                EntityQuery.class.cast(selectQuery).feed(
-                        entityStream.map(
-                                documentEntity -> getConverter().toEntity(
-                                        documentEntity
-                                )
-                        )
-                );
-            } else if (selectQuery instanceof ExpressionQuery) {
-                ExpressionQuery.class.cast(selectQuery).feed(
-                        entityStream.map(
-                                documentEntity -> documentEntity.getDocuments().stream().map(
-                                        Document::getValue
-                                ).collect(
-                                        Collectors.toList()
-                                )
-                        )
-                );
-            }
-        } else {
-            throw new UnsupportedOperationException("Not supported yet.");
-        }
-        return criteriaQuery.getResult();
     }
 
 }
