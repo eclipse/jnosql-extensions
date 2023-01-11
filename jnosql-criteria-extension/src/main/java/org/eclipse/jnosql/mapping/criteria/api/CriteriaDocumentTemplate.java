@@ -20,7 +20,7 @@ import org.eclipse.jnosql.mapping.criteria.DefaultCriteriaQuery;
 /**
  * A criteria extension of {@link DocumentTemplate}
  */
-public interface CriteriaTemplate extends DocumentTemplate {
+public interface CriteriaDocumentTemplate extends DocumentTemplate {
     
     /**
      * Create a <code>CriteriaQuery</code> object with the specified result

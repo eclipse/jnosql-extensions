@@ -15,7 +15,12 @@
 package org.eclipse.jnosql.mapping.criteria;
 
 import jakarta.nosql.document.DocumentEntity;
+import jakarta.nosql.document.DocumentManager;
 import jakarta.nosql.document.DocumentQuery;
+import jakarta.nosql.mapping.Converters;
+import jakarta.nosql.mapping.document.DocumentEntityConverter;
+import jakarta.nosql.mapping.document.DocumentEventPersistManager;
+import jakarta.nosql.mapping.document.DocumentWorkflow;
 import static java.util.Objects.requireNonNull;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -24,14 +29,44 @@ import org.eclipse.jnosql.mapping.criteria.api.EntityQuery;
 import org.eclipse.jnosql.mapping.criteria.api.ExecutableQuery;
 import org.eclipse.jnosql.mapping.criteria.api.ExpressionQuery;
 import org.eclipse.jnosql.mapping.criteria.api.SelectQuery;
+import org.eclipse.jnosql.mapping.criteria.api.CriteriaDocumentTemplate;
 import org.eclipse.jnosql.mapping.document.AbstractDocumentTemplate;
-import org.eclipse.jnosql.mapping.criteria.api.CriteriaTemplate;
+import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 
 /**
- * This class provides a skeletal implementation of the {@link CriteriaTemplate}
- * interface, to minimize the effort required to implement this interface.
+ * This class provides a delegating implementation of the
+ * {@link CriteriaDocumentTemplate} interface, to augment the wrapped
+ * DocumentTemplate with criteria API capabilities.
+ *
  */
-public abstract class AbstractCriteriaDocumentTemplate extends AbstractDocumentTemplate implements CriteriaTemplate {
+public class DefaultCriteriaDocumentTemplate extends AbstractDocumentTemplate implements CriteriaDocumentTemplate {
+
+    private DocumentManager manager;
+
+    private DocumentEntityConverter converter;
+
+    private DocumentWorkflow workflow;
+
+    private EntitiesMetadata entities;
+
+    private Converters converters;
+
+    private DocumentEventPersistManager persistManager;
+
+    public DefaultCriteriaDocumentTemplate(
+            DocumentManager manager,
+            DocumentEntityConverter converter,
+            DocumentWorkflow workflow,
+            EntitiesMetadata entities,
+            Converters converters,
+            DocumentEventPersistManager persistManager) {
+        this.manager = manager;
+        this.converter = converter;
+        this.workflow = workflow;
+        this.entities = entities;
+        this.converters = converters;
+        this.persistManager = persistManager;
+    }
 
     @Override
     public <T, R extends CriteriaQueryResult<T>, Q extends ExecutableQuery<T, R, Q, F>, F> R executeQuery(ExecutableQuery<T, R, Q, F> criteriaQuery) {
@@ -39,15 +74,15 @@ public abstract class AbstractCriteriaDocumentTemplate extends AbstractDocumentT
         if (criteriaQuery instanceof SelectQuery) {
             SelectQuery<T, ?, ?, ?> selectQuery = SelectQuery.class.cast(criteriaQuery);
             DocumentQuery documentQuery = CriteriaQueryUtils.convert(selectQuery);
-            getEventManager().firePreQuery(documentQuery);
-            Stream<DocumentEntity> entityStream = getManager().select(
+            this.getEventManager().firePreQuery(documentQuery);
+            Stream<DocumentEntity> entityStream = this.getManager().select(
                     documentQuery
             );
 
             if (selectQuery instanceof EntityQuery) {
                 EntityQuery.class.cast(selectQuery).feed(
                         entityStream.map(
-                                documentEntity -> getConverter().toEntity(
+                                documentEntity -> this.getConverter().toEntity(
                                         documentEntity
                                 )
                         )
@@ -67,6 +102,36 @@ public abstract class AbstractCriteriaDocumentTemplate extends AbstractDocumentT
             throw new UnsupportedOperationException("Not supported yet.");
         }
         return criteriaQuery.getResult();
+    }
+
+    @Override
+    protected DocumentEntityConverter getConverter() {
+        return converter;
+    }
+
+    @Override
+    protected DocumentManager getManager() {
+        return manager;
+    }
+
+    @Override
+    protected DocumentWorkflow getWorkflow() {
+        return workflow;
+    }
+
+    @Override
+    protected DocumentEventPersistManager getEventManager() {
+        return persistManager;
+    }
+
+    @Override
+    protected EntitiesMetadata getEntities() {
+        return entities;
+    }
+
+    @Override
+    protected Converters getConverters() {
+        return converters;
     }
 
 }
