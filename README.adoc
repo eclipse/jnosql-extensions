@@ -787,7 +787,7 @@ The Criteria API can be used via CriteriaDocumentTemplate.
 
 [source,java]
 ----
-    CriteriaDocumentTemplate template = criteriaDocumentTemplateProducer.get(documentManager);
+    CriteriaDocumentTemplate template = producer.get(documentManager);
 ----
 
 ## EntityQuery
