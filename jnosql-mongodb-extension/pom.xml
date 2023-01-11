@@ -40,17 +40,6 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.eclipse.jnosql.mapping</groupId>
-            <artifactId>jnosql-metamodel-extension</artifactId>
-            <version>1.0.0-b6-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.jnosql.mapping</groupId>
-            <artifactId>jnosql-metamodel-processor-extension</artifactId>
-            <version>1.0.0-b6-SNAPSHOT</version>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
             <groupId>jakarta.nosql.tck.mapping</groupId>
             <artifactId>mapping-tck-test</artifactId>
             <version>${project.version}</version>
