@@ -15,17 +15,17 @@
 package org.eclipse.jnosql.mapping.hazelcast.keyvalue;
 
 import com.hazelcast.query.Predicate;
-import jakarta.nosql.keyvalue.BucketManager;
-import jakarta.nosql.keyvalue.KeyValueEntityConverter;
-import jakarta.nosql.keyvalue.KeyValueEventPersistManager;
-import jakarta.nosql.keyvalue.KeyValueWorkflow;
-import org.eclipse.jnosql.mapping.keyvalue.AbstractKeyValueTemplate;
-import org.eclipse.jnosql.communication.hazelcast.keyvalue.HazelcastBucketManager;
-
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Instance;
 import jakarta.enterprise.inject.Typed;
 import jakarta.inject.Inject;
+import org.eclipse.jnosql.communication.hazelcast.keyvalue.HazelcastBucketManager;
+import org.eclipse.jnosql.communication.keyvalue.BucketManager;
+import org.eclipse.jnosql.mapping.keyvalue.AbstractKeyValueTemplate;
+import org.eclipse.jnosql.mapping.keyvalue.KeyValueEntityConverter;
+import org.eclipse.jnosql.mapping.keyvalue.KeyValueEventPersistManager;
+import org.eclipse.jnosql.mapping.keyvalue.KeyValueWorkflow;
+
 import java.util.Collection;
 import java.util.Map;
 import java.util.stream.Collectors;

@@ -14,7 +14,7 @@
  */
 package org.eclipse.jnosql.mapping.hazelcast.keyvalue;
 
-import jakarta.nosql.Repository;
+import jakarta.data.repository.PageableRepository;
 import org.eclipse.jnosql.mapping.repository.DynamicReturn;
 
 import java.lang.reflect.InvocationHandler;
@@ -30,12 +30,12 @@ class HazelcastRepositoryProxy<T> implements InvocationHandler {
 
     private final HazelcastTemplate template;
 
-    private final Repository<?, ?> repository;
+    private final PageableRepository<?, ?> repository;
 
     private final Class<T> typeClass;
 
 
-    HazelcastRepositoryProxy(HazelcastTemplate template, Class<?> repositoryType, Repository<?, ?> repository) {
+    HazelcastRepositoryProxy(HazelcastTemplate template, Class<?> repositoryType, PageableRepository<?, ?> repository) {
         this.template = template;
         this.typeClass = Class.class.cast(ParameterizedType.class.cast(repositoryType.getGenericInterfaces()[0])
                 .getActualTypeArguments()[0]);

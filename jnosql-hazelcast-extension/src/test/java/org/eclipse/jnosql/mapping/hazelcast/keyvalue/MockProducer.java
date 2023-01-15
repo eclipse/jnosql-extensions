@@ -16,7 +16,7 @@ package org.eclipse.jnosql.mapping.hazelcast.keyvalue;
 
 
 import com.hazelcast.query.Predicate;
-import jakarta.nosql.Value;
+import org.eclipse.jnosql.communication.Value;
 import org.eclipse.jnosql.communication.hazelcast.keyvalue.HazelcastBucketManager;
 
 import jakarta.annotation.Priority;

@@ -14,29 +14,29 @@
  */
 package org.eclipse.jnosql.mapping.orientdb.document;
 
+import jakarta.enterprise.inject.Instance;
+import jakarta.inject.Inject;
+import jakarta.nosql.tck.test.CDIExtension;
 import org.eclipse.jnosql.communication.document.Document;
 import org.eclipse.jnosql.communication.document.DocumentEntity;
-import jakarta.nosql.document.DocumentQuery;
+import org.eclipse.jnosql.communication.document.DocumentQuery;
+import org.eclipse.jnosql.communication.orientdb.document.OrientDBDocumentManager;
+import org.eclipse.jnosql.communication.orientdb.document.OrientDBLiveCallback;
+import org.eclipse.jnosql.communication.orientdb.document.OrientDBLiveCreateCallback;
 import org.eclipse.jnosql.mapping.Converters;
 import org.eclipse.jnosql.mapping.document.DocumentEntityConverter;
 import org.eclipse.jnosql.mapping.document.DocumentEventPersistManager;
 import org.eclipse.jnosql.mapping.document.DocumentWorkflow;
 import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
-import jakarta.nosql.tck.test.CDIExtension;
-import org.eclipse.jnosql.communication.orientdb.document.OrientDBDocumentManager;
-import org.eclipse.jnosql.communication.orientdb.document.OrientDBLiveCallback;
-import org.eclipse.jnosql.communication.orientdb.document.OrientDBLiveCreateCallback;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import jakarta.enterprise.inject.Instance;
-import jakarta.inject.Inject;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static jakarta.nosql.document.DocumentQuery.select;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.eclipse.jnosql.communication.document.DocumentQuery.select;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 

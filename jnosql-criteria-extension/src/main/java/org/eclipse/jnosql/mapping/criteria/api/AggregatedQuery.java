@@ -14,7 +14,7 @@
  */
 package org.eclipse.jnosql.mapping.criteria.api;
 
-import jakarta.nosql.Value;
+import org.eclipse.jnosql.communication.Value;
 import java.util.List;
 import java.util.stream.Stream;
 

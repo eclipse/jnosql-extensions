@@ -16,8 +16,10 @@ package org.eclipse.jnosql.mapping.orientdb.document;
 
 
 import org.eclipse.jnosql.communication.document.DocumentEntity;
-import jakarta.nosql.document.DocumentManager;
-import jakarta.nosql.document.DocumentQuery;
+import org.eclipse.jnosql.communication.document.DocumentManager;
+import org.eclipse.jnosql.communication.document.DocumentQuery;
+
+
 import org.eclipse.jnosql.mapping.Converters;
 import org.eclipse.jnosql.mapping.document.DocumentEntityConverter;
 import org.eclipse.jnosql.mapping.document.DocumentEventPersistManager;

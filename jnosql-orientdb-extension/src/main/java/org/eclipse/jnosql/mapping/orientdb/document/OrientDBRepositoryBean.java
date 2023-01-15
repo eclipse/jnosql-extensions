@@ -14,7 +14,7 @@
  */
 package org.eclipse.jnosql.mapping.orientdb.document;
 
-import jakarta.nosql.Repository;
+import jakarta.data.repository.PageableRepository;
 import org.eclipse.jnosql.mapping.document.query.DocumentRepositoryProducer;
 import org.eclipse.jnosql.mapping.spi.AbstractBean;
 
@@ -51,7 +51,7 @@ class OrientDBRepositoryBean extends AbstractBean<OrientDBCrudRepository> {
     public OrientDBCrudRepository create(CreationalContext<OrientDBCrudRepository> creationalContext) {
         OrientDBTemplate template = getInstance(OrientDBTemplate.class);
         DocumentRepositoryProducer producer = getInstance(DocumentRepositoryProducer.class);
-        Repository<?, ?> repository = producer.get((Class<Repository<Object, Object>>) type, template);
+        PageableRepository<?, ?> repository = producer.get((Class<PageableRepository<Object, Object>>) type, template);
 
         OrientDBDocumentRepositoryProxy handler = new OrientDBDocumentRepositoryProxy(template, type, repository);
         return (OrientDBCrudRepository) Proxy.newProxyInstance(type.getClassLoader(),

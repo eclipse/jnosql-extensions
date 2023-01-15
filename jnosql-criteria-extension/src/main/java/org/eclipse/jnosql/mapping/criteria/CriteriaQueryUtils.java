@@ -14,7 +14,8 @@
  */
 package org.eclipse.jnosql.mapping.criteria;
 
-import jakarta.nosql.Sort;
+import jakarta.data.repository.Sort;
+import org.eclipse.jnosql.communication.document.DocumentCondition;
 import org.eclipse.jnosql.mapping.criteria.api.BinaryPredicate;
 import org.eclipse.jnosql.mapping.criteria.api.CompositionPredicate;
 import org.eclipse.jnosql.mapping.criteria.api.DisjunctionPredicate;
@@ -26,8 +27,7 @@ import org.eclipse.jnosql.mapping.criteria.api.Path;
 import org.eclipse.jnosql.mapping.criteria.api.Predicate;
 import org.eclipse.jnosql.mapping.criteria.api.RangePredicate;
 import org.eclipse.jnosql.mapping.criteria.api.Root;
-import jakarta.nosql.document.DocumentCondition;
-import jakarta.nosql.document.DocumentQuery;
+import org.eclipse.jnosql.communication.document.DocumentQuery;
 import org.eclipse.jnosql.mapping.criteria.api.SelectQuery;
 import java.util.ArrayDeque;
 import java.util.Arrays;

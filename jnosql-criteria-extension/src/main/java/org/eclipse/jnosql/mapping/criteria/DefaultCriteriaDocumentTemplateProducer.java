@@ -18,7 +18,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import org.eclipse.jnosql.mapping.document.DocumentEntityConverter;
 import org.eclipse.jnosql.mapping.document.DocumentEventPersistManager;
 import jakarta.inject.Inject;
-import jakarta.nosql.document.DocumentManager;
+import org.eclipse.jnosql.communication.document.DocumentManager;
 import org.eclipse.jnosql.mapping.Converters;
 import org.eclipse.jnosql.mapping.document.DocumentWorkflow;
 import org.eclipse.jnosql.mapping.criteria.api.CriteriaDocumentTemplate;

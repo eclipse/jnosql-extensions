@@ -15,13 +15,13 @@
 package org.eclipse.jnosql.mapping.hazelcast.keyvalue;
 
 
-import jakarta.nosql.Repository;
+import jakarta.data.repository.PageableRepository;
 
 /**
- * The hazelcast {@link Repository}
+ * The hazelcast {@link PageableRepository}
  *
  * @param <T> the entity type
  * @param <K> the id entity type
  */
-public interface HazelcastRepository<T, K> extends Repository<T, K> {
+public interface HazelcastRepository<T, K> extends PageableRepository<T, K> {
 }

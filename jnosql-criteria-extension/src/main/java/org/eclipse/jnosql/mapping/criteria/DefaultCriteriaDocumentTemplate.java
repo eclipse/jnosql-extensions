@@ -15,8 +15,8 @@
 package org.eclipse.jnosql.mapping.criteria;
 
 import org.eclipse.jnosql.communication.document.DocumentEntity;
-import jakarta.nosql.document.DocumentManager;
-import jakarta.nosql.document.DocumentQuery;
+import org.eclipse.jnosql.communication.document.DocumentManager;
+import org.eclipse.jnosql.communication.document.DocumentQuery;
 import org.eclipse.jnosql.mapping.Converters;
 import org.eclipse.jnosql.mapping.document.DocumentEntityConverter;
 import org.eclipse.jnosql.mapping.document.DocumentEventPersistManager;
@@ -90,8 +90,8 @@ public class DefaultCriteriaDocumentTemplate extends AbstractDocumentTemplate im
             } else if (selectQuery instanceof ExpressionQuery) {
                 ExpressionQuery.class.cast(selectQuery).feed(
                         entityStream.map(
-                                documentEntity -> documentEntity.getDocuments().stream().map(
-                                        document -> document.getValue()
+                                documentEntity -> documentEntity.documents().stream().map(
+                                        document -> document.value()
                                 ).collect(
                                         Collectors.toList()
                                 )

@@ -61,7 +61,7 @@ public class OrientDBDocumentRepositoryProxyTest {
 
     @Test
     public void shouldFindAll() {
-        personRepository.findAll();
+        personRepository.findAllQuery();
         verify(template).sql("select * from Person");
     }
 
@@ -83,7 +83,7 @@ public class OrientDBDocumentRepositoryProxyTest {
     interface PersonRepository extends OrientDBCrudRepository<Person, String> {
 
         @SQL("select * from Person")
-        List<Person> findAll();
+        List<Person> findAllQuery();
 
         @SQL("select * from Person where name = ?")
         List<Person> findByName(String name);

@@ -14,9 +14,10 @@
  */
 package org.eclipse.jnosql.mapping.criteria;
 
-import jakarta.nosql.Value;
+import org.eclipse.jnosql.communication.Value;
 import org.eclipse.jnosql.mapping.criteria.api.Expression;
 import org.eclipse.jnosql.mapping.criteria.api.ExpressionQuery;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;

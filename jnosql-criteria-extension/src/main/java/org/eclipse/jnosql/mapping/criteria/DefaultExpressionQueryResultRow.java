@@ -15,7 +15,7 @@
  */
 package org.eclipse.jnosql.mapping.criteria;
 
-import jakarta.nosql.Value;
+import org.eclipse.jnosql.communication.Value;
 import org.eclipse.jnosql.mapping.criteria.api.Expression;
 import org.eclipse.jnosql.mapping.criteria.api.ExpressionQueryResultRow;
 import java.util.Map;
