@@ -14,7 +14,7 @@
  */
 package org.eclipse.jnosql.mapping.hazelcast.keyvalue;
 
-import jakarta.nosql.mapping.Repository;
+import jakarta.nosql.Repository;
 import jakarta.nosql.tck.test.CDIExtension;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

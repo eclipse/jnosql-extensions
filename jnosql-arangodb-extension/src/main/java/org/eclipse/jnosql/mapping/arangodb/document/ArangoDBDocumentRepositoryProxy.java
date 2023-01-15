@@ -15,7 +15,7 @@
 package org.eclipse.jnosql.mapping.arangodb.document;
 
 
-import jakarta.nosql.mapping.Repository;
+import jakarta.data.repository.PageableRepository;
 import org.eclipse.jnosql.mapping.repository.DynamicReturn;
 
 import java.lang.reflect.InvocationHandler;
@@ -34,10 +34,10 @@ class ArangoDBDocumentRepositoryProxy<T> implements InvocationHandler {
 
     private final ArangoDBTemplate template;
 
-    private final Repository<?, ?> repository;
+    private final PageableRepository<?, ?> repository;
 
 
-    ArangoDBDocumentRepositoryProxy(ArangoDBTemplate template, Class<?> repositoryType, Repository<?, ?> repository) {
+    ArangoDBDocumentRepositoryProxy(ArangoDBTemplate template, Class<?> repositoryType, PageableRepository<?, ?> repository) {
         this.template = template;
         this.typeClass = Class.class.cast(ParameterizedType.class.cast(repositoryType.getGenericInterfaces()[0])
                 .getActualTypeArguments()[0]);

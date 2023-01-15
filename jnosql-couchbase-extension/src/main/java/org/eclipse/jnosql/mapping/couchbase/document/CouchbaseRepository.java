@@ -15,7 +15,7 @@
 package org.eclipse.jnosql.mapping.couchbase.document;
 
 
-import jakarta.nosql.mapping.Repository;
+import jakarta.nosql.Repository;
 
 /**
  * The couchbase {@link Repository}

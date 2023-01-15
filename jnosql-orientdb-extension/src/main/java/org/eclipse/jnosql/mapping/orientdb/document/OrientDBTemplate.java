@@ -16,7 +16,7 @@ package org.eclipse.jnosql.mapping.orientdb.document;
 
 
 import jakarta.nosql.document.DocumentQuery;
-import jakarta.nosql.mapping.document.DocumentTemplate;
+import jakarta.nosql.document.DocumentTemplate;
 import org.eclipse.jnosql.communication.orientdb.document.OrientDBLiveCallback;
 
 import java.util.Map;

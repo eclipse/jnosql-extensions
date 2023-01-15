@@ -16,7 +16,7 @@ package org.eclipse.jnosql.mapping.couchbase.document;
 
 
 import com.couchbase.client.java.json.JsonObject;
-import jakarta.nosql.mapping.Repository;
+import jakarta.nosql.Repository;
 import org.eclipse.jnosql.mapping.repository.DynamicReturn;
 
 import java.lang.reflect.InvocationHandler;

@@ -16,7 +16,7 @@ package org.eclipse.jnosql.mapping.couchbase.document;
 
 
 import com.couchbase.client.java.json.JsonObject;
-import jakarta.nosql.mapping.document.DocumentTemplate;
+import jakarta.nosql.document.DocumentTemplate;
 
 import java.util.stream.Stream;
 

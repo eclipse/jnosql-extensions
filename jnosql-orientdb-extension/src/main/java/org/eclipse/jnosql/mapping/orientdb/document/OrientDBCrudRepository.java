@@ -15,7 +15,7 @@
 package org.eclipse.jnosql.mapping.orientdb.document;
 
 
-import jakarta.nosql.mapping.Repository;
+import jakarta.nosql.Repository;
 
 /**
  * The OrientDB {@link Repository}

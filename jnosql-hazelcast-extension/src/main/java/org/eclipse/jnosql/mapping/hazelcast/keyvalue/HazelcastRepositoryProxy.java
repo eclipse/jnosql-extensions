@@ -14,7 +14,7 @@
  */
 package org.eclipse.jnosql.mapping.hazelcast.keyvalue;
 
-import jakarta.nosql.mapping.Repository;
+import jakarta.nosql.Repository;
 import org.eclipse.jnosql.mapping.repository.DynamicReturn;
 
 import java.lang.reflect.InvocationHandler;

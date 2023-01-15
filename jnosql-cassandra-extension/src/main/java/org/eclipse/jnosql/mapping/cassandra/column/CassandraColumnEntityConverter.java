@@ -15,12 +15,11 @@
 package org.eclipse.jnosql.mapping.cassandra.column;
 
 
-import jakarta.nosql.mapping.Converters;
-import jakarta.nosql.mapping.column.ColumnEntityConverter;
+import org.eclipse.jnosql.communication.column.Column;
+import org.eclipse.jnosql.mapping.Converters;
+import org.eclipse.jnosql.mapping.column.ColumnEntityConverter;
 import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.reflection.FieldMapping;
-import jakarta.nosql.column.Column;
-import org.eclipse.jnosql.mapping.column.AbstractColumnEntityConverter;
 import org.eclipse.jnosql.mapping.column.ColumnFieldValue;
 
 import org.eclipse.jnosql.mapping.reflection.GenericFieldMapping;
@@ -38,7 +37,7 @@ import java.util.stream.StreamSupport;
 
 @ApplicationScoped
 @Typed(CassandraColumnEntityConverter.class)
-class CassandraColumnEntityConverter extends AbstractColumnEntityConverter implements ColumnEntityConverter {
+class CassandraColumnEntityConverter extends ColumnEntityConverter {
 
     @Inject
     private EntitiesMetadata entities;
@@ -62,7 +61,7 @@ class CassandraColumnEntityConverter extends AbstractColumnEntityConverter imple
         return k -> {
             FieldMapping field = fieldsGroupByName.get(k);
             if (Objects.nonNull(field.getNativeField().getAnnotation(UDT.class))) {
-                Optional<Column> column = columns.stream().filter(c -> c.getName().equals(k)).findFirst();
+                Optional<Column> column = columns.stream().filter(c -> c.name().equals(k)).findFirst();
                 setUDTField(instance, column, field);
             } else {
                 super.feedObject(instance, columns, fieldsGroupByName).accept(k);

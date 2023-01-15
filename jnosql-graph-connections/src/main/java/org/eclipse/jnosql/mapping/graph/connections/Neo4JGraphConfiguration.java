@@ -17,7 +17,7 @@ package org.eclipse.jnosql.mapping.graph.connections;
 import com.steelbridgelabs.oss.neo4j.structure.Neo4JElementIdProvider;
 import com.steelbridgelabs.oss.neo4j.structure.Neo4JGraph;
 import com.steelbridgelabs.oss.neo4j.structure.providers.Neo4JNativeElementIdProvider;
-import jakarta.nosql.Settings;
+import org.eclipse.jnosql.communication.Settings;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.eclipse.jnosql.mapping.graph.GraphConfiguration;
 import org.neo4j.driver.AuthToken;

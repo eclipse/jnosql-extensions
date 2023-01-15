@@ -9,8 +9,8 @@
 
 package org.eclipse.jnosql.mapping.hazelcast.keyvalue;
 
-import jakarta.nosql.Settings;
-import jakarta.nosql.mapping.MappingException;
+import org.eclipse.jnosql.communication.Settings;
+import jakarta.data.exceptions.MappingException;
 import org.eclipse.jnosql.communication.hazelcast.keyvalue.HazelcastBucketManager;
 import org.eclipse.jnosql.communication.hazelcast.keyvalue.HazelcastBucketManagerFactory;
 import org.eclipse.jnosql.communication.hazelcast.keyvalue.HazelcastKeyValueConfiguration;

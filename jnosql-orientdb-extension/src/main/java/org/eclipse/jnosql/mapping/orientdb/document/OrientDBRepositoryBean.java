@@ -14,8 +14,8 @@
  */
 package org.eclipse.jnosql.mapping.orientdb.document;
 
-import jakarta.nosql.mapping.Repository;
-import jakarta.nosql.mapping.document.DocumentRepositoryProducer;
+import jakarta.nosql.Repository;
+import org.eclipse.jnosql.mapping.document.query.DocumentRepositoryProducer;
 import org.eclipse.jnosql.mapping.spi.AbstractBean;
 
 import jakarta.enterprise.context.spi.CreationalContext;

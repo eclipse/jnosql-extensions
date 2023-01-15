@@ -9,8 +9,8 @@
 
 package org.eclipse.jnosql.mapping.mongodb;
 
-import jakarta.nosql.Settings;
-import jakarta.nosql.mapping.MappingException;
+import org.eclipse.jnosql.communication.Settings;
+import jakarta.data.exceptions.MappingException;
 import org.eclipse.jnosql.communication.mongodb.document.MongoDBDocumentConfiguration;
 import org.eclipse.jnosql.communication.mongodb.document.MongoDBDocumentManager;
 import org.eclipse.jnosql.communication.mongodb.document.MongoDBDocumentManagerFactory;

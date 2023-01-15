@@ -15,9 +15,10 @@
 package org.eclipse.jnosql.mapping.cassandra.column.model;
 
 
-import jakarta.nosql.mapping.Column;
-import jakarta.nosql.mapping.Convert;
-import jakarta.nosql.mapping.Entity;
+import jakarta.nosql.Column;
+import org.eclipse.jnosql.mapping.Convert;
+import jakarta.nosql.Entity;
+
 
 @Entity
 public class Worker {

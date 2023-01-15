@@ -15,7 +15,7 @@
 package org.eclipse.jnosql.mapping.hazelcast.keyvalue;
 
 
-import jakarta.nosql.mapping.Repository;
+import jakarta.nosql.Repository;
 
 /**
  * The hazelcast {@link Repository}

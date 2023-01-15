@@ -15,12 +15,12 @@
 package org.eclipse.jnosql.mapping.criteria;
 
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.nosql.mapping.document.DocumentEntityConverter;
-import jakarta.nosql.mapping.document.DocumentEventPersistManager;
+import org.eclipse.jnosql.mapping.document.DocumentEntityConverter;
+import org.eclipse.jnosql.mapping.document.DocumentEventPersistManager;
 import jakarta.inject.Inject;
 import jakarta.nosql.document.DocumentManager;
-import jakarta.nosql.mapping.Converters;
-import jakarta.nosql.mapping.document.DocumentWorkflow;
+import org.eclipse.jnosql.mapping.Converters;
+import org.eclipse.jnosql.mapping.document.DocumentWorkflow;
 import org.eclipse.jnosql.mapping.criteria.api.CriteriaDocumentTemplate;
 import org.eclipse.jnosql.mapping.criteria.api.CriteriaDocumentTemplateProducer;
 import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;

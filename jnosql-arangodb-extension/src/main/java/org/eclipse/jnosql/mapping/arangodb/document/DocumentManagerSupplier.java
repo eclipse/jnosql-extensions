@@ -9,8 +9,10 @@
 
 package org.eclipse.jnosql.mapping.arangodb.document;
 
-import jakarta.nosql.Settings;
-import jakarta.nosql.mapping.MappingException;
+
+import org.eclipse.jnosql.communication.Settings;
+import jakarta.data.exceptions.MappingException;
+
 import org.eclipse.jnosql.communication.arangodb.document.ArangoDBDocumentConfiguration;
 import org.eclipse.jnosql.communication.arangodb.document.ArangoDBDocumentManager;
 import org.eclipse.jnosql.communication.arangodb.document.ArangoDBDocumentManagerFactory;

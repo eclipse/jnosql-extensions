@@ -15,7 +15,7 @@
 package org.eclipse.jnosql.mapping.cassandra.column.model;
 
 
-import jakarta.nosql.mapping.Column;
+import jakarta.nosql.Column;
 
 public class Machine {
 

@@ -14,10 +14,13 @@
  */
 package org.eclipse.jnosql.mapping.cassandra.column;
 
-import jakarta.nosql.TypeReference;
-import jakarta.nosql.Value;
-import jakarta.nosql.column.Column;
-import jakarta.nosql.column.ColumnEntity;
+import jakarta.inject.Inject;
+import jakarta.nosql.tck.test.CDIExtension;
+import org.eclipse.jnosql.communication.TypeReference;
+import org.eclipse.jnosql.communication.Value;
+import org.eclipse.jnosql.communication.cassandra.column.UDT;
+import org.eclipse.jnosql.communication.column.Column;
+import org.eclipse.jnosql.communication.column.ColumnEntity;
 import org.eclipse.jnosql.mapping.cassandra.column.model.Actor;
 import org.eclipse.jnosql.mapping.cassandra.column.model.AppointmentBook;
 import org.eclipse.jnosql.mapping.cassandra.column.model.Artist;
@@ -28,12 +31,9 @@ import org.eclipse.jnosql.mapping.cassandra.column.model.Job;
 import org.eclipse.jnosql.mapping.cassandra.column.model.Money;
 import org.eclipse.jnosql.mapping.cassandra.column.model.Movie;
 import org.eclipse.jnosql.mapping.cassandra.column.model.Worker;
-import jakarta.nosql.tck.test.CDIExtension;
-import org.eclipse.jnosql.communication.cassandra.column.UDT;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import jakarta.inject.Inject;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -90,7 +90,7 @@ public class CassandraColumnEntityConverterTest {
                 .withPhones(asList("234", "2342")).build();
 
         ColumnEntity entity = converter.toColumn(artist);
-        assertEquals("Artist", entity.getName());
+        assertEquals("Artist", entity.name());
         assertEquals(4, entity.size());
     }
 
@@ -99,11 +99,11 @@ public class CassandraColumnEntityConverterTest {
 
 
         ColumnEntity entity = converter.toColumn(actor);
-        assertEquals("Actor", entity.getName());
+        assertEquals("Actor", entity.name());
         assertEquals(6, entity.size());
 
 
-        assertThat(entity.getColumns()).contains(columns);
+        assertThat(entity.columns()).contains(columns);
     }
 
     @Test
@@ -158,10 +158,10 @@ public class CassandraColumnEntityConverterTest {
         });
 
         assertEquals(3, columns.size());
-        assertEquals("movie", subColumn.getName());
-        assertEquals(movie.getTitle(), columns.stream().filter(c -> "title".equals(c.getName())).findFirst().get().get());
-        assertEquals(movie.getYear(), columns.stream().filter(c -> "year".equals(c.getName())).findFirst().get().get());
-        assertEquals(movie.getActors(), columns.stream().filter(c -> "actors".equals(c.getName())).findFirst().get().get());
+        assertEquals("movie", subColumn.name());
+        assertEquals(movie.getTitle(), columns.stream().filter(c -> "title".equals(c.name())).findFirst().get().get());
+        assertEquals(movie.getYear(), columns.stream().filter(c -> "year".equals(c.name())).findFirst().get().get());
+        assertEquals(movie.getActors(), columns.stream().filter(c -> "actors".equals(c.name())).findFirst().get().get());
 
 
     }
@@ -242,7 +242,7 @@ public class CassandraColumnEntityConverterTest {
         worker.setSalary(new Money("BRL", BigDecimal.TEN));
         worker.setJob(job);
         ColumnEntity entity = converter.toColumn(worker);
-        assertEquals("Worker", entity.getName());
+        assertEquals("Worker", entity.name());
         assertEquals("Bob", entity.find("name").get().get());
         assertEquals("BRL 10", entity.find("money").get().get());
     }
@@ -276,12 +276,12 @@ public class CassandraColumnEntityConverterTest {
         person.setHome(address);
 
         ColumnEntity entity = converter.toColumn(person);
-        assertEquals("Person", entity.getName());
+        assertEquals("Person", entity.name());
         Column column = entity.find("home").get();
         org.eclipse.jnosql.communication.cassandra.column.UDT udt = org.eclipse.jnosql.communication.cassandra.column.UDT.class.cast(column);
 
         assertEquals("address", udt.getUserType());
-        assertEquals("home", udt.getName());
+        assertEquals("home", udt.name());
         assertThat((List<Column>) udt.get())
                 .contains(Column.of("city", "California"), Column.of("street", "Street"));
 
@@ -319,7 +319,7 @@ public class CassandraColumnEntityConverterTest {
         history.setNumber(new java.util.Date().getTime());
 
         ColumnEntity entity = converter.toColumn(history);
-        assertEquals("History2", entity.getName());
+        assertEquals("History2", entity.name());
         History2 historyConverted = converter.toEntity(entity);
         assertNotNull(historyConverted);
 
@@ -333,7 +333,7 @@ public class CassandraColumnEntityConverterTest {
                 new Contact("Ada", "ada@lovelace.com")));
 
         ColumnEntity entity = converter.toColumn(appointmentBook);
-        assertEquals("AppointmentBook", entity.getName());
+        assertEquals("AppointmentBook", entity.name());
         assertEquals("otaviojava", entity.find("user").get().get());
         UDT column = (UDT) entity.find("contacts").get();
 
@@ -366,6 +366,6 @@ public class CassandraColumnEntityConverterTest {
     }
 
     private Object getValue(Optional<Column> document) {
-        return document.map(Column::getValue).map(Value::get).orElse(null);
+        return document.map(Column::value).map(Value::get).orElse(null);
     }
 }

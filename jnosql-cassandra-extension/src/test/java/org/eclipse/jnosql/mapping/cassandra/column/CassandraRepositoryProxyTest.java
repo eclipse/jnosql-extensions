@@ -14,9 +14,9 @@
  */
 package org.eclipse.jnosql.mapping.cassandra.column;
 
-import jakarta.nosql.column.ColumnDeleteQuery;
-import jakarta.nosql.mapping.column.ColumnRepositoryProducer;
 import jakarta.nosql.tck.test.CDIExtension;
+import org.eclipse.jnosql.communication.column.ColumnDeleteQuery;
+import org.eclipse.jnosql.mapping.column.query.ColumnRepositoryProducer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -73,7 +73,7 @@ public class CassandraRepositoryProxyTest {
 
     @Test
     public void shouldFindAll() {
-        personRepository.findAll();
+        personRepository.findAllQuery();
         verify(template).cql("select * from Person");
     }
 
@@ -98,7 +98,7 @@ public class CassandraRepositoryProxyTest {
         void deleteByName(String namel);
 
         @CQL("select * from Person")
-        List<Person> findAll();
+        List<Person> findAllQuery();
 
         @CQL("select * from Person where name = ?")
         List<Person> findByName(String name);

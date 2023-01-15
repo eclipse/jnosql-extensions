@@ -15,7 +15,7 @@
 package org.eclipse.jnosql.mapping.couchbase.document;
 
 import com.couchbase.client.java.json.JsonObject;
-import jakarta.nosql.mapping.document.DocumentRepositoryProducer;
+import org.eclipse.jnosql.mapping.document.query.DocumentRepositoryProducer;
 import jakarta.nosql.tck.test.CDIExtension;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

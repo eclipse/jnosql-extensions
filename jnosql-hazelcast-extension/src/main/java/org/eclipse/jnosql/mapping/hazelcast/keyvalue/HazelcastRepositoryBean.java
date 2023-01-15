@@ -14,8 +14,8 @@
  */
 package org.eclipse.jnosql.mapping.hazelcast.keyvalue;
 
-import jakarta.nosql.mapping.Repository;
-import jakarta.nosql.mapping.keyvalue.KeyValueRepositoryProducer;
+import jakarta.nosql.Repository;
+import jakarta.nosql.keyvalue.KeyValueRepositoryProducer;
 import org.eclipse.jnosql.mapping.spi.AbstractBean;
 
 import jakarta.enterprise.context.spi.CreationalContext;

@@ -15,7 +15,8 @@
 package org.eclipse.jnosql.mapping.arangodb.document;
 
 
-import jakarta.nosql.mapping.document.DocumentTemplate;
+
+import org.eclipse.jnosql.mapping.document.JNoSQLDocumentTemplate;
 
 import java.util.Map;
 import java.util.stream.Stream;
@@ -23,7 +24,7 @@ import java.util.stream.Stream;
 /**
  * A {@link DocumentTemplate} to arangoDB
  */
-public interface ArangoDBTemplate extends DocumentTemplate {
+public interface ArangoDBTemplate extends JNoSQLDocumentTemplate {
 
     /**
      * Executes ArangoDB query language, AQL.

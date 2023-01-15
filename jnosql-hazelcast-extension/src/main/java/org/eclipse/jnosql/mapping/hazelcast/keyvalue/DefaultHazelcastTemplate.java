@@ -16,9 +16,9 @@ package org.eclipse.jnosql.mapping.hazelcast.keyvalue;
 
 import com.hazelcast.query.Predicate;
 import jakarta.nosql.keyvalue.BucketManager;
-import jakarta.nosql.mapping.keyvalue.KeyValueEntityConverter;
-import jakarta.nosql.mapping.keyvalue.KeyValueEventPersistManager;
-import jakarta.nosql.mapping.keyvalue.KeyValueWorkflow;
+import jakarta.nosql.keyvalue.KeyValueEntityConverter;
+import jakarta.nosql.keyvalue.KeyValueEventPersistManager;
+import jakarta.nosql.keyvalue.KeyValueWorkflow;
 import org.eclipse.jnosql.mapping.keyvalue.AbstractKeyValueTemplate;
 import org.eclipse.jnosql.communication.hazelcast.keyvalue.HazelcastBucketManager;
 

@@ -15,8 +15,8 @@
 package org.eclipse.jnosql.mapping.solr.document;
 
 
-import jakarta.nosql.document.Document;
-import jakarta.nosql.document.DocumentEntity;
+import org.eclipse.jnosql.communication.document.Document;
+import org.eclipse.jnosql.communication.document.DocumentEntity;
 import org.eclipse.jnosql.communication.solr.document.SolrDocumentManager;
 import org.mockito.Mockito;
 

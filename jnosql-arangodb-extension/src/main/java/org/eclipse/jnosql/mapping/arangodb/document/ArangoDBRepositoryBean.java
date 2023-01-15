@@ -14,8 +14,8 @@
  */
 package org.eclipse.jnosql.mapping.arangodb.document;
 
-import jakarta.nosql.mapping.Repository;
-import jakarta.nosql.mapping.document.DocumentRepositoryProducer;
+import jakarta.data.repository.PageableRepository;
+import org.eclipse.jnosql.mapping.document.query.DocumentRepositoryProducer;
 import org.eclipse.jnosql.mapping.spi.AbstractBean;
 
 import jakarta.enterprise.context.spi.CreationalContext;
@@ -53,7 +53,7 @@ class ArangoDBRepositoryBean extends AbstractBean<ArangoDBRepository> {
         ArangoDBTemplate template = getInstance(ArangoDBTemplate.class);
         DocumentRepositoryProducer producer = getInstance(DocumentRepositoryProducer.class);
 
-        Repository<Object, Object> repository = producer.get((Class<Repository<Object, Object>>) type, template);
+        PageableRepository<Object, Object> repository = producer.get((Class<PageableRepository<Object, Object>>) type, template);
 
         ArangoDBDocumentRepositoryProxy handler = new ArangoDBDocumentRepositoryProxy(template,type, repository);
         return (ArangoDBRepository) Proxy.newProxyInstance(type.getClassLoader(),

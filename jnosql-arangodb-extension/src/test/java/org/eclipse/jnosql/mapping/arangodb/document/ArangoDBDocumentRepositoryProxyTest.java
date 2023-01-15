@@ -14,8 +14,9 @@
  */
 package org.eclipse.jnosql.mapping.arangodb.document;
 
-import jakarta.nosql.mapping.document.DocumentRepositoryProducer;
+import org.eclipse.jnosql.mapping.document.query.DocumentRepositoryProducer;
 import jakarta.nosql.tck.test.CDIExtension;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -64,7 +65,7 @@ public class ArangoDBDocumentRepositoryProxyTest {
 
     @Test
     public void shouldFindAll() {
-        personRepository.findAll();
+        personRepository.findAllQuery();
         verify(template).aql("FOR p IN Person RETURN p", emptyMap());
     }
 
@@ -81,7 +82,7 @@ public class ArangoDBDocumentRepositoryProxyTest {
     interface PersonRepository extends ArangoDBRepository<Person, String> {
 
         @AQL("FOR p IN Person RETURN p")
-        List<Person> findAll();
+        List<Person> findAllQuery();
 
         @AQL("FOR p IN Person FILTER p.name = @name RETURN p")
         List<Person> findByName(@Param("name") String name);

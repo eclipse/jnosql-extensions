@@ -14,7 +14,7 @@
  */
 package org.eclipse.jnosql.mapping.orientdb.document;
 
-import jakarta.nosql.mapping.document.DocumentRepositoryProducer;
+import org.eclipse.jnosql.mapping.document.query.DocumentRepositoryProducer;
 import jakarta.nosql.tck.test.CDIExtension;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

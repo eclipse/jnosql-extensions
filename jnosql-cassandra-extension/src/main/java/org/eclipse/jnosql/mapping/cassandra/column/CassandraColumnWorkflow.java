@@ -14,17 +14,17 @@
  */
 package org.eclipse.jnosql.mapping.cassandra.column;
 
-import jakarta.nosql.mapping.column.ColumnEntityConverter;
-import jakarta.nosql.mapping.column.ColumnEventPersistManager;
-import org.eclipse.jnosql.mapping.column.AbstractColumnWorkflow;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Typed;
 import jakarta.inject.Inject;
+import org.eclipse.jnosql.mapping.column.ColumnEntityConverter;
+import org.eclipse.jnosql.mapping.column.ColumnEventPersistManager;
+import org.eclipse.jnosql.mapping.column.ColumnWorkflow;
 
 @Typed(CassandraColumnWorkflow.class)
 @ApplicationScoped
-class CassandraColumnWorkflow extends AbstractColumnWorkflow {
+class CassandraColumnWorkflow extends ColumnWorkflow {
 
     @Inject
     private ColumnEventPersistManager columnEventPersistManager;

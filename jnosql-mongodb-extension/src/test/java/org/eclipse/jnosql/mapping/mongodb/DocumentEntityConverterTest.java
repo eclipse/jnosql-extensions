@@ -15,8 +15,8 @@
 package org.eclipse.jnosql.mapping.mongodb;
 
 
-import jakarta.nosql.document.DocumentEntity;
-import jakarta.nosql.mapping.document.DocumentEntityConverter;
+import org.eclipse.jnosql.communication.document.DocumentEntity;
+import org.eclipse.jnosql.mapping.document.DocumentEntityConverter;
 import org.bson.types.ObjectId;
 import jakarta.nosql.tck.test.CDIExtension;
 import org.junit.jupiter.api.Assertions;

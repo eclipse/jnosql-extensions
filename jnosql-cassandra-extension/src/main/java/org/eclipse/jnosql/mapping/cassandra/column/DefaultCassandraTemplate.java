@@ -17,24 +17,23 @@ package org.eclipse.jnosql.mapping.cassandra.column;
 
 import com.datastax.oss.driver.api.core.ConsistencyLevel;
 import com.datastax.oss.driver.api.core.cql.SimpleStatement;
-import jakarta.nosql.column.ColumnDeleteQuery;
-import jakarta.nosql.column.ColumnEntity;
-import jakarta.nosql.column.ColumnManager;
-import jakarta.nosql.column.ColumnQuery;
-import jakarta.nosql.mapping.Converters;
-import jakarta.nosql.mapping.column.ColumnEntityConverter;
-import jakarta.nosql.mapping.column.ColumnEventPersistManager;
-import jakarta.nosql.mapping.column.ColumnWorkflow;
-import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
-import org.eclipse.jnosql.mapping.column.AbstractColumnTemplate;
-
-import org.eclipse.jnosql.communication.cassandra.column.CassandraColumnManager;
-import org.eclipse.jnosql.communication.cassandra.column.CassandraPreparedStatement;
-
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Instance;
 import jakarta.enterprise.inject.Typed;
 import jakarta.inject.Inject;
+import org.eclipse.jnosql.communication.cassandra.column.CassandraColumnManager;
+import org.eclipse.jnosql.communication.cassandra.column.CassandraPreparedStatement;
+import org.eclipse.jnosql.communication.column.ColumnDeleteQuery;
+import org.eclipse.jnosql.communication.column.ColumnEntity;
+import org.eclipse.jnosql.communication.column.ColumnManager;
+import org.eclipse.jnosql.communication.column.ColumnQuery;
+import org.eclipse.jnosql.mapping.Converters;
+import org.eclipse.jnosql.mapping.column.AbstractColumnTemplate;
+import org.eclipse.jnosql.mapping.column.ColumnEntityConverter;
+import org.eclipse.jnosql.mapping.column.ColumnEventPersistManager;
+import org.eclipse.jnosql.mapping.column.ColumnWorkflow;
+import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
+
 import java.time.Duration;
 import java.util.Map;
 import java.util.Objects;

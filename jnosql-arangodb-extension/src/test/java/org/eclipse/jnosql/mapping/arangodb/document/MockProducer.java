@@ -15,9 +15,11 @@
 package org.eclipse.jnosql.mapping.arangodb.document;
 
 
-import jakarta.nosql.document.Document;
-import jakarta.nosql.document.DocumentEntity;
+import org.eclipse.jnosql.communication.document.Document;
+
+import org.eclipse.jnosql.communication.document.DocumentEntity;
 import org.eclipse.jnosql.communication.arangodb.document.ArangoDBDocumentManager;
+
 import org.mockito.Mockito;
 
 import jakarta.annotation.Priority;
