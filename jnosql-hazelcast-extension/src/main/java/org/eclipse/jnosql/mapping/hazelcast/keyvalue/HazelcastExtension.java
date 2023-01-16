@@ -17,36 +17,20 @@ package org.eclipse.jnosql.mapping.hazelcast.keyvalue;
 import jakarta.enterprise.event.Observes;
 import jakarta.enterprise.inject.spi.AfterBeanDiscovery;
 import jakarta.enterprise.inject.spi.Extension;
-import jakarta.enterprise.inject.spi.ProcessAnnotatedType;
-import java.lang.reflect.Modifier;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
+import org.eclipse.jnosql.mapping.reflection.ClassScanner;
+
+import java.util.Set;
 import java.util.logging.Logger;
 
 public class HazelcastExtension implements Extension {
 
     private static final Logger LOGGER = Logger.getLogger(HazelcastExtension.class.getName());
 
-    private final Collection<Class<?>> crudTypes = new HashSet<>();
-
-
-    <T extends HazelcastRepository> void onProcessAnnotatedType(@Observes final ProcessAnnotatedType<T> repo) {
-        Class<T> javaClass = repo.getAnnotatedType().getJavaClass();
-
-        if(HazelcastRepository.class.equals(javaClass)) {
-            return;
-        }
-
-        if (Arrays.asList(javaClass.getInterfaces()).contains(HazelcastRepository.class)
-                && Modifier.isInterface(javaClass.getModifiers())) {
-            crudTypes.add(javaClass);
-        }
-    }
-
 
 
     void onAfterBeanDiscovery(@Observes final AfterBeanDiscovery afterBeanDiscovery) {
+        ClassScanner scanner = ClassScanner.INSTANCE;
+        Set<Class<?>> crudTypes = scanner.repositories(HazelcastRepository.class);
         LOGGER.info("Starting the onAfterBeanDiscovery with elements number: " + crudTypes.size());
         crudTypes.forEach(type -> afterBeanDiscovery.addBean(new HazelcastRepositoryBean(type)));
         LOGGER.info("Finished the onAfterBeanDiscovery");

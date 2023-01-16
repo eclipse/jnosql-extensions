@@ -15,8 +15,8 @@
 package org.eclipse.jnosql.mapping.couchbase.document;
 
 
-import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.data.repository.Repository;
 
-@ApplicationScoped
+@Repository
 public interface PersonRepository extends CouchbaseRepository<Person, String> {
 }

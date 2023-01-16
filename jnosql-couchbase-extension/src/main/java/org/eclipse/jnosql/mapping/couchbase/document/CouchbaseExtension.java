@@ -17,33 +17,19 @@ package org.eclipse.jnosql.mapping.couchbase.document;
 import jakarta.enterprise.event.Observes;
 import jakarta.enterprise.inject.spi.AfterBeanDiscovery;
 import jakarta.enterprise.inject.spi.Extension;
-import jakarta.enterprise.inject.spi.ProcessAnnotatedType;
-import java.lang.reflect.Modifier;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
+import org.eclipse.jnosql.mapping.reflection.ClassScanner;
+
+import java.util.Set;
 import java.util.logging.Logger;
 
 public class CouchbaseExtension implements Extension {
 
     private static final Logger LOGGER = Logger.getLogger(CouchbaseExtension.class.getName());
 
-    private final Collection<Class<?>> crudTypes = new HashSet<>();
-
-    <T extends CouchbaseRepository> void onProcessAnnotatedType(@Observes final ProcessAnnotatedType<T> repo) {
-        Class<T> javaClass = repo.getAnnotatedType().getJavaClass();
-
-        if(CouchbaseRepository.class.equals(javaClass)) {
-            return;
-        }
-
-        if (Arrays.asList(javaClass.getInterfaces()).contains(CouchbaseRepository.class)
-                && Modifier.isInterface(javaClass.getModifiers())) {
-            crudTypes.add(javaClass);
-        }
-    }
 
     void onAfterBeanDiscovery(@Observes final AfterBeanDiscovery afterBeanDiscovery) {
+        ClassScanner scanner = ClassScanner.INSTANCE;
+        Set<Class<?>> crudTypes = scanner.repositories(CouchbaseRepository.class);
         LOGGER.info("Starting the onAfterBeanDiscovery with elements number: " + crudTypes.size());
 
         crudTypes.forEach(type -> afterBeanDiscovery.addBean(new CouchbaseRepositoryBean(type)));

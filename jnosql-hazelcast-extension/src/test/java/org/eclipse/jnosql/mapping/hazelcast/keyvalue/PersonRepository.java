@@ -15,8 +15,8 @@
 package org.eclipse.jnosql.mapping.hazelcast.keyvalue;
 
 
-import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.data.repository.Repository;
 
-@ApplicationScoped
+@Repository
 public interface PersonRepository extends HazelcastRepository<Person, String> {
 }
