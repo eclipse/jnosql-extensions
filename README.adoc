@@ -56,6 +56,7 @@ The ```ArangoDBRepository``` interface is an extension of the ```Repository``` i
 
 [source,java]
 ----
+@Repository
 interface PersonRepository extends ArangoDBRepository<Person, String> {
 
     @AQL("FOR p IN Person RETURN p")
@@ -132,6 +133,7 @@ The ```CassandraRepository``` interface is an extension of the ```Repository``` 
 
 [source,java]
 ----
+@Repository
 interface PersonRepository extends CassandraRepository<Person, String> {
 
     @CQL("select * from Person")
@@ -250,6 +252,7 @@ The ```CouchbaseRepository``` interface is an extension of the ```Repository``` 
 
 [source,java]
 ----
+@Repository
 interface PersonRepository extends CouchbaseRepository<Person, String> {
 
 @N1QL("select * from Person")
@@ -386,6 +389,7 @@ public class ManagerSupplier implements Supplier<HazelcastBucketManager> {
 
 [source,java]
 ----
+@Repository
 interface PersonRepository extends HazelcastRepository<Person, String> {
 
         @Query("active")
@@ -524,6 +528,7 @@ The ```OrientDBCrudRepository``` interface  is an extension of the ```Repository
 
 [source,java]
 ----
+@Repository
     interface PersonRepository extends OrientDBCrudRepository<Person, String> {
 
         @SQL("select * from Person")
@@ -603,6 +608,7 @@ The ```SolrRepository``` interface is an extension of the ```Repository``` inter
 
 [source,java]
 ----
+@Repository
 interface PersonRepository extends SolrRepository<Person, String> {
 
     @Solr("select * from Person")
