@@ -15,7 +15,6 @@
 package org.eclipse.jnosql.mapping.elasticsearch.document;
 
 import co.elastic.clients.elasticsearch._types.query_dsl.MatchQuery;
-import co.elastic.clients.elasticsearch._types.query_dsl.Query;
 import co.elastic.clients.elasticsearch.core.SearchRequest;
 import co.elastic.clients.util.ObjectBuilder;
 import org.eclipse.jnosql.communication.document.Document;

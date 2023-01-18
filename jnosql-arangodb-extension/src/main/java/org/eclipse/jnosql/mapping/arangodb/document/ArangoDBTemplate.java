@@ -22,7 +22,7 @@ import java.util.Map;
 import java.util.stream.Stream;
 
 /**
- * A {@link DocumentTemplate} to arangoDB
+ * A {@link JNoSQLDocumentTemplate} to arangoDB
  */
 public interface ArangoDBTemplate extends JNoSQLDocumentTemplate {
 
