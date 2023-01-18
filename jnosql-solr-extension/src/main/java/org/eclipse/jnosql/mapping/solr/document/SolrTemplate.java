@@ -45,5 +45,5 @@ public interface SolrTemplate extends JNoSQLDocumentTemplate {
      * @return the result
      * @throws NullPointerException when there is null parameter
      */
-    <T> List<T> solr(String query, Map<String, ? extends Object> params);
+    <T> List<T> solr(String query, Map<String, ?> params);
 }

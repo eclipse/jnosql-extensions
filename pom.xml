@@ -15,7 +15,7 @@
   -->
 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
@@ -28,7 +28,7 @@
     <packaging>pom</packaging>
 
     <description>Eclipse JNoSQL mapping layer extensions</description>
-    <url>http://jnosql.org/</url>
+    <url>https://jnosql.org/</url>
 
     <scm>
         <connection>scm:git:git://github.com/eclipse/jnosql-artemis-extensions.git</connection>
