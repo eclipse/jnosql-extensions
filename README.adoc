@@ -780,7 +780,7 @@ The Criteria API can be used via CriteriaDocumentTemplate.
   </dependency>
 ----
 
-## Create a CriteriaDocumentTemplate
+== Create a CriteriaDocumentTemplate
 
 [source,java]
 ----
@@ -796,7 +796,7 @@ The Criteria API can be used via CriteriaDocumentTemplate.
     CriteriaDocumentTemplate template = criteriaDocumentTemplateProducer.get(documentManager);
 ----
 
-## EntityQuery
+== EntityQuery
 
 You can fetch entities with an EntityQuery :
 
@@ -821,7 +821,7 @@ EntityQueryResult<Person> executeQuery = template.executeQuery(
 Stream<Person> stream = executeQuery.getEntities();
 ----
 
-## ExpressionQuery
+== ExpressionQuery
 
 You can fetch single columns/projections using an ExpressionQuery :
 
