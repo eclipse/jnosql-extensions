@@ -14,8 +14,8 @@
  */
 package org.eclipse.jnosql.mapping.cassandra.column;
 
-import jakarta.nosql.mapping.Repository;
-import jakarta.nosql.mapping.column.ColumnRepositoryProducer;
+import jakarta.data.repository.PageableRepository;
+import org.eclipse.jnosql.mapping.column.query.ColumnRepositoryProducer;
 import org.eclipse.jnosql.mapping.spi.AbstractBean;
 
 import jakarta.enterprise.context.spi.CreationalContext;
@@ -51,7 +51,7 @@ class CassandraRepositoryBean extends AbstractBean<CassandraRepository> {
     public CassandraRepository create(CreationalContext<CassandraRepository> creationalContext) {
         CassandraTemplate template = getInstance(CassandraTemplate.class);
         ColumnRepositoryProducer producer = getInstance(ColumnRepositoryProducer.class);
-        Repository<?,?> repository = producer.get((Class<Repository<Object, Object>>) type, template);
+        PageableRepository<?,?> repository = producer.get((Class<PageableRepository<Object, Object>>) type, template);
         CassandraRepositoryProxy handler = new CassandraRepositoryProxy(template, type, repository);
         return (CassandraRepository) Proxy.newProxyInstance(type.getClassLoader(),
                 new Class[]{type},

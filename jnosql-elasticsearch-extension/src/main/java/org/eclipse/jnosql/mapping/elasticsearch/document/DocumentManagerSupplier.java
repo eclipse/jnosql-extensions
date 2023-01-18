@@ -9,8 +9,8 @@
 
 package org.eclipse.jnosql.mapping.elasticsearch.document;
 
-import jakarta.nosql.Settings;
-import jakarta.nosql.mapping.MappingException;
+import org.eclipse.jnosql.communication.Settings;
+import jakarta.data.exceptions.MappingException;
 import org.eclipse.jnosql.communication.elasticsearch.document.ElasticsearchDocumentConfiguration;
 import org.eclipse.jnosql.communication.elasticsearch.document.ElasticsearchDocumentManager;
 import org.eclipse.jnosql.communication.elasticsearch.document.ElasticsearchDocumentManagerFactory;

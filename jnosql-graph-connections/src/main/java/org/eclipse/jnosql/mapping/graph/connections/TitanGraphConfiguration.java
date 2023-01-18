@@ -15,7 +15,7 @@
 package org.eclipse.jnosql.mapping.graph.connections;
 
 import com.thinkaurelius.titan.core.TitanFactory;
-import jakarta.nosql.Settings;
+import org.eclipse.jnosql.communication.Settings;
 import org.apache.commons.configuration.BaseConfiguration;
 import org.apache.commons.configuration.Configuration;
 import org.apache.tinkerpop.gremlin.structure.Graph;

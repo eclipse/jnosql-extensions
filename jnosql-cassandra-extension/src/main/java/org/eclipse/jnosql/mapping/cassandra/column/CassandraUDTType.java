@@ -14,10 +14,10 @@
  */
 package org.eclipse.jnosql.mapping.cassandra.column;
 
-import jakarta.nosql.mapping.Converters;
-import jakarta.nosql.mapping.column.ColumnEntityConverter;
+import org.eclipse.jnosql.communication.column.Column;
+import org.eclipse.jnosql.mapping.Converters;
+import org.eclipse.jnosql.mapping.column.ColumnEntityConverter;
 import org.eclipse.jnosql.mapping.reflection.FieldMapping;
-import jakarta.nosql.column.Column;
 import org.eclipse.jnosql.mapping.column.ColumnFieldValue;
 import org.eclipse.jnosql.communication.cassandra.column.UDT;
 
@@ -63,13 +63,13 @@ class CassandraUDTType implements ColumnFieldValue {
         if (Iterable.class.isInstance(value)) {
             List<Iterable<Column>> columns = new ArrayList<>();
             stream(Iterable.class.cast(value).spliterator(), false)
-                    .forEach(c -> columns.add(converter.toColumn(c).getColumns()));
+                    .forEach(c -> columns.add(converter.toColumn(c).columns()));
             return singletonList(UDT.builder(type).withName(field.getName()).addUDTs(columns).build());
 
         } else {
             return singletonList(UDT.builder(type)
                     .withName(field.getName())
-                    .addUDT(converter.toColumn(value).getColumns())
+                    .addUDT(converter.toColumn(value).columns())
                     .build());
         }
     }

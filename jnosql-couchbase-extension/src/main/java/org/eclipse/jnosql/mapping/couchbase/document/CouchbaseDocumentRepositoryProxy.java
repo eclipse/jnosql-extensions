@@ -16,7 +16,7 @@ package org.eclipse.jnosql.mapping.couchbase.document;
 
 
 import com.couchbase.client.java.json.JsonObject;
-import jakarta.nosql.mapping.Repository;
+import jakarta.data.repository.PageableRepository;
 import org.eclipse.jnosql.mapping.repository.DynamicReturn;
 
 import java.lang.reflect.InvocationHandler;
@@ -34,10 +34,10 @@ class CouchbaseDocumentRepositoryProxy<T> implements InvocationHandler {
 
     private final CouchbaseTemplate template;
 
-    private final Repository<?, ?> repository;
+    private final PageableRepository<?, ?> repository;
 
 
-    CouchbaseDocumentRepositoryProxy(CouchbaseTemplate template, Class<?> repositoryType, Repository<?, ?> repository) {
+    CouchbaseDocumentRepositoryProxy(CouchbaseTemplate template, Class<?> repositoryType, PageableRepository<?, ?> repository) {
         this.template = template;
         this.typeClass = Class.class.cast(ParameterizedType.class.cast(repositoryType.getGenericInterfaces()[0])
                 .getActualTypeArguments()[0]);

@@ -15,9 +15,10 @@
 
 package org.eclipse.jnosql.mapping.mongodb;
 
-import jakarta.nosql.mapping.document.DocumentTemplate;
+import jakarta.nosql.document.DocumentTemplate;
 import org.bson.BsonValue;
 import org.bson.conversions.Bson;
+import org.eclipse.jnosql.mapping.document.JNoSQLDocumentTemplate;
 
 import java.util.List;
 import java.util.Map;
@@ -26,7 +27,7 @@ import java.util.stream.Stream;
 /**
  * A MongoDB extension of {@link DocumentTemplate}
  */
-public interface MongoDBTemplate extends DocumentTemplate {
+public interface MongoDBTemplate extends JNoSQLDocumentTemplate {
 
     /**
      * Removes all documents from the collection that match the given query filter.

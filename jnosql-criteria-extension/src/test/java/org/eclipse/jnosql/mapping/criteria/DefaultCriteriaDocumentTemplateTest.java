@@ -15,16 +15,16 @@
  */
 package org.eclipse.jnosql.mapping.criteria;
 
-import jakarta.nosql.mapping.document.DocumentEntityConverter;
+import org.eclipse.jnosql.communication.document.DocumentCondition;
+import org.eclipse.jnosql.mapping.document.DocumentEntityConverter;
 import jakarta.nosql.tck.test.CDIExtension;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import jakarta.inject.Inject;
-import jakarta.nosql.document.Document;
-import jakarta.nosql.document.DocumentCondition;
-import jakarta.nosql.document.DocumentEntity;
-import jakarta.nosql.document.DocumentManager;
-import jakarta.nosql.document.DocumentQuery;
+import org.eclipse.jnosql.communication.document.Document;
+import org.eclipse.jnosql.communication.document.DocumentEntity;
+import org.eclipse.jnosql.communication.document.DocumentManager;
+import org.eclipse.jnosql.communication.document.DocumentQuery;
 import java.util.Arrays;
 import java.util.Optional;
 import java.util.stream.Stream;

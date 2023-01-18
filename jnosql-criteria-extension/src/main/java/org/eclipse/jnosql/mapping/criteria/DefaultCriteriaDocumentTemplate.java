@@ -14,13 +14,13 @@
  */
 package org.eclipse.jnosql.mapping.criteria;
 
-import jakarta.nosql.document.DocumentEntity;
-import jakarta.nosql.document.DocumentManager;
-import jakarta.nosql.document.DocumentQuery;
-import jakarta.nosql.mapping.Converters;
-import jakarta.nosql.mapping.document.DocumentEntityConverter;
-import jakarta.nosql.mapping.document.DocumentEventPersistManager;
-import jakarta.nosql.mapping.document.DocumentWorkflow;
+import org.eclipse.jnosql.communication.document.DocumentEntity;
+import org.eclipse.jnosql.communication.document.DocumentManager;
+import org.eclipse.jnosql.communication.document.DocumentQuery;
+import org.eclipse.jnosql.mapping.Converters;
+import org.eclipse.jnosql.mapping.document.DocumentEntityConverter;
+import org.eclipse.jnosql.mapping.document.DocumentEventPersistManager;
+import org.eclipse.jnosql.mapping.document.DocumentWorkflow;
 import static java.util.Objects.requireNonNull;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -90,8 +90,8 @@ public class DefaultCriteriaDocumentTemplate extends AbstractDocumentTemplate im
             } else if (selectQuery instanceof ExpressionQuery) {
                 ExpressionQuery.class.cast(selectQuery).feed(
                         entityStream.map(
-                                documentEntity -> documentEntity.getDocuments().stream().map(
-                                        document -> document.getValue()
+                                documentEntity -> documentEntity.documents().stream().map(
+                                        document -> document.value()
                                 ).collect(
                                         Collectors.toList()
                                 )

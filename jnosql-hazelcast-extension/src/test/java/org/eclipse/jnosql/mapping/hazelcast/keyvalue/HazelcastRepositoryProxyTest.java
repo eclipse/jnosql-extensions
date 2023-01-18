@@ -14,7 +14,7 @@
  */
 package org.eclipse.jnosql.mapping.hazelcast.keyvalue;
 
-import jakarta.nosql.mapping.Repository;
+import jakarta.data.repository.PageableRepository;
 import jakarta.nosql.tck.test.CDIExtension;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -48,7 +48,7 @@ public class HazelcastRepositoryProxyTest {
     private HazelcastTemplate template;
 
     @Mock
-    private Repository<?, ?> repository;
+    private PageableRepository<?, ?> repository;
     private PersonRepository personRepository;
 
 

@@ -16,14 +16,14 @@ package org.eclipse.jnosql.mapping.elasticsearch.document;
 
 
 import co.elastic.clients.elasticsearch.core.SearchRequest;
-import jakarta.nosql.mapping.document.DocumentTemplate;
+import org.eclipse.jnosql.mapping.document.JNoSQLDocumentTemplate;
 
 import java.util.stream.Stream;
 
 /**
- * A {@link DocumentTemplate} to elasticsearch
+ * A {@link JNoSQLDocumentTemplate} to elasticsearch
  */
-public interface ElasticsearchTemplate extends DocumentTemplate {
+public interface ElasticsearchTemplate extends JNoSQLDocumentTemplate {
 
     /**
      * Find entities from {@link SearchRequest}

@@ -15,13 +15,13 @@
 package org.eclipse.jnosql.mapping.orientdb.document;
 
 
-import jakarta.nosql.mapping.Repository;
+import jakarta.data.repository.PageableRepository;
 
 /**
- * The OrientDB {@link Repository}
+ * The OrientDB {@link PageableRepository}
  *
  * @param <T>  the entity type
  * @param <K> the entity id type
  */
-public interface OrientDBCrudRepository<T, K> extends Repository<T, K> {
+public interface OrientDBCrudRepository<T, K> extends PageableRepository<T, K> {
 }

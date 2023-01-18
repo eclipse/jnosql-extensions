@@ -15,7 +15,7 @@
 package org.eclipse.jnosql.mapping.solr.document;
 
 
-import jakarta.nosql.mapping.Repository;
+import jakarta.data.repository.PageableRepository;
 import org.eclipse.jnosql.mapping.repository.DynamicReturn;
 
 import java.lang.reflect.InvocationHandler;
@@ -33,10 +33,10 @@ class SolrRepositoryProxy<T> implements InvocationHandler {
 
     private final SolrTemplate template;
 
-    private final Repository<?, ?> repository;
+    private final PageableRepository<?, ?> repository;
 
 
-    SolrRepositoryProxy(SolrTemplate template, Class<?> repositoryType, Repository<?, ?> repository) {
+    SolrRepositoryProxy(SolrTemplate template, Class<?> repositoryType, PageableRepository<?, ?> repository) {
         this.template = template;
         this.typeClass = Class.class.cast(ParameterizedType.class.cast(repositoryType.getGenericInterfaces()[0])
                 .getActualTypeArguments()[0]);

@@ -9,8 +9,8 @@
 
 package org.eclipse.jnosql.mapping.orientdb.document;
 
-import jakarta.nosql.Settings;
-import jakarta.nosql.mapping.MappingException;
+import org.eclipse.jnosql.communication.Settings;
+import jakarta.data.exceptions.MappingException;
 import org.eclipse.jnosql.communication.orientdb.document.OrientDBDocumentConfiguration;
 import org.eclipse.jnosql.communication.orientdb.document.OrientDBDocumentManager;
 import org.eclipse.jnosql.communication.orientdb.document.OrientDBDocumentManagerFactory;

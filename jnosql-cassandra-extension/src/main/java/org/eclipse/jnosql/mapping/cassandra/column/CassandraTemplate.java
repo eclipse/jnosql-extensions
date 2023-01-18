@@ -18,18 +18,18 @@ package org.eclipse.jnosql.mapping.cassandra.column;
 
 import com.datastax.oss.driver.api.core.ConsistencyLevel;
 import com.datastax.oss.driver.api.core.cql.SimpleStatement;
-import jakarta.nosql.column.ColumnDeleteQuery;
-import jakarta.nosql.column.ColumnQuery;
-import jakarta.nosql.mapping.column.ColumnTemplate;
+import org.eclipse.jnosql.communication.column.ColumnDeleteQuery;
+import org.eclipse.jnosql.communication.column.ColumnQuery;
+import org.eclipse.jnosql.mapping.column.JNoSQLColumnTemplate;
 
 import java.time.Duration;
 import java.util.Map;
 import java.util.stream.Stream;
 
 /**
- * A Cassandra extension of {@link jakarta.nosql.mapping.column.ColumnTemplate}
+ * A Cassandra extension of {@link JNoSQLColumnTemplate}
  */
-public interface CassandraTemplate extends ColumnTemplate {
+public interface CassandraTemplate extends JNoSQLColumnTemplate {
 
     /**
      * Saves a ColumnEntity with a defined ConsistencyLevel

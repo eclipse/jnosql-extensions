@@ -14,8 +14,8 @@
  */
 package org.eclipse.jnosql.mapping.couchbase.document;
 
-import jakarta.nosql.mapping.Repository;
-import jakarta.nosql.mapping.document.DocumentRepositoryProducer;
+import jakarta.data.repository.PageableRepository;
+import org.eclipse.jnosql.mapping.document.query.DocumentRepositoryProducer;
 import org.eclipse.jnosql.mapping.spi.AbstractBean;
 
 import jakarta.enterprise.context.spi.CreationalContext;
@@ -53,7 +53,7 @@ class CouchbaseRepositoryBean extends AbstractBean<CouchbaseRepository> {
     public CouchbaseRepository create(CreationalContext<CouchbaseRepository> creationalContext) {
         CouchbaseTemplate template = getInstance(CouchbaseTemplate.class);
         DocumentRepositoryProducer producer = getInstance(DocumentRepositoryProducer.class);
-        Repository<Object, Object> repository = producer.get((Class<Repository<Object, Object>>) type, template);
+        PageableRepository<Object, Object> repository = producer.get((Class<PageableRepository<Object, Object>>) type, template);
         CouchbaseDocumentRepositoryProxy handler = new CouchbaseDocumentRepositoryProxy(template, type, repository);
         return (CouchbaseRepository) Proxy.newProxyInstance(type.getClassLoader(),
                 new Class[]{type},

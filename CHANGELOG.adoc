@@ -12,6 +12,14 @@ and this project adheres to https://semver.org/spec/v2.0.0.html[Semantic Version
 
 - Update Jakarta API to after the Big-bang
 
+=== Added
+
+- Add support for Jakarta Data
+
+=== Removed
+
+- Remove the old Jakarta NoSQL repositories features
+
 == [1.0.0.4-b5] - 2022-12-22
 
 === Added

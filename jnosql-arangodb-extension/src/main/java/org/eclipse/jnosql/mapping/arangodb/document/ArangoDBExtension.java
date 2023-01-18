@@ -17,35 +17,20 @@ package org.eclipse.jnosql.mapping.arangodb.document;
 import jakarta.enterprise.event.Observes;
 import jakarta.enterprise.inject.spi.AfterBeanDiscovery;
 import jakarta.enterprise.inject.spi.Extension;
-import jakarta.enterprise.inject.spi.ProcessAnnotatedType;
-import java.lang.reflect.Modifier;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
+import org.eclipse.jnosql.mapping.reflection.ClassScanner;
+
+import java.util.Set;
 import java.util.logging.Logger;
 
 public class ArangoDBExtension implements Extension {
 
     private static final Logger LOGGER = Logger.getLogger(ArangoDBExtension.class.getName());
 
-    private final Collection<Class<?>> crudTypes = new HashSet<>();
-
-
-    <T extends ArangoDBRepository> void onProcessAnnotatedType(@Observes final ProcessAnnotatedType<T> repo) {
-        Class<T> javaClass = repo.getAnnotatedType().getJavaClass();
-
-        if(ArangoDBRepository.class.equals(javaClass)) {
-            return;
-        }
-
-        if (Arrays.asList(javaClass.getInterfaces()).contains(ArangoDBRepository.class)
-                && Modifier.isInterface(javaClass.getModifiers())) {
-            crudTypes.add(javaClass);
-        }
-    }
-
-
     void onAfterBeanDiscovery(@Observes final AfterBeanDiscovery afterBeanDiscovery) {
+
+        ClassScanner scanner = ClassScanner.INSTANCE;
+        Set<Class<?>> crudTypes = scanner.repositories(ArangoDBRepository.class);
+
         LOGGER.info("Starting the onAfterBeanDiscovery with elements number: " + crudTypes.size());
 
         crudTypes.forEach(type -> afterBeanDiscovery.addBean(new ArangoDBRepositoryBean(type)));

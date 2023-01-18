@@ -14,7 +14,7 @@
  */
 package org.eclipse.jnosql.mapping.criteria.api;
 
-import jakarta.nosql.mapping.document.DocumentTemplate;
+import jakarta.nosql.document.DocumentTemplate;
 import org.eclipse.jnosql.mapping.criteria.DefaultCriteriaQuery;
 
 /**

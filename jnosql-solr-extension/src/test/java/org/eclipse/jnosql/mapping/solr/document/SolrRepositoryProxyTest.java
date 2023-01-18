@@ -14,7 +14,7 @@
  */
 package org.eclipse.jnosql.mapping.solr.document;
 
-import jakarta.nosql.mapping.document.DocumentRepositoryProducer;
+import org.eclipse.jnosql.mapping.document.query.DocumentRepositoryProducer;
 import jakarta.nosql.tck.test.CDIExtension;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -60,7 +60,7 @@ public class SolrRepositoryProxyTest {
 
     @Test
     public void shouldFindAll() {
-        personRepository.findAll();
+        personRepository.findAllQuery();
         verify(template).solr("_entity:person");
     }
 
@@ -78,7 +78,7 @@ public class SolrRepositoryProxyTest {
     interface PersonRepository extends SolrRepository<Person, String> {
 
         @Solr("_entity:person")
-        List<Person> findAll();
+        List<Person> findAllQuery();
 
         @Solr("name:@name AND _entity:person")
         List<Person> findByName(@Param("name") String name);

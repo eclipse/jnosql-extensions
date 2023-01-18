@@ -15,9 +15,9 @@
 package org.eclipse.jnosql.mapping.cassandra.column;
 
 
-import jakarta.nosql.column.Column;
-import jakarta.nosql.column.ColumnEntity;
 import org.eclipse.jnosql.communication.cassandra.column.CassandraColumnManager;
+import org.eclipse.jnosql.communication.column.Column;
+import org.eclipse.jnosql.communication.column.ColumnEntity;
 import org.mockito.Mockito;
 
 import jakarta.annotation.Priority;

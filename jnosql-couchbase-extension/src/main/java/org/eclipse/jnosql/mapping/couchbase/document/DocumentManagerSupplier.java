@@ -9,8 +9,8 @@
 
 package org.eclipse.jnosql.mapping.couchbase.document;
 
-import jakarta.nosql.Settings;
-import jakarta.nosql.mapping.MappingException;
+import org.eclipse.jnosql.communication.Settings;
+import jakarta.data.exceptions.MappingException;
 import org.eclipse.jnosql.communication.couchbase.document.CouchbaseDocumentConfiguration;
 import org.eclipse.jnosql.communication.couchbase.document.CouchbaseDocumentManager;
 import org.eclipse.jnosql.communication.couchbase.document.CouchbaseDocumentManagerFactory;

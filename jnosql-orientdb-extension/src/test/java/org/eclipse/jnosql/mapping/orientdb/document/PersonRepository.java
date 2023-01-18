@@ -15,8 +15,8 @@
 package org.eclipse.jnosql.mapping.orientdb.document;
 
 
-import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.data.repository.Repository;
 
-@ApplicationScoped
+@Repository
 public interface PersonRepository extends OrientDBCrudRepository<Person, String> {
 }

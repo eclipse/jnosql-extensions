@@ -14,7 +14,7 @@
  */
 package org.eclipse.jnosql.mapping.criteria.api;
 
-import jakarta.nosql.document.DocumentManager;
+import org.eclipse.jnosql.communication.document.DocumentManager;
 
 public interface CriteriaDocumentTemplateProducer {
 

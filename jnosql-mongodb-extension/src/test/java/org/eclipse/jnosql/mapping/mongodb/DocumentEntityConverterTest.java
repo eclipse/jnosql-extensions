@@ -15,8 +15,8 @@
 package org.eclipse.jnosql.mapping.mongodb;
 
 
-import jakarta.nosql.document.DocumentEntity;
-import jakarta.nosql.mapping.document.DocumentEntityConverter;
+import org.eclipse.jnosql.communication.document.DocumentEntity;
+import org.eclipse.jnosql.mapping.document.DocumentEntityConverter;
 import org.bson.types.ObjectId;
 import jakarta.nosql.tck.test.CDIExtension;
 import org.junit.jupiter.api.Assertions;
@@ -36,7 +36,7 @@ public class DocumentEntityConverterTest {
         Music music = new Music(id.toString(), "Music", 2021);
         DocumentEntity entity = converter.toDocument(music);
         Assertions.assertNotNull(entity);
-        Assertions.assertEquals(Music.class.getSimpleName(), entity.getName());
+        Assertions.assertEquals(Music.class.getSimpleName(), entity.name());
         Assertions.assertEquals(id, entity.find("_id", ObjectId.class).get());
         Assertions.assertEquals("Music", entity.find("name", String.class).get());
         Assertions.assertEquals(2021, entity.find("year", int.class).get());

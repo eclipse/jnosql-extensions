@@ -15,12 +15,12 @@
 package org.eclipse.jnosql.mapping.solr.document;
 
 
-import jakarta.nosql.mapping.Repository;
+import jakarta.data.repository.PageableRepository;
 
 /**
- * The couchbase {@link Repository}
+ * The couchbase {@link PageableRepository}
  * @param <T> the entity type
  * @param <K> the entity id type
  */
-public interface SolrRepository<T, K> extends Repository<T, K> {
+public interface SolrRepository<T, K> extends PageableRepository<T, K> {
 }

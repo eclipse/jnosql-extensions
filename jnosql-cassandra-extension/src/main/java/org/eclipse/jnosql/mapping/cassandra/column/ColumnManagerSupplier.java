@@ -9,8 +9,8 @@
 
 package org.eclipse.jnosql.mapping.cassandra.column;
 
-import jakarta.nosql.Settings;
-import jakarta.nosql.mapping.MappingException;
+import org.eclipse.jnosql.communication.Settings;
+import jakarta.data.exceptions.MappingException;
 import org.eclipse.jnosql.communication.cassandra.column.CassandraColumnManager;
 import org.eclipse.jnosql.communication.cassandra.column.CassandraColumnManagerFactory;
 import org.eclipse.jnosql.communication.cassandra.column.CassandraConfiguration;

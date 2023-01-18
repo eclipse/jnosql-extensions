@@ -15,7 +15,7 @@
 package org.eclipse.jnosql.mapping.couchbase.document;
 
 import com.couchbase.client.java.json.JsonObject;
-import jakarta.nosql.mapping.document.DocumentRepositoryProducer;
+import org.eclipse.jnosql.mapping.document.query.DocumentRepositoryProducer;
 import jakarta.nosql.tck.test.CDIExtension;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -62,7 +62,7 @@ public class CouchbaseDocumentRepositoryProxyTest {
 
     @Test
     public void shouldFindAll() {
-        personRepository.findAll();
+        personRepository.findAllQuery();
         verify(template).n1qlQuery("select * from Person");
     }
 
@@ -80,7 +80,7 @@ public class CouchbaseDocumentRepositoryProxyTest {
     interface PersonRepository extends CouchbaseRepository<Person, String> {
 
         @N1QL("select * from Person")
-        List<Person> findAll();
+        List<Person> findAllQuery();
 
         @N1QL("select * from Person where name = $name")
         List<Person> findByName(@Param("name") String name);

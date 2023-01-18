@@ -14,7 +14,7 @@
  */
 package org.eclipse.jnosql.mapping.cassandra.converters;
 
-import jakarta.nosql.mapping.AttributeConverter;
+import org.eclipse.jnosql.mapping.AttributeConverter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

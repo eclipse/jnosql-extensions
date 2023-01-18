@@ -14,8 +14,8 @@
  */
 package org.eclipse.jnosql.mapping.hazelcast.keyvalue;
 
-import jakarta.nosql.mapping.Repository;
-import jakarta.nosql.mapping.keyvalue.KeyValueRepositoryProducer;
+import jakarta.data.repository.PageableRepository;
+import org.eclipse.jnosql.mapping.keyvalue.query.KeyValueRepositoryProducer;
 import org.eclipse.jnosql.mapping.spi.AbstractBean;
 
 import jakarta.enterprise.context.spi.CreationalContext;
@@ -53,7 +53,7 @@ class HazelcastRepositoryBean extends AbstractBean<HazelcastRepository> {
         HazelcastTemplate template = getInstance(HazelcastTemplate.class);
 
         KeyValueRepositoryProducer producer = getInstance(KeyValueRepositoryProducer.class);
-        Repository<?, ?> repository = producer.get((Class<Repository<Object, Object>>) type, template);
+        PageableRepository<?, ?> repository = producer.get((Class<PageableRepository<Object, Object>>) type, template);
         HazelcastRepositoryProxy handler = new HazelcastRepositoryProxy(template, type, repository);
         return (HazelcastRepository) Proxy.newProxyInstance(type.getClassLoader(),
                 new Class[]{type},

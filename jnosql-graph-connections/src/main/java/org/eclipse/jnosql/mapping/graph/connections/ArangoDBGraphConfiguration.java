@@ -15,7 +15,7 @@
 package org.eclipse.jnosql.mapping.graph.connections;
 
 import com.arangodb.tinkerpop.gremlin.utils.ArangoDBConfigurationBuilder;
-import jakarta.nosql.Settings;
+import org.eclipse.jnosql.communication.Settings;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.util.GraphFactory;
 import org.eclipse.jnosql.mapping.graph.GraphConfiguration;

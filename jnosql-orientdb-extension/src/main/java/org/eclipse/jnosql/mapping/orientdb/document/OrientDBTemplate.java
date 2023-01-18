@@ -15,9 +15,10 @@
 package org.eclipse.jnosql.mapping.orientdb.document;
 
 
-import jakarta.nosql.document.DocumentQuery;
-import jakarta.nosql.mapping.document.DocumentTemplate;
+import jakarta.nosql.document.DocumentTemplate;
+import org.eclipse.jnosql.communication.document.DocumentQuery;
 import org.eclipse.jnosql.communication.orientdb.document.OrientDBLiveCallback;
+import org.eclipse.jnosql.mapping.document.JNoSQLDocumentTemplate;
 
 import java.util.Map;
 import java.util.stream.Stream;
@@ -25,7 +26,7 @@ import java.util.stream.Stream;
 /**
  * A {@link DocumentTemplate} to orientdb
  */
-public interface OrientDBTemplate extends DocumentTemplate {
+public interface OrientDBTemplate extends JNoSQLDocumentTemplate {
 
     /**
      * Find using OrientDB native query

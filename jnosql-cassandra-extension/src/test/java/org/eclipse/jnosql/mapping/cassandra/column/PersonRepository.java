@@ -15,8 +15,8 @@
 package org.eclipse.jnosql.mapping.cassandra.column;
 
 
-import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.data.repository.Repository;
 
-@ApplicationScoped
+@Repository
 public interface PersonRepository extends CassandraRepository<Person, String> {
 }

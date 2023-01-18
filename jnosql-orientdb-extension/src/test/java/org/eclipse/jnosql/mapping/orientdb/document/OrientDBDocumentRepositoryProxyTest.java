@@ -14,7 +14,7 @@
  */
 package org.eclipse.jnosql.mapping.orientdb.document;
 
-import jakarta.nosql.mapping.document.DocumentRepositoryProducer;
+import org.eclipse.jnosql.mapping.document.query.DocumentRepositoryProducer;
 import jakarta.nosql.tck.test.CDIExtension;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -61,7 +61,7 @@ public class OrientDBDocumentRepositoryProxyTest {
 
     @Test
     public void shouldFindAll() {
-        personRepository.findAll();
+        personRepository.findAllQuery();
         verify(template).sql("select * from Person");
     }
 
@@ -83,7 +83,7 @@ public class OrientDBDocumentRepositoryProxyTest {
     interface PersonRepository extends OrientDBCrudRepository<Person, String> {
 
         @SQL("select * from Person")
-        List<Person> findAll();
+        List<Person> findAllQuery();
 
         @SQL("select * from Person where name = ?")
         List<Person> findByName(String name);

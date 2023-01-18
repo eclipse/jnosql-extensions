@@ -17,34 +17,19 @@ package org.eclipse.jnosql.mapping.orientdb.document;
 import jakarta.enterprise.event.Observes;
 import jakarta.enterprise.inject.spi.AfterBeanDiscovery;
 import jakarta.enterprise.inject.spi.Extension;
-import jakarta.enterprise.inject.spi.ProcessAnnotatedType;
-import java.lang.reflect.Modifier;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
+import org.eclipse.jnosql.mapping.reflection.ClassScanner;
+
+import java.util.Set;
 import java.util.logging.Logger;
 
 public class OrientDBExtension implements Extension {
 
     private static final Logger LOGGER = Logger.getLogger(OrientDBExtension.class.getName());
 
-    private final Collection<Class<?>> crudTypes = new HashSet<>();
-
-    <T extends OrientDBCrudRepository> void onProcessAnnotatedType(@Observes final ProcessAnnotatedType<T> repo) {
-        Class<T> javaClass = repo.getAnnotatedType().getJavaClass();
-
-        if(OrientDBCrudRepository.class.equals(javaClass)) {
-            return;
-        }
-
-        if (Arrays.asList(javaClass.getInterfaces()).contains(OrientDBCrudRepository.class)
-                && Modifier.isInterface(javaClass.getModifiers())) {
-            crudTypes.add(javaClass);
-        }
-    }
-
-
     void onAfterBeanDiscovery(@Observes final AfterBeanDiscovery afterBeanDiscovery) {
+
+        ClassScanner scanner = ClassScanner.INSTANCE;
+        Set<Class<?>> crudTypes = scanner.repositories(OrientDBCrudRepository.class);
         LOGGER.info("Starting the onAfterBeanDiscovery with elements number: " + crudTypes.size());
 
         crudTypes.forEach(type -> afterBeanDiscovery.addBean(new OrientDBRepositoryBean(type)));

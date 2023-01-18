@@ -14,13 +14,13 @@
  */
 package org.eclipse.jnosql.mapping.solr.document;
 
-import jakarta.nosql.mapping.Repository;
-import jakarta.nosql.mapping.document.DocumentRepositoryProducer;
-import org.eclipse.jnosql.mapping.spi.AbstractBean;
-
+import jakarta.data.repository.PageableRepository;
 import jakarta.enterprise.context.spi.CreationalContext;
 import jakarta.enterprise.inject.Default;
 import jakarta.enterprise.util.AnnotationLiteral;
+import org.eclipse.jnosql.mapping.document.query.DocumentRepositoryProducer;
+import org.eclipse.jnosql.mapping.spi.AbstractBean;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Proxy;
 import java.lang.reflect.Type;
@@ -53,7 +53,7 @@ class SolrRepositoryBean extends AbstractBean<SolrRepository> {
     public SolrRepository create(CreationalContext<SolrRepository> creationalContext) {
         SolrTemplate template = getInstance(SolrTemplate.class);
         DocumentRepositoryProducer producer = getInstance(DocumentRepositoryProducer.class);
-        Repository<Object, Object> repository = producer.get((Class<Repository<Object, Object>>) type, template);
+        PageableRepository<Object, Object> repository = producer.get((Class<PageableRepository<Object, Object>>) type, template);
         SolrRepositoryProxy handler = new SolrRepositoryProxy(template, type, repository);
         return (SolrRepository) Proxy.newProxyInstance(type.getClassLoader(),
                 new Class[]{type},

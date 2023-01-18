@@ -15,7 +15,7 @@
 package org.eclipse.jnosql.mapping.cassandra.column;
 
 
-import jakarta.nosql.mapping.Repository;
+import jakarta.data.repository.PageableRepository;
 import org.eclipse.jnosql.mapping.repository.DynamicReturn;
 
 import java.lang.reflect.InvocationHandler;
@@ -33,9 +33,9 @@ class CassandraRepositoryProxy<T> implements InvocationHandler {
 
     private final CassandraTemplate template;
 
-    private final Repository<T,?> repository;
+    private final PageableRepository<T,?> repository;
 
-    CassandraRepositoryProxy(CassandraTemplate template, Class<?> repositoryType, Repository<T, ?> repository) {
+    CassandraRepositoryProxy(CassandraTemplate template, Class<?> repositoryType, PageableRepository<T, ?> repository) {
 
         this.template = template;
         this.typeClass = Class.class.cast(ParameterizedType.class.cast(repositoryType.getGenericInterfaces()[0])

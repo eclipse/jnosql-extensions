@@ -9,8 +9,8 @@
 
 package org.eclipse.jnosql.mapping.solr.document;
 
-import jakarta.nosql.Settings;
-import jakarta.nosql.mapping.MappingException;
+import org.eclipse.jnosql.communication.Settings;
+import jakarta.data.exceptions.MappingException;
 import org.eclipse.jnosql.communication.solr.document.SolrDocumentConfiguration;
 import org.eclipse.jnosql.communication.solr.document.SolrDocumentManager;
 import org.eclipse.jnosql.communication.solr.document.SolrDocumentManagerFactory;
