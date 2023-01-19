@@ -34,9 +34,8 @@
 
     <dependencies>
         <dependency>
-            <groupId>${project.groupId}</groupId>
+            <groupId>org.eclipse.jnosql.mapping</groupId>
             <artifactId>jnosql-mapping-graph</artifactId>
-            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.tinkerpop</groupId>

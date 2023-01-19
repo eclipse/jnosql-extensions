@@ -31,22 +31,19 @@
         <dependency>
             <groupId>org.eclipse.jnosql.communication</groupId>
             <artifactId>jnosql-arangodb-driver</artifactId>
-            <version>${project.version}</version>
+            <version>${jnosql-communication-driver.version}</version>
         </dependency>
         <dependency>
-            <groupId>${project.groupId}</groupId>
+            <groupId>org.eclipse.jnosql.mapping</groupId>
             <artifactId>jnosql-mapping-document</artifactId>
-            <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>${project.groupId}</groupId>
+            <groupId>org.eclipse.jnosql.mapping</groupId>
             <artifactId>jnosql-mapping-key-value</artifactId>
-            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>jakarta.nosql.tck.mapping</groupId>
             <artifactId>mapping-tck-test</artifactId>
-            <version>${project.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

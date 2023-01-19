@@ -35,14 +35,12 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>${project.groupId}</groupId>
+            <groupId>org.eclipse.jnosql.mapping</groupId>
             <artifactId>jnosql-mapping-key-value</artifactId>
-            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>jakarta.nosql.tck.mapping</groupId>
             <artifactId>mapping-tck-test</artifactId>
-            <version>${project.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
