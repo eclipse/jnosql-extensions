@@ -21,7 +21,7 @@
     <parent>
         <groupId>org.eclipse.jnosql.mapping</groupId>
         <artifactId>jnosql-mapping-parent</artifactId>
-        <version>1.0.0-b6-SNAPSHOT</version>
+        <version>1.0.0-SNAPSHOT</version>
     </parent>
 
     <artifactId>jnosql-mapping-extension</artifactId>
@@ -30,10 +30,15 @@
     <description>Eclipse JNoSQL mapping layer extensions</description>
     <url>https://jnosql.org/</url>
 
+    <properties>
+        <jnosql-communication-driver.version>${project.version}</jnosql-communication-driver.version>
+        <jnosql-mapping.version>${project.version}</jnosql-mapping.version>
+    </properties>
+
     <scm>
-        <connection>scm:git:git://github.com/eclipse/jnosql-artemis-extensions.git</connection>
-        <developerConnection>scm:git:ssh://github.com:eclipse/jnosql-artemis-extensions.git</developerConnection>
-        <url>https://github.com/eclipse/jnosql-artemis-extensions</url>
+        <connection>scm:git:git://github.com/eclipse/jnosql-mapping-extension.git</connection>
+        <developerConnection>scm:git:ssh://github.com:eclipse/jnosql-mapping-extension.git</developerConnection>
+        <url>https://github.com/eclipse/jnosql-mapping-extension</url>
     </scm>
 
     <modules>
@@ -50,6 +55,36 @@
         <module>jnosql-graph-connections</module>
         <module>jnosql-criteria-extension</module>
     </modules>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.eclipse.jnosql.mapping</groupId>
+                <artifactId>jnosql-mapping-graph</artifactId>
+                <version>${jnosql-mapping.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.eclipse.jnosql.mapping</groupId>
+                <artifactId>jnosql-mapping-document</artifactId>
+                <version>${jnosql-mapping.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.eclipse.jnosql.mapping</groupId>
+                <artifactId>jnosql-mapping-column</artifactId>
+                <version>${jnosql-mapping.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.eclipse.jnosql.mapping</groupId>
+                <artifactId>jnosql-mapping-key-value</artifactId>
+                <version>${jnosql-mapping.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>jakarta.nosql.tck.mapping</groupId>
+                <artifactId>mapping-tck-test</artifactId>
+                <version>${jakarta.nosql.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <repositories>
         <repository>
