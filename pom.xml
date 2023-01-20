@@ -86,6 +86,13 @@
         </dependencies>
     </dependencyManagement>
 
+    <dependencies>
+        <dependency>
+            <groupId>jakarta.data</groupId>
+            <artifactId>jakarta-data-api</artifactId>
+        </dependency>
+    </dependencies>
+
     <repositories>
         <repository>
             <id>jakarta.sonatype.org-snapshot</id>
