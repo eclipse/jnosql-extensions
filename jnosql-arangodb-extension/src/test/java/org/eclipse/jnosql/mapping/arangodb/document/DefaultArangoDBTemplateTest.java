@@ -14,28 +14,43 @@
  */
 package org.eclipse.jnosql.mapping.arangodb.document;
 
+import jakarta.enterprise.inject.Instance;
+import jakarta.inject.Inject;
+import org.eclipse.jnosql.communication.arangodb.document.ArangoDBDocumentManager;
 import org.eclipse.jnosql.communication.document.Document;
 import org.eclipse.jnosql.communication.document.DocumentEntity;
+import org.eclipse.jnosql.mapping.Convert;
 import org.eclipse.jnosql.mapping.Converters;
 import org.eclipse.jnosql.mapping.document.DocumentEntityConverter;
 import org.eclipse.jnosql.mapping.document.DocumentEventPersistManager;
 import org.eclipse.jnosql.mapping.document.DocumentWorkflow;
+import org.eclipse.jnosql.mapping.document.spi.DocumentExtension;
+import org.eclipse.jnosql.mapping.keyvalue.KeyValueWorkflow;
+import org.eclipse.jnosql.mapping.keyvalue.spi.KeyValueExtension;
 import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
-import jakarta.nosql.tck.test.CDIExtension;
-import org.eclipse.jnosql.communication.arangodb.document.ArangoDBDocumentManager;
+import org.eclipse.jnosql.mapping.reflection.EntityMetadataExtension;
+import org.jboss.weld.junit5.auto.AddExtensions;
+import org.jboss.weld.junit5.auto.AddPackages;
+import org.jboss.weld.junit5.auto.EnableAutoWeld;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-import jakarta.enterprise.inject.Instance;
-import jakarta.inject.Inject;
 import java.util.Collections;
 import java.util.Map;
 
 import static org.mockito.Mockito.when;
 
 
-@CDIExtension
+@EnableAutoWeld
+@AddPackages(value = {Convert.class, KeyValueWorkflow.class,
+        DocumentEntityConverter.class, AQL.class})
+@AddPackages(MockProducer.class)
+@AddExtensions({EntityMetadataExtension.class, KeyValueExtension.class,
+        DocumentExtension.class, ArangoDBExtension.class})
+@ExtendWith(MockitoExtension.class)
 public class DefaultArangoDBTemplateTest {
 
     @Inject
