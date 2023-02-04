@@ -49,10 +49,5 @@
             <version>2.6</version>
             <scope>compile</scope>
         </dependency>
-        <dependency>
-            <groupId>jakarta.nosql.tck.mapping</groupId>
-            <artifactId>mapping-tck-test</artifactId>
-            <scope>test</scope>
-        </dependency>
     </dependencies>
 </project>

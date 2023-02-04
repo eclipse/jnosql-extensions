@@ -19,15 +19,21 @@ import com.datastax.oss.driver.api.core.cql.SimpleStatement;
 import com.datastax.oss.driver.api.querybuilder.QueryBuilder;
 import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
-import jakarta.nosql.tck.test.CDIExtension;
 import org.eclipse.jnosql.communication.cassandra.column.CassandraColumnManager;
 import org.eclipse.jnosql.communication.column.Column;
 import org.eclipse.jnosql.communication.column.ColumnDeleteQuery;
 import org.eclipse.jnosql.communication.column.ColumnEntity;
 import org.eclipse.jnosql.communication.column.ColumnQuery;
+import org.eclipse.jnosql.mapping.Convert;
 import org.eclipse.jnosql.mapping.Converters;
 import org.eclipse.jnosql.mapping.column.ColumnEventPersistManager;
+import org.eclipse.jnosql.mapping.column.ColumnWorkflow;
+import org.eclipse.jnosql.mapping.column.spi.ColumnExtension;
 import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
+import org.eclipse.jnosql.mapping.reflection.EntityMetadataExtension;
+import org.jboss.weld.junit5.auto.AddExtensions;
+import org.jboss.weld.junit5.auto.AddPackages;
+import org.jboss.weld.junit5.auto.EnableAutoWeld;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -47,7 +53,12 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@CDIExtension
+@EnableAutoWeld
+@AddPackages(value = {Convert.class, ColumnWorkflow.class,
+        CQL.class})
+@AddPackages(MockProducer.class)
+@AddExtensions({EntityMetadataExtension.class,
+        ColumnExtension.class, CassandraExtension.class})
 public class DefaultCassandraTemplateTest {
 
     @Inject
