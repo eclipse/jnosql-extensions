@@ -64,11 +64,11 @@ class CassandraUDTType implements ColumnFieldValue {
             List<Iterable<Column>> columns = new ArrayList<>();
             stream(Iterable.class.cast(value).spliterator(), false)
                     .forEach(c -> columns.add(converter.toColumn(c).columns()));
-            return singletonList(UDT.builder(type).withName(field.getName()).addUDTs(columns).build());
+            return singletonList(UDT.builder(type).withName(field.name()).addUDTs(columns).build());
 
         } else {
             return singletonList(UDT.builder(type)
-                    .withName(field.getName())
+                    .withName(field.name())
                     .addUDT(converter.toColumn(value).columns())
                     .build());
         }
