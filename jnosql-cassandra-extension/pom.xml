@@ -37,10 +37,5 @@
             <groupId>org.eclipse.jnosql.mapping</groupId>
             <artifactId>jnosql-mapping-column</artifactId>
         </dependency>
-        <dependency>
-            <groupId>jakarta.nosql.tck.mapping</groupId>
-            <artifactId>mapping-tck-test</artifactId>
-            <scope>test</scope>
-        </dependency>
     </dependencies>
 </project>

@@ -60,7 +60,7 @@ class CassandraColumnEntityConverter extends ColumnEntityConverter {
     protected <T> Consumer<String> feedObject(T instance, List<Column> columns, Map<String, FieldMapping> fieldsGroupByName) {
         return k -> {
             FieldMapping field = fieldsGroupByName.get(k);
-            if (Objects.nonNull(field.getNativeField().getAnnotation(UDT.class))) {
+            if (Objects.nonNull(field.nativeField().getAnnotation(UDT.class))) {
                 Optional<Column> column = columns.stream().filter(c -> c.name().equals(k)).findFirst();
                 setUDTField(instance, column, field);
             } else {
@@ -71,9 +71,11 @@ class CassandraColumnEntityConverter extends ColumnEntityConverter {
 
     private <T> void setUDTField(T instance, Optional<Column> column, FieldMapping field) {
         if (column.isPresent() && org.eclipse.jnosql.communication.cassandra.column.UDT.class.isInstance(column.get())) {
-            org.eclipse.jnosql.communication.cassandra.column.UDT udt = org.eclipse.jnosql.communication.cassandra.column.UDT.class.cast(column.get());
+            org.eclipse.jnosql.communication.cassandra.column.UDT udt =
+                    org.eclipse.jnosql.communication.cassandra.column.UDT.class.cast(column.get());
             Object columns = udt.get();
-            if (StreamSupport.stream(Iterable.class.cast(columns).spliterator(), false).allMatch(Iterable.class::isInstance)) {
+            if (StreamSupport.stream(Iterable.class.cast(columns).spliterator(), false)
+                    .allMatch(Iterable.class::isInstance)) {
                 GenericFieldMapping genericField = GenericFieldMapping.class.cast(field);
                 Collection collection = genericField.getCollectionInstance();
                 List<List<Column>> embeddable = (List<List<Column>>) columns;
@@ -83,7 +85,7 @@ class CassandraColumnEntityConverter extends ColumnEntityConverter {
                 }
                 field.write(instance, collection);
             } else {
-                Object value = toEntity(field.getNativeField().getType(), (List<Column>) columns);
+                Object value = toEntity(field.nativeField().getType(), (List<Column>) columns);
                 field.write(instance, value);
             }
         }
@@ -93,7 +95,7 @@ class CassandraColumnEntityConverter extends ColumnEntityConverter {
     protected ColumnFieldValue to(FieldMapping field, Object entityInstance) {
 
         Object value = field.read(entityInstance);
-        UDT annotation = field.getNativeField().getAnnotation(UDT.class);
+        UDT annotation = field.nativeField().getAnnotation(UDT.class);
         if (Objects.isNull(annotation)) {
             return super.to(field, entityInstance);
         } else {

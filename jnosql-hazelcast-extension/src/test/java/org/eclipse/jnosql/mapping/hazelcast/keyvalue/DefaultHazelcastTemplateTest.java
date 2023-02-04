@@ -14,10 +14,16 @@
  */
 package org.eclipse.jnosql.mapping.hazelcast.keyvalue;
 
-import jakarta.nosql.tck.test.CDIExtension;
+import jakarta.inject.Inject;
+import org.eclipse.jnosql.mapping.Convert;
+import org.eclipse.jnosql.mapping.keyvalue.KeyValueWorkflow;
+import org.eclipse.jnosql.mapping.keyvalue.spi.KeyValueExtension;
+import org.eclipse.jnosql.mapping.reflection.EntityMetadataExtension;
+import org.jboss.weld.junit5.auto.AddExtensions;
+import org.jboss.weld.junit5.auto.AddPackages;
+import org.jboss.weld.junit5.auto.EnableAutoWeld;
 import org.junit.jupiter.api.Test;
 
-import jakarta.inject.Inject;
 import java.util.Collection;
 
 import static com.hazelcast.query.Predicates.equal;
@@ -25,7 +31,11 @@ import static java.util.Collections.singletonMap;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@CDIExtension
+@EnableAutoWeld
+@AddPackages(value = {Convert.class, KeyValueWorkflow.class, Query.class})
+@AddPackages(MockProducer.class)
+@AddExtensions({EntityMetadataExtension.class,
+        KeyValueExtension.class, HazelcastExtension.class})
 public class DefaultHazelcastTemplateTest {
 
     @Inject

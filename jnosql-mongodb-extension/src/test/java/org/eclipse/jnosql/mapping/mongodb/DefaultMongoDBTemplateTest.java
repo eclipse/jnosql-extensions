@@ -17,23 +17,27 @@ package org.eclipse.jnosql.mapping.mongodb;
 
 import com.mongodb.client.model.Accumulators;
 import com.mongodb.client.model.Aggregates;
+import jakarta.enterprise.inject.Instance;
+import jakarta.inject.Inject;
+import org.bson.conversions.Bson;
 import org.eclipse.jnosql.communication.document.Document;
 import org.eclipse.jnosql.communication.document.DocumentEntity;
+import org.eclipse.jnosql.communication.mongodb.document.MongoDBDocumentManager;
+import org.eclipse.jnosql.mapping.Convert;
 import org.eclipse.jnosql.mapping.Converters;
 import org.eclipse.jnosql.mapping.document.DocumentEntityConverter;
 import org.eclipse.jnosql.mapping.document.DocumentEventPersistManager;
 import org.eclipse.jnosql.mapping.document.DocumentWorkflow;
-import org.bson.conversions.Bson;
-import org.eclipse.jnosql.communication.mongodb.document.MongoDBDocumentManager;
+import org.eclipse.jnosql.mapping.document.spi.DocumentExtension;
 import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
-import jakarta.nosql.tck.test.CDIExtension;
+import org.eclipse.jnosql.mapping.reflection.EntityMetadataExtension;
+import org.jboss.weld.junit5.auto.AddExtensions;
+import org.jboss.weld.junit5.auto.AddPackages;
+import org.jboss.weld.junit5.auto.EnableAutoWeld;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-
-import jakarta.enterprise.inject.Instance;
-import jakarta.inject.Inject;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -41,11 +45,16 @@ import java.util.List;
 import java.util.stream.Stream;
 
 import static com.mongodb.client.model.Filters.eq;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-@CDIExtension
+@EnableAutoWeld
+@AddPackages(value = {Convert.class, DocumentEntityConverter.class})
+@AddPackages(Music.class)
+@AddExtensions({EntityMetadataExtension.class,
+        DocumentExtension.class})
 class DefaultMongoDBTemplateTest {
 
     @Inject

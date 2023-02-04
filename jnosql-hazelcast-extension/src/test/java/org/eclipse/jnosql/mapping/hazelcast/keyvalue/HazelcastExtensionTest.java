@@ -14,13 +14,22 @@
  */
 package org.eclipse.jnosql.mapping.hazelcast.keyvalue;
 
-import jakarta.nosql.tck.test.CDIExtension;
+import jakarta.inject.Inject;
+import org.eclipse.jnosql.mapping.Convert;
+import org.eclipse.jnosql.mapping.keyvalue.KeyValueWorkflow;
+import org.eclipse.jnosql.mapping.keyvalue.spi.KeyValueExtension;
+import org.eclipse.jnosql.mapping.reflection.EntityMetadataExtension;
+import org.jboss.weld.junit5.auto.AddExtensions;
+import org.jboss.weld.junit5.auto.AddPackages;
+import org.jboss.weld.junit5.auto.EnableAutoWeld;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import jakarta.inject.Inject;
-
-@CDIExtension
+@EnableAutoWeld
+@AddPackages(value = {Convert.class, KeyValueWorkflow.class, Query.class})
+@AddPackages(MockProducer.class)
+@AddExtensions({EntityMetadataExtension.class,
+        KeyValueExtension.class, HazelcastExtension.class})
 public class HazelcastExtensionTest {
 
     @Inject

@@ -114,7 +114,7 @@ class DefaultMongoDBTemplate extends AbstractDocumentTemplate implements MongoDB
         Objects.requireNonNull(entity, "Entity is required");
         Objects.requireNonNull(filter, "filter is required");
         EntityMetadata entityMetadata = this.entities.get(entity);
-        return this.getManager().delete(entityMetadata.getName(), filter);
+        return this.getManager().delete(entityMetadata.name(), filter);
     }
 
     @Override
@@ -130,7 +130,7 @@ class DefaultMongoDBTemplate extends AbstractDocumentTemplate implements MongoDB
         Objects.requireNonNull(entity, "entity is required");
         Objects.requireNonNull(filter, "filter is required");
         EntityMetadata entityMetadata = this.entities.get(entity);
-        Stream<DocumentEntity> entityStream = this.getManager().select(entityMetadata.getName(), filter);
+        Stream<DocumentEntity> entityStream = this.getManager().select(entityMetadata.name(), filter);
         return entityStream.map(this.converter::toEntity);
     }
 
@@ -146,7 +146,7 @@ class DefaultMongoDBTemplate extends AbstractDocumentTemplate implements MongoDB
         Objects.requireNonNull(entity, "entity is required");
         Objects.requireNonNull(pipeline, "pipeline is required");
         EntityMetadata entityMetadata = this.entities.get(entity);
-        return this.getManager().aggregate(entityMetadata.getName(), pipeline);
+        return this.getManager().aggregate(entityMetadata.name(), pipeline);
     }
 
 }

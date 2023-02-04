@@ -12,6 +12,7 @@ and this project adheres to https://semver.org/spec/v2.0.0.html[Semantic Version
 
 - Update Jakarta API to after the Big-bang
 - CriteriaDocumentTemplate and CriteriaDocumentTemplateProducer for Criteria API support
+- Update test API to use Weld-Jupiter
 
 === Added
 
@@ -20,6 +21,7 @@ and this project adheres to https://semver.org/spec/v2.0.0.html[Semantic Version
 === Removed
 
 - Remove the old Jakarta NoSQL repositories features
+- Remove TCK dependency
 
 == [1.0.0.4-b5] - 2022-12-22
 

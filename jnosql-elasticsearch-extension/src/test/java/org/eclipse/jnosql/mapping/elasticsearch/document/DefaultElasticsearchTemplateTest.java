@@ -17,21 +17,26 @@ package org.eclipse.jnosql.mapping.elasticsearch.document;
 import co.elastic.clients.elasticsearch._types.query_dsl.MatchQuery;
 import co.elastic.clients.elasticsearch.core.SearchRequest;
 import co.elastic.clients.util.ObjectBuilder;
+import jakarta.enterprise.inject.Instance;
+import jakarta.inject.Inject;
 import org.eclipse.jnosql.communication.document.Document;
 import org.eclipse.jnosql.communication.document.DocumentEntity;
+import org.eclipse.jnosql.communication.elasticsearch.document.ElasticsearchDocumentManager;
+import org.eclipse.jnosql.mapping.Convert;
 import org.eclipse.jnosql.mapping.Converters;
 import org.eclipse.jnosql.mapping.document.DocumentEntityConverter;
 import org.eclipse.jnosql.mapping.document.DocumentEventPersistManager;
 import org.eclipse.jnosql.mapping.document.DocumentWorkflow;
-import jakarta.nosql.tck.test.CDIExtension;
-import org.eclipse.jnosql.communication.elasticsearch.document.ElasticsearchDocumentManager;
+import org.eclipse.jnosql.mapping.document.spi.DocumentExtension;
 import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
+import org.eclipse.jnosql.mapping.reflection.EntityMetadataExtension;
+import org.jboss.weld.junit5.auto.AddExtensions;
+import org.jboss.weld.junit5.auto.AddPackages;
+import org.jboss.weld.junit5.auto.EnableAutoWeld;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import jakarta.enterprise.inject.Instance;
-import jakarta.inject.Inject;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -43,7 +48,12 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.when;
 
 
-@CDIExtension
+@EnableAutoWeld
+@AddPackages(value = {Convert.class,
+        DocumentEntityConverter.class, ElasticsearchTemplate.class})
+@AddPackages(Person.class)
+@AddExtensions({EntityMetadataExtension.class,
+        DocumentExtension.class})
 public class DefaultElasticsearchTemplateTest {
 
     @Inject

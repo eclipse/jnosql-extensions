@@ -14,15 +14,21 @@
  */
 package org.eclipse.jnosql.mapping.cassandra.column;
 
-import jakarta.nosql.tck.test.CDIExtension;
+import jakarta.inject.Inject;
 import org.eclipse.jnosql.communication.column.ColumnDeleteQuery;
+import org.eclipse.jnosql.mapping.Convert;
+import org.eclipse.jnosql.mapping.column.ColumnWorkflow;
 import org.eclipse.jnosql.mapping.column.query.ColumnRepositoryProducer;
+import org.eclipse.jnosql.mapping.column.spi.ColumnExtension;
+import org.eclipse.jnosql.mapping.reflection.EntityMetadataExtension;
+import org.jboss.weld.junit5.auto.AddExtensions;
+import org.jboss.weld.junit5.auto.AddPackages;
+import org.jboss.weld.junit5.auto.EnableAutoWeld;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
-import jakarta.inject.Inject;
 import java.lang.reflect.Proxy;
 import java.time.Duration;
 import java.util.List;
@@ -33,7 +39,12 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@CDIExtension
+@EnableAutoWeld
+@AddPackages(value = {Convert.class, ColumnWorkflow.class,
+        CQL.class})
+@AddPackages(MockProducer.class)
+@AddExtensions({EntityMetadataExtension.class,
+        ColumnExtension.class, CassandraExtension.class})
 public class CassandraRepositoryProxyTest {
 
     private CassandraTemplate template;

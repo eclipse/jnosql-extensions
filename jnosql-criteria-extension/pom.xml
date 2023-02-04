@@ -38,10 +38,5 @@
             <version>${project.version}</version>
             <optional>true</optional>
         </dependency>
-        <dependency>
-            <groupId>jakarta.nosql.tck.mapping</groupId>
-            <artifactId>mapping-tck-test</artifactId>
-            <scope>test</scope>
-        </dependency>
     </dependencies>
 </project>

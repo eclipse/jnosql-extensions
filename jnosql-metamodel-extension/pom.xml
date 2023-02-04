@@ -28,10 +28,5 @@
     <description>Eclipse JNoSQL mapping metamodel layer</description>
 
     <dependencies>
-        <dependency>
-            <groupId>jakarta.nosql.tck.mapping</groupId>
-            <artifactId>mapping-tck-test</artifactId>
-            <scope>test</scope>
-        </dependency>
     </dependencies>
 </project>

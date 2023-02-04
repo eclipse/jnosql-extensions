@@ -74,7 +74,6 @@ public class DefaultCriteriaDocumentTemplate extends AbstractDocumentTemplate im
         if (criteriaQuery instanceof SelectQuery) {
             SelectQuery<T, ?, ?, ?> selectQuery = SelectQuery.class.cast(criteriaQuery);
             DocumentQuery documentQuery = CriteriaQueryUtils.convert(selectQuery);
-            this.getEventManager().firePreQuery(documentQuery);
             Stream<DocumentEntity> entityStream = this.getManager().select(
                     documentQuery
             );

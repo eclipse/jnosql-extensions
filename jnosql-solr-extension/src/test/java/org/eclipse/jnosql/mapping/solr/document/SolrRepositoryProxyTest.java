@@ -14,14 +14,20 @@
  */
 package org.eclipse.jnosql.mapping.solr.document;
 
+import jakarta.inject.Inject;
+import org.eclipse.jnosql.mapping.Convert;
+import org.eclipse.jnosql.mapping.document.DocumentEntityConverter;
 import org.eclipse.jnosql.mapping.document.query.DocumentRepositoryProducer;
-import jakarta.nosql.tck.test.CDIExtension;
+import org.eclipse.jnosql.mapping.document.spi.DocumentExtension;
+import org.eclipse.jnosql.mapping.reflection.EntityMetadataExtension;
+import org.jboss.weld.junit5.auto.AddExtensions;
+import org.jboss.weld.junit5.auto.AddPackages;
+import org.jboss.weld.junit5.auto.EnableAutoWeld;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
-import jakarta.inject.Inject;
 import java.lang.reflect.Proxy;
 import java.time.Duration;
 import java.util.List;
@@ -33,7 +39,12 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 
-@CDIExtension
+@EnableAutoWeld
+@AddPackages(value = {Convert.class,
+        DocumentEntityConverter.class, Solr.class})
+@AddPackages(MockProducer.class)
+@AddExtensions({EntityMetadataExtension.class,
+        DocumentExtension.class, SolrExtension.class})
 public class SolrRepositoryProxyTest {
 
     private SolrTemplate template;

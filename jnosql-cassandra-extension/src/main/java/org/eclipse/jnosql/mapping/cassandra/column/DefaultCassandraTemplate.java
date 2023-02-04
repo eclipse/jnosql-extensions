@@ -154,7 +154,6 @@ class DefaultCassandraTemplate extends AbstractColumnTemplate implements Cassand
     public void delete(ColumnDeleteQuery query, ConsistencyLevel level) {
         Objects.requireNonNull(query, "query is required");
         Objects.requireNonNull(level, "level is required");
-        persistManager.firePreDeleteQuery(query);
         manager.get().delete(query, level);
     }
 
@@ -162,7 +161,6 @@ class DefaultCassandraTemplate extends AbstractColumnTemplate implements Cassand
     public <T> Stream<T> find(ColumnQuery query, ConsistencyLevel level) {
         Objects.requireNonNull(query, "query is required");
         Objects.requireNonNull(level, "level is required");
-        persistManager.firePreQuery(query);
 
         return manager.get().select(query, level)
                 .map(c -> converter.toEntity(c));

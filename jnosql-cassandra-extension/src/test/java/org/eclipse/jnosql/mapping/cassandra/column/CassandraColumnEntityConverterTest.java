@@ -15,12 +15,12 @@
 package org.eclipse.jnosql.mapping.cassandra.column;
 
 import jakarta.inject.Inject;
-import jakarta.nosql.tck.test.CDIExtension;
 import org.eclipse.jnosql.communication.TypeReference;
 import org.eclipse.jnosql.communication.Value;
 import org.eclipse.jnosql.communication.cassandra.column.UDT;
 import org.eclipse.jnosql.communication.column.Column;
 import org.eclipse.jnosql.communication.column.ColumnEntity;
+import org.eclipse.jnosql.mapping.Convert;
 import org.eclipse.jnosql.mapping.cassandra.column.model.Actor;
 import org.eclipse.jnosql.mapping.cassandra.column.model.AppointmentBook;
 import org.eclipse.jnosql.mapping.cassandra.column.model.Artist;
@@ -31,6 +31,12 @@ import org.eclipse.jnosql.mapping.cassandra.column.model.Job;
 import org.eclipse.jnosql.mapping.cassandra.column.model.Money;
 import org.eclipse.jnosql.mapping.cassandra.column.model.Movie;
 import org.eclipse.jnosql.mapping.cassandra.column.model.Worker;
+import org.eclipse.jnosql.mapping.column.ColumnWorkflow;
+import org.eclipse.jnosql.mapping.column.spi.ColumnExtension;
+import org.eclipse.jnosql.mapping.reflection.EntityMetadataExtension;
+import org.jboss.weld.junit5.auto.AddExtensions;
+import org.jboss.weld.junit5.auto.AddPackages;
+import org.jboss.weld.junit5.auto.EnableAutoWeld;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -55,7 +61,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@CDIExtension
+@EnableAutoWeld
+@AddPackages(value = {Convert.class, ColumnWorkflow.class,
+        CQL.class})
+@AddPackages(MockProducer.class)
+@AddExtensions({EntityMetadataExtension.class,
+        ColumnExtension.class, CassandraExtension.class})
 public class CassandraColumnEntityConverterTest {
 
     @Inject
