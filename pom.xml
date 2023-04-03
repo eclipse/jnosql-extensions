@@ -27,7 +27,7 @@
     <artifactId>jnosql-mapping-extension</artifactId>
     <packaging>pom</packaging>
 
-    <description>Eclipse JNoSQL mapping layer extensions</description>
+    <description>Eclipse JNoSQL extensions</description>
     <url>https://jnosql.org/</url>
 
     <properties>
@@ -36,9 +36,9 @@
     </properties>
 
     <scm>
-        <connection>scm:git:git://github.com/eclipse/jnosql-mapping-extension.git</connection>
-        <developerConnection>scm:git:ssh://github.com:eclipse/jnosql-mapping-extension.git</developerConnection>
-        <url>https://github.com/eclipse/jnosql-mapping-extension</url>
+        <connection>scm:git:git://github.com/eclipse/jnosql-extensions.git</connection>
+        <developerConnection>scm:git:ssh://github.com:eclipse/jnosql-extensions.git</developerConnection>
+        <url>https://github.com/eclipse/jnosql-extensions</url>
     </scm>
 
     <modules>
