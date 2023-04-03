@@ -8,6 +8,10 @@ and this project adheres to https://semver.org/spec/v2.0.0.html[Semantic Version
 
 == [Unreleased]
 
+=== Removed
+
+- Remove databases modules and move to JNoSQL databases.
+
 == [1.0.0-b6] - 2023-03-11
 
 === Changed
