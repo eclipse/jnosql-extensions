@@ -44,14 +44,6 @@
     <modules>
         <module>jnosql-metamodel-extension</module>
         <module>jnosql-metamodel-processor-extension</module>
-        <module>jnosql-cassandra-extension</module>
-        <module>jnosql-elasticsearch-extension</module>
-        <module>jnosql-orientdb-extension</module>
-        <module>jnosql-couchbase-extension</module>
-        <module>jnosql-arangodb-extension</module>
-        <module>jnosql-hazelcast-extension</module>
-        <module>jnosql-solr-extension</module>
-        <module>jnosql-mongodb-extension</module>
         <module>jnosql-graph-connections</module>
         <module>jnosql-criteria-extension</module>
     </modules>
