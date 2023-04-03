@@ -134,7 +134,7 @@ These attributes are automagically generated from the defined NoSQL Entities.
 
 The Criteria API can be used via CriteriaDocumentTemplate.
 
-== Set dependency
+=== Set dependency
 
 
 [source,xml]
@@ -152,7 +152,7 @@ The Criteria API can be used via CriteriaDocumentTemplate.
   </dependency>
 ----
 
-== Create a CriteriaDocumentTemplate
+=== Create a CriteriaDocumentTemplate
 
 [source,java]
 ----
