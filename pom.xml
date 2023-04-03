@@ -24,10 +24,10 @@
         <version>1.0.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>jnosql-mapping-extension</artifactId>
+    <artifactId>jnosql-mapping-extensions</artifactId>
     <packaging>pom</packaging>
 
-    <description>Eclipse JNoSQL mapping layer extensions</description>
+    <description>Eclipse JNoSQL extensions</description>
     <url>https://jnosql.org/</url>
 
     <properties>
@@ -36,22 +36,14 @@
     </properties>
 
     <scm>
-        <connection>scm:git:git://github.com/eclipse/jnosql-mapping-extension.git</connection>
-        <developerConnection>scm:git:ssh://github.com:eclipse/jnosql-mapping-extension.git</developerConnection>
-        <url>https://github.com/eclipse/jnosql-mapping-extension</url>
+        <connection>scm:git:git://github.com/eclipse/jnosql-extensions.git</connection>
+        <developerConnection>scm:git:ssh://github.com:eclipse/jnosql-extensions.git</developerConnection>
+        <url>https://github.com/eclipse/jnosql-extensions</url>
     </scm>
 
     <modules>
         <module>jnosql-metamodel-extension</module>
         <module>jnosql-metamodel-processor-extension</module>
-        <module>jnosql-cassandra-extension</module>
-        <module>jnosql-elasticsearch-extension</module>
-        <module>jnosql-orientdb-extension</module>
-        <module>jnosql-couchbase-extension</module>
-        <module>jnosql-arangodb-extension</module>
-        <module>jnosql-hazelcast-extension</module>
-        <module>jnosql-solr-extension</module>
-        <module>jnosql-mongodb-extension</module>
         <module>jnosql-graph-connections</module>
         <module>jnosql-criteria-extension</module>
     </modules>

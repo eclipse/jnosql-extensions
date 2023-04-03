@@ -17,8 +17,8 @@ The project maintains the following source code repositories
 
 
 * https://github.com/eclipse/jnosql
-* https://github.com/eclipse/jnosql-diana-driver
-* https://github.com/eclipse/jnosql-artemis-extension
+* https://github.com/eclipse/jnosql-databases
+* https://github.com/eclipse/jnosql-extensions
 
 == Eclipse Contributor Agreement
 
