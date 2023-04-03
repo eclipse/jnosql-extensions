@@ -24,7 +24,7 @@
         <version>1.0.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>jnosql-mapping-extension</artifactId>
+    <artifactId>jnosql-mapping-extensions</artifactId>
     <packaging>pom</packaging>
 
     <description>Eclipse JNoSQL extensions</description>
