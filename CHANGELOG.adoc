@@ -8,6 +8,10 @@ and this project adheres to https://semver.org/spec/v2.0.0.html[Semantic Version
 
 == [Unreleased]
 
+=== Added
+
+- Added the JNoSQL Bean Validation  module
+
 === Removed
 
 - Remove databases modules and move to JNoSQL databases.
