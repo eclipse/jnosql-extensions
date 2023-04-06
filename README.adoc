@@ -3,6 +3,58 @@
 
 The Eclipse JNoSQL Mapping Extension API is a collection of implementations/specializations from the https://jakarta.ee/specifications/nosql/[Jakarta NoSQL] specification that defines specific behavior in various NoSQL databases.
 
+=== Bean Validation
+
+Eclipse JNoSQL provide support for bean validation. It will validate before inserting/updating and constructing an entity.
+
+[source,xml]
+----
+<dependency>
+    <groupId>org.eclipse.jnosql.mapping</groupId>
+    <artifactId>jnosql-mapping-validation</artifactId>
+    <version>1.0.0-b6</version>
+</dependency>
+----
+
+This requires the https://jakarta.ee/specifications/bean-validation/[Jakarta Bean Validation] specification.
+
+[source,java]
+----
+@Entity
+public class Car {
+
+    @Column
+    @NotNull
+    @Pattern(regexp = "[A-Z]{3}-[0-9]{4}", message = "Invalid car plate")
+    private String plate;
+
+    @Column
+    @NotNull
+    @MonetaryMin(value = "100", message = "There is not car cheap like that")
+    @MonetaryMax(value = "1000000", message = "The parking does not support fancy car")
+    @CurrencyAccepted(currencies = "USD", message = "The car price must work with USD")
+    @Convert(MonetaryAmountConverter.class)
+    private MonetaryAmount price;
+
+    @Column
+    @NotBlank
+    private String model;
+
+    @Column
+    @NotBlank
+    private String color;
+    ...
+}
+----
+
+[source,java]
+----
+@Inject
+Template template;
+...
+template.insert(new Car()); // invalid car
+----
+
 == Graph Connections
 
 Graph connections is a project that contains several `GraphConfiguration` implementations.
