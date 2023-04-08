@@ -1,4 +1,5 @@
 = Contributing to Eclipse JNoSQL
+:toc: auto
 
 Thanks for your interest in this project.
 
