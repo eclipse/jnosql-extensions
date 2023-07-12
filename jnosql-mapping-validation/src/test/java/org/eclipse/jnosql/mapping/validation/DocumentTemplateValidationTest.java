@@ -19,7 +19,7 @@ import jakarta.nosql.document.DocumentTemplate;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import org.eclipse.jnosql.mapping.Convert;
-import org.eclipse.jnosql.mapping.document.DocumentWorkflow;
+import org.eclipse.jnosql.mapping.document.DocumentEntityConverter;
 import org.eclipse.jnosql.mapping.document.spi.DocumentExtension;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadataExtension;
 import org.jboss.weld.junit5.auto.AddExtensions;
@@ -36,7 +36,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @EnableAutoWeld
-@AddPackages(value = {Convert.class, DocumentWorkflow.class, EntityObserver.class})
+@AddPackages(value = {Convert.class, DocumentEntityConverter.class, EntityObserver.class})
 @AddPackages(Person.class)
 @AddExtensions({EntityMetadataExtension.class, DocumentExtension.class})
 public class DocumentTemplateValidationTest {

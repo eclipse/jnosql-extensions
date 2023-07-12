@@ -19,7 +19,7 @@ import jakarta.nosql.keyvalue.KeyValueTemplate;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import org.eclipse.jnosql.mapping.Convert;
-import org.eclipse.jnosql.mapping.keyvalue.KeyValueWorkflow;
+import org.eclipse.jnosql.mapping.keyvalue.KeyValueEntityConverter;
 import org.eclipse.jnosql.mapping.keyvalue.spi.KeyValueExtension;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadataExtension;
 import org.jboss.weld.junit5.auto.AddExtensions;
@@ -36,7 +36,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @EnableAutoWeld
-@AddPackages(value = {Convert.class, KeyValueWorkflow.class, EntityObserver.class})
+@AddPackages(value = {Convert.class, KeyValueEntityConverter.class, EntityObserver.class})
 @AddPackages(Person.class)
 @AddExtensions({EntityMetadataExtension.class, KeyValueExtension.class})
 public class KeyValueTemplateValidationTest {

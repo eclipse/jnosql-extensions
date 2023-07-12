@@ -20,7 +20,6 @@ import org.eclipse.jnosql.mapping.document.DocumentEventPersistManager;
 import jakarta.inject.Inject;
 import org.eclipse.jnosql.communication.document.DocumentManager;
 import org.eclipse.jnosql.mapping.Converters;
-import org.eclipse.jnosql.mapping.document.DocumentWorkflow;
 import org.eclipse.jnosql.mapping.criteria.api.CriteriaDocumentTemplate;
 import org.eclipse.jnosql.mapping.criteria.api.CriteriaDocumentTemplateProducer;
 import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
@@ -30,13 +29,10 @@ public class DefaultCriteriaDocumentTemplateProducer implements CriteriaDocument
 
     @Inject
     private DocumentEntityConverter converter;
-    
-    @Inject
-    private DocumentWorkflow workflow;
-    
+
     @Inject
     private EntitiesMetadata entities;
-    
+
     @Inject
     private Converters converters;
 
@@ -48,7 +44,6 @@ public class DefaultCriteriaDocumentTemplateProducer implements CriteriaDocument
         return new DefaultCriteriaDocumentTemplate(
                 dm,
                 converter,
-                workflow,
                 entities,
                 converters,
                 persistManager

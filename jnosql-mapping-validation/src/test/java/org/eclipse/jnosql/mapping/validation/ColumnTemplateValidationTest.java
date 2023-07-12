@@ -19,7 +19,7 @@ import jakarta.nosql.column.ColumnTemplate;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import org.eclipse.jnosql.mapping.Convert;
-import org.eclipse.jnosql.mapping.column.ColumnWorkflow;
+import org.eclipse.jnosql.mapping.column.ColumnEntityConverter;
 import org.eclipse.jnosql.mapping.column.spi.ColumnExtension;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadataExtension;
 import org.jboss.weld.junit5.auto.AddExtensions;
@@ -36,7 +36,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @EnableAutoWeld
-@AddPackages(value = {Convert.class, ColumnWorkflow.class, EntityObserver.class})
+@AddPackages(value = {Convert.class, ColumnEntityConverter.class, EntityObserver.class})
 @AddPackages(Person.class)
 @AddExtensions({EntityMetadataExtension.class, ColumnExtension.class})
 public class ColumnTemplateValidationTest {
