@@ -20,7 +20,6 @@ import org.eclipse.jnosql.communication.document.DocumentQuery;
 import org.eclipse.jnosql.mapping.Converters;
 import org.eclipse.jnosql.mapping.document.DocumentEntityConverter;
 import org.eclipse.jnosql.mapping.document.DocumentEventPersistManager;
-import org.eclipse.jnosql.mapping.document.DocumentWorkflow;
 import static java.util.Objects.requireNonNull;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -45,8 +44,6 @@ public class DefaultCriteriaDocumentTemplate extends AbstractDocumentTemplate im
 
     private DocumentEntityConverter converter;
 
-    private DocumentWorkflow workflow;
-
     private EntitiesMetadata entities;
 
     private Converters converters;
@@ -56,13 +53,11 @@ public class DefaultCriteriaDocumentTemplate extends AbstractDocumentTemplate im
     public DefaultCriteriaDocumentTemplate(
             DocumentManager manager,
             DocumentEntityConverter converter,
-            DocumentWorkflow workflow,
             EntitiesMetadata entities,
             Converters converters,
             DocumentEventPersistManager persistManager) {
         this.manager = manager;
         this.converter = converter;
-        this.workflow = workflow;
         this.entities = entities;
         this.converters = converters;
         this.persistManager = persistManager;
@@ -111,11 +106,6 @@ public class DefaultCriteriaDocumentTemplate extends AbstractDocumentTemplate im
     @Override
     protected DocumentManager getManager() {
         return manager;
-    }
-
-    @Override
-    protected DocumentWorkflow getWorkflow() {
-        return workflow;
     }
 
     @Override
