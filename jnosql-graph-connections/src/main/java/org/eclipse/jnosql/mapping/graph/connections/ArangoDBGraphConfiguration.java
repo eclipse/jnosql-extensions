@@ -15,6 +15,7 @@
 package org.eclipse.jnosql.mapping.graph.connections;
 
 import com.arangodb.tinkerpop.gremlin.utils.ArangoDBConfigurationBuilder;
+import org.apache.commons.configuration.BaseConfiguration;
 import org.eclipse.jnosql.communication.Settings;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.util.GraphFactory;
@@ -73,7 +74,13 @@ public class ArangoDBGraphConfiguration implements GraphConfiguration {
                 .stream()
                 .map(EdgeConfiguration::parse)
                 .forEach(e -> e.add(builder));
-        return GraphFactory.open(builder.build());
+        BaseConfiguration configuration = builder.build();
+
+        var conf2 = new org.apache.commons.configuration2.BaseConfiguration();
+        configuration.getKeys().forEachRemaining(k -> {
+            conf2.addProperty(k, configuration.getProperty(k));
+        });
+        return GraphFactory.open(conf2);
     }
 
 
