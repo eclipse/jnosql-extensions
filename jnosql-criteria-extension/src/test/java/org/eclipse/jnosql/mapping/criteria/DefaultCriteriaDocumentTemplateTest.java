@@ -22,6 +22,7 @@ import org.eclipse.jnosql.communication.document.DocumentEntity;
 import org.eclipse.jnosql.communication.document.DocumentManager;
 import org.eclipse.jnosql.communication.document.DocumentQuery;
 import org.eclipse.jnosql.mapping.Convert;
+import org.eclipse.jnosql.mapping.Converters;
 import org.eclipse.jnosql.mapping.criteria.api.CriteriaDocumentTemplate;
 import org.eclipse.jnosql.mapping.criteria.api.CriteriaDocumentTemplateProducer;
 import org.eclipse.jnosql.mapping.criteria.api.CriteriaQuery;
@@ -49,7 +50,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 
 @EnableAutoWeld
-@AddPackages(value = {Convert.class,
+@AddPackages(value = {Converters.class,
         DocumentEntityConverter.class, DefaultPath.class})
 @AddPackages(Person.class)
 @AddExtensions({EntityMetadataExtension.class,
