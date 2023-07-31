@@ -17,7 +17,7 @@ package org.eclipse.jnosql.mapping.validation;
 import jakarta.inject.Inject;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
-import org.eclipse.jnosql.mapping.Convert;
+import org.eclipse.jnosql.mapping.Converters;
 import org.eclipse.jnosql.mapping.graph.GraphTemplate;
 import org.eclipse.jnosql.mapping.graph.spi.GraphExtension;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadataExtension;
@@ -35,7 +35,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @EnableAutoWeld
-@AddPackages(value = {Convert.class, GraphTemplate.class, EntityObserver.class})
+@AddPackages(value = {Converters.class, GraphTemplate.class, EntityObserver.class})
 @AddPackages(Person.class)
 @AddExtensions({EntityMetadataExtension.class, GraphExtension.class})
 public class GraphTemplateValidationTest {

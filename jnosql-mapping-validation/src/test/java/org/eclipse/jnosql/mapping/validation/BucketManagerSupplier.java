@@ -14,14 +14,14 @@
  */
 package org.eclipse.jnosql.mapping.validation;
 
-import org.eclipse.jnosql.communication.keyvalue.BucketManager;
-import org.mockito.Mockito;
-
 import jakarta.annotation.Priority;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Alternative;
 import jakarta.enterprise.inject.Produces;
 import jakarta.interceptor.Interceptor;
+import org.eclipse.jnosql.communication.keyvalue.BucketManager;
+import org.mockito.Mockito;
+
 import java.util.function.Supplier;
 
 @ApplicationScoped
