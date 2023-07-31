@@ -22,7 +22,7 @@ import org.eclipse.jnosql.communication.document.DocumentManager;
 import org.eclipse.jnosql.mapping.Converters;
 import org.eclipse.jnosql.mapping.criteria.api.CriteriaDocumentTemplate;
 import org.eclipse.jnosql.mapping.criteria.api.CriteriaDocumentTemplateProducer;
-import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
+import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
 
 @ApplicationScoped
 public class DefaultCriteriaDocumentTemplateProducer implements CriteriaDocumentTemplateProducer {

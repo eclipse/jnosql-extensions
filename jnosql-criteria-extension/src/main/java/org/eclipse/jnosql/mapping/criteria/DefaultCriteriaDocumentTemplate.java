@@ -30,7 +30,7 @@ import org.eclipse.jnosql.mapping.criteria.api.ExpressionQuery;
 import org.eclipse.jnosql.mapping.criteria.api.SelectQuery;
 import org.eclipse.jnosql.mapping.criteria.api.CriteriaDocumentTemplate;
 import org.eclipse.jnosql.mapping.document.AbstractDocumentTemplate;
-import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
+import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
 
 /**
  * This class provides a delegating implementation of the
