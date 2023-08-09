@@ -39,7 +39,6 @@ import static java.util.Objects.requireNonNull;
 import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.Function;
-import org.eclipse.jnosql.mapping.util.StringUtils;
 
 /**
  * Utility to convert {@link Predicate}s in {@link DocumentCondition}s
@@ -64,8 +63,7 @@ public class CriteriaQueryUtils {
         }
         return join(
                 attributes.stream().filter(
-                        value -> StringUtils.isNotBlank(
-                                value.trim()
+                        value -> isNotBlank(value.trim()
                         )
                 ).toArray(
                         String[]::new
@@ -236,4 +234,21 @@ public class CriteriaQueryUtils {
         return skip.build();
     }
 
+
+    private static boolean isBlank(final CharSequence cs) {
+        if (cs == null || cs.isEmpty()) {
+            return true;
+        }
+
+        for (int i = 0; i < cs.length(); i++) {
+            if (!Character.isWhitespace(cs.charAt(i))) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private static boolean isNotBlank(final CharSequence cs) {
+        return !isBlank(cs);
+    }
 }
