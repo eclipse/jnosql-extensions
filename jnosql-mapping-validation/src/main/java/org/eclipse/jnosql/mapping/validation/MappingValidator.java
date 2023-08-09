@@ -76,8 +76,8 @@ public class MappingValidator {
         Objects.requireNonNull(event, "event is required");
         ExecutableValidator executableValidator = validator.forExecutables();
         Set<? extends ConstraintViolation<?>> violations =
-                executableValidator.validateConstructorParameters(event.getConstructor(),
-                        event.getParams());
+                executableValidator.validateConstructorParameters(event.constructor(),
+                        event.params());
 
         if (!violations.isEmpty()) {
             throw new ConstraintViolationException(new HashSet<>(violations));

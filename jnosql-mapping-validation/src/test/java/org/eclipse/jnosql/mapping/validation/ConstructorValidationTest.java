@@ -20,7 +20,8 @@ import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import org.eclipse.jnosql.mapping.Converters;
 import org.eclipse.jnosql.mapping.reflection.ConstructorEvent;
-import org.eclipse.jnosql.mapping.reflection.EntityMetadataExtension;
+import org.eclipse.jnosql.mapping.reflection.Reflections;
+import org.eclipse.jnosql.mapping.spi.EntityMetadataExtension;
 import org.jboss.weld.junit5.auto.AddExtensions;
 import org.jboss.weld.junit5.auto.AddPackages;
 import org.jboss.weld.junit5.auto.EnableAutoWeld;
@@ -33,6 +34,7 @@ import java.util.Set;
 @EnableAutoWeld
 @AddPackages(value = {Converters.class})
 @AddPackages(Person.class)
+@AddPackages(Reflections.class)
 @AddExtensions({EntityMetadataExtension.class})
 public class ConstructorValidationTest {
 
