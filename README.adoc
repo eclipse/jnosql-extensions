@@ -107,6 +107,7 @@ WARNING: Keep in mind these limitations when designing and implementing your app
 Additionally, you can use Repositories from Jakarta Data, but note that certain limitations apply to entity modeling:
 
 - Special parameters like Pageable or Sort are not supported.
+- There is no support for pagination
 
 Now you're ready to explore the enhanced features of Eclipse JNoSQL Lite and leverage its benefits without relying on Reflection.
 
