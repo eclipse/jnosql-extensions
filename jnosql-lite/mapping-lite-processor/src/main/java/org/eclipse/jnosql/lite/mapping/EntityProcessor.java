@@ -29,13 +29,19 @@ import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.tools.Diagnostic;
+import javax.tools.FileObject;
 import javax.tools.JavaFileObject;
+import javax.tools.StandardLocation;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.io.Writer;
 import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.function.Predicate;
 import java.util.logging.Logger;
@@ -62,6 +68,15 @@ public class EntityProcessor extends AbstractProcessor {
     static final Predicate<Element> HAS_ANNOTATION = HAS_COLUMN_ANNOTATION.or(HAS_ID_ANNOTATION);
     static final Predicate<Element> IS_FIELD = el -> el.getKind() == ElementKind.FIELD;
 
+    private static final Map<String, String> SPI_FILES = Map.of(
+            "org.eclipse.jnosql.lite.mapping.metadata.LiteEntitiesMetadata",
+            "org.eclipse.jnosql.lite.mapping.metadata.EntitiesMetadata",
+            "org.eclipse.jnosql.mapping.metadata.ClassConverter",
+            "org.eclipse.jnosql.lite.mapping.metadata.LiteClassConverter",
+            "org.eclipse.jnosql.mapping.metadata.ClassScanner",
+            "org.eclipse.jnosql.lite.mapping.metadata.LiteClassScanner",
+            "org.eclipse.jnosql.mapping.metadata.ConstructorBuilderSupplier",
+            "org.eclipse.jnosql.lite.mapping.metadata.LiteConstructorBuilderSupplier");
     private final Mustache template;
 
     public EntityProcessor() {
@@ -87,9 +102,12 @@ public class EntityProcessor extends AbstractProcessor {
         try {
             if (!entities.isEmpty()) {
                 createEntitiesMetadata(entities);
+
                 LOGGER.info("Appending the metadata interfaces");
+                createResources();
                 MetadataAppender.append(processingEnv);
             }
+
         } catch (IOException | URISyntaxException exception) {
             error(exception);
         }
@@ -106,6 +124,23 @@ public class EntityProcessor extends AbstractProcessor {
         }
     }
 
+    private void createResources() throws IOException {
+        LOGGER.info("Creating the SPI files, total: " + SPI_FILES.size());
+        for (Map.Entry<String, String> entry : SPI_FILES.entrySet()) {
+            createResoure(entry.getKey(), entry.getValue());
+        }
+
+    }
+
+    private void createResource(String reference, String implementation) throws IOException {
+        Filer filer = processingEnv.getFiler();
+        FileObject file = filer.createResource(StandardLocation.CLASS_OUTPUT, "",
+                "META-INF/services/" + reference);
+        PrintWriter pw = new PrintWriter(new OutputStreamWriter(file.openOutputStream(), StandardCharsets.UTF_8));
+        pw.println(implementation);
+        pw.close();
+    }
+
 
     private Mustache createTemplate() {
         MustacheFactory factory = new DefaultMustacheFactory();
@@ -116,4 +151,6 @@ public class EntityProcessor extends AbstractProcessor {
         processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR, "failed to write extension file: "
                 + exception.getMessage());
     }
+
+
 }
