@@ -15,6 +15,7 @@
 package org.eclipse.jnosql.lite.mapping;
 
 import jakarta.data.repository.DataRepository;
+import org.eclipse.jnosql.lite.mapping.metadata.LiteClassScanner;
 import org.junit.jupiter.api.Test;
 
 import java.util.Set;

@@ -14,6 +14,7 @@
  */
 package org.eclipse.jnosql.lite.mapping;
 
+import org.eclipse.jnosql.lite.mapping.metadata.LiteClassConverter;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;

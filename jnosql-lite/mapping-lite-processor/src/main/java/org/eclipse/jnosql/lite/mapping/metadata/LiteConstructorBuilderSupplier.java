@@ -12,7 +12,7 @@
  *
  *   Otavio Santana
  */
-package org.eclipse.jnosql.lite.mapping;
+package org.eclipse.jnosql.lite.mapping.metadata;
 
 import org.eclipse.jnosql.mapping.metadata.ConstructorBuilder;
 import org.eclipse.jnosql.mapping.metadata.ConstructorBuilderSupplier;
