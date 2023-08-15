@@ -69,8 +69,8 @@ public class EntityProcessor extends AbstractProcessor {
     static final Predicate<Element> IS_FIELD = el -> el.getKind() == ElementKind.FIELD;
 
     private static final Map<String, String> SPI_FILES = Map.of(
-            "org.eclipse.jnosql.lite.mapping.metadata.LiteEntitiesMetadata",
-            "org.eclipse.jnosql.lite.mapping.metadata.EntitiesMetadata",
+            "org.eclipse.jnosql.mapping.metadata.EntitiesMetadata",
+            "org.eclipse.jnosql.lite.mapping.LiteEntitiesMetadata",
             "org.eclipse.jnosql.mapping.metadata.ClassConverter",
             "org.eclipse.jnosql.lite.mapping.metadata.LiteClassConverter",
             "org.eclipse.jnosql.mapping.metadata.ClassScanner",
@@ -127,7 +127,7 @@ public class EntityProcessor extends AbstractProcessor {
     private void createResources() throws IOException {
         LOGGER.info("Creating the SPI files, total: " + SPI_FILES.size());
         for (Map.Entry<String, String> entry : SPI_FILES.entrySet()) {
-            createResoure(entry.getKey(), entry.getValue());
+            createResource(entry.getKey(), entry.getValue());
         }
 
     }
