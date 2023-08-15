@@ -101,6 +101,9 @@ With the Extension, you can now leverage Eclipse JNoSQL Lite's benefits. However
 - A default constructor is required.
 - All persistent fields with ID or Column annotations must have a getter and setter, at least in the default access modifier.
 
+WARNING: Keep in mind these limitations when designing and implementing your application.
+
+
 Additionally, you can use Repositories from Jakarta Data, but note that certain limitations apply to entity modeling:
 
 - Special parameters like Pageable or Sort are not supported.
