@@ -3,7 +3,7 @@
 
 The Eclipse JNoSQL Mapping Extension API is a collection of implementations/specializations from the https://jakarta.ee/specifications/nosql/[Jakarta NoSQL] specification that defines specific behavior in various NoSQL databases.
 
-=== Bean Validation
+== Bean Validation
 
 Eclipse JNoSQL provide support for bean validation. It will validate before inserting/updating and constructing an entity.
 
