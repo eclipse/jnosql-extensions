@@ -38,6 +38,11 @@ import javax.annotation.processing.Generated;
 @ApplicationScoped
 public final class LiteEntitiesMetadata implements EntitiesMetadata {
 
+    /**
+    * The singleton instance
+    */
+    public static final LiteEntitiesMetadata INSTANCE = new LiteEntitiesMetadata();
+
     private static final Predicate<EntityMetadata> HAS_NAME = EntityMetadata::hasEntityName;
 
     private final List<LiteEntityMetadata> entities;
