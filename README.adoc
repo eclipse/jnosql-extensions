@@ -3,7 +3,115 @@
 
 The Eclipse JNoSQL Mapping Extension API is a collection of implementations/specializations from the https://jakarta.ee/specifications/nosql/[Jakarta NoSQL] specification that defines specific behavior in various NoSQL databases.
 
-=== Bean Validation
+== JNoSQL Lite
+
+This documentation guides extending the usage of Eclipse JNoSQL to avoid using Reflection with Java Annotation Processor while still utilizing the same APIs and achieving compatibility with CDI Lite.
+
+The extension approach aims to achieve the following goals:
+
+- **Eliminate Reflection:** Remove the dependency on Reflection within the database engine or dependency, leading to improved performance and reduced runtime overhead.
+
+- **Enhance CDI Lite Compatibility:** Achieve compatibility with CDI Lite, making integrating Eclipse JNoSQL into CDI Lite-enabled environments easier.
+
+Adopting the extension approach provides several benefits:
+
+- **Improved Performance:** By eliminating Reflection, the Extension approach results in faster startup times and reduced runtime overhead, leading to better overall application performance.
+
+- **Seamless Transition:** Since the same APIs are used, transitioning to the extension approach doesn't require learning new APIs. Developers can continue using familiar APIs while enjoying the advantages of the new approach.
+
+- **CDI Lite Compatibility:** The extension approach ensures that Eclipse JNoSQL works seamlessly with CDI Lite environments, allowing easy integration and taking advantage of CDI Lite's features.
+
+- **Enhanced Maintainability:** Java Annotation Processors simplify codebase maintenance and debugging by replacing reflection-based operations with compile-time checks and optimizations.
+
+=== Extension Steps
+
+To use this Extension, follow a two-step process:
+
+==== Step 1: Remove Reflection Engine
+
+Start by removing the reflection engine from the database engine or dependency. To do this, follow these steps:
+
+1. Check the available databases at link:https://github.com/eclipse/jnosql-databases[]
+2. Choose the database you intend to use.
+3. Exclude the reflection engine dependency in your Maven project:
+
+[source,xml]
+----
+<dependency>
+    <groupId>org.eclipse.jnosql.databases</groupId>
+    <artifactId>chosen-database-artifact-id</artifactId>
+    <version>chosen-database-version</version>
+    <exclusions>
+        <exclusion>
+            <groupId>org.eclipse.jnosql.mapping</groupId>
+            <artifactId>jnosql-mapping-reflection</artifactId>
+        </exclusion>
+    </exclusions>
+</dependency>
+----
+
+==== Step 2: Include Java Annotation Processor
+
+After removing the reflection engine, include the Java Annotation Processor. There are two ways to do this:
+
+1. Define the processor as a provided dependency:
+
+[source,xml]
+----
+<dependency>
+    <groupId>org.eclipse.jnosql.lite</groupId>
+    <artifactId>mapping-lite-processor</artifactId>
+    <version>1.0.1</version>
+    <scope>provided</scope>
+</dependency>
+----
+
+2. Include the processor as a Maven plugin:
+
+[source,xml]
+----
+<build>
+    <plugins>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>3.8.1</version>
+            <configuration>
+                <source>17</source> <!-- depending on your project -->
+                <target>17</target> <!-- depending on your project -->
+                <annotationProcessorPaths>
+                    <path>
+                    <groupId>org.eclipse.jnosql.lite</groupId>
+                    <artifactId>mapping-lite-processor</artifactId>
+                    <version>1.0.1</version>
+                    </path>
+                    <!-- other annotation processors -->
+                </annotationProcessorPaths>
+            </configuration>
+        </plugin>
+    </plugins>
+</build>
+----
+
+=== Usage and Limitations
+
+With the Extension, you can now leverage Eclipse JNoSQL Lite's benefits. However, be aware of the following limitations in the entity model:
+
+- Java Record is not supported.
+- A default constructor is required.
+- All persistent fields with ID or Column annotations must have a getter and setter, at least in the default access modifier.
+
+WARNING: Keep in mind these limitations when designing and implementing your application.
+
+
+Additionally, you can use Repositories from Jakarta Data, but note that certain limitations apply to entity modeling:
+
+- Special parameters like Pageable or Sort are not supported.
+- There is no support for pagination in method by query
+
+Now you're ready to explore the enhanced features of Eclipse JNoSQL Lite and leverage its benefits without relying on Reflection.
+
+== Bean Validation
 
 Eclipse JNoSQL provide support for bean validation. It will validate before inserting/updating and constructing an entity.
 

@@ -42,6 +42,7 @@
     </scm>
 
     <modules>
+        <module>jnosql-lite</module>
         <module>jnosql-metamodel-extension</module>
         <module>jnosql-metamodel-processor-extension</module>
         <module>jnosql-graph-connections</module>

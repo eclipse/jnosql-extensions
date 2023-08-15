@@ -8,6 +8,10 @@ and this project adheres to https://semver.org/spec/v2.0.0.html[Semantic Version
 
 == [Unreleased]
 
+=== Added
+
+- Add support to CDI Lite as extension
+
 == [1.0.1] - 2023-7-31
 
 == [1.0.0] - 2023-6-22
