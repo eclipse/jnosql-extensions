@@ -1,0 +1,195 @@
+/*
+ *  Copyright (c) 2021 Otávio Santana and others
+ *   All rights reserved. This program and the accompanying materials
+ *   are made available under the terms of the Eclipse Public License v1.0
+ *   and Apache License v2.0 which accompanies this distribution.
+ *   The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v10.html
+ *   and the Apache License v2.0 is available at http://www.opensource.org/licenses/apache2.0.php.
+ *
+ *   You may elect to redistribute this code under either of these licenses.
+ *
+ *   Contributors:
+ *
+ *   Otavio Santana
+ */
+package {{package}};
+
+import jakarta.data.repository.Page;
+import jakarta.data.repository.Pageable;
+import org.eclipse.jnosql.communication.document.DocumentQuery;
+import org.eclipse.jnosql.lite.mapping.LiteEntitiesMetadata;
+import org.eclipse.jnosql.mapping.NoSQLPage;
+import org.eclipse.jnosql.mapping.document.JNoSQLDocumentTemplate;
+import org.eclipse.jnosql.mapping.document.MappingDocumentQuery;
+import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
+import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
+import org.eclipse.jnosql.mapping.metadata.FieldMetadata;
+
+import javax.annotation.processing.Generated;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.function.Function;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
+
+import static java.util.Objects.nonNull;
+import static java.util.Objects.requireNonNull;
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.StreamSupport.stream;
+import static org.eclipse.jnosql.mapping.IdNotFoundException.KEY_NOT_FOUND_EXCEPTION_SUPPLIER;
+
+@Generated(value= "JNoSQL Lite Document Repository Generator", date = "{{now}}")
+@jakarta.enterprise.context.ApplicationScoped
+@jakarta.enterprise.inject.Default
+@org.eclipse.jnosql.mapping.Database(value = org.eclipse.jnosql.mapping.DatabaseType.DOCUMENT)
+public class {{className}} implements {{repository}} {
+
+    {{^methods.isEmpty}}
+    private static final org.eclipse.jnosql.communication.document.SelectQueryParser SELECT_PARSER =
+            new org.eclipse.jnosql.communication.document.SelectQueryParser();
+    private static final org.eclipse.jnosql.communication.document.DeleteQueryParser DELETE_PARSER =
+            new org.eclipse.jnosql.communication.document.DeleteQueryParser();
+    {{/methods.isEmpty}}
+
+    private final JNoSQLDocumentTemplate template;
+
+    private final EntityMetadata metadata;
+
+    @jakarta.inject.Inject
+    public {{className}}(JNoSQLDocumentTemplate template) {
+        this.template = Objects.requireNonNull(template, "template is required");
+        EntitiesMetadata entities = new LiteEntitiesMetadata();
+        this.metadata = entities.get({{entityType}}.class);
+    }
+
+    public {{className}}() {
+        this.template = null;
+        this.metadata = null;
+   }
+
+    JNoSQLDocumentTemplate getTemplate(){
+        return template;
+    }
+
+    EntityMetadata getEntityMetadata(){
+        return metadata;
+    }
+
+    @Override
+    public <S extends {{entityType}}> S save(S entity) {
+        Objects.requireNonNull(entity, "Entity is required");
+        Object id = getIdField().read(entity);
+        if (nonNull(id) && existsById(({{keyType}}) id)) {
+            return getTemplate().update(entity);
+        } else {
+            return getTemplate().insert(entity);
+        }
+    }
+
+    @Override
+    public <S extends {{entityType}}> Iterable<S> saveAll(Iterable<S> entities) {
+        requireNonNull(entities, "entities is required");
+        return StreamSupport.stream(entities.spliterator(), false).map(this::save).collect(toList());
+    }
+
+    @Override
+    public void deleteById({{keyType}} id) {
+        requireNonNull(id, "is is required");
+        getTemplate().delete(getEntityClass(), id);
+    }
+
+    @Override
+    public void delete({{entityType}} entity) {
+        requireNonNull(entity, "entity is required");
+        getTemplate().delete(entity);
+    }
+
+
+    @Override
+    public void deleteAllById(Iterable<{{keyType}}> ids) {
+        requireNonNull(ids, "ids is required");
+        ids.forEach(this::deleteById);
+    }
+
+    @Override
+    public void deleteAll(Iterable<? extends {{entityType}}> entities) {
+        requireNonNull(entities, "entities is required");
+        getTemplate().delete(entities);
+    }
+
+    @Override
+    public void deleteAll() {
+       getTemplate().delete(getEntityClass());
+    }
+
+    @Override
+    public Optional<{{entityType}}> findById({{keyType}} id) {
+        requireNonNull(id, "id is required");
+        return getTemplate().find(getEntityClass(), id);
+    }
+
+    @Override
+    public Stream<{{entityType}}> findAllById(Iterable<{{keyType}}> ids) {
+        requireNonNull(ids, "ids is required");
+        return stream(ids.spliterator(), false)
+                .flatMap(optionalToStream());
+    }
+
+    @Override
+    public long count() {
+        return getTemplate().count(getEntityClass());
+    }
+
+    @Override
+    public boolean existsById({{keyType}} id) {
+      return findById(id).isPresent();
+    }
+
+    @Override
+    public Stream<{{entityType}}> findAll() {
+        DocumentQuery query = DocumentQuery.select().from(getEntityMetadata().name()).build();
+        return getTemplate().select(query);
+    }
+
+    public Page<{{entityType}}> findAll(Pageable pageable) {
+        Objects.requireNonNull(pageable, "pageable is required");
+        EntityMetadata metadata = getEntityMetadata();
+        DocumentQuery query = new MappingDocumentQuery(pageable.sorts(),
+        pageable.size(), NoSQLPage.skip(pageable), null ,metadata.name());
+
+        List<{{entityType}}> entities = getTemplate().<{{entityType}}>select(query).toList();
+                return NoSQLPage.of(entities, pageable);
+    }
+
+    {{#methods}}
+    @Override
+    public {{{returnType}}} {{methodName}}({{{parametersSignature}}}) {
+    {{#parameters}}
+       requireNonNull({{name}}, "{{name}} is required");
+    {{/parameters}}
+    {{#sourceCode}}
+       {{{.}}};
+    {{/sourceCode}}
+    {{#hasReturn}}
+        return {{{returnValue}}};
+    {{/hasReturn}}
+    }
+    {{/methods}}
+
+    private FieldMetadata getIdField() {
+        return getEntityMetadata().id().orElseThrow(KEY_NOT_FOUND_EXCEPTION_SUPPLIER);
+    }
+
+    private Function optionalToStream() {
+        return id -> {
+            Optional entity = this.findById(({{keyType}}) id);
+            return entity.isPresent() ? Stream.of(entity.get()) : Stream.empty();
+        };
+    }
+
+    private Class<{{entityType}}> getEntityClass() {
+        return (Class<{{entityType}}>) getEntityMetadata().type();
+    }
+
+}
