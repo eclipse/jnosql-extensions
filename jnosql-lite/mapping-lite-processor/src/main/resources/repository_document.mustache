@@ -59,7 +59,7 @@ public class {{className}} implements {{repository}} {
     @jakarta.inject.Inject
     public {{className}}(JNoSQLDocumentTemplate template) {
         this.template = Objects.requireNonNull(template, "template is required");
-        EntitiesMetadata entities = new LiteEntitiesMetadata();
+        EntitiesMetadata entities = LiteEntitiesMetadata.INSTANCE;
         this.metadata = entities.get({{entityType}}.class);
     }
 
