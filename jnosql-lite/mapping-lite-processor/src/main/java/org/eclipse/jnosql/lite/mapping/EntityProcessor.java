@@ -70,7 +70,7 @@ public class EntityProcessor extends AbstractProcessor {
 
     private static final Map<String, String> SPI_FILES = Map.of(
             "org.eclipse.jnosql.mapping.metadata.EntitiesMetadata",
-            "org.eclipse.jnosql.lite.mapping.LiteEntitiesMetadata",
+            "org.eclipse.jnosql.lite.mapping.metadata.LiteEntitiesMetadata",
             "org.eclipse.jnosql.mapping.metadata.ClassConverter",
             "org.eclipse.jnosql.lite.mapping.metadata.LiteClassConverter",
             "org.eclipse.jnosql.mapping.metadata.ClassScanner",
