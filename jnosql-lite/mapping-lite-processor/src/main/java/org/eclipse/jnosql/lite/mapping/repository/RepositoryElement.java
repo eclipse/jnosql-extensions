@@ -32,7 +32,6 @@ import static org.eclipse.jnosql.lite.mapping.repository.RepositoryUtil.findRepo
 
 class RepositoryElement {
 
-    private final ProcessingEnvironment processingEnv;
     private final TypeElement element;
     private final String entityType;
     private final String keyType;
@@ -40,12 +39,11 @@ class RepositoryElement {
     private final DatabaseType type;
     private final List<MethodMetadata> methods;
 
-    public RepositoryElement(ProcessingEnvironment processingEnv, TypeElement element,
+    public RepositoryElement(TypeElement element,
                              String entityType, String keyType,
                              String repositoryInterface,
                              DatabaseType type,
                              List<MethodMetadata> methods) {
-        this.processingEnv = processingEnv;
         this.element = element;
         this.entityType = entityType;
         this.keyType = keyType;
@@ -112,7 +110,7 @@ class RepositoryElement {
                         .map(e -> MethodMetadata.of(e, entityType, type, processingEnv))
                         .filter(Objects::nonNull)
                         .collect(Collectors.toList());
-                return new RepositoryElement(processingEnv, typeElement,
+                return new RepositoryElement(typeElement,
                         entityType, keyType, repositoryInterface, type, methods);
             }
         }

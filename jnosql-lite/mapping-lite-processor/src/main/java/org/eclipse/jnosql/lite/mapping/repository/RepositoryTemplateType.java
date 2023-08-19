@@ -25,12 +25,9 @@ enum RepositoryTemplateType implements Supplier<Mustache> {
     COLUMN("repository_column.mustache"),
     KEY_VALUE("repository_key-value.mustache");
 
-    private final String fileName;
-
     private final Mustache template;
 
     RepositoryTemplateType(String fileName) {
-        this.fileName = fileName;
         MustacheFactory factory = new DefaultMustacheFactory();
         this.template = factory.compile(fileName);
     }
