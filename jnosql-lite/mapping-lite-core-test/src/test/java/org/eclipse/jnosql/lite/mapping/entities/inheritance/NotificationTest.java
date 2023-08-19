@@ -12,9 +12,8 @@
  *
  *   Otavio Santana
  */
-package org.eclipse.jnosql.mapping.lite.inheritance;
+package org.eclipse.jnosql.lite.mapping.entities.inheritance;
 
-import org.eclipse.jnosql.mapping.entities.inheritance.EmailNotification;
 import org.eclipse.jnosql.mapping.entities.inheritance.Notification;
 import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
 import org.eclipse.jnosql.lite.mapping.metadata.LiteEntitiesMetadata;
@@ -30,7 +29,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-public class EmailNotificationTest {
+public class NotificationTest {
 
 
     private EntitiesMetadata mappings;
@@ -40,7 +39,7 @@ public class EmailNotificationTest {
     @BeforeEach
     public void setUp() {
         this.mappings = new LiteEntitiesMetadata();
-        this.entityMetadata = this.mappings.get(EmailNotification.class);
+        this.entityMetadata = this.mappings.get(Notification.class);
     }
 
     @Test
@@ -50,17 +49,17 @@ public class EmailNotificationTest {
 
     @Test
     public void shouldGetSimpleName() {
-        Assertions.assertEquals(EmailNotification.class.getSimpleName(), entityMetadata.simpleName());
+        Assertions.assertEquals(Notification.class.getSimpleName(), entityMetadata.simpleName());
     }
 
     @Test
     public void shouldGetClassName() {
-        Assertions.assertEquals(EmailNotification.class.getName(), entityMetadata.className());
+        Assertions.assertEquals(Notification.class.getName(), entityMetadata.className());
     }
 
     @Test
     public void shouldGetClassInstance() {
-        Assertions.assertEquals(EmailNotification.class, entityMetadata.type());
+        Assertions.assertEquals(Notification.class, entityMetadata.type());
     }
 
     @Test
@@ -70,19 +69,18 @@ public class EmailNotificationTest {
     }
 
     @Test
-    public void shouldCreateNewInstance() {
-        EmailNotification notification = entityMetadata.newInstance();
-        Assertions.assertNotNull(notification);
-        Assertions.assertTrue(notification instanceof EmailNotification);
+    public void shouldReturnIssueWhenIsAbstractClass() {
+        Assertions.assertThrows(UnsupportedOperationException.class, () ->
+                entityMetadata.newInstance());
     }
 
     @Test
     public void shouldGetFieldsName() {
         List<String> fields = entityMetadata.fieldsName();
-        Assertions.assertEquals(4, fields.size());
+        Assertions.assertEquals(3, fields.size());
         Assertions.assertTrue(fields.contains("id"));
         Assertions.assertTrue(fields.contains("name"));
-        Assertions.assertTrue(fields.contains("email"));
+        Assertions.assertTrue(fields.contains("createdOn"));
     }
 
     @Test
@@ -90,16 +88,16 @@ public class EmailNotificationTest {
         Map<String, FieldMetadata> groupByName = this.entityMetadata.fieldsGroupByName();
         Assertions.assertNotNull(groupByName);
         Assertions.assertNotNull(groupByName.get("_id"));
-        Assertions.assertNotNull(groupByName.get("name"));
+        Assertions.assertNotNull(groupByName.get("createdOn"));
     }
 
     @Test
     public void shouldGetInheritanceMetadata() {
         InheritanceMetadata inheritance = this.entityMetadata.inheritance()
                 .orElseThrow();
-        Assertions.assertEquals("Email", inheritance.discriminatorValue());
+        Assertions.assertEquals("Notification", inheritance.discriminatorValue());
         Assertions.assertEquals(DiscriminatorColumn.DEFAULT_DISCRIMINATOR_COLUMN, inheritance.discriminatorColumn());
-        Assertions.assertEquals(EmailNotification.class, inheritance.entity());
+        Assertions.assertEquals(Notification.class, inheritance.entity());
         Assertions.assertEquals(Notification.class, inheritance.parent());
     }
 

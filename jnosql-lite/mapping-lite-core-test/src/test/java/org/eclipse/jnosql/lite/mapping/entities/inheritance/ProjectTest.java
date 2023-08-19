@@ -12,15 +12,14 @@
  *
  *   Otavio Santana
  */
-package org.eclipse.jnosql.mapping.lite.inheritance;
+package org.eclipse.jnosql.lite.mapping.entities.inheritance;
 
-import org.eclipse.jnosql.mapping.entities.inheritance.Notification;
-import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
 import org.eclipse.jnosql.lite.mapping.metadata.LiteEntitiesMetadata;
+import org.eclipse.jnosql.mapping.entities.inheritance.Project;
+import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 import org.eclipse.jnosql.mapping.metadata.FieldMetadata;
 import org.eclipse.jnosql.mapping.metadata.InheritanceMetadata;
-import org.eclipse.jnosql.mapping.DiscriminatorColumn;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -29,7 +28,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-public class NotificationTest {
+public class ProjectTest {
 
 
     private EntitiesMetadata mappings;
@@ -39,27 +38,27 @@ public class NotificationTest {
     @BeforeEach
     public void setUp() {
         this.mappings = new LiteEntitiesMetadata();
-        this.entityMetadata = this.mappings.get(Notification.class);
+        this.entityMetadata = this.mappings.get(Project.class);
     }
 
     @Test
     public void shouldGetName() {
-        Assertions.assertEquals("Notification", entityMetadata.name());
+        Assertions.assertEquals("Project", entityMetadata.name());
     }
 
     @Test
     public void shouldGetSimpleName() {
-        Assertions.assertEquals(Notification.class.getSimpleName(), entityMetadata.simpleName());
+        Assertions.assertEquals(Project.class.getSimpleName(), entityMetadata.simpleName());
     }
 
     @Test
     public void shouldGetClassName() {
-        Assertions.assertEquals(Notification.class.getName(), entityMetadata.className());
+        Assertions.assertEquals(Project.class.getName(), entityMetadata.className());
     }
 
     @Test
     public void shouldGetClassInstance() {
-        Assertions.assertEquals(Notification.class, entityMetadata.type());
+        Assertions.assertEquals(Project.class, entityMetadata.type());
     }
 
     @Test
@@ -69,18 +68,17 @@ public class NotificationTest {
     }
 
     @Test
-    public void shouldReturnIssueWhenIsAbstractClass() {
-        Assertions.assertThrows(UnsupportedOperationException.class, () ->
-                entityMetadata.newInstance());
+    public void shouldCreateNewInstance() {
+        Project project = entityMetadata.newInstance();
+        Assertions.assertNotNull(project);
+        Assertions.assertTrue(project instanceof Project);
     }
 
     @Test
     public void shouldGetFieldsName() {
         List<String> fields = entityMetadata.fieldsName();
-        Assertions.assertEquals(3, fields.size());
-        Assertions.assertTrue(fields.contains("id"));
+        Assertions.assertEquals(1, fields.size());
         Assertions.assertTrue(fields.contains("name"));
-        Assertions.assertTrue(fields.contains("createdOn"));
     }
 
     @Test
@@ -88,17 +86,16 @@ public class NotificationTest {
         Map<String, FieldMetadata> groupByName = this.entityMetadata.fieldsGroupByName();
         Assertions.assertNotNull(groupByName);
         Assertions.assertNotNull(groupByName.get("_id"));
-        Assertions.assertNotNull(groupByName.get("createdOn"));
     }
 
     @Test
     public void shouldGetInheritanceMetadata() {
         InheritanceMetadata inheritance = this.entityMetadata.inheritance()
                 .orElseThrow();
-        Assertions.assertEquals("Notification", inheritance.discriminatorValue());
-        Assertions.assertEquals(DiscriminatorColumn.DEFAULT_DISCRIMINATOR_COLUMN, inheritance.discriminatorColumn());
-        Assertions.assertEquals(Notification.class, inheritance.entity());
-        Assertions.assertEquals(Notification.class, inheritance.parent());
+        Assertions.assertEquals("Project", inheritance.discriminatorValue());
+        Assertions.assertEquals("size", inheritance.discriminatorColumn());
+        Assertions.assertEquals(Project.class, inheritance.entity());
+        Assertions.assertEquals(Project.class, inheritance.parent());
     }
 
 }

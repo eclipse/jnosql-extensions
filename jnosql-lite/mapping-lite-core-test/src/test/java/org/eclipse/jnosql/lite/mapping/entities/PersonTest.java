@@ -12,28 +12,29 @@
  *
  *   Otavio Santana
  */
-package org.eclipse.jnosql.mapping.lite;
+package org.eclipse.jnosql.lite.mapping.entities;
 
 import org.assertj.core.api.SoftAssertions;
-import org.eclipse.jnosql.mapping.entities.Animal;
-import org.eclipse.jnosql.mapping.entities.Money;
-import org.eclipse.jnosql.mapping.entities.Person;
-import org.eclipse.jnosql.mapping.entities.Worker;
-import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
 import org.eclipse.jnosql.lite.mapping.metadata.LiteEntitiesMetadata;
+import org.eclipse.jnosql.mapping.entities.Animal;
+import org.eclipse.jnosql.mapping.entities.CustomAnnotation;
+import org.eclipse.jnosql.mapping.entities.Person;
+import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 import org.eclipse.jnosql.mapping.metadata.FieldMetadata;
 import org.eclipse.jnosql.mapping.metadata.GenericFieldMetadata;
+import org.eclipse.jnosql.mapping.metadata.MappingType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-public class WorkerTest {
+import static org.assertj.core.api.Assertions.assertThat;
+
+public class PersonTest {
 
 
     private EntitiesMetadata mappings;
@@ -43,27 +44,27 @@ public class WorkerTest {
     @BeforeEach
     public void setUp() {
         this.mappings = new LiteEntitiesMetadata();
-        this.entityMetadata = this.mappings.get(Worker.class);
+        this.entityMetadata = this.mappings.get(Person.class);
     }
 
     @Test
     public void shouldGetName() {
-        Assertions.assertEquals("Worker", entityMetadata.name());
+        Assertions.assertEquals("Person", entityMetadata.name());
     }
 
     @Test
     public void shouldGetSimpleName() {
-        Assertions.assertEquals(Worker.class.getSimpleName(), entityMetadata.simpleName());
+        Assertions.assertEquals(Person.class.getSimpleName(), entityMetadata.simpleName());
     }
 
     @Test
     public void shouldGetClassName() {
-        Assertions.assertEquals(Worker.class.getName(), entityMetadata.className());
+        Assertions.assertEquals(Person.class.getSimpleName(), entityMetadata.simpleName());
     }
 
     @Test
     public void shouldGetClassInstance() {
-        Assertions.assertEquals(Worker.class, entityMetadata.type());
+        Assertions.assertEquals(Person.class, entityMetadata.type());
     }
 
     @Test
@@ -75,20 +76,19 @@ public class WorkerTest {
     @Test
     public void shouldCreateNewInstance() {
         Person person = entityMetadata.newInstance();
-        Assertions.assertNotNull(person);
-        Assertions.assertTrue(person instanceof Person);
+        org.assertj.core.api.Assertions.assertThat(person)
+                .isNotNull().isInstanceOf(Person.class);
     }
 
     @Test
     public void shouldGetFieldsName() {
         List<String> fields = entityMetadata.fieldsName();
-        Assertions.assertEquals(6, fields.size());
+        Assertions.assertEquals(5, fields.size());
         Assertions.assertTrue(fields.contains("id"));
         Assertions.assertTrue(fields.contains("username"));
         Assertions.assertTrue(fields.contains("email"));
         Assertions.assertTrue(fields.contains("contacts"));
         Assertions.assertTrue(fields.contains("pet"));
-        Assertions.assertTrue(fields.contains("salary"));
     }
 
     @Test
@@ -100,42 +100,38 @@ public class WorkerTest {
         Assertions.assertNotNull(groupByName.get("email"));
         Assertions.assertNotNull(groupByName.get("contacts"));
         Assertions.assertNotNull(groupByName.get("pet"));
-        Assertions.assertNotNull(groupByName.get("salary"));
     }
 
     @Test
     public void shouldGetter() {
         Map<String, FieldMetadata> groupByName = this.entityMetadata.fieldsGroupByName();
-        Worker worker = new Worker();
-        worker.setId(1L);
-        worker.setUsername("otaviojava");
-        worker.setEmail("otavio@java.com");
-        worker.setContacts(List.of("Poliana", "Maria"));
+        Person person = new Person();
+        person.setId(1L);
+        person.setUsername("otaviojava");
+        person.setEmail("otavio@java.com");
+        person.setContacts(List.of("Poliana", "Maria"));
         Animal ada = new Animal();
         ada.setName("Ada");
         ada.setColor("black");
-        worker.setPet(ada);
-        worker.setSalary(new Money("USD", BigDecimal.TEN));
+        person.setPet(ada);
 
         FieldMetadata id = groupByName.get("_id");
         FieldMetadata username = groupByName.get("native");
         FieldMetadata email = groupByName.get("email");
         FieldMetadata contacts = groupByName.get("contacts");
         FieldMetadata pet = groupByName.get("pet");
-        FieldMetadata salary = groupByName.get("salary");
 
-        Assertions.assertEquals(1L, id.read(worker));
-        Assertions.assertEquals("otaviojava", username.read(worker));
-        Assertions.assertEquals("otavio@java.com", email.read(worker));
-        Assertions.assertEquals(List.of("Poliana", "Maria"), contacts.read(worker));
-        Assertions.assertEquals(ada, pet.read(worker));
-        Assertions.assertEquals(new Money("USD", BigDecimal.TEN), salary.read(worker));
+        Assertions.assertEquals(1L, id.read(person));
+        Assertions.assertEquals("otaviojava", username.read(person));
+        Assertions.assertEquals("otavio@java.com", email.read(person));
+        Assertions.assertEquals(List.of("Poliana", "Maria"), contacts.read(person));
+        Assertions.assertEquals(ada, pet.read(person));
     }
 
     @Test
     public void shouldSetter() {
         Map<String, FieldMetadata> groupByName = this.entityMetadata.fieldsGroupByName();
-        Worker worker = new Worker();
+        Person person = new Person();
         Animal ada = new Animal();
         ada.setName("Ada");
         ada.setColor("black");
@@ -145,31 +141,44 @@ public class WorkerTest {
         FieldMetadata email = groupByName.get("email");
         FieldMetadata contacts = groupByName.get("contacts");
         FieldMetadata pet = groupByName.get("pet");
-        FieldMetadata salary = groupByName.get("salary");
 
-        id.write(worker, 1L);
-        username.write(worker, "otaviojava");
-        email.write(worker, "otavio@java.com");
-        contacts.write(worker, List.of("Poliana", "Maria"));
-        pet.write(worker, ada);
-        salary.write(worker, new Money("USD", BigDecimal.TEN));
+        id.write(person, 1L);
+        username.write(person, "otaviojava");
+        email.write(person, "otavio@java.com");
+        contacts.write(person, List.of("Poliana", "Maria"));
+        pet.write(person, ada);
 
-        Assertions.assertEquals(1L, id.read(worker));
-        Assertions.assertEquals("otaviojava", username.read(worker));
-        Assertions.assertEquals("otavio@java.com", email.read(worker));
-        Assertions.assertEquals(List.of("Poliana", "Maria"), contacts.read(worker));
-        Assertions.assertEquals(ada, pet.read(worker));
-        Assertions.assertEquals(new Money("USD", BigDecimal.TEN), salary.read(worker));
+        Assertions.assertEquals(1L, id.read(person));
+        Assertions.assertEquals("otaviojava", username.read(person));
+        Assertions.assertEquals("otavio@java.com", email.read(person));
+        Assertions.assertEquals(List.of("Poliana", "Maria"), contacts.read(person));
+        Assertions.assertEquals(ada, pet.read(person));
     }
 
-   @Test
+    @Test
     public void shouldReturnGenerics() {
         Map<String, FieldMetadata> groupByName = this.entityMetadata.fieldsGroupByName();
         FieldMetadata contacts = groupByName.get("contacts");
-       GenericFieldMetadata genericFieldMetadata = (GenericFieldMetadata) contacts;
-       SoftAssertions.assertSoftly(soft -> {
-           soft.assertThat(genericFieldMetadata.elementType()).isEqualTo(String.class);
-           soft.assertThat(genericFieldMetadata.collectionInstance()).isInstanceOf(List.class);
-       });
+        GenericFieldMetadata genericFieldMetadata = (GenericFieldMetadata) contacts;
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(genericFieldMetadata.elementType()).isEqualTo(String.class);
+            soft.assertThat(genericFieldMetadata.collectionInstance()).isInstanceOf(List.class);
+        });
+    }
+
+    @Test
+    public void shouldReadEntityField(){
+        Map<String, FieldMetadata> groupByName = this.entityMetadata.fieldsGroupByName();
+        FieldMetadata pet = groupByName.get("pet");
+        assertThat(pet.isId()).isFalse();
+        assertThat(pet.mappingType()).isEqualTo(MappingType.ENTITY);
+    }
+
+    @Test
+    public void shouldGetCustomAnnotation() {
+        Map<String, FieldMetadata> groupByName = this.entityMetadata.fieldsGroupByName();
+        FieldMetadata email = groupByName.get("email");
+        Optional<String> value = email.value(CustomAnnotation.class);
+        assertThat(value).isNotEmpty().get().isEqualTo("email");
     }
 }

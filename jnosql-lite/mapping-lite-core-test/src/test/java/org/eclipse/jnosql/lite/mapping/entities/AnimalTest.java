@@ -12,13 +12,16 @@
  *
  *   Otavio Santana
  */
-package org.eclipse.jnosql.mapping.lite;
+package org.eclipse.jnosql.lite.mapping.entities;
 
-import org.eclipse.jnosql.mapping.entities.Car;
-import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
+
 import org.eclipse.jnosql.lite.mapping.metadata.LiteEntitiesMetadata;
+import org.eclipse.jnosql.mapping.entities.Animal;
+import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 import org.eclipse.jnosql.mapping.metadata.FieldMetadata;
+
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -27,7 +30,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-public class CarTest {
+public class AnimalTest {
 
 
     private EntitiesMetadata mappings;
@@ -37,27 +40,27 @@ public class CarTest {
     @BeforeEach
     public void setUp() {
         this.mappings = new LiteEntitiesMetadata();
-        this.entityMetadata = this.mappings.get(Car.class);
+        this.entityMetadata = this.mappings.get(Animal.class);
     }
 
     @Test
     public void shouldGetName() {
-        Assertions.assertEquals("car", entityMetadata.name());
+        Assertions.assertEquals("kind", entityMetadata.name());
     }
 
     @Test
     public void shouldGetSimpleName() {
-        Assertions.assertEquals(Car.class.getSimpleName(), entityMetadata.simpleName());
+        Assertions.assertEquals(Animal.class.getSimpleName(), entityMetadata.simpleName());
     }
 
     @Test
     public void shouldGetClassName() {
-        Assertions.assertEquals(Car.class.getName(), entityMetadata.className());
+        Assertions.assertEquals(Animal.class.getName(), entityMetadata.className());
     }
 
     @Test
     public void shouldGetClassInstance() {
-        Assertions.assertEquals(Car.class, entityMetadata.type());
+        Assertions.assertEquals(Animal.class, entityMetadata.type());
     }
 
     @Test
@@ -68,9 +71,9 @@ public class CarTest {
 
     @Test
     public void shouldCreateNewInstance() {
-        Car car = entityMetadata.newInstance();
-        Assertions.assertNotNull(car);
-        Assertions.assertTrue(car instanceof Car);
+        Animal animal = entityMetadata.newInstance();
+        Assertions.assertNotNull(animal);
+        Assertions.assertTrue(animal instanceof Animal);
     }
 
     @Test
@@ -78,7 +81,7 @@ public class CarTest {
         List<String> fields = entityMetadata.fieldsName();
         Assertions.assertEquals(2, fields.size());
         Assertions.assertTrue(fields.contains("name"));
-        Assertions.assertTrue(fields.contains("model"));
+        Assertions.assertTrue(fields.contains("color"));
     }
 
     @Test
@@ -86,39 +89,40 @@ public class CarTest {
         Map<String, FieldMetadata> groupByName = this.entityMetadata.fieldsGroupByName();
         Assertions.assertNotNull(groupByName);
         Assertions.assertNotNull(groupByName.get("_id"));
-        Assertions.assertNotNull(groupByName.get("model"));
+        Assertions.assertNotNull(groupByName.get("color"));
     }
 
     @Test
     public void shouldGetter() {
         Map<String, FieldMetadata> groupByName = this.entityMetadata.fieldsGroupByName();
-        Car car = new Car();
-        car.setModel("sport");
-        car.setName("ferrari");
+        Animal animal = new Animal();
+        animal.setColor("blue");
+        animal.setName("dog");
 
         String name = this.entityMetadata.columnField("name");
-        String model = this.entityMetadata.columnField("model");
+        String color = this.entityMetadata.columnField("color");
         FieldMetadata fieldName = groupByName.get(name);
-        FieldMetadata fieldModel = groupByName.get(model);
+        FieldMetadata fieldColor = groupByName.get(color);
 
-        Assertions.assertEquals("sport", fieldModel.read(car));
-        Assertions.assertEquals("ferrari", fieldName.read(car));
+        Assertions.assertEquals("blue", fieldColor.read(animal));
+        Assertions.assertEquals("dog", fieldName.read(animal));
     }
 
     @Test
     public void shouldSetter() {
         Map<String, FieldMetadata> groupByName = this.entityMetadata.fieldsGroupByName();
-        Car car = new Car();
+        Animal animal = new Animal();
 
         String name = this.entityMetadata.columnField("name");
-        String model = this.entityMetadata.columnField("model");
+        String color = this.entityMetadata.columnField("color");
         FieldMetadata fieldName = groupByName.get(name);
-        FieldMetadata fieldModel = groupByName.get(model);
+        FieldMetadata fieldColor = groupByName.get(color);
 
-        fieldModel.write(car, "blue");
-        fieldName.write(car, "ada");
-        Assertions.assertEquals("blue", fieldModel.read(car));
-        Assertions.assertEquals("ada", fieldName.read(car));
+
+        fieldColor.write(animal, "blue");
+        fieldName.write(animal, "ada");
+        Assertions.assertEquals("blue", fieldColor.read(animal));
+        Assertions.assertEquals("ada", fieldName.read(animal));
 
     }
 

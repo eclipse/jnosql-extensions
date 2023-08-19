@@ -12,7 +12,7 @@
  *
  *   Otavio Santana
  */
-package org.eclipse.jnosql.mapping.lite.inheritance;
+package org.eclipse.jnosql.lite.mapping.entities.inheritance;
 
 import org.eclipse.jnosql.mapping.entities.inheritance.LargeProject;
 import org.eclipse.jnosql.mapping.entities.inheritance.Project;

@@ -12,14 +12,16 @@
  *
  *   Otavio Santana
  */
-package org.eclipse.jnosql.mapping.lite.inheritance;
+package org.eclipse.jnosql.lite.mapping.entities.inheritance;
 
-import org.eclipse.jnosql.lite.mapping.metadata.LiteEntitiesMetadata;
-import org.eclipse.jnosql.mapping.entities.inheritance.Project;
+import org.eclipse.jnosql.mapping.entities.inheritance.Notification;
+import org.eclipse.jnosql.mapping.entities.inheritance.SocialMediaNotification;
 import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
+import org.eclipse.jnosql.lite.mapping.metadata.LiteEntitiesMetadata;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 import org.eclipse.jnosql.mapping.metadata.FieldMetadata;
 import org.eclipse.jnosql.mapping.metadata.InheritanceMetadata;
+import org.eclipse.jnosql.mapping.DiscriminatorColumn;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,7 +30,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-public class ProjectTest {
+public class SocialMediaNotificationTest {
 
 
     private EntitiesMetadata mappings;
@@ -38,27 +40,27 @@ public class ProjectTest {
     @BeforeEach
     public void setUp() {
         this.mappings = new LiteEntitiesMetadata();
-        this.entityMetadata = this.mappings.get(Project.class);
+        this.entityMetadata = this.mappings.get(SocialMediaNotification.class);
     }
 
     @Test
     public void shouldGetName() {
-        Assertions.assertEquals("Project", entityMetadata.name());
+        Assertions.assertEquals("Notification", entityMetadata.name());
     }
 
     @Test
     public void shouldGetSimpleName() {
-        Assertions.assertEquals(Project.class.getSimpleName(), entityMetadata.simpleName());
+        Assertions.assertEquals(SocialMediaNotification.class.getSimpleName(), entityMetadata.simpleName());
     }
 
     @Test
     public void shouldGetClassName() {
-        Assertions.assertEquals(Project.class.getName(), entityMetadata.className());
+        Assertions.assertEquals(SocialMediaNotification.class.getName(), entityMetadata.className());
     }
 
     @Test
     public void shouldGetClassInstance() {
-        Assertions.assertEquals(Project.class, entityMetadata.type());
+        Assertions.assertEquals(SocialMediaNotification.class, entityMetadata.type());
     }
 
     @Test
@@ -69,16 +71,18 @@ public class ProjectTest {
 
     @Test
     public void shouldCreateNewInstance() {
-        Project project = entityMetadata.newInstance();
-        Assertions.assertNotNull(project);
-        Assertions.assertTrue(project instanceof Project);
+        SocialMediaNotification notification = entityMetadata.newInstance();
+        Assertions.assertNotNull(notification);
+        Assertions.assertTrue(notification instanceof SocialMediaNotification);
     }
 
     @Test
     public void shouldGetFieldsName() {
         List<String> fields = entityMetadata.fieldsName();
-        Assertions.assertEquals(1, fields.size());
+        Assertions.assertEquals(4, fields.size());
+        Assertions.assertTrue(fields.contains("id"));
         Assertions.assertTrue(fields.contains("name"));
+        Assertions.assertTrue(fields.contains("nickname"));
     }
 
     @Test
@@ -86,16 +90,17 @@ public class ProjectTest {
         Map<String, FieldMetadata> groupByName = this.entityMetadata.fieldsGroupByName();
         Assertions.assertNotNull(groupByName);
         Assertions.assertNotNull(groupByName.get("_id"));
+        Assertions.assertNotNull(groupByName.get("name"));
     }
 
     @Test
     public void shouldGetInheritanceMetadata() {
         InheritanceMetadata inheritance = this.entityMetadata.inheritance()
                 .orElseThrow();
-        Assertions.assertEquals("Project", inheritance.discriminatorValue());
-        Assertions.assertEquals("size", inheritance.discriminatorColumn());
-        Assertions.assertEquals(Project.class, inheritance.entity());
-        Assertions.assertEquals(Project.class, inheritance.parent());
+        Assertions.assertEquals("SocialMediaNotification", inheritance.discriminatorValue());
+        Assertions.assertEquals(DiscriminatorColumn.DEFAULT_DISCRIMINATOR_COLUMN, inheritance.discriminatorColumn());
+        Assertions.assertEquals(SocialMediaNotification.class, inheritance.entity());
+        Assertions.assertEquals(Notification.class, inheritance.parent());
     }
 
 }

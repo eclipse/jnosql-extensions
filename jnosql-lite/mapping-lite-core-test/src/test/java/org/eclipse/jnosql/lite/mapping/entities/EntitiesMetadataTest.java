@@ -12,7 +12,7 @@
  *
  *   Otavio Santana
  */
-package org.eclipse.jnosql.mapping.lite;
+package org.eclipse.jnosql.lite.mapping.entities;
 
 import org.eclipse.jnosql.mapping.entities.Animal;
 import org.eclipse.jnosql.mapping.entities.Car;

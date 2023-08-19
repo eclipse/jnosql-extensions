@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2022 Otávio Santana and others
+ *  Copyright (c) 2020 Otávio Santana and others
  *   All rights reserved. This program and the accompanying materials
  *   are made available under the terms of the Eclipse Public License v1.0
  *   and Apache License v2.0 which accompanies this distribution.
@@ -12,16 +12,13 @@
  *
  *   Otavio Santana
  */
-package org.eclipse.jnosql.mapping.lite.inheritance;
+package org.eclipse.jnosql.lite.mapping.entities;
 
-import org.eclipse.jnosql.mapping.entities.inheritance.Notification;
-import org.eclipse.jnosql.mapping.entities.inheritance.SmsNotification;
+import org.eclipse.jnosql.mapping.entities.Car;
 import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
 import org.eclipse.jnosql.lite.mapping.metadata.LiteEntitiesMetadata;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 import org.eclipse.jnosql.mapping.metadata.FieldMetadata;
-import org.eclipse.jnosql.mapping.metadata.InheritanceMetadata;
-import org.eclipse.jnosql.mapping.DiscriminatorColumn;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -30,7 +27,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-public class SMSNotificationTest {
+public class CarTest {
 
 
     private EntitiesMetadata mappings;
@@ -40,27 +37,27 @@ public class SMSNotificationTest {
     @BeforeEach
     public void setUp() {
         this.mappings = new LiteEntitiesMetadata();
-        this.entityMetadata = this.mappings.get(SmsNotification.class);
+        this.entityMetadata = this.mappings.get(Car.class);
     }
 
     @Test
     public void shouldGetName() {
-        Assertions.assertEquals("Notification", entityMetadata.name());
+        Assertions.assertEquals("car", entityMetadata.name());
     }
 
     @Test
     public void shouldGetSimpleName() {
-        Assertions.assertEquals(SmsNotification.class.getSimpleName(), entityMetadata.simpleName());
+        Assertions.assertEquals(Car.class.getSimpleName(), entityMetadata.simpleName());
     }
 
     @Test
     public void shouldGetClassName() {
-        Assertions.assertEquals(SmsNotification.class.getName(), entityMetadata.className());
+        Assertions.assertEquals(Car.class.getName(), entityMetadata.className());
     }
 
     @Test
     public void shouldGetClassInstance() {
-        Assertions.assertEquals(SmsNotification.class, entityMetadata.type());
+        Assertions.assertEquals(Car.class, entityMetadata.type());
     }
 
     @Test
@@ -71,18 +68,17 @@ public class SMSNotificationTest {
 
     @Test
     public void shouldCreateNewInstance() {
-        SmsNotification notification = entityMetadata.newInstance();
-        Assertions.assertNotNull(notification);
-        Assertions.assertTrue(notification instanceof SmsNotification);
+        Car car = entityMetadata.newInstance();
+        Assertions.assertNotNull(car);
+        Assertions.assertTrue(car instanceof Car);
     }
 
     @Test
     public void shouldGetFieldsName() {
         List<String> fields = entityMetadata.fieldsName();
-        Assertions.assertEquals(4, fields.size());
-        Assertions.assertTrue(fields.contains("id"));
+        Assertions.assertEquals(2, fields.size());
         Assertions.assertTrue(fields.contains("name"));
-        Assertions.assertTrue(fields.contains("phone"));
+        Assertions.assertTrue(fields.contains("model"));
     }
 
     @Test
@@ -90,17 +86,40 @@ public class SMSNotificationTest {
         Map<String, FieldMetadata> groupByName = this.entityMetadata.fieldsGroupByName();
         Assertions.assertNotNull(groupByName);
         Assertions.assertNotNull(groupByName.get("_id"));
-        Assertions.assertNotNull(groupByName.get("phone"));
+        Assertions.assertNotNull(groupByName.get("model"));
     }
 
     @Test
-    public void shouldGetInheritanceMetadata() {
-        InheritanceMetadata inheritance = this.entityMetadata.inheritance()
-                .orElseThrow();
-        Assertions.assertEquals("SMS", inheritance.discriminatorValue());
-        Assertions.assertEquals(DiscriminatorColumn.DEFAULT_DISCRIMINATOR_COLUMN, inheritance.discriminatorColumn());
-        Assertions.assertEquals(SmsNotification.class, inheritance.entity());
-        Assertions.assertEquals(Notification.class, inheritance.parent());
+    public void shouldGetter() {
+        Map<String, FieldMetadata> groupByName = this.entityMetadata.fieldsGroupByName();
+        Car car = new Car();
+        car.setModel("sport");
+        car.setName("ferrari");
+
+        String name = this.entityMetadata.columnField("name");
+        String model = this.entityMetadata.columnField("model");
+        FieldMetadata fieldName = groupByName.get(name);
+        FieldMetadata fieldModel = groupByName.get(model);
+
+        Assertions.assertEquals("sport", fieldModel.read(car));
+        Assertions.assertEquals("ferrari", fieldName.read(car));
+    }
+
+    @Test
+    public void shouldSetter() {
+        Map<String, FieldMetadata> groupByName = this.entityMetadata.fieldsGroupByName();
+        Car car = new Car();
+
+        String name = this.entityMetadata.columnField("name");
+        String model = this.entityMetadata.columnField("model");
+        FieldMetadata fieldName = groupByName.get(name);
+        FieldMetadata fieldModel = groupByName.get(model);
+
+        fieldModel.write(car, "blue");
+        fieldName.write(car, "ada");
+        Assertions.assertEquals("blue", fieldModel.read(car));
+        Assertions.assertEquals("ada", fieldName.read(car));
+
     }
 
 }

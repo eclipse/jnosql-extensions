@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2020 Otávio Santana and others
+ *  Copyright (c) 2022 Otávio Santana and others
  *   All rights reserved. This program and the accompanying materials
  *   are made available under the terms of the Eclipse Public License v1.0
  *   and Apache License v2.0 which accompanies this distribution.
@@ -12,16 +12,15 @@
  *
  *   Otavio Santana
  */
-package org.eclipse.jnosql.mapping.lite;
-
+package org.eclipse.jnosql.lite.mapping.entities.inheritance;
 
 import org.eclipse.jnosql.lite.mapping.metadata.LiteEntitiesMetadata;
-import org.eclipse.jnosql.mapping.entities.Animal;
+import org.eclipse.jnosql.mapping.entities.inheritance.Project;
+import org.eclipse.jnosql.mapping.entities.inheritance.SmallProject;
 import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 import org.eclipse.jnosql.mapping.metadata.FieldMetadata;
-
-
+import org.eclipse.jnosql.mapping.metadata.InheritanceMetadata;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -30,7 +29,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-public class AnimalTest {
+public class SmallProjectTest {
 
 
     private EntitiesMetadata mappings;
@@ -40,27 +39,27 @@ public class AnimalTest {
     @BeforeEach
     public void setUp() {
         this.mappings = new LiteEntitiesMetadata();
-        this.entityMetadata = this.mappings.get(Animal.class);
+        this.entityMetadata = this.mappings.get(SmallProject.class);
     }
 
     @Test
     public void shouldGetName() {
-        Assertions.assertEquals("kind", entityMetadata.name());
+        Assertions.assertEquals("Project", entityMetadata.name());
     }
 
     @Test
     public void shouldGetSimpleName() {
-        Assertions.assertEquals(Animal.class.getSimpleName(), entityMetadata.simpleName());
+        Assertions.assertEquals(SmallProject.class.getSimpleName(), entityMetadata.simpleName());
     }
 
     @Test
     public void shouldGetClassName() {
-        Assertions.assertEquals(Animal.class.getName(), entityMetadata.className());
+        Assertions.assertEquals(SmallProject.class.getName(), entityMetadata.className());
     }
 
     @Test
     public void shouldGetClassInstance() {
-        Assertions.assertEquals(Animal.class, entityMetadata.type());
+        Assertions.assertEquals(SmallProject.class, entityMetadata.type());
     }
 
     @Test
@@ -71,9 +70,9 @@ public class AnimalTest {
 
     @Test
     public void shouldCreateNewInstance() {
-        Animal animal = entityMetadata.newInstance();
-        Assertions.assertNotNull(animal);
-        Assertions.assertTrue(animal instanceof Animal);
+        SmallProject project = entityMetadata.newInstance();
+        Assertions.assertNotNull(project);
+        Assertions.assertTrue(project instanceof SmallProject);
     }
 
     @Test
@@ -81,7 +80,7 @@ public class AnimalTest {
         List<String> fields = entityMetadata.fieldsName();
         Assertions.assertEquals(2, fields.size());
         Assertions.assertTrue(fields.contains("name"));
-        Assertions.assertTrue(fields.contains("color"));
+        Assertions.assertTrue(fields.contains("investor"));
     }
 
     @Test
@@ -89,41 +88,17 @@ public class AnimalTest {
         Map<String, FieldMetadata> groupByName = this.entityMetadata.fieldsGroupByName();
         Assertions.assertNotNull(groupByName);
         Assertions.assertNotNull(groupByName.get("_id"));
-        Assertions.assertNotNull(groupByName.get("color"));
+        Assertions.assertNotNull(groupByName.get("investor"));
     }
 
     @Test
-    public void shouldGetter() {
-        Map<String, FieldMetadata> groupByName = this.entityMetadata.fieldsGroupByName();
-        Animal animal = new Animal();
-        animal.setColor("blue");
-        animal.setName("dog");
-
-        String name = this.entityMetadata.columnField("name");
-        String color = this.entityMetadata.columnField("color");
-        FieldMetadata fieldName = groupByName.get(name);
-        FieldMetadata fieldColor = groupByName.get(color);
-
-        Assertions.assertEquals("blue", fieldColor.read(animal));
-        Assertions.assertEquals("dog", fieldName.read(animal));
-    }
-
-    @Test
-    public void shouldSetter() {
-        Map<String, FieldMetadata> groupByName = this.entityMetadata.fieldsGroupByName();
-        Animal animal = new Animal();
-
-        String name = this.entityMetadata.columnField("name");
-        String color = this.entityMetadata.columnField("color");
-        FieldMetadata fieldName = groupByName.get(name);
-        FieldMetadata fieldColor = groupByName.get(color);
-
-
-        fieldColor.write(animal, "blue");
-        fieldName.write(animal, "ada");
-        Assertions.assertEquals("blue", fieldColor.read(animal));
-        Assertions.assertEquals("ada", fieldName.read(animal));
-
+    public void shouldGetInheritanceMetadata() {
+        InheritanceMetadata inheritance = this.entityMetadata.inheritance()
+                .orElseThrow();
+        Assertions.assertEquals("Small", inheritance.discriminatorValue());
+        Assertions.assertEquals("size", inheritance.discriminatorColumn());
+        Assertions.assertEquals(SmallProject.class, inheritance.entity());
+        Assertions.assertEquals(Project.class, inheritance.parent());
     }
 
 }
