@@ -1,18 +1,18 @@
 /*
- *   Copyright (c) 2023 Contributors to the Eclipse Foundation
- *    All rights reserved. This program and the accompanying materials
- *    are made available under the terms of the Eclipse Public License v1.0
- *    and Apache License v2.0 which accompanies this distribution.
- *    The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v10.html
- *    and the Apache License v2.0 is available at http://www.opensource.org/licenses/apache2.0.php.
+ *  Copyright (c) 2022 Contributors to the Eclipse Foundation
+ *   All rights reserved. This program and the accompanying materials
+ *   are made available under the terms of the Eclipse Public License v1.0
+ *   and Apache License v2.0 which accompanies this distribution.
+ *   The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v10.html
+ *   and the Apache License v2.0 is available at http://www.opensource.org/licenses/apache2.0.php.
  *
- *    You may elect to redistribute this code under either of these licenses.
+ *   You may elect to redistribute this code under either of these licenses.
  *
- *    Contributors:
+ *   Contributors:
  *
- *    Otavio Santana
+ *   Otavio Santana
  */
-package org.eclipse.jnosql.lite.mapping.entities;
+package org.eclipse.jnosql.mapping.graph.entities;
 
 
 import jakarta.nosql.Column;
@@ -28,7 +28,7 @@ import java.util.Objects;
 public class Person {
 
     @Id
-    private long id;
+    private Long id;
 
     @Column
     private String name;
@@ -42,7 +42,7 @@ public class Person {
     private String ignore;
 
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
@@ -66,30 +66,10 @@ public class Person {
         return age > 21;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    Person() {
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setAge(int age) {
-        this.age = age;
-    }
-
-    public void setPhones(List<String> phones) {
-        this.phones = phones;
-    }
-
-    public void setIgnore(String ignore) {
-        this.ignore = ignore;
-    }
-
-    public Person() {
-    }
-
-    Person(long id, String name, int age, List<String> phones, String ignore) {
+    Person(Long id, String name, int age, List<String> phones, String ignore) {
         this.id = id;
         this.name = name;
         this.age = age;
@@ -112,19 +92,16 @@ public class Person {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof Person)) {
             return false;
         }
         Person person = (Person) o;
-        return id == person.id &&
-                age == person.age &&
-                Objects.equals(name, person.name) &&
-                Objects.equals(phones, person.phones);
+        return Objects.equals(id, person.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, age, phones, ignore);
+        return Objects.hashCode(id);
     }
 
     public static PersonBuilder builder() {

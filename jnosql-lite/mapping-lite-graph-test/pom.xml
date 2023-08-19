@@ -42,7 +42,25 @@
             <groupId>org.eclipse.jnosql.lite</groupId>
             <artifactId>mapping-lite-processor</artifactId>
             <version>${project.version}</version>
-            <scope>provided</scope>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.tinkerpop</groupId>
+            <artifactId>gremlin-core</artifactId>
+            <version>${tinkerpop.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.tinkerpop</groupId>
+            <artifactId>neo4j-gremlin</artifactId>
+            <version>${tinkerpop.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.neo4j</groupId>
+            <artifactId>neo4j-tinkerpop-api-impl</artifactId>
+            <version>${neo4j.connector.version}</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 </project>
