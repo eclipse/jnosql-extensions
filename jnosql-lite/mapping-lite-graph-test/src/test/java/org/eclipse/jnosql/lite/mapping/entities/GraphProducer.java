@@ -12,7 +12,7 @@
  *
  *   Otavio Santana
  */
-package org.eclipse.jnosql.mapping.graph.cdi;
+package org.eclipse.jnosql.lite.mapping.entities;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.Priority;

@@ -12,7 +12,7 @@
  *
  *   Otavio Santana
  */
-package org.eclipse.jnosql.mapping.graph.entities;
+package org.eclipse.jnosql.lite.mapping.entities;
 
 
 import org.eclipse.jnosql.mapping.AttributeConverter;

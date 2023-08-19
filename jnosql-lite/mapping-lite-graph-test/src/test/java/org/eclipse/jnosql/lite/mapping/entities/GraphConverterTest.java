@@ -12,20 +12,15 @@
  *
  *   Otavio Santana
  */
-package org.eclipse.jnosql.mapping.graph;
+package org.eclipse.jnosql.lite.mapping.entities;
 
 import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Property;
 import org.apache.tinkerpop.gremlin.structure.T;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
-import org.eclipse.jnosql.mapping.graph.entities.BookRelease;
-import org.eclipse.jnosql.mapping.graph.entities.Computer;
-import org.eclipse.jnosql.mapping.graph.entities.Job;
-import org.eclipse.jnosql.mapping.graph.entities.Money;
-import org.eclipse.jnosql.mapping.graph.entities.Movie;
-import org.eclipse.jnosql.mapping.graph.entities.Person;
-import org.eclipse.jnosql.mapping.graph.entities.Worker;
+import org.eclipse.jnosql.mapping.graph.EdgeEntity;
+import org.eclipse.jnosql.mapping.graph.GraphConverter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

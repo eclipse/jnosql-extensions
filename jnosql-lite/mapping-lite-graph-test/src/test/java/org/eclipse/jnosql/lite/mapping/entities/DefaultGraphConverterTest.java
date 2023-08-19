@@ -12,13 +12,14 @@
  *
  *   Otavio Santana
  */
-package org.eclipse.jnosql.mapping.graph;
+package org.eclipse.jnosql.lite.mapping.entities;
 
 import jakarta.inject.Inject;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.eclipse.jnosql.mapping.Converters;
+import org.eclipse.jnosql.mapping.graph.GraphConverter;
+import org.eclipse.jnosql.mapping.graph.Transactional;
 import org.eclipse.jnosql.mapping.graph.spi.GraphExtension;
-import org.eclipse.jnosql.mapping.reflection.Reflections;
 import org.eclipse.jnosql.mapping.spi.EntityMetadataExtension;
 import org.jboss.weld.junit5.auto.AddExtensions;
 import org.jboss.weld.junit5.auto.AddPackages;
@@ -27,8 +28,8 @@ import org.jboss.weld.junit5.auto.EnableAutoWeld;
 
 @EnableAutoWeld
 @AddPackages(value = {Converters.class, Transactional.class})
-@AddPackages(BookRepository.class)
-@AddPackages(Reflections.class)
+@AddPackages(GraphProducer.class)
+
 @AddExtensions({EntityMetadataExtension.class, GraphExtension.class})
 class DefaultGraphConverterTest extends GraphConverterTest {
 
