@@ -12,7 +12,7 @@
  *
  *   Otavio Santana
  */
-package org.eclipse.jnosql.mapping.lite.inheritance;
+package org.eclipse.jnosql.mapping.entities.inheritance;
 
 import jakarta.nosql.Column;
 import org.eclipse.jnosql.mapping.DiscriminatorValue;

@@ -12,35 +12,49 @@
  *
  *   Otavio Santana
  */
-package org.eclipse.jnosql.mapping.lite;
+package org.eclipse.jnosql.mapping.entities;
 
 import jakarta.nosql.Column;
 import jakarta.nosql.Entity;
-import org.eclipse.jnosql.mapping.Convert;
+import jakarta.nosql.Id;
+
+import java.util.List;
 
 @Entity
-public class Product {
+public class Computer {
+
+
+    @Id
+    private String id;
 
     @Column
-    private String name;
+    private ComputerAddress address;
 
     @Column
-    @Convert(MoneyConverter.class)
-    private Money value;
+    private List<Person> users;
 
-    public String getName() {
-        return name;
+
+    public String getId() {
+        return id;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public Money getValue() {
-        return value;
+    public ComputerAddress getAddress() {
+        return address;
     }
 
-    public void setValue(Money value) {
-        this.value = value;
+    public void setAddress(ComputerAddress address) {
+        this.address = address;
+    }
+
+    public List<Person> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<Person> users) {
+        this.users = users;
     }
 }

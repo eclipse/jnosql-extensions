@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2022 Otávio Santana and others
+ *  Copyright (c) 2020 Otávio Santana and others
  *   All rights reserved. This program and the accompanying materials
  *   are made available under the terms of the Eclipse Public License v1.0
  *   and Apache License v2.0 which accompanies this distribution.
@@ -12,29 +12,41 @@
  *
  *   Otavio Santana
  */
-package org.eclipse.jnosql.mapping.lite.inheritance;
+package org.eclipse.jnosql.mapping.entities;
 
 import jakarta.nosql.Column;
-import org.eclipse.jnosql.mapping.DiscriminatorValue;
 import jakarta.nosql.Entity;
 
 @Entity
-@DiscriminatorValue("SMS")
-public class SmsNotification extends Notification {
+public class Movie {
 
     @Column
-    private String phone;
+    private String title;
 
-    public String getPhone() {
-        return phone;
+    @Column
+    private Director director;
+
+    public String getTitle() {
+        return title;
     }
 
-    public void setPhone(String phone) {
-        this.phone = phone;
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public Director getDirector() {
+        return director;
+    }
+
+    public void setDirector(Director director) {
+        this.director = director;
     }
 
     @Override
-    public String send() {
-        return "Sending message to via sms to the phone: " + phone;
+    public String toString() {
+        return "Movie{" +
+                "title='" + title + '\'' +
+                ", director=" + director +
+                '}';
     }
 }

@@ -15,6 +15,8 @@
 package org.eclipse.jnosql.mapping.lite.inheritance;
 
 import org.eclipse.jnosql.lite.mapping.metadata.LiteEntitiesMetadata;
+import org.eclipse.jnosql.mapping.entities.inheritance.Project;
+import org.eclipse.jnosql.mapping.entities.inheritance.SmallProject;
 import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 import org.eclipse.jnosql.mapping.metadata.FieldMetadata;

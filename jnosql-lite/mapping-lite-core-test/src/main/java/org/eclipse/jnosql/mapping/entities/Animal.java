@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2022 Otávio Santana and others
+ *  Copyright (c) 2020 Otávio Santana and others
  *   All rights reserved. This program and the accompanying materials
  *   are made available under the terms of the Eclipse Public License v1.0
  *   and Apache License v2.0 which accompanies this distribution.
@@ -12,30 +12,40 @@
  *
  *   Otavio Santana
  */
-package org.eclipse.jnosql.mapping.lite.inheritance;
+package org.eclipse.jnosql.mapping.entities;
 
+
+import jakarta.nosql.Column;
 import jakarta.nosql.Entity;
 import jakarta.nosql.Id;
-import org.eclipse.jnosql.mapping.DiscriminatorColumn;
-import org.eclipse.jnosql.mapping.Inheritance;
 
 import java.util.Objects;
 
-@Entity
-@Inheritance
-@DiscriminatorColumn("size")
-public class Project {
+@Entity("kind")
+public class Animal {
 
     @Id
-    protected String name;
+    private String name;
+
+    @Column
+    private String color;
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
+    void setName(String name) {
         this.name = name;
     }
+
+    public String getColor() {
+        return color;
+    }
+
+    void setColor(String color) {
+        this.color = color;
+    }
+
 
     @Override
     public boolean equals(Object o) {
@@ -45,19 +55,21 @@ public class Project {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        Project project = (Project) o;
-        return Objects.equals(name, project.name);
+        Animal animal = (Animal) o;
+        return Objects.equals(name, animal.name) &&
+                Objects.equals(color, animal.color);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(name);
+        return Objects.hash(name, color);
     }
 
     @Override
     public String toString() {
-        return "Project{" +
+        return "Animal{" +
                 "name='" + name + '\'' +
+                ", color='" + color + '\'' +
                 '}';
     }
 }

@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2022 Otávio Santana and others
+ *  Copyright (c) 2023 Otávio Santana and others
  *   All rights reserved. This program and the accompanying materials
  *   are made available under the terms of the Eclipse Public License v1.0
  *   and Apache License v2.0 which accompanies this distribution.
@@ -12,31 +12,33 @@
  *
  *   Otavio Santana
  */
-package org.eclipse.jnosql.mapping.lite.inheritance;
-
+package org.eclipse.jnosql.mapping.entities;
 
 import jakarta.nosql.Column;
-import org.eclipse.jnosql.mapping.DiscriminatorValue;
+import org.eclipse.jnosql.mapping.Embeddable;
 
-import jakarta.nosql.Entity;
-
-@Entity
-@DiscriminatorValue("Email")
-public class EmailNotification extends Notification {
+@Embeddable
+public class ComputerAddress {
 
     @Column
-    private String email;
+    private String city;
 
-    public String getEmail() {
-        return email;
+    @Column
+    private String country;
+
+    public String getCity() {
+        return city;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setCity(String city) {
+        this.city = city;
     }
 
-    @Override
-    public String send() {
-        return "Sending message to email sms to the email: " + email;
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
     }
 }

@@ -12,24 +12,26 @@
  *
  *   Otavio Santana
  */
-package org.eclipse.jnosql.mapping.lite;
+package org.eclipse.jnosql.mapping.entities;
 
-import jakarta.nosql.Column;
-import jakarta.nosql.Entity;
-import org.eclipse.jnosql.mapping.Convert;
+import org.eclipse.jnosql.mapping.AttributeConverter;
 
-@Entity
-public class Worker extends Person {
+import java.util.Objects;
 
-    @Column
-    @Convert(MoneyConverter.class)
-    private Money salary;
-
-    public Money getSalary() {
-        return salary;
+public class MoneyConverter implements AttributeConverter<Money, String> {
+    @Override
+    public String convertToDatabaseColumn(Money attribute) {
+        if (Objects.nonNull(attribute)) {
+            return attribute.toString();
+        }
+        return null;
     }
 
-    public void setSalary(Money salary) {
-        this.salary = salary;
+    @Override
+    public Money convertToEntityAttribute(String dbData) {
+        if (Objects.nonNull(dbData)) {
+            return Money.of(dbData);
+        }
+        return null;
     }
 }

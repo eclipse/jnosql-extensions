@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2020 Otávio Santana and others
+ *  Copyright (c) 2022 Otávio Santana and others
  *   All rights reserved. This program and the accompanying materials
  *   are made available under the terms of the Eclipse Public License v1.0
  *   and Apache License v2.0 which accompanies this distribution.
@@ -12,37 +12,29 @@
  *
  *   Otavio Santana
  */
-package org.eclipse.jnosql.mapping.lite;
+package org.eclipse.jnosql.mapping.entities.inheritance;
 
-import jakarta.nosql.Column;
 import jakarta.nosql.Entity;
+import jakarta.nosql.Id;
+import org.eclipse.jnosql.mapping.DiscriminatorColumn;
+import org.eclipse.jnosql.mapping.Inheritance;
 
-import java.util.List;
 import java.util.Objects;
 
 @Entity
-public class Orders {
+@Inheritance
+@DiscriminatorColumn("size")
+public class Project {
 
-    @Column
-    private String user;
+    @Id
+    protected String name;
 
-    @Column
-    private List<Product> items;
-
-    public String getUser() {
-        return user;
+    public String getName() {
+        return name;
     }
 
-    public void setUser(String user) {
-        this.user = user;
-    }
-
-    public List<Product> getItems() {
-        return items;
-    }
-
-    public void setItems(List<Product> items) {
-        this.items = items;
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override
@@ -53,12 +45,19 @@ public class Orders {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        Orders that = (Orders) o;
-        return Objects.equals(user, that.user);
+        Project project = (Project) o;
+        return Objects.equals(name, project.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(user);
+        return Objects.hashCode(name);
+    }
+
+    @Override
+    public String toString() {
+        return "Project{" +
+                "name='" + name + '\'' +
+                '}';
     }
 }

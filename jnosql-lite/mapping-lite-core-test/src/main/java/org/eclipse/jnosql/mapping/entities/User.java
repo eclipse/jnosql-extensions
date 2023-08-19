@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2020 Otávio Santana and others
+ *  Copyright (c) 2023 Otávio Santana and others
  *   All rights reserved. This program and the accompanying materials
  *   are made available under the terms of the Eclipse Public License v1.0
  *   and Apache License v2.0 which accompanies this distribution.
@@ -12,38 +12,60 @@
  *
  *   Otavio Santana
  */
-package org.eclipse.jnosql.mapping.lite;
+package org.eclipse.jnosql.mapping.entities;
 
 import jakarta.nosql.Column;
 import jakarta.nosql.Entity;
 import jakarta.nosql.Id;
 
-@Entity("car")
-public class Car {
+import java.util.List;
+
+
+@Entity
+public class User {
 
     @Id
+    private long id;
+
+    @Column
     private String name;
 
     @Column
-    private String model;
+    private int age;
 
-    Car() {
+    @Column
+    private List<String> phones;
+
+
+    public long getId() {
+        return id;
     }
 
+    public void setId(long id) {
+        this.id = id;
+    }
 
-    String getName() {
+    public String getName() {
         return name;
     }
 
-    void setName(String name) {
+    public void setName(String name) {
         this.name = name;
     }
 
-    protected String getModel() {
-        return model;
+    public int getAge() {
+        return age;
     }
 
-    protected void setModel(String model) {
-        this.model = model;
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public List<String> getPhones() {
+        return phones;
+    }
+
+    public void setPhones(List<String> phones) {
+        this.phones = phones;
     }
 }

@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2020 Otávio Santana and others
+ *  Copyright (c) 2023 Otávio Santana and others
  *   All rights reserved. This program and the accompanying materials
  *   are made available under the terms of the Eclipse Public License v1.0
  *   and Apache License v2.0 which accompanies this distribution.
@@ -12,30 +12,12 @@
  *
  *   Otavio Santana
  */
-package org.eclipse.jnosql.mapping.lite;
+package org.eclipse.jnosql.mapping.entities;
 
-import org.eclipse.jnosql.mapping.Embeddable;
 
-import jakarta.nosql.Entity;
+@java.lang.annotation.Retention(java.lang.annotation.RetentionPolicy.RUNTIME)
+@java.lang.annotation.Target({java.lang.annotation.ElementType.FIELD, java.lang.annotation.ElementType.METHOD})
+public @interface CustomAnnotation {
 
-@Entity
-@Embeddable
-public class Director {
-
-    private String name;
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    @Override
-    public String toString() {
-        return "Director{" +
-                "name='" + name + '\'' +
-                '}';
-    }
+    String value();
 }
