@@ -14,9 +14,6 @@
  */
 package org.eclipse.jnosql.lite.mapping.entities;
 
-import org.eclipse.jnosql.mapping.entities.Animal;
-import org.eclipse.jnosql.mapping.entities.Car;
-import org.eclipse.jnosql.mapping.entities.Person;
 import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
 import org.eclipse.jnosql.lite.mapping.metadata.LiteEntitiesMetadata;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;

@@ -15,10 +15,6 @@
 package org.eclipse.jnosql.lite.mapping.entities;
 
 import org.assertj.core.api.SoftAssertions;
-import org.eclipse.jnosql.mapping.entities.Animal;
-import org.eclipse.jnosql.mapping.entities.Money;
-import org.eclipse.jnosql.mapping.entities.Person;
-import org.eclipse.jnosql.mapping.entities.Worker;
 import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
 import org.eclipse.jnosql.lite.mapping.metadata.LiteEntitiesMetadata;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;

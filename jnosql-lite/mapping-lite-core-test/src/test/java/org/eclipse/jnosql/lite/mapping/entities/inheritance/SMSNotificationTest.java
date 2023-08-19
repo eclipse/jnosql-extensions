@@ -14,8 +14,6 @@
  */
 package org.eclipse.jnosql.lite.mapping.entities.inheritance;
 
-import org.eclipse.jnosql.mapping.entities.inheritance.Notification;
-import org.eclipse.jnosql.mapping.entities.inheritance.SmsNotification;
 import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
 import org.eclipse.jnosql.lite.mapping.metadata.LiteEntitiesMetadata;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;

@@ -15,8 +15,6 @@
 package org.eclipse.jnosql.lite.mapping.entities;
 
 
-import org.eclipse.jnosql.mapping.entities.Director;
-import org.eclipse.jnosql.mapping.entities.Movie;
 import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
 import org.eclipse.jnosql.lite.mapping.metadata.LiteEntitiesMetadata;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
