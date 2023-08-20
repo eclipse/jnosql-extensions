@@ -15,8 +15,6 @@
 package org.eclipse.jnosql.lite.mapping.entities;
 
 import jakarta.data.repository.CrudRepository;
-import jakarta.data.repository.Page;
-import jakarta.data.repository.Pageable;
 import jakarta.data.repository.Param;
 import jakarta.data.repository.Query;
 import jakarta.data.repository.Repository;
@@ -27,8 +25,6 @@ import java.util.List;
 public interface PersonCrudRepository extends CrudRepository<Person, Long> {
 
     List<Person> findByName(String name);
-
-    Page<Person> findByName(String name, Pageable pageable);
 
     @Query("select * from Person where name = @name")
     List<Person> query(@Param("name") String name);
