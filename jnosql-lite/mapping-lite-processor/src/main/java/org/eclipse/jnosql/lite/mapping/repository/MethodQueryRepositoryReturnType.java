@@ -111,7 +111,7 @@ enum MethodQueryRepositoryReturnType implements Function<MethodMetadata, List<St
             case "java.util.Queue", "java.util.Deque" -> QUEUE;
             case "java.util.SortedSet", "java.util.TreeSet" -> SORTED_SET;
             case "java.util.Optional" -> OPTIONAL;
-            case "org.eclipse.jnosql.diana.api.page.Page", "jakarta.data.repository.Slice" -> PAGINATION;
+            case "jakarta.data.repository.Page", "jakarta.data.repository.Slice" -> PAGINATION;
             default -> throw new UnsupportedOperationException("This return is not supported: " + returnType);
         };
 
