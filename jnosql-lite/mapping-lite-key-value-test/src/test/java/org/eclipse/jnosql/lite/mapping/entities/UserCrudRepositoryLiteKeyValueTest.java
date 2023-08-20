@@ -12,7 +12,7 @@
  *
  *    Maximillian Arruda
  */
-package org.eclipse.jnosql.lite.mapping.keyvalue.entities;
+package org.eclipse.jnosql.lite.mapping.entities;
 
 import jakarta.nosql.keyvalue.KeyValueTemplate;
 import org.assertj.core.api.Assertions;

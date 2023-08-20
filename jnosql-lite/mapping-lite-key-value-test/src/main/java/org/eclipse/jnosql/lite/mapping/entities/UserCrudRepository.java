@@ -12,7 +12,7 @@
  *
  *    Maximillian Arruda
  */
-package org.eclipse.jnosql.lite.mapping.keyvalue.entities;
+package org.eclipse.jnosql.lite.mapping.entities;
 
 import jakarta.data.repository.CrudRepository;
 import jakarta.data.repository.Repository;
