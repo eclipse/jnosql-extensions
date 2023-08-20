@@ -54,6 +54,18 @@ public class Movie {
         return actors;
     }
 
+    void setTitle(String title) {
+        this.title = title;
+    }
+
+    void setYear(long year) {
+        this.year = year;
+    }
+
+    void setActors(Set<String> actors) {
+        this.actors = actors;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
