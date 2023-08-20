@@ -66,6 +66,26 @@ public class Person {
         return age > 21;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public void setPhones(List<String> phones) {
+        this.phones = phones;
+    }
+
+    public void setIgnore(String ignore) {
+        this.ignore = ignore;
+    }
+
     Person() {
     }
 

@@ -29,7 +29,6 @@ import org.jboss.weld.junit5.auto.EnableAutoWeld;
 @EnableAutoWeld
 @AddPackages(value = {Converters.class, Transactional.class})
 @AddPackages(GraphProducer.class)
-
 @AddExtensions({EntityMetadataExtension.class, GraphExtension.class})
 class DefaultGraphConverterTest extends GraphConverterTest {
 
