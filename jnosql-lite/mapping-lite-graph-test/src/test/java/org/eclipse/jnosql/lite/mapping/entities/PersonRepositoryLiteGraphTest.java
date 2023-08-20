@@ -17,7 +17,10 @@ package org.eclipse.jnosql.lite.mapping.entities;
 
 import jakarta.data.repository.Page;
 import jakarta.data.repository.Pageable;
+import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
+import org.assertj.core.api.Assertions;
 import org.eclipse.jnosql.mapping.graph.GraphTemplate;
+import org.eclipse.jnosql.mapping.graph.VertexTraversal;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -27,6 +30,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
@@ -138,18 +142,19 @@ public class PersonRepositoryLiteGraphTest {
     public void shouldFindAllEntitiesWithPageable() {
         Pageable pageable = Pageable.ofPage(1);
 
-        when(template.traversalVertex()
-                .hasLabel(eq("Person"))
-                .skip(anyInt())
-                .limit(anyInt())
-                .result()
-                .toList())
-                .thenReturn(List.of(new Person()));
+        VertexTraversal traversalVertex = Mockito.mock(VertexTraversal.class);
+
+        when(template.traversalVertex()).thenReturn(traversalVertex);
+        when(traversalVertex.hasLabel(eq(Person.class))).thenReturn(traversalVertex);
+        when(traversalVertex.skip(anyLong())).thenReturn(traversalVertex);
+        when(traversalVertex.limit(anyLong())).thenReturn(traversalVertex);
+        when(traversalVertex.result()).thenReturn(Stream.of(new Person()));
+
 
         Page<Person> page = repository.findAll(pageable);
 
         verify(template).traversalVertex();
-        // Add assertions for the Page object
+        Assertions.assertThat(page).isNotNull().isNotEmpty().hasSize(1);
     }
 
     @Test
