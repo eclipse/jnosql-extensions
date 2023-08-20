@@ -23,7 +23,8 @@ import java.util.function.Supplier;
 enum RepositoryTemplateType implements Supplier<Mustache> {
     DOCUMENT("repository_document.mustache"),
     COLUMN("repository_column.mustache"),
-    KEY_VALUE("repository_key-value.mustache");
+    KEY_VALUE("repository_key-value.mustache"),
+    GRAPH("repository_graph.mustache");
 
     private final Mustache template;
 
