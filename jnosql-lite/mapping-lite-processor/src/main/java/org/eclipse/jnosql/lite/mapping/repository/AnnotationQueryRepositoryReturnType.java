@@ -19,7 +19,6 @@ import org.eclipse.jnosql.lite.mapping.ValidationException;
 import javax.lang.model.element.TypeElement;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.function.Function;
 
 import static java.util.Collections.singletonList;
