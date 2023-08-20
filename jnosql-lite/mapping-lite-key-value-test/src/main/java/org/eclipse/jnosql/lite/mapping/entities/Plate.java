@@ -14,11 +14,32 @@
  */
 package org.eclipse.jnosql.lite.mapping.entities;
 
-
-import java.math.BigDecimal;
 import java.util.Objects;
 
-public record Money(String currency, BigDecimal value) {
+public final class Plate {
+
+    private final int prefix;
+
+    private final String sufix;
+
+
+    private Plate(int prefix, String sufix) {
+        this.prefix = prefix;
+        this.sufix = sufix;
+    }
+
+    public int getPrefix() {
+        return prefix;
+    }
+
+    public String getSufix() {
+        return sufix;
+    }
+
+    @Override
+    public String toString() {
+        return Integer.toString(prefix) + '-' + sufix;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -28,26 +49,20 @@ public record Money(String currency, BigDecimal value) {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        Money money = (Money) o;
-        return Objects.equals(currency, money.currency) &&
-                Objects.equals(value.doubleValue(), money.value.doubleValue());
+        Plate plate = (Plate) o;
+        return prefix == plate.prefix &&
+                Objects.equals(sufix, plate.sufix);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(currency, value.doubleValue());
+        return Objects.hash(prefix, sufix);
     }
 
-    @Override
-    public String toString() {
-        return currency + " " + value.toString();
+    public static Plate of(String value) {
+        String[] values = value.split("-");
+        return new Plate(Integer.parseInt(values[0]), values[1]);
     }
 
-    public static Money parse(String dbData) {
-        String[] values = dbData.split(" ");
-        String currency = values[0];
-        BigDecimal value = BigDecimal.valueOf(Double.parseDouble(values[1]));
-        return new Money(currency, value);
-    }
+
 }
-

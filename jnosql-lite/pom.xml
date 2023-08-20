@@ -45,15 +45,10 @@
         <module>mapping-lite-core-test</module>
         <module>mapping-lite-document-test</module>
         <module>mapping-lite-column-test</module>
+        <module>mapping-lite-graph-test</module>
     </modules>
 
     <dependencies>
-        <dependency>
-            <groupId>com.google.testing.compile</groupId>
-            <artifactId>compile-testing</artifactId>
-            <version>0.21.0</version>
-            <scope>test</scope>
-        </dependency>
     </dependencies>
 
     <repositories>

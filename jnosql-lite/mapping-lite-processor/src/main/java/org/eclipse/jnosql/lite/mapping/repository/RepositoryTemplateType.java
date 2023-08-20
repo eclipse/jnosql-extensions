@@ -23,14 +23,12 @@ import java.util.function.Supplier;
 enum RepositoryTemplateType implements Supplier<Mustache> {
     DOCUMENT("repository_document.mustache"),
     COLUMN("repository_column.mustache"),
-    KEY_VALUE("repository_key-value.mustache");
-
-    private final String fileName;
+    KEY_VALUE("repository_key-value.mustache"),
+    GRAPH("repository_graph.mustache");
 
     private final Mustache template;
 
     RepositoryTemplateType(String fileName) {
-        this.fileName = fileName;
         MustacheFactory factory = new DefaultMustacheFactory();
         this.template = factory.compile(fileName);
     }
