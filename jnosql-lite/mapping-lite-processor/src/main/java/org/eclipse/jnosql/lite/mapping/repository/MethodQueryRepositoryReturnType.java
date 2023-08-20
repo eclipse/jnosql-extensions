@@ -84,13 +84,13 @@ enum MethodQueryRepositoryReturnType implements Function<MethodMetadata, List<St
         @Override
         public List<String> apply(MethodMetadata metadata) {
             List<String> lines = new ArrayList<>();
-            lines.add("Stream<" + getEntity(metadata) + "> entities = prepare.result()");
+            lines.add("Stream<" + getEntity(metadata) + "> entities = this.template.select(query)");
             Parameter pageable = metadata.findPageable()
                     .orElseThrow(() -> new ValidationException("The method " + metadata.getMethodName() + " from " +
                             metadata.getParametersSignature() + " does not have a Pageable parameter in a pagination method"));
 
             lines.add("jakarta.data.repository.Page<" + getEntity(metadata) + "> result = \n      " +
-                    "org.eclipse.jnosql.mapping.column.query.NoSQLPage.of(entities.toList(), " + pageable.getName() + ")");
+                    "org.eclipse.jnosql.mapping.NoSQLPage.of(entities.toList(), " + pageable.getName() + ")");
             return lines;
         }
     };
