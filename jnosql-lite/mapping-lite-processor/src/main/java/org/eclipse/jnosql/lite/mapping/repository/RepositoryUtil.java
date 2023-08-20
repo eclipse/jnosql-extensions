@@ -14,6 +14,7 @@
  */
 package org.eclipse.jnosql.lite.mapping.repository;
 
+import jakarta.data.repository.CrudRepository;
 import jakarta.data.repository.PageableRepository;
 
 import javax.annotation.processing.ProcessingEnvironment;
@@ -23,9 +24,14 @@ import javax.lang.model.type.TypeMirror;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 final class RepositoryUtil {
+
+    static final Predicate<String> IS_PAGEABLE_REPOSITORY = q -> PageableRepository.class.getName().equals(q);
+    static final Predicate<String> IS_CRUD_REPOSITORY = q -> CrudRepository.class.getName().equals(q);
+    static final Predicate<String> IS_JAKARTA_DATA_REPOSITORY = IS_PAGEABLE_REPOSITORY.or(IS_CRUD_REPOSITORY);
 
     private RepositoryUtil() {
     }
@@ -34,7 +40,7 @@ final class RepositoryUtil {
                                                ProcessingEnvironment processingEnv) {
         for (TypeMirror mirror : interfaces) {
             TypeElement element = (TypeElement) processingEnv.getTypeUtils().asElement(mirror);
-            if (PageableRepository.class.getName().equals(element.getQualifiedName().toString())) {
+            if (IS_JAKARTA_DATA_REPOSITORY.test(element.getQualifiedName().toString())) {
                 return Optional.of(mirror);
             }
         }

@@ -11,10 +11,12 @@
  *   Contributors:
  *
  *   Otavio Santana
+ *   Maximillian Arruda
  */
 package org.eclipse.jnosql.lite.mapping.repository;
 
-import jakarta.data.repository.Repository;
+import jakarta.data.repository.CrudRepository;
+import jakarta.data.repository.PageableRepository;
 import org.eclipse.jnosql.lite.mapping.ValidationException;
 import org.eclipse.jnosql.mapping.DatabaseType;
 
@@ -116,7 +118,8 @@ class RepositoryElement {
                         entityType, keyType, repositoryInterface, type, methods);
             }
         }
-        throw new ValidationException("The interface " + element.toString() + "must extends " + Repository.class.getName());
+        throw new ValidationException("The interface %s must extends %s"
+                .formatted(element.toString(), String.join(" or ", PageableRepository.class.getName(), CrudRepository.class.getName())));
     }
 
 }
