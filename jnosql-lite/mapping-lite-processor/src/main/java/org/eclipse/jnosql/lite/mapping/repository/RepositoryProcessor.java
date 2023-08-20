@@ -71,6 +71,8 @@ public class RepositoryProcessor extends AbstractProcessor {
             types.add(DatabaseType.COLUMN);
         } else if (checkLibrary("jakarta.nosql.keyvalue.KeyValueTemplate")) {
             types.add(DatabaseType.KEY_VALUE);
+        } else if (checkLibrary("org.eclipse.jnosql.mapping.graph.GraphTemplate")) {
+            types.add(DatabaseType.GRAPH);
         }
         return types;
     }
