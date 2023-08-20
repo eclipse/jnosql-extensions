@@ -23,6 +23,7 @@ import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -109,6 +110,16 @@ class MethodMetadata {
 
     public String getEntityType() {
         return entityType;
+    }
+
+    public Optional<Parameter> findPageable(){
+        for (Parameter parameter : this.parameters) {
+            TypeElement element = parameter.getType();
+            if("jakarta.data.repository.Pageable".equals(element.getQualifiedName().toString())){
+                return Optional.of(parameter);
+            }
+        }
+        return Optional.empty();
     }
     public static MethodMetadata of(Element element, String entityType, DatabaseType type, ProcessingEnvironment processingEnv) {
         ElementKind kind = element.getKind();
