@@ -65,6 +65,7 @@ class RepositoryElement {
             case DOCUMENT -> new DocumentRepositoryMetadata(this);
             case COLUMN -> new ColumnRepositoryMetadata(this);
             case KEY_VALUE -> new KeyValueRepositoryMetadata(this);
+            case GRAPH -> new GraphRepositoryMetadata(this);
             default -> throw new UnsupportedOperationException("There is not template to this database type: " + type);
         };
     }
