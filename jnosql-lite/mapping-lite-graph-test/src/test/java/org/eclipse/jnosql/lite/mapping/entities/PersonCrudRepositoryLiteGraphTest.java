@@ -17,7 +17,6 @@ package org.eclipse.jnosql.lite.mapping.entities;
 
 import jakarta.data.repository.Page;
 import jakarta.data.repository.Pageable;
-import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
 import org.assertj.core.api.Assertions;
 import org.eclipse.jnosql.mapping.graph.GraphTemplate;
 import org.eclipse.jnosql.mapping.graph.VertexTraversal;
@@ -38,13 +37,13 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class PersonRepositoryLiteGraphTest {
+public class PersonCrudRepositoryLiteGraphTest {
 
     @Mock
     private GraphTemplate template;
 
     @InjectMocks
-    private PersonRepositoryLiteGraph repository;
+    private PersonCrudRepositoryLiteGraph repository;
 
 
     @Test
@@ -105,7 +104,7 @@ public class PersonRepositoryLiteGraphTest {
     @Test
     public void shouldFindById() {
         Long id = 123L;
-        when(template.find(eq(Person.class), eq(id))).thenReturn(java.util.Optional.of(new Person()));
+        when(template.find(eq(Person.class), eq(id))).thenReturn(Optional.of(new Person()));
 
         repository.findById(id);
 
@@ -124,7 +123,7 @@ public class PersonRepositoryLiteGraphTest {
     @Test
     public void shouldCheckIfEntityExistsById() {
         Long id = 123L;
-        when(template.find(eq(Person.class), eq(id))).thenReturn(java.util.Optional.of(new Person()));
+        when(template.find(eq(Person.class), eq(id))).thenReturn(Optional.of(new Person()));
 
         repository.existsById(id);
 
