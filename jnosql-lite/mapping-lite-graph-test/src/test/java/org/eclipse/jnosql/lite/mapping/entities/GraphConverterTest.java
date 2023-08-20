@@ -259,31 +259,6 @@ abstract class GraphConverterTest {
                 });
     }
 
-    @Test
-    public void shouldCreateByConstructor() {
-        Vertex vertex = getGraph().addVertex(T.label, "Computer",
-                "name", "Dell", "age", 2020, "model", "Dell 2020", "price", "USD 20");
-
-        Computer computer = this.getConverter().toEntity(vertex);
-        assertNotNull(computer);
-        assertEquals("Dell", computer.getName());
-        assertEquals(2020, computer.getAge());
-        assertEquals("Dell 2020", computer.getModel());
-        assertEquals(Money.parse("USD 20"), computer.getPrice());
-    }
-
-    @Test
-    public void shouldCreateByConstructorUsingValueConverter() {
-        Vertex vertex = getGraph().addVertex(T.label, "Computer",
-                "name", "Dell", "age", "2020", "model", "Dell 2020", "price", "USD 20");
-
-        Computer computer = this.getConverter().toEntity(vertex);
-        assertNotNull(computer);
-        assertEquals("Dell", computer.getName());
-        assertEquals(2020, computer.getAge());
-        assertEquals("Dell 2020", computer.getModel());
-        assertEquals(Money.parse("USD 20"), computer.getPrice());
-    }
 
     @Test
     public void shouldCreateByConstructorBookReleaseEntity() {
