@@ -16,6 +16,7 @@ package org.eclipse.jnosql.lite.mapping.entities;
 
 import jakarta.inject.Inject;
 import org.apache.tinkerpop.gremlin.structure.Graph;
+import org.eclipse.jnosql.lite.mapping.metadata.LiteEntitiesMetadata;
 import org.eclipse.jnosql.mapping.Converters;
 import org.eclipse.jnosql.mapping.graph.GraphConverter;
 import org.eclipse.jnosql.mapping.graph.Transactional;
@@ -29,6 +30,7 @@ import org.jboss.weld.junit5.auto.EnableAutoWeld;
 @EnableAutoWeld
 @AddPackages(value = {Converters.class, Transactional.class})
 @AddPackages(GraphProducer.class)
+@AddPackages(LiteEntitiesMetadata.class)
 @AddExtensions({EntityMetadataExtension.class, GraphExtension.class})
 class DefaultGraphConverterTest extends GraphConverterTest {
 

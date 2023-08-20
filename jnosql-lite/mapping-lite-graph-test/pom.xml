@@ -25,6 +25,9 @@
 
     <artifactId>mapping-lite-graph-test</artifactId>
     <packaging>jar</packaging>
+    <properties>
+        <argLine> --add-opens java.base/java.lang=ALL-UNNAMED --add-exports java.base/sun.nio.ch=ALL-UNNAMED </argLine>
+    </properties>
 
     <dependencies>
         <dependency>

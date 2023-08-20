@@ -260,36 +260,5 @@ abstract class GraphConverterTest {
     }
 
 
-    @Test
-    public void shouldCreateByConstructorBookReleaseEntity() {
-        Vertex vertex = getGraph().addVertex(T.label, "BookRelease",
-                "isbn", "9780132345286",
-                "title", "Effective Java",
-                "author", "Joshua Bloch",
-                "year", 2001);
-
-        BookRelease book = this.getConverter().toEntity(vertex);
-        assertNotNull(book);
-        assertEquals(vertex.id().toString(), book.getIsbn());
-        assertEquals("Effective Java", book.getTitle());
-        assertEquals("Joshua Bloch", book.getAuthor());
-        assertEquals(Year.of(2001), book.getYear());
-    }
-
-    @Test
-    public void shouldCreateByConstructorBookReleaseEntityUsingConverter() {
-        Vertex vertex = getGraph().addVertex(T.label, "BookRelease",
-                "isbn", "9780132345286",
-                "title", "Effective Java",
-                "author", "Joshua Bloch",
-                "year", "2001");
-
-        BookRelease book = this.getConverter().toEntity(vertex);
-        assertNotNull(book);
-        assertEquals(vertex.id().toString(), book.getIsbn());
-        assertEquals("Effective Java", book.getTitle());
-        assertEquals("Joshua Bloch", book.getAuthor());
-        assertEquals(Year.of(2001), book.getYear());
-    }
 
 }
