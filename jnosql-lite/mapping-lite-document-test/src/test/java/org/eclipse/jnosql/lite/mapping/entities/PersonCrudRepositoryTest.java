@@ -12,7 +12,7 @@
  *
  *   Maximillian Arruda
  */
-package org.eclipse.jnosql.mapping.lite.document;
+package org.eclipse.jnosql.lite.mapping.entities;
 
 import jakarta.nosql.PreparedStatement;
 import org.assertj.core.api.SoftAssertions;

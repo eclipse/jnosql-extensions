@@ -23,13 +23,18 @@ import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.joining;
 
 class MethodMetadata {
 
+    private static final Predicate<Parameter> IS_SPECIAL_PARAM = p -> p.getType().getQualifiedName().toString().equals("jakarta.data.repository.Limit") ||
+            p.getType().getQualifiedName().toString().equals("jakarta.data.repository.Pageable") ||
+            p.getType().getQualifiedName().toString().equals("jakarta.data.repository.Sort");
     private final String methodName;
 
     private final TypeElement returnElement;
@@ -79,6 +84,20 @@ class MethodMetadata {
         return parameters;
     }
 
+    public List<Parameter> getQueryParams() {
+        return parameters.stream().filter(IS_SPECIAL_PARAM.negate()).toList();
+    }
+
+    public boolean hasSpecialParameter() {
+        return parameters.stream().anyMatch(IS_SPECIAL_PARAM);
+    }
+
+    public String getSpecialParameter() {
+        return parameters.stream().filter(IS_SPECIAL_PARAM)
+                .map(Parameter::getName).collect(joining(", "));
+    }
+
+
     public List<String> getSourceCode() {
         return this.generator.getLines();
     }
@@ -110,6 +129,16 @@ class MethodMetadata {
     public String getEntityType() {
         return entityType;
     }
+
+    public Optional<Parameter> findPageable(){
+        for (Parameter parameter : this.parameters) {
+            TypeElement element = parameter.getType();
+            if("jakarta.data.repository.Pageable".equals(element.getQualifiedName().toString())){
+                return Optional.of(parameter);
+            }
+        }
+        return Optional.empty();
+    }
     public static MethodMetadata of(Element element, String entityType, DatabaseType type, ProcessingEnvironment processingEnv) {
         ElementKind kind = element.getKind();
         if (ElementKind.METHOD.equals(kind)) {
@@ -127,5 +156,7 @@ class MethodMetadata {
         }
         return null;
     }
+
+
 
 }

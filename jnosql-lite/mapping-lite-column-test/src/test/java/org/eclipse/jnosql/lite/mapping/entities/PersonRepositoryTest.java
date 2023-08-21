@@ -14,8 +14,10 @@
  */
 package org.eclipse.jnosql.lite.mapping.entities;
 
+import jakarta.data.repository.Limit;
 import jakarta.data.repository.Page;
 import jakarta.data.repository.Pageable;
+import jakarta.data.repository.Sort;
 import jakarta.nosql.PreparedStatement;
 import org.assertj.core.api.SoftAssertions;
 import org.eclipse.jnosql.communication.Condition;
@@ -253,5 +255,27 @@ class PersonRepositoryTest {
         });
 
     }
+
+
+    @Test
+    public void shouldFindPageable(){
+        when(template.select(any(ColumnQuery.class))).thenReturn( Stream.of(new Person(), new Person()));
+        Pageable pageable = Pageable.ofPage(10).sortBy(Sort.asc("name"));
+        Page<Person> result = this.personRepository.findByName("Ada", pageable);
+        ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
+        assertThat(result).isNotEmpty().hasSize(2);
+        verify(template).select(captor.capture());
+        ColumnQuery query = captor.getValue();
+        ColumnCondition condition = query.condition().orElseThrow();
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(condition.condition()).isEqualTo(Condition.EQUALS);
+            soft.assertThat(condition.column().get(String.class)).isEqualTo("Ada");
+            soft.assertThat(query.sorts()).hasSize(1).contains(Sort.asc("name"));
+            soft.assertThat(query.skip()).isEqualTo(90L);
+            soft.assertThat(query.limit()).isEqualTo(10L);
+        });
+
+    }
+
 
 }

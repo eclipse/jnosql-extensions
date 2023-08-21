@@ -14,6 +14,8 @@
  */
 package org.eclipse.jnosql.lite.mapping.repository;
 
+import org.eclipse.jnosql.lite.mapping.ValidationException;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
@@ -78,6 +80,19 @@ enum MethodQueryRepositoryReturnType implements Function<MethodMetadata, List<St
             lines.add(getEntity(metadata) + " result = entityResult.orElse(null)");
             return lines;
         }
+    }, PAGINATION {
+        @Override
+        public List<String> apply(MethodMetadata metadata) {
+            List<String> lines = new ArrayList<>();
+            lines.add("Stream<" + getEntity(metadata) + "> entities = this.template.select(query)");
+            Parameter pageable = metadata.findPageable()
+                    .orElseThrow(() -> new ValidationException("The method " + metadata.getMethodName() + " from " +
+                            metadata.getParametersSignature() + " does not have a Pageable parameter in a pagination method"));
+
+            lines.add("jakarta.data.repository.Page<" + getEntity(metadata) + "> result = \n      " +
+                    "org.eclipse.jnosql.mapping.NoSQLPage.of(entities.toList(), " + pageable.getName() + ")");
+            return lines;
+        }
     };
 
     static String getEntity(MethodMetadata metadata) {
@@ -96,6 +111,7 @@ enum MethodQueryRepositoryReturnType implements Function<MethodMetadata, List<St
             case "java.util.Queue", "java.util.Deque" -> QUEUE;
             case "java.util.SortedSet", "java.util.TreeSet" -> SORTED_SET;
             case "java.util.Optional" -> OPTIONAL;
+            case "jakarta.data.repository.Page", "jakarta.data.repository.Slice" -> PAGINATION;
             default -> throw new UnsupportedOperationException("This return is not supported: " + returnType);
         };
 

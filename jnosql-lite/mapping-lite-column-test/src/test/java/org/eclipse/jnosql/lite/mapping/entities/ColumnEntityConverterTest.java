@@ -12,7 +12,7 @@
  *
  *   Otavio Santana
  */
-package org.eclipse.jnosql.lite.mapping.entities.column;
+package org.eclipse.jnosql.lite.mapping.entities;
 
 import jakarta.inject.Inject;
 import org.eclipse.jnosql.communication.TypeReference;
