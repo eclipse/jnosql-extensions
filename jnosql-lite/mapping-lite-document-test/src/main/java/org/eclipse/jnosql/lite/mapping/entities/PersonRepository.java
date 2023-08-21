@@ -14,14 +14,10 @@
  */
 package org.eclipse.jnosql.lite.mapping.entities;
 
-import jakarta.data.repository.Limit;
-import jakarta.data.repository.Page;
-import jakarta.data.repository.Pageable;
 import jakarta.data.repository.PageableRepository;
 import jakarta.data.repository.Param;
 import jakarta.data.repository.Query;
 import jakarta.data.repository.Repository;
-import jakarta.data.repository.Sort;
 
 import java.util.List;
 
@@ -29,10 +25,6 @@ import java.util.List;
 public interface PersonRepository extends PageableRepository<Person, Long> {
 
     List<Person> findByName(String name);
-
-    Page<Person> findByName(String name, Pageable pageable);
-
-    Page<Person> findByName(String name, Sort sort, Limit limit, Pageable pageable);
 
     @Query("select * from Person where name = @name")
     List<Person> query(@Param("name") String name);
