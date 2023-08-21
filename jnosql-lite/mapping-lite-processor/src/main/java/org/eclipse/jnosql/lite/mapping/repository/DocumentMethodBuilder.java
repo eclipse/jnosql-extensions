@@ -105,7 +105,14 @@ enum DocumentMethodBuilder implements Function<MethodMetadata, List<String>> {
                 "org.eclipse.jnosql.mapping.document.query.RepositoryDocumentObserverParser.of(metadata)");
         lines.add("org.eclipse.jnosql.communication.document.DocumentQueryParams queryParams = " + SPACE +
                 "SELECT_PARSER.apply(selectQuery, parser)");
-        lines.add("org.eclipse.jnosql.communication.document.DocumentQuery query = queryParams.query()");
+        if (metadata.hasSpecialParameter()) {
+            lines.add("org.eclipse.jnosql.communication.document.DocumentQuery query = " + SPACE +
+                    " org.eclipse.jnosql.mapping.document.query.DynamicQuery.of(new Object[]{" +
+                    metadata.getSpecialParameter() +
+                    "},  " + SPACE + "queryParams.query())");
+        } else {
+            lines.add("org.eclipse.jnosql.communication.document.DocumentQuery query = queryParams.query()");
+        }
         lines.add("org.eclipse.jnosql.communication.Params params = queryParams.params()");
         for (Parameter parameter : metadata.getQueryParams()) {
             lines.add("params.prefix(\"" + parameter.getName() + "\", " + parameter.getName() + ")");

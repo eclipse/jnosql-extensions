@@ -32,6 +32,9 @@ import static java.util.stream.Collectors.joining;
 
 class MethodMetadata {
 
+    private static final Predicate<Parameter> IS_SPECIAL_PARAM = p -> p.getType().getQualifiedName().toString().equals("jakarta.data.repository.Limit") ||
+            p.getType().getQualifiedName().toString().equals("jakarta.data.repository.Pageable") ||
+            p.getType().getQualifiedName().toString().equals("jakarta.data.repository.Sort");
     private final String methodName;
 
     private final TypeElement returnElement;
@@ -82,11 +85,16 @@ class MethodMetadata {
     }
 
     public List<Parameter> getQueryParams() {
-        Predicate<Parameter> isSpecialParam = p -> p.getType().getQualifiedName().toString().equals("jakarta.data.repository.Limit") ||
-                p.getType().getQualifiedName().toString().equals("jakarta.data.repository.Pageable") ||
-                p.getType().getQualifiedName().toString().equals("jakarta.data.repository.Sort");
-        return parameters.stream().filter(isSpecialParam.negate())
-                .toList();
+        return parameters.stream().filter(IS_SPECIAL_PARAM.negate()).toList();
+    }
+
+    public boolean hasSpecialParameter() {
+        return parameters.stream().anyMatch(IS_SPECIAL_PARAM);
+    }
+
+    public String getSpecialParameter() {
+        return parameters.stream().filter(IS_SPECIAL_PARAM)
+                .map(Parameter::getName).collect(joining(", "));
     }
 
 
@@ -148,5 +156,7 @@ class MethodMetadata {
         }
         return null;
     }
+
+
 
 }
