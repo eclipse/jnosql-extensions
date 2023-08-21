@@ -107,6 +107,7 @@ WARNING: Keep in mind these limitations when designing and implementing your app
 Additionally, you can use Repositories from Jakarta Data, but note that certain limitations apply to entity modeling:
 
 - There is no support for Sort in List or in Array.
+- Graph and Key-Value Repositories do not support method by query.
 
 Now you're ready to explore the enhanced features of Eclipse JNoSQL Lite and leverage its benefits without relying on Reflection.
 
