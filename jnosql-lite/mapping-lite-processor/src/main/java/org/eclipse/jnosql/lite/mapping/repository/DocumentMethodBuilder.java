@@ -41,7 +41,7 @@ enum DocumentMethodBuilder implements Function<MethodMetadata, List<String>> {
             for (Parameter parameter : metadata.getParameters()) {
                 if (parameter.hasParam()) {
                     Param param = parameter.getParam();
-                    lines.add("prepare.bind(\"" + param.value() + "\"," + parameter.getName() + ")");
+                    lines.add("prepare.bind(\"" + param.value() + "\", " + parameter.getName() + ")");
                 }
             }
             AnnotationQueryRepositoryReturnType returnType = AnnotationQueryRepositoryReturnType.of(metadata);
@@ -82,7 +82,7 @@ enum DocumentMethodBuilder implements Function<MethodMetadata, List<String>> {
                     "DELETE_PARSER.apply(delete, parser)");
             lines.add("org.eclipse.jnosql.communication.Params params = queryParams.params()");
             for (Parameter parameter : metadata.getParameters()) {
-                lines.add("params.prefix(\"" + parameter.getName() + "\"," + parameter.getName() + ")");
+                lines.add("params.prefix(\"" + parameter.getName() + "\", " + parameter.getName() + ")");
             }
             lines.add("this.template.delete(queryParams.query())");
             return lines;
@@ -106,7 +106,7 @@ enum DocumentMethodBuilder implements Function<MethodMetadata, List<String>> {
         lines.add("org.eclipse.jnosql.communication.document.DocumentQuery query = queryParams.query()");
         lines.add("org.eclipse.jnosql.communication.Params params = queryParams.params()");
         for (Parameter parameter : metadata.getQueryParams()) {
-            lines.add("params.prefix(\"" + parameter.getName() + "\"," + parameter.getName() + ")");
+            lines.add("params.prefix(\"" + parameter.getName() + "\", " + parameter.getName() + ")");
         }
     }
 
