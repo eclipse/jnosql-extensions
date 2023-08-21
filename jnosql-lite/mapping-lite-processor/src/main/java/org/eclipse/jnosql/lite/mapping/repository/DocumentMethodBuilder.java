@@ -70,15 +70,15 @@ enum DocumentMethodBuilder implements Function<MethodMetadata, List<String>> {
         @Override
         public List<String> apply(MethodMetadata metadata) {
             List<String> lines = new ArrayList<>();
-            lines.add("org.eclipse.jnosql.communication.query.method.DeleteMethodProvider deleteMethodFactory = \n          " +
+            lines.add("org.eclipse.jnosql.communication.query.method.DeleteMethodProvider deleteMethodFactory = " + SPACE +
                     "org.eclipse.jnosql.communication.query.method.DeleteMethodProvider.INSTANCE");
-            lines.add("org.eclipse.jnosql.communication.query.method.DeleteByMethodQueryProvider supplier = \n          " +
+            lines.add("org.eclipse.jnosql.communication.query.method.DeleteByMethodQueryProvider supplier = " + SPACE +
                     " new org.eclipse.jnosql.communication.query.method.DeleteByMethodQueryProvider()");
             lines.add("org.eclipse.jnosql.communication.query.DeleteQuery delete = supplier.apply(\"" +
                     metadata.getMethodName() + "\", metadata.name())");
-            lines.add("org.eclipse.jnosql.communication.document.DocumentObserverParser parser = \n          " +
+            lines.add("org.eclipse.jnosql.communication.document.DocumentObserverParser parser = " + SPACE +
                     "org.eclipse.jnosql.mapping.document.query.RepositoryDocumentObserverParser.of(metadata)");
-            lines.add("org.eclipse.jnosql.communication.document.DocumentDeleteQueryParams queryParams = \n          " +
+            lines.add("org.eclipse.jnosql.communication.document.DocumentDeleteQueryParams queryParams = " + SPACE +
                     "DELETE_PARSER.apply(delete, parser)");
             lines.add("org.eclipse.jnosql.communication.Params params = queryParams.params()");
             for (Parameter parameter : metadata.getParameters()) {
@@ -94,14 +94,16 @@ enum DocumentMethodBuilder implements Function<MethodMetadata, List<String>> {
         }
     };
 
+    private static final String SPACE = "\n          ";
+
     private static void feedSelectQuery(MethodMetadata metadata, List<String> lines) {
-        lines.add("org.eclipse.jnosql.communication.query.method.SelectMethodQueryProvider supplier = \n          " +
+        lines.add("org.eclipse.jnosql.communication.query.method.SelectMethodQueryProvider supplier = " + SPACE +
                 "new org.eclipse.jnosql.communication.query.method.SelectMethodQueryProvider()");
-        lines.add("org.eclipse.jnosql.communication.query.SelectQuery selectQuery = \n          " +
+        lines.add("org.eclipse.jnosql.communication.query.SelectQuery selectQuery = " + SPACE +
                 "supplier.apply(\"" + metadata.getMethodName() + "\", metadata.name())");
-        lines.add("org.eclipse.jnosql.communication.document.DocumentObserverParser parser = \n          " +
+        lines.add("org.eclipse.jnosql.communication.document.DocumentObserverParser parser = " + SPACE +
                 "org.eclipse.jnosql.mapping.document.query.RepositoryDocumentObserverParser.of(metadata)");
-        lines.add("org.eclipse.jnosql.communication.document.DocumentQueryParams queryParams = \n          " +
+        lines.add("org.eclipse.jnosql.communication.document.DocumentQueryParams queryParams = " + SPACE +
                 "SELECT_PARSER.apply(selectQuery, parser)");
         lines.add("org.eclipse.jnosql.communication.document.DocumentQuery query = queryParams.query()");
         lines.add("org.eclipse.jnosql.communication.Params params = queryParams.params()");
