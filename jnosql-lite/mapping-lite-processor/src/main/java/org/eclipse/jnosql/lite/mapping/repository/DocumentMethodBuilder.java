@@ -105,7 +105,7 @@ enum DocumentMethodBuilder implements Function<MethodMetadata, List<String>> {
                 "SELECT_PARSER.apply(selectQuery, parser)");
         lines.add("org.eclipse.jnosql.communication.document.DocumentQuery query = queryParams.query()");
         lines.add("org.eclipse.jnosql.communication.Params params = queryParams.params()");
-        for (Parameter parameter : metadata.getParameters()) {
+        for (Parameter parameter : metadata.getQueryParams()) {
             lines.add("params.prefix(\"" + parameter.getName() + "\"," + parameter.getName() + ")");
         }
     }

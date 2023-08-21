@@ -14,7 +14,6 @@
  */
 package org.eclipse.jnosql.lite.mapping.repository;
 
-import org.eclipse.jnosql.lite.mapping.ValidationException;
 
 import javax.lang.model.element.TypeElement;
 import java.util.ArrayList;

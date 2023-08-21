@@ -25,6 +25,7 @@ import javax.lang.model.element.TypeElement;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.joining;
@@ -79,6 +80,15 @@ class MethodMetadata {
     public List<Parameter> getParameters() {
         return parameters;
     }
+
+    public List<Parameter> getQueryParams() {
+        Predicate<Parameter> isSpecialParam = p -> p.getType().getQualifiedName().toString().equals("jakarta.data.repository.Limit") ||
+                p.getType().getQualifiedName().toString().equals("jakarta.data.repository.Pageable") ||
+                p.getType().getQualifiedName().toString().equals("jakarta.data.repository.Sort");
+        return parameters.stream().filter(isSpecialParam.negate())
+                .toList();
+    }
+
 
     public List<String> getSourceCode() {
         return this.generator.getLines();
