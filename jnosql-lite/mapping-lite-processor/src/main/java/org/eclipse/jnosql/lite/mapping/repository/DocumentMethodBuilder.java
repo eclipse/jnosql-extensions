@@ -109,7 +109,7 @@ enum DocumentMethodBuilder implements Function<MethodMetadata, List<String>> {
             lines.add("org.eclipse.jnosql.communication.document.DocumentQuery query = " + SPACE +
                     " org.eclipse.jnosql.mapping.document.query.DynamicQuery.of(new Object[]{" +
                     metadata.getSpecialParameter() +
-                    "},  " + SPACE + "queryParams.query())");
+                    "},  " + SPACE + "queryParams.query()).get()");
         } else {
             lines.add("org.eclipse.jnosql.communication.document.DocumentQuery query = queryParams.query()");
         }
