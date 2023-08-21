@@ -279,7 +279,6 @@ class PersonRepositoryTest {
         });
 
     }
-
     @Test
     public void shouldFindPageableLimit(){
         when(template.select(any(DocumentQuery.class))).thenReturn( Stream.of(new Person(), new Person()));
