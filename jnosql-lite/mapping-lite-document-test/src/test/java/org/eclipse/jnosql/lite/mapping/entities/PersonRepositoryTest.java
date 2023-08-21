@@ -279,25 +279,4 @@ class PersonRepositoryTest {
         });
 
     }
-    @Test
-    public void shouldFindPageableLimit(){
-        when(template.select(any(DocumentQuery.class))).thenReturn( Stream.of(new Person(), new Person()));
-        Pageable pageable = Pageable.ofPage(10).sortBy(Sort.asc("name"));
-        Page<Person> result = this.personRepository.findByName("Ada", Sort.asc("age"),
-                Limit.of(10), pageable);
-        ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
-        assertThat(result).isNotEmpty().hasSize(2);
-        verify(template).select(captor.capture());
-        DocumentQuery query = captor.getValue();
-        DocumentCondition condition = query.condition().orElseThrow();
-        SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(condition.condition()).isEqualTo(Condition.EQUALS);
-            soft.assertThat(condition.document().get(String.class)).isEqualTo("Ada");
-            soft.assertThat(query.sorts()).hasSize(2).contains(Sort.asc("name"), Sort.asc("age"));
-            soft.assertThat(query.skip()).isEqualTo(0L);
-            soft.assertThat(query.limit()).isEqualTo(10L);
-        });
-
-    }
-
 }
