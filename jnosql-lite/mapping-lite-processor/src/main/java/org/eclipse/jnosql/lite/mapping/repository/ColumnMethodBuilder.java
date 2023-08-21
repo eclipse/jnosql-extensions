@@ -106,7 +106,14 @@ enum ColumnMethodBuilder implements Function<MethodMetadata, List<String>> {
                 "org.eclipse.jnosql.mapping.column.query.RepositoryColumnObserverParser.of(metadata)");
         lines.add("org.eclipse.jnosql.communication.column.ColumnQueryParams queryParams = " + SPACE +
                 "SELECT_PARSER.apply(selectQuery, parser)");
-        lines.add("org.eclipse.jnosql.communication.column.ColumnQuery query = queryParams.query()");
+        if (metadata.hasSpecialParameter()) {
+            lines.add("org.eclipse.jnosql.communication.column.ColumnQuery query = " + SPACE +
+                    " org.eclipse.jnosql.mapping.column.query.DynamicQuery.of(new Object[]{" +
+                    metadata.getSpecialParameter() +
+                    "},  " + SPACE + "queryParams.query()).get()");
+        } else {
+            lines.add("org.eclipse.jnosql.communication.column.ColumnQuery query = queryParams.query()");
+        }
         lines.add("org.eclipse.jnosql.communication.Params params = queryParams.params()");
         for (Parameter parameter : metadata.getQueryParams()) {
             lines.add("params.prefix(\"" + parameter.getName() + "\", " + parameter.getName() + ")");
