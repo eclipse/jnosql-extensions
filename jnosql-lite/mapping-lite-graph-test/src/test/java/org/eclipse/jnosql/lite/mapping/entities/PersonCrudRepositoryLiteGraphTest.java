@@ -81,10 +81,11 @@ public class PersonCrudRepositoryLiteGraphTest {
     @Test
     public void shouldDeleteEntity() {
         Person person = new Person();
+        person.setId(1L);
 
         repository.delete(person);
 
-        verify(template).delete(person);
+        verify(template,times(1)).deleteById(eq(person.getId()));
     }
 
     @Test
