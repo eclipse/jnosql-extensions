@@ -104,7 +104,8 @@ public class {{className}} implements {{repository}} {
     @Override
     public void delete({{entityType}} entity) {
         requireNonNull(entity, "entity is required");
-        getTemplate().delete(entity);
+        Object id = getIdField().read(entity);
+        this.deleteById(({{keyType}}) id);
     }
 
 
@@ -117,7 +118,7 @@ public class {{className}} implements {{repository}} {
     @Override
     public void deleteAll(Iterable<? extends {{entityType}}> entities) {
         requireNonNull(entities, "entities is required");
-        getTemplate().delete(entities);
+        entities.forEach(this::delete);
     }
 
     @Override

@@ -108,7 +108,7 @@ class PersonCrudRepositoryTest {
 
         personRepository.delete(person);
 
-        verify(template, times(1)).delete(eq(person));
+        verify(template, times(1)).delete(eq(Person.class),eq(person.getId()));
     }
 
     @Test
