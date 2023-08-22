@@ -92,14 +92,14 @@ public class {{className}} implements {{repository}} {
     @Override
     public void deleteById({{keyType}} id) {
         requireNonNull(id, "id is required");
-        getTemplate().deleteById(id);
+        getTemplate().delete(id);
     }
 
     @Override
     public void delete({{entityType}} entity) {
         requireNonNull(entity, "entity is required");
         Object id = getIdField().read(entity);
-        getTemplate().deleteById(({{keyType}}) id);
+        getTemplate().delete(({{keyType}}) id);
     }
 
 

@@ -63,7 +63,7 @@ public class UserRepositoryLiteKeyValueTest {
 
         userRepository.deleteById(id);
 
-        verify(template, times(1)).deleteByKey(eq(id));
+        verify(template, times(1)).delete(eq(id));
     }
 
     @Test

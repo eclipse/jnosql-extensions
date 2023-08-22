@@ -75,7 +75,7 @@ public class PersonCrudRepositoryLiteGraphTest {
 
         repository.deleteById(id);
 
-        verify(template).deleteById(id);
+        verify(template).delete(id);
     }
 
     @Test
@@ -85,14 +85,14 @@ public class PersonCrudRepositoryLiteGraphTest {
 
         repository.delete(person);
 
-        verify(template,times(1)).deleteById(eq(person.getId()));
+        verify(template,times(1)).delete(eq(person.getId()));
     }
 
     @Test
     public void shouldDeleteAllByIds() {
         repository.deleteAllById(List.of(1L, 2L, 3L));
 
-        verify(template, times(3)).deleteById(anyLong());
+        verify(template, times(3)).delete(anyLong());
     }
 
     @Test
