@@ -14,6 +14,11 @@
 */
 package {{package}};
 
+import org.eclipse.jnosql.lite.mapping.metadata.LiteEntitiesMetadata;
+import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
+import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
+import org.eclipse.jnosql.mapping.metadata.FieldMetadata;
+
 import jakarta.data.repository.Page;
 import jakarta.data.repository.Pageable;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -30,7 +35,7 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 import static java.util.Objects.requireNonNull;
-
+import static org.eclipse.jnosql.mapping.IdNotFoundException.KEY_NOT_FOUND_EXCEPTION_SUPPLIER;
 
 @ApplicationScoped
 @Default
@@ -40,13 +45,22 @@ public class {{className}} implements {{repository}} {
 
     private final KeyValueTemplate template;
 
+    private final EntityMetadata metadata;
+
     @Inject
     public {{className}}(KeyValueTemplate template) {
-       this.template = template;
+        this.template = Objects.requireNonNull(template, "template is required");
+        EntitiesMetadata entities = LiteEntitiesMetadata.INSTANCE;
+        this.metadata = entities.get({{entityType}}.class);
     }
 
     public {{className}}() {
         this.template = null;
+        this.metadata = null;
+    }
+
+    EntityMetadata getEntityMetadata(){
+        return metadata;
     }
 
     @Override
@@ -119,13 +133,18 @@ public class {{className}} implements {{repository}} {
     @Override
     public void deleteAll(Iterable<? extends {{entityType}}> entities) {
         Objects.requireNonNull(entities, "entities is required");
-        this.template.delete(entities);
+        entities.forEach(this::delete);
     }
 
     @Override
     public void delete({{entityType}} entity) {
         Objects.requireNonNull(entity, "entity is required");
-        this.template.delete(entity);
+        Object id = getIdField().read(entity);
+        this.deleteById(({{keyType}}) id);
+    }
+
+    private FieldMetadata getIdField() {
+        return getEntityMetadata().id().orElseThrow(KEY_NOT_FOUND_EXCEPTION_SUPPLIER);
     }
 
     {{#methods}}
