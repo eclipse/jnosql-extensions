@@ -33,6 +33,8 @@
     <properties>
         <jnosql-communication-driver.version>${project.version}</jnosql-communication-driver.version>
         <jnosql-mapping.version>${project.version}</jnosql-mapping.version>
+        <tinkerpop.version>3.7.0</tinkerpop.version>
+        <neo4j.connector.version>0.9-3.4.0</neo4j.connector.version>
     </properties>
 
     <scm>
