@@ -100,7 +100,7 @@ public class PersonRepositoryLiteGraphTest {
     public void shouldDeleteAllEntities() {
         repository.deleteAll();
 
-        verify(template).delete(eq(Person.class));
+        verify(template).deleteAll(eq(Person.class));
     }
 
     @Test
