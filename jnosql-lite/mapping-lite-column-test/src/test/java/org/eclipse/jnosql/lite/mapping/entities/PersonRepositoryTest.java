@@ -116,7 +116,7 @@ class PersonRepositoryTest {
     public void shouldDeleteAllEntities() {
         personRepository.deleteAll();
 
-        verify(template, times(1)).delete(eq(Person.class));
+        verify(template, times(1)).deleteAll(eq(Person.class));
     }
 
     @Test
