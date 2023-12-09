@@ -36,7 +36,7 @@ import org.eclipse.jnosql.lite.mapping.entities.UserScope;
 import org.eclipse.jnosql.lite.mapping.entities.Vendor;
 import org.eclipse.jnosql.lite.mapping.entities.Worker;
 import org.eclipse.jnosql.lite.mapping.entities.ZipCode;
-import org.eclipse.jnosql.mapping.Converters;
+import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.document.DocumentEntityConverter;
 import org.eclipse.jnosql.mapping.document.spi.DocumentExtension;
 import org.eclipse.jnosql.mapping.spi.EntityMetadataExtension;

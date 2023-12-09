@@ -90,7 +90,7 @@ enum MethodQueryRepositoryReturnType implements Function<MethodMetadata, List<St
                             metadata.getParametersSignature() + " does not have a Pageable parameter in a pagination method"));
 
             lines.add("jakarta.data.repository.Page<" + getEntity(metadata) + "> result = \n      " +
-                    "org.eclipse.jnosql.mapping.NoSQLPage.of(entities.toList(), " + pageable.getName() + ")");
+                    "org.eclipse.jnosql.mapping.core.NoSQLPage.of(entities.toList(), " + pageable.getName() + ")");
             return lines;
         }
     };

@@ -19,7 +19,7 @@ import org.eclipse.jnosql.mapping.document.DocumentEntityConverter;
 import org.eclipse.jnosql.mapping.document.DocumentEventPersistManager;
 import jakarta.inject.Inject;
 import org.eclipse.jnosql.communication.document.DocumentManager;
-import org.eclipse.jnosql.mapping.Converters;
+import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.criteria.api.CriteriaDocumentTemplate;
 import org.eclipse.jnosql.mapping.criteria.api.CriteriaDocumentTemplateProducer;
 import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
