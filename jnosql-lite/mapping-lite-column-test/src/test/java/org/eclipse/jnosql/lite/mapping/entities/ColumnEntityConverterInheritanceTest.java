@@ -29,7 +29,7 @@ import org.eclipse.jnosql.lite.mapping.entities.inheritance.ProjectManager;
 import org.eclipse.jnosql.lite.mapping.entities.inheritance.SmallProject;
 import org.eclipse.jnosql.lite.mapping.entities.inheritance.SmsNotification;
 import org.eclipse.jnosql.lite.mapping.entities.inheritance.SocialMediaNotification;
-import org.eclipse.jnosql.mapping.Converters;
+import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.column.ColumnEntityConverter;
 import org.eclipse.jnosql.mapping.column.spi.ColumnExtension;
 import org.eclipse.jnosql.mapping.spi.EntityMetadataExtension;
