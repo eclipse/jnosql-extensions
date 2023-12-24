@@ -28,6 +28,8 @@ public interface PersonRepository extends PageableRepository<Person, Long> {
 
     List<Person> findByName(String name);
 
+    List<Person> findByNameOrderbyId(String name);
+
     Page<Person> findByName(String name, Pageable pageable);
 
     @Query("select * from Person where name = @name")
