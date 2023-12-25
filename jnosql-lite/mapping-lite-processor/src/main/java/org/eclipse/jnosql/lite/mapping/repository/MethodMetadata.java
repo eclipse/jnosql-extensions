@@ -133,7 +133,7 @@ class MethodMetadata {
     public Optional<Parameter> findPageable(){
         for (Parameter parameter : this.parameters) {
             TypeElement element = parameter.getType();
-            if("jakarta.data.repository.Pageable".equals(element.getQualifiedName().toString())){
+            if("jakarta.data.page.Pageable".equals(element.getQualifiedName().toString())){
                 return Optional.of(parameter);
             }
         }

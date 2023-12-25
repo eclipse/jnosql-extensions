@@ -89,7 +89,7 @@ enum MethodQueryRepositoryReturnType implements Function<MethodMetadata, List<St
                     .orElseThrow(() -> new ValidationException("The method " + metadata.getMethodName() + " from " +
                             metadata.getParametersSignature() + " does not have a Pageable parameter in a pagination method"));
 
-            lines.add("jakarta.data.repository.Page<" + getEntity(metadata) + "> result = \n      " +
+            lines.add("jakarta.data.page.Page<" + getEntity(metadata) + "> result = \n      " +
                     "org.eclipse.jnosql.mapping.core.NoSQLPage.of(entities.toList(), " + pageable.getName() + ")");
             return lines;
         }
@@ -111,7 +111,7 @@ enum MethodQueryRepositoryReturnType implements Function<MethodMetadata, List<St
             case "java.util.Queue", "java.util.Deque" -> QUEUE;
             case "java.util.SortedSet", "java.util.TreeSet" -> SORTED_SET;
             case "java.util.Optional" -> OPTIONAL;
-            case "jakarta.data.repository.Page", "jakarta.data.repository.Slice" -> PAGINATION;
+            case "jakarta.data.page.Page", "jakarta.data.page.Slice" -> PAGINATION;
             default -> throw new UnsupportedOperationException("This return is not supported: " + returnType);
         };
 
