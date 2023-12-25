@@ -14,7 +14,7 @@
  */
 package org.eclipse.jnosql.mapping.criteria;
 
-import jakarta.data.repository.Sort;
+import jakarta.data.Sort;
 import org.eclipse.jnosql.communication.document.DocumentCondition;
 import org.eclipse.jnosql.mapping.criteria.api.BinaryPredicate;
 import org.eclipse.jnosql.mapping.criteria.api.CompositionPredicate;
