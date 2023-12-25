@@ -84,7 +84,7 @@ public class UserRepositoryLiteKeyValueTest {
         when(template.get(eq(id1), eq(User.class))).thenReturn(Optional.of(new User()));
         when(template.get(eq(id2), eq(User.class))).thenReturn(Optional.of(new User()));
 
-        List<User> users = userRepository.findAllById(ids).toList();
+        List<User> users = userRepository.findByIdIn(ids).toList();
 
         verify(template, times(2)).get(anyString(), eq(User.class));
 

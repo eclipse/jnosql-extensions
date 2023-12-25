@@ -126,7 +126,7 @@ class PersonRepositoryTest {
         Person person2 = new Person();
         when(template.find(eq(Person.class), anyLong())).thenReturn(Optional.of(person1), Optional.of(person2));
 
-        Stream<Person> foundPersons = personRepository.findAllById(ids);
+        Stream<Person> foundPersons = personRepository.findByIdIn(ids);
 
         assertNotNull(foundPersons);
         assertEquals(2, foundPersons.count());

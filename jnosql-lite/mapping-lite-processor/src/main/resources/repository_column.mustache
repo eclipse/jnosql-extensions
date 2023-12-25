@@ -110,7 +110,7 @@ public class {{className}} implements {{repository}} {
 
 
     @Override
-    public void deleteAllById(Iterable<{{keyType}}> ids) {
+    public void deleteByIdIn(Iterable<{{keyType}}> ids) {
         requireNonNull(ids, "ids is required");
         ids.forEach(this::deleteById);
     }
@@ -134,7 +134,7 @@ public class {{className}} implements {{repository}} {
 
 
     @Override
-    public Stream<{{entityType}}> findAllById(Iterable<{{keyType}}> ids) {
+    public Stream<{{entityType}}> findByIdIn(Iterable<{{keyType}}> ids) {
         requireNonNull(ids, "ids is required");
         return stream(ids.spliterator(), false)
                 .flatMap(optionalToStream());

@@ -90,7 +90,7 @@ public class PersonCrudRepositoryLiteGraphTest {
 
     @Test
     public void shouldDeleteAllByIds() {
-        repository.deleteAllById(List.of(1L, 2L, 3L));
+        repository.deleteByIdIn(List.of(1L, 2L, 3L));
 
         verify(template, times(3)).delete(anyLong());
     }

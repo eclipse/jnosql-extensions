@@ -83,7 +83,7 @@ public class {{className}} implements {{repository}} {
     }
 
     @Override
-    public void deleteAllById(Iterable<{{keyType}}> ids) {
+    public void deleteByIdIn(Iterable<{{keyType}}> ids) {
        requireNonNull(ids, "ids is required");
        this.template.delete(ids);
     }
