@@ -14,10 +14,11 @@
  */
 package org.eclipse.jnosql.lite.mapping.entities;
 
-import jakarta.data.repository.Limit;
+import jakarta.data.Limit;
 import jakarta.data.page.Page;
 import jakarta.data.page.Pageable;
-import jakarta.data.repository.Sort;
+import jakarta.data.Sort;
+
 import jakarta.nosql.PreparedStatement;
 import org.assertj.core.api.SoftAssertions;
 import org.eclipse.jnosql.communication.Condition;
