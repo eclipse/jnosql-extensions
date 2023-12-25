@@ -45,40 +45,40 @@ public class PersonTest {
     }
 
     @Test
-    public void shouldGetName() {
+    void shouldGetName() {
         Assertions.assertEquals("Person", entityMetadata.name());
     }
 
     @Test
-    public void shouldGetSimpleName() {
+    void shouldGetSimpleName() {
         Assertions.assertEquals(Person.class.getSimpleName(), entityMetadata.simpleName());
     }
 
     @Test
-    public void shouldGetClassName() {
+    void shouldGetClassName() {
         Assertions.assertEquals(Person.class.getSimpleName(), entityMetadata.simpleName());
     }
 
     @Test
-    public void shouldGetClassInstance() {
+    void shouldGetClassInstance() {
         Assertions.assertEquals(Person.class, entityMetadata.type());
     }
 
     @Test
-    public void shouldGetId() {
+    void shouldGetId() {
         Optional<FieldMetadata> id = this.entityMetadata.id();
         Assertions.assertTrue(id.isPresent());
     }
 
     @Test
-    public void shouldCreateNewInstance() {
+    void shouldCreateNewInstance() {
         Person person = entityMetadata.newInstance();
         org.assertj.core.api.Assertions.assertThat(person)
                 .isNotNull().isInstanceOf(Person.class);
     }
 
     @Test
-    public void shouldGetFieldsName() {
+    void shouldGetFieldsName() {
         List<String> fields = entityMetadata.fieldsName();
         Assertions.assertEquals(5, fields.size());
         Assertions.assertTrue(fields.contains("id"));
@@ -89,7 +89,7 @@ public class PersonTest {
     }
 
     @Test
-    public void shouldGetFieldsGroupByName() {
+    void shouldGetFieldsGroupByName() {
         Map<String, FieldMetadata> groupByName = this.entityMetadata.fieldsGroupByName();
         Assertions.assertNotNull(groupByName);
         Assertions.assertNotNull(groupByName.get("_id"));
@@ -100,7 +100,7 @@ public class PersonTest {
     }
 
     @Test
-    public void shouldGetter() {
+    void shouldGetter() {
         Map<String, FieldMetadata> groupByName = this.entityMetadata.fieldsGroupByName();
         Person person = new Person();
         person.setId(1L);
@@ -126,7 +126,7 @@ public class PersonTest {
     }
 
     @Test
-    public void shouldSetter() {
+    void shouldSetter() {
         Map<String, FieldMetadata> groupByName = this.entityMetadata.fieldsGroupByName();
         Person person = new Person();
         Animal ada = new Animal();
@@ -153,7 +153,7 @@ public class PersonTest {
     }
 
     @Test
-    public void shouldReturnGenerics() {
+    void shouldReturnGenerics() {
         Map<String, FieldMetadata> groupByName = this.entityMetadata.fieldsGroupByName();
         FieldMetadata contacts = groupByName.get("contacts");
         GenericFieldMetadata genericFieldMetadata = (GenericFieldMetadata) contacts;
@@ -164,7 +164,7 @@ public class PersonTest {
     }
 
     @Test
-    public void shouldReadEntityField(){
+    void shouldReadEntityField(){
         Map<String, FieldMetadata> groupByName = this.entityMetadata.fieldsGroupByName();
         FieldMetadata pet = groupByName.get("pet");
         assertThat(pet.isId()).isFalse();
@@ -172,7 +172,7 @@ public class PersonTest {
     }
 
     @Test
-    public void shouldGetCustomAnnotation() {
+    void shouldGetCustomAnnotation() {
         Map<String, FieldMetadata> groupByName = this.entityMetadata.fieldsGroupByName();
         FieldMetadata email = groupByName.get("email");
         Optional<String> value = email.value(CustomAnnotation.class);

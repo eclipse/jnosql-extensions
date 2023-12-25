@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class LiteClassConverterTest {
 
     @Test
-    public void shouldThrowException() {
+    void shouldThrowException() {
         LiteClassConverter converter = new LiteClassConverter();
 
         assertThrows(UnsupportedOperationException.class, () -> converter.apply(String.class));

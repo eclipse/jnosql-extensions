@@ -45,40 +45,40 @@ public class OrdersTest {
     }
 
     @Test
-    public void shouldGetName() {
+    void shouldGetName() {
         Assertions.assertEquals("Orders", entityMetadata.name());
     }
 
     @Test
-    public void shouldGetSimpleName() {
+    void shouldGetSimpleName() {
         Assertions.assertEquals(Orders.class.getSimpleName(), entityMetadata.simpleName());
     }
 
     @Test
-    public void shouldGetClassName() {
+    void shouldGetClassName() {
         Assertions.assertEquals(Orders.class.getName(), entityMetadata.className());
     }
 
     @Test
-    public void shouldGetClassInstance() {
+    void shouldGetClassInstance() {
         Assertions.assertEquals(Orders.class, entityMetadata.type());
     }
 
     @Test
-    public void shouldGetId() {
+    void shouldGetId() {
         Optional<FieldMetadata> id = this.entityMetadata.id();
         Assertions.assertFalse(id.isPresent());
     }
 
     @Test
-    public void shouldCreateNewInstance() {
+    void shouldCreateNewInstance() {
         Orders orders = entityMetadata.newInstance();
         Assertions.assertNotNull(orders);
         Assertions.assertTrue(orders instanceof Orders);
     }
 
     @Test
-    public void shouldGetFieldsName() {
+    void shouldGetFieldsName() {
         List<String> fields = entityMetadata.fieldsName();
         Assertions.assertEquals(2, fields.size());
         Assertions.assertTrue(fields.contains("user"));
@@ -86,7 +86,7 @@ public class OrdersTest {
     }
 
     @Test
-    public void shouldGetFieldsGroupByName() {
+    void shouldGetFieldsGroupByName() {
         Map<String, FieldMetadata> groupByName = this.entityMetadata.fieldsGroupByName();
         Assertions.assertNotNull(groupByName);
         Assertions.assertNotNull(groupByName.get("user"));
@@ -94,7 +94,7 @@ public class OrdersTest {
     }
 
     @Test
-    public void shouldGetter() {
+    void shouldGetter() {
         Map<String, FieldMetadata> groupByName = this.entityMetadata.fieldsGroupByName();
         Orders orders = new Orders();
         orders.setUser("Poliana");
@@ -114,7 +114,7 @@ public class OrdersTest {
     }
 
     @Test
-    public void shouldSetter() {
+    void shouldSetter() {
         Map<String, FieldMetadata> groupByName = this.entityMetadata.fieldsGroupByName();
         Orders orders = new Orders();
 
@@ -146,7 +146,7 @@ public class OrdersTest {
     }
 
     @Test
-    public void shouldReturnConverter() {
+    void shouldReturnConverter() {
         Map<String, FieldMetadata> groupByName = this.entityMetadata.fieldsGroupByName();
         FieldMetadata items = groupByName.get("items");
         GenericFieldMetadata genericFieldMetadata = (GenericFieldMetadata) items;

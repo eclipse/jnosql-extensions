@@ -40,14 +40,14 @@ public class UserRepositoryLiteKeyValueTest {
 
 
     @Test
-    public void shouldSaveEntity() {
+    void shouldSaveEntity() {
         User user = new User();
         userRepository.save(user);
         verify(template, times(1)).put(eq(user));
     }
 
     @Test
-    public void shouldSaveAllEntities() {
+    void shouldSaveAllEntities() {
         User user1 = new User();
         User user2 = new User();
         Iterable<User> entities = Arrays.asList(user1, user2);
@@ -58,7 +58,7 @@ public class UserRepositoryLiteKeyValueTest {
     }
 
     @Test
-    public void shouldDeleteById() {
+    void shouldDeleteById() {
         String id = "123";
 
         userRepository.deleteById(id);
@@ -67,7 +67,7 @@ public class UserRepositoryLiteKeyValueTest {
     }
 
     @Test
-    public void shouldFindById() {
+    void shouldFindById() {
         String id = "123";
         when(template.get(eq(id), eq(User.class))).thenReturn(Optional.of(new User()));
 
@@ -77,7 +77,7 @@ public class UserRepositoryLiteKeyValueTest {
     }
 
     @Test
-    public void shouldFindAllByIds() {
+    void shouldFindAllByIds() {
         String id1 = "123";
         String id2 = "456";
         Iterable<String> ids = Arrays.asList(id1, id2);
@@ -92,7 +92,7 @@ public class UserRepositoryLiteKeyValueTest {
     }
 
     @Test
-    public void shouldCheckIfEntityExistsById() {
+    void shouldCheckIfEntityExistsById() {
         String id = "123";
         when(template.get(eq(id), eq(User.class))).thenReturn(Optional.of(new User()));
 
@@ -102,7 +102,7 @@ public class UserRepositoryLiteKeyValueTest {
     }
 
     @Test
-    public void shouldReturnFalseIfEntityDoesNotExistById() {
+    void shouldReturnFalseIfEntityDoesNotExistById() {
         String id = "123";
         when(template.get(eq(id), eq(User.class))).thenReturn(Optional.empty());
 
@@ -112,22 +112,22 @@ public class UserRepositoryLiteKeyValueTest {
     }
 
     @Test
-    public void shouldThrowUnsupportedOperationExceptionOnCount() {
+    void shouldThrowUnsupportedOperationExceptionOnCount() {
         assertThrows(UnsupportedOperationException.class, () -> userRepository.count());
     }
 
     @Test
-    public void shouldThrowUnsupportedOperationExceptionOnFindAllWithPageable() {
+    void shouldThrowUnsupportedOperationExceptionOnFindAllWithPageable() {
         assertThrows(UnsupportedOperationException.class, () -> userRepository.findAll(null));
     }
 
     @Test
-    public void shouldThrowUnsupportedOperationExceptionOnFindAll() {
+    void shouldThrowUnsupportedOperationExceptionOnFindAll() {
         assertThrows(UnsupportedOperationException.class, () -> userRepository.findAll());
     }
 
     @Test
-    public void shouldThrowExceptionOnFindByName() {
+    void shouldThrowExceptionOnFindByName() {
         String name = "John";
         assertThrows(UnsupportedOperationException.class, () -> userRepository.findByName(name));
     }

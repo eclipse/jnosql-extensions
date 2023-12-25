@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class LiteConstructorBuilderSupplierTest {
 
     @Test
-    public void shouldReturnExceptionWhenApply() {
+    void shouldReturnExceptionWhenApply() {
         LiteConstructorBuilderSupplier supplier = new LiteConstructorBuilderSupplier();
         assertThrows(UnsupportedOperationException.class, () -> supplier.apply(null));
     }
