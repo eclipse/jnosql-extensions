@@ -123,6 +123,31 @@ class PersonRepositoryTest {
     }
 
     @Test
+    void shouldUpdate(){
+        this.personRepository.update(new Person());
+        verify(template).update(any(Person.class));
+    }
+
+    @Test
+    void shouldInsert(){
+        this.personRepository.insert(new Person());
+        verify(template).insert(any(Person.class));
+    }
+
+    @Test
+    void shouldUpdateIterable(){
+        this.personRepository.updateAll(List.of(new Person()));
+        verify(template).update(any(List.class));
+    }
+
+    @Test
+    void shouldInsertIterable(){
+        this.personRepository.insertAll(List.of(new Person()));
+        verify(template).insert(any(List.class));
+    }
+
+
+    @Test
     void shouldFindAllEntitiesByIds() {
         List<Long> ids = Arrays.asList(123L, 456L);
         Person person1 = new Person();
