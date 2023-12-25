@@ -163,6 +163,27 @@ public class {{className}} implements {{repository}} {
                 return NoSQLPage.of(entities, pageable);
     }
 
+    public <S extends {{entityType}}> S insert(S entity) {
+        Objects.requireNonNull(entity, "entity is required");
+        return getTemplate().insert(entity);
+    }
+
+    public <S extends {{entityType}}> Iterable<S> insertAll(Iterable<S> entities) {
+        Objects.requireNonNull(entities, "entities is required");
+        return getTemplate().insert(entities);
+    }
+
+    public boolean update({{entityType}} entity) {
+        Objects.requireNonNull(entity, "entity is required");
+        return getTemplate().update(entity) != null;
+    }
+
+    public int updateAll(Iterable<{{entityType}}> entities) {
+        Objects.requireNonNull(entities, "entities is required");
+        getTemplate().update(entities);
+        return (int) StreamSupport.stream(entities.spliterator(), false).count();
+    }
+
     {{#methods}}
     @Override
     public {{{returnType}}} {{methodName}}({{{parametersSignature}}}) {
