@@ -103,6 +103,30 @@ public class PersonCrudRepositoryLiteGraphTest {
     }
 
     @Test
+    void shouldInsert(){
+        repository.insert(new Person());
+        verify(template).insert(any(Person.class));
+    }
+
+    @Test
+    void shouldUpdate(){
+        repository.update(new Person());
+        verify(template).update(any(Person.class));
+    }
+
+    @Test
+    void shouldInsertIterable(){
+        repository.insertAll(List.of(new Person()));
+        verify(template).insert(any(List.class));
+    }
+
+    @Test
+    void shouldUpdateIterable(){
+        repository.updateAll(List.of(new Person()));
+        verify(template).update(any(List.class));
+    }
+
+    @Test
     void shouldFindById() {
         Long id = 123L;
         when(template.find(eq(Person.class), eq(id))).thenReturn(Optional.of(new Person()));
