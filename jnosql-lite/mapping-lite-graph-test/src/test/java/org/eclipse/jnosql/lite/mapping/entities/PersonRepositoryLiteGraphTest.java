@@ -15,8 +15,8 @@
 package org.eclipse.jnosql.lite.mapping.entities;
 
 
-import jakarta.data.repository.Page;
-import jakarta.data.repository.Pageable;
+import jakarta.data.page.Page;
+import jakarta.data.page.Pageable;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
 import org.assertj.core.api.Assertions;
 import org.eclipse.jnosql.mapping.graph.GraphTemplate;
