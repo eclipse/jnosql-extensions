@@ -112,6 +112,34 @@ public class UserRepositoryLiteKeyValueTest {
     }
 
     @Test
+    void shouldInsert(){
+        User user = new User("Ada", "Lovelace", 10);
+        userRepository.insert(user);
+        verify(template, times(1)).put(eq(user));
+    }
+
+    @Test
+    void shouldUpdate(){
+        User user = new User("Ada", "Lovelace", 10);
+        userRepository.update(user);
+        verify(template, times(1)).put(eq(user));
+    }
+
+    @Test
+    void shouldInsertIterable(){
+        User user = new User("Ada", "Lovelace", 10);
+        userRepository.insertAll(List.of(user));
+        verify(template, times(1)).put(eq(List.of(user)));
+    }
+
+    @Test
+    void shouldUpdateIterable(){
+        User user = new User("Ada", "Lovelace", 10);
+        userRepository.updateAll(List.of(user));
+        verify(template, times(1)).put(eq(List.of(user)));
+    }
+
+    @Test
     void shouldThrowUnsupportedOperationExceptionOnCount() {
         assertThrows(UnsupportedOperationException.class, () -> userRepository.count());
     }
