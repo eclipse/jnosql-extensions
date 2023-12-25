@@ -26,7 +26,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class LiteClassScannerTest {
 
     @Test
-    public void testEntitiesIsEmpty() {
+    void testEntitiesIsEmpty() {
         LiteClassScanner scanner = new LiteClassScanner();
         Set<Class<?>> entities = scanner.entities();
 
@@ -34,7 +34,7 @@ public class LiteClassScannerTest {
     }
 
     @Test
-    public void testRepositoriesIsEmpty() {
+    void testRepositoriesIsEmpty() {
         LiteClassScanner scanner = new LiteClassScanner();
         Set<Class<?>> repositories = scanner.repositories();
 
@@ -42,7 +42,7 @@ public class LiteClassScannerTest {
     }
 
     @Test
-    public void testEmbeddablesIsEmpty() {
+    void testEmbeddablesIsEmpty() {
         LiteClassScanner scanner = new LiteClassScanner();
         Set<Class<?>> embeddables = scanner.embeddables();
 
@@ -50,7 +50,7 @@ public class LiteClassScannerTest {
     }
 
     @Test
-    public void testRepositoriesWithFilterIsEmpty() {
+    void testRepositoriesWithFilterIsEmpty() {
         LiteClassScanner scanner = new LiteClassScanner();
         Set<Class<?>> repositoriesWithFilter = scanner.repositories(SomeDataRepository.class);
 
@@ -58,7 +58,7 @@ public class LiteClassScannerTest {
     }
 
     @Test
-    public void testRepositoriesStandardIsEmpty() {
+    void testRepositoriesStandardIsEmpty() {
         LiteClassScanner scanner = new LiteClassScanner();
         Set<Class<?>> repositoriesStandard = scanner.repositoriesStandard();
 

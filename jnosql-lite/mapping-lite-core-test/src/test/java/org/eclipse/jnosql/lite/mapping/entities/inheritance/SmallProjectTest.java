@@ -41,40 +41,40 @@ public class SmallProjectTest {
     }
 
     @Test
-    public void shouldGetName() {
+    void shouldGetName() {
         Assertions.assertEquals("Project", entityMetadata.name());
     }
 
     @Test
-    public void shouldGetSimpleName() {
+    void shouldGetSimpleName() {
         Assertions.assertEquals(SmallProject.class.getSimpleName(), entityMetadata.simpleName());
     }
 
     @Test
-    public void shouldGetClassName() {
+    void shouldGetClassName() {
         Assertions.assertEquals(SmallProject.class.getName(), entityMetadata.className());
     }
 
     @Test
-    public void shouldGetClassInstance() {
+    void shouldGetClassInstance() {
         Assertions.assertEquals(SmallProject.class, entityMetadata.type());
     }
 
     @Test
-    public void shouldGetId() {
+    void shouldGetId() {
         Optional<FieldMetadata> id = this.entityMetadata.id();
         Assertions.assertTrue(id.isPresent());
     }
 
     @Test
-    public void shouldCreateNewInstance() {
+    void shouldCreateNewInstance() {
         SmallProject project = entityMetadata.newInstance();
         Assertions.assertNotNull(project);
         Assertions.assertTrue(project instanceof SmallProject);
     }
 
     @Test
-    public void shouldGetFieldsName() {
+    void shouldGetFieldsName() {
         List<String> fields = entityMetadata.fieldsName();
         Assertions.assertEquals(2, fields.size());
         Assertions.assertTrue(fields.contains("name"));
@@ -82,7 +82,7 @@ public class SmallProjectTest {
     }
 
     @Test
-    public void shouldGetFieldsGroupByName() {
+    void shouldGetFieldsGroupByName() {
         Map<String, FieldMetadata> groupByName = this.entityMetadata.fieldsGroupByName();
         Assertions.assertNotNull(groupByName);
         Assertions.assertNotNull(groupByName.get("_id"));
@@ -90,7 +90,7 @@ public class SmallProjectTest {
     }
 
     @Test
-    public void shouldGetInheritanceMetadata() {
+    void shouldGetInheritanceMetadata() {
         InheritanceMetadata inheritance = this.entityMetadata.inheritance()
                 .orElseThrow();
         Assertions.assertEquals("Small", inheritance.discriminatorValue());

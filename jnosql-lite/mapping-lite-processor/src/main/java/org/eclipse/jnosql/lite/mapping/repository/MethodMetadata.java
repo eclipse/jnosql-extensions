@@ -14,6 +14,9 @@
  */
 package org.eclipse.jnosql.lite.mapping.repository;
 
+import jakarta.data.Limit;
+import jakarta.data.Sort;
+import jakarta.data.page.Pageable;
 import jakarta.data.repository.Query;
 import org.eclipse.jnosql.mapping.DatabaseType;
 
@@ -32,9 +35,9 @@ import static java.util.stream.Collectors.joining;
 
 class MethodMetadata {
 
-    private static final Predicate<Parameter> IS_SPECIAL_PARAM = p -> p.getType().getQualifiedName().toString().equals("jakarta.data.repository.Limit") ||
-            p.getType().getQualifiedName().toString().equals("jakarta.data.repository.Pageable") ||
-            p.getType().getQualifiedName().toString().equals("jakarta.data.repository.Sort");
+    private static final Predicate<Parameter> IS_SPECIAL_PARAM = p -> p.getType().getQualifiedName().toString().equals(Limit.class.getName()) ||
+            p.getType().getQualifiedName().toString().equals(Pageable.class.getName()) ||
+            p.getType().getQualifiedName().toString().equals(Sort.class.getName());
     private final String methodName;
 
     private final TypeElement returnElement;
@@ -133,7 +136,7 @@ class MethodMetadata {
     public Optional<Parameter> findPageable(){
         for (Parameter parameter : this.parameters) {
             TypeElement element = parameter.getType();
-            if("jakarta.data.repository.Pageable".equals(element.getQualifiedName().toString())){
+            if("jakarta.data.page.Pageable".equals(element.getQualifiedName().toString())){
                 return Optional.of(parameter);
             }
         }

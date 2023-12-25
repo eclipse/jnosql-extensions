@@ -43,40 +43,40 @@ public class WorkerTest {
     }
 
     @Test
-    public void shouldGetName() {
+    void shouldGetName() {
         Assertions.assertEquals("Worker", entityMetadata.name());
     }
 
     @Test
-    public void shouldGetSimpleName() {
+    void shouldGetSimpleName() {
         Assertions.assertEquals(Worker.class.getSimpleName(), entityMetadata.simpleName());
     }
 
     @Test
-    public void shouldGetClassName() {
+    void shouldGetClassName() {
         Assertions.assertEquals(Worker.class.getName(), entityMetadata.className());
     }
 
     @Test
-    public void shouldGetClassInstance() {
+    void shouldGetClassInstance() {
         Assertions.assertEquals(Worker.class, entityMetadata.type());
     }
 
     @Test
-    public void shouldGetId() {
+    void shouldGetId() {
         Optional<FieldMetadata> id = this.entityMetadata.id();
         Assertions.assertTrue(id.isPresent());
     }
 
     @Test
-    public void shouldCreateNewInstance() {
+    void shouldCreateNewInstance() {
         Person person = entityMetadata.newInstance();
         Assertions.assertNotNull(person);
         Assertions.assertTrue(person instanceof Person);
     }
 
     @Test
-    public void shouldGetFieldsName() {
+    void shouldGetFieldsName() {
         List<String> fields = entityMetadata.fieldsName();
         Assertions.assertEquals(6, fields.size());
         Assertions.assertTrue(fields.contains("id"));
@@ -88,7 +88,7 @@ public class WorkerTest {
     }
 
     @Test
-    public void shouldGetFieldsGroupByName() {
+    void shouldGetFieldsGroupByName() {
         Map<String, FieldMetadata> groupByName = this.entityMetadata.fieldsGroupByName();
         Assertions.assertNotNull(groupByName);
         Assertions.assertNotNull(groupByName.get("_id"));
@@ -100,7 +100,7 @@ public class WorkerTest {
     }
 
     @Test
-    public void shouldGetter() {
+    void shouldGetter() {
         Map<String, FieldMetadata> groupByName = this.entityMetadata.fieldsGroupByName();
         Worker worker = new Worker();
         worker.setId(1L);
@@ -129,7 +129,7 @@ public class WorkerTest {
     }
 
     @Test
-    public void shouldSetter() {
+    void shouldSetter() {
         Map<String, FieldMetadata> groupByName = this.entityMetadata.fieldsGroupByName();
         Worker worker = new Worker();
         Animal ada = new Animal();

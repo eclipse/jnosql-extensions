@@ -40,14 +40,14 @@ public class UserCrudRepositoryLiteKeyValueTest {
 
 
     @Test
-    public void shouldSaveEntity() {
+    void shouldSaveEntity() {
         User user = new User();
         userRepository.save(user);
         verify(template, times(1)).put(eq(user));
     }
 
     @Test
-    public void shouldSaveAllEntities() {
+    void shouldSaveAllEntities() {
         User user1 = new User();
         User user2 = new User();
         Iterable<User> entities = Arrays.asList(user1, user2);
@@ -58,7 +58,7 @@ public class UserCrudRepositoryLiteKeyValueTest {
     }
 
     @Test
-    public void shouldDeleteById() {
+    void shouldDeleteById() {
         String id = "123";
 
         userRepository.deleteById(id);
@@ -67,7 +67,7 @@ public class UserCrudRepositoryLiteKeyValueTest {
     }
 
     @Test
-    public void shouldFindById() {
+    void shouldFindById() {
         String id = "123";
         when(template.get(eq(id), eq(User.class))).thenReturn(Optional.of(new User()));
 
@@ -77,14 +77,14 @@ public class UserCrudRepositoryLiteKeyValueTest {
     }
 
     @Test
-    public void shouldFindAllByIds() {
+    void shouldFindAllByIds() {
         String id1 = "123";
         String id2 = "456";
         Iterable<String> ids = Arrays.asList(id1, id2);
         when(template.get(eq(id1), eq(User.class))).thenReturn(Optional.of(new User()));
         when(template.get(eq(id2), eq(User.class))).thenReturn(Optional.of(new User()));
 
-        List<User> users = userRepository.findAllById(ids).toList();
+        List<User> users = userRepository.findByIdIn(ids).toList();
 
         verify(template, times(2)).get(anyString(), eq(User.class));
 
@@ -92,7 +92,7 @@ public class UserCrudRepositoryLiteKeyValueTest {
     }
 
     @Test
-    public void shouldCheckIfEntityExistsById() {
+    void shouldCheckIfEntityExistsById() {
         String id = "123";
         when(template.get(eq(id), eq(User.class))).thenReturn(Optional.of(new User()));
 
@@ -102,7 +102,7 @@ public class UserCrudRepositoryLiteKeyValueTest {
     }
 
     @Test
-    public void shouldReturnFalseIfEntityDoesNotExistById() {
+    void shouldReturnFalseIfEntityDoesNotExistById() {
         String id = "123";
         when(template.get(eq(id), eq(User.class))).thenReturn(Optional.empty());
 
@@ -112,17 +112,17 @@ public class UserCrudRepositoryLiteKeyValueTest {
     }
 
     @Test
-    public void shouldThrowUnsupportedOperationExceptionOnCount() {
+    void shouldThrowUnsupportedOperationExceptionOnCount() {
         assertThrows(UnsupportedOperationException.class, () -> userRepository.count());
     }
 
     @Test
-    public void shouldThrowUnsupportedOperationExceptionOnFindAll() {
+    void shouldThrowUnsupportedOperationExceptionOnFindAll() {
         assertThrows(UnsupportedOperationException.class, () -> userRepository.findAll());
     }
 
     @Test
-    public void shouldThrowExceptionOnFindByName() {
+    void shouldThrowExceptionOnFindByName() {
         String name = "John";
         assertThrows(UnsupportedOperationException.class, () -> userRepository.findByName(name));
     }

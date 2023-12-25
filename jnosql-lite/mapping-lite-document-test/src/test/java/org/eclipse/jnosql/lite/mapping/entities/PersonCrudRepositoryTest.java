@@ -52,7 +52,7 @@ class PersonCrudRepositoryTest {
 
 
     @Test
-    public void shouldSaveEntity() {
+    void shouldSaveEntity() {
         Person person = new Person();
         when(template.insert(eq(person))).thenReturn(person);
 
@@ -63,7 +63,7 @@ class PersonCrudRepositoryTest {
     }
 
     @Test
-    public void shouldDeleteEntityById() {
+    void shouldDeleteEntityById() {
         Long id = 123L;
 
         personRepository.deleteById(id);
@@ -72,7 +72,7 @@ class PersonCrudRepositoryTest {
     }
 
     @Test
-    public void shouldFindEntityById() {
+    void shouldFindEntityById() {
         Long id = 123L;
         Person person = new Person();
         when(template.find(eq(Person.class), eq(id))).thenReturn(Optional.of(person));
@@ -84,7 +84,7 @@ class PersonCrudRepositoryTest {
     }
 
     @Test
-    public void shouldFindAllEntities() {
+    void shouldFindAllEntities() {
         Stream<Object> personStream = Stream.of(new Person());
         when(template.select(any(DocumentQuery.class))).thenReturn(personStream);
 
@@ -95,7 +95,7 @@ class PersonCrudRepositoryTest {
     }
 
     @Test
-    public void shouldSaveAllEntities() {
+    void shouldSaveAllEntities() {
         List<Person> persons = Arrays.asList(new Person(), new Person());
         Iterable<Person> savedPersons = personRepository.saveAll(persons);
         assertNotNull(savedPersons);
@@ -103,7 +103,7 @@ class PersonCrudRepositoryTest {
     }
 
     @Test
-    public void shouldDeleteEntity() {
+    void shouldDeleteEntity() {
         Person person = new Person();
 
         personRepository.delete(person);
@@ -112,20 +112,20 @@ class PersonCrudRepositoryTest {
     }
 
     @Test
-    public void shouldDeleteAllEntities() {
+    void shouldDeleteAllEntities() {
         personRepository.deleteAll();
 
         verify(template, times(1)).deleteAll(eq(Person.class));
     }
 
     @Test
-    public void shouldFindAllEntitiesByIds() {
+    void shouldFindAllEntitiesByIds() {
         List<Long> ids = Arrays.asList(123L, 456L);
         Person person1 = new Person();
         Person person2 = new Person();
         when(template.find(eq(Person.class), anyLong())).thenReturn(Optional.of(person1), Optional.of(person2));
 
-        Stream<Person> foundPersons = personRepository.findAllById(ids);
+        Stream<Person> foundPersons = personRepository.findByIdIn(ids);
 
         assertNotNull(foundPersons);
         assertEquals(2, foundPersons.count());
@@ -133,7 +133,7 @@ class PersonCrudRepositoryTest {
     }
 
     @Test
-    public void shouldCountEntities() {
+    void shouldCountEntities() {
         long expectedCount = 5L;
         when(template.count(eq(Person.class))).thenReturn(expectedCount);
 
@@ -144,7 +144,7 @@ class PersonCrudRepositoryTest {
     }
 
     @Test
-    public void shouldCheckIfEntityExistsById() {
+    void shouldCheckIfEntityExistsById() {
         Long id = 123L;
         when(template.find(eq(Person.class), eq(id))).thenReturn(Optional.of(new Person()));
 
@@ -155,7 +155,7 @@ class PersonCrudRepositoryTest {
     }
 
     @Test
-    public void shouldReturnFalseIfEntityDoesNotExistById() {
+    void shouldReturnFalseIfEntityDoesNotExistById() {
         Long id = 123L;
         when(template.find(eq(Person.class), eq(id))).thenReturn(Optional.empty());
 
@@ -166,7 +166,7 @@ class PersonCrudRepositoryTest {
     }
 
     @Test
-    public void shouldFindByName(){
+    void shouldFindByName(){
         when(template.select(any(DocumentQuery.class))).thenReturn( Stream.of(new Person(), new Person()));
         List<Person> result = this.personRepository.findByName("Ada");
         ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
@@ -182,7 +182,7 @@ class PersonCrudRepositoryTest {
     }
 
     @Test
-    public void shouldQuery(){
+    void shouldQuery(){
         when(template.prepare(anyString())).thenReturn(Mockito.mock(PreparedStatement.class));
         this.personRepository.query("Ada");
         ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
@@ -192,7 +192,7 @@ class PersonCrudRepositoryTest {
     }
 
     @Test
-    public void shouldExistByName(){
+    void shouldExistByName(){
         when(template.select(any(DocumentQuery.class))).thenReturn( Stream.of(new Person(), new Person()));
         boolean result = this.personRepository.existsByName("Ada");
         ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
@@ -208,7 +208,7 @@ class PersonCrudRepositoryTest {
     }
 
     @Test
-    public void shouldCountByName(){
+    void shouldCountByName(){
         when(template.select(any(DocumentQuery.class))).thenReturn( Stream.of(new Person(), new Person()));
         long result = this.personRepository.countByName("Ada");
         ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
@@ -224,7 +224,7 @@ class PersonCrudRepositoryTest {
     }
 
     @Test
-    public void shouldDeleteByName(){
+    void shouldDeleteByName(){
         this.personRepository.deleteByName("Ada");
         ArgumentCaptor<DocumentDeleteQuery> captor = ArgumentCaptor.forClass(DocumentDeleteQuery.class);
         verify(template).delete(captor.capture());

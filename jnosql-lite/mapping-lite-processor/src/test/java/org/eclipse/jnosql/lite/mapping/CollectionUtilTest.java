@@ -31,31 +31,31 @@ class CollectionUtilTest {
 
     private final CollectionUtil collectionUtil= CollectionUtil.INSTANCE;
     @Test
-    public void shouldReturnList(){
+    void shouldReturnList(){
         assertThat(collectionUtil.apply(List.class.getName())).isEqualTo(CollectionUtil.NEW_LIST);
         assertThat(collectionUtil.apply(Iterable.class.getName())).isEqualTo(CollectionUtil.NEW_LIST);
         assertThat(collectionUtil.apply(Collection.class.getName())).isEqualTo(CollectionUtil.NEW_LIST);
     }
 
     @Test
-    public void shouldReturnSet(){
+    void shouldReturnSet(){
         assertThat(collectionUtil.apply(Set.class.getName())).isEqualTo(CollectionUtil.NEW_SET);
     }
 
     @Test
-    public void shouldReturnDeque(){
+    void shouldReturnDeque(){
         assertThat(collectionUtil.apply(Deque.class.getName())).isEqualTo(CollectionUtil.NEW_DEQUE);
         assertThat(collectionUtil.apply(Queue.class.getName())).isEqualTo(CollectionUtil.NEW_DEQUE);
     }
 
     @Test
-    public void shouldReturnTreeSet(){
+    void shouldReturnTreeSet(){
         assertThat(collectionUtil.apply(NavigableSet.class.getName())).isEqualTo(CollectionUtil.NEW_TREE_SET);
         assertThat(collectionUtil.apply(SortedSet.class.getName())).isEqualTo(CollectionUtil.NEW_TREE_SET);
     }
 
     @Test
-    public void shouldReturnDefault(){
+    void shouldReturnDefault(){
         assertThat(collectionUtil.apply(String.class.getName())).isEqualTo(CollectionUtil.DEFAULT);
     }
 }

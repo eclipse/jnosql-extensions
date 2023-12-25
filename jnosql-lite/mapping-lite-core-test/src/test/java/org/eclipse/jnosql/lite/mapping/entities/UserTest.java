@@ -41,27 +41,27 @@ public class UserTest {
     }
 
     @Test
-    public void shouldGetName() {
+    void shouldGetName() {
         Assertions.assertEquals("User", entityMetadata.name());
     }
 
     @Test
-    public void shouldGetSimpleName() {
+    void shouldGetSimpleName() {
         Assertions.assertEquals(User.class.getSimpleName(), entityMetadata.simpleName());
     }
 
     @Test
-    public void shouldGetClassName() {
+    void shouldGetClassName() {
         Assertions.assertEquals(User.class.getName(), entityMetadata.className());
     }
 
     @Test
-    public void shouldGetClassInstance() {
+    void shouldGetClassInstance() {
         Assertions.assertEquals(User.class, entityMetadata.type());
     }
 
     @Test
-    public void shouldGetId() {
+    void shouldGetId() {
         Optional<FieldMetadata> id = this.entityMetadata.id();
         Assertions.assertTrue(id.isPresent());
         FieldMetadata fieldMetadata = id.orElseThrow();
@@ -71,14 +71,14 @@ public class UserTest {
     }
 
     @Test
-    public void shouldCreateNewInstance() {
+    void shouldCreateNewInstance() {
         User user = entityMetadata.newInstance();
         assertThat(user)
                 .isNotNull().isInstanceOf(User.class);
     }
 
     @Test
-    public void shouldGetFieldsName() {
+    void shouldGetFieldsName() {
         List<String> fields = entityMetadata.fieldsName();
         Assertions.assertEquals(4, fields.size());
         Assertions.assertTrue(fields.contains("id"));
@@ -86,7 +86,7 @@ public class UserTest {
     }
 
     @Test
-    public void shouldGetFieldsGroupByName() {
+    void shouldGetFieldsGroupByName() {
         Map<String, FieldMetadata> groupByName = this.entityMetadata.fieldsGroupByName();
         assertThat(groupByName).hasSize(4)
                 .containsKeys("_id", "name", "age", "phones");

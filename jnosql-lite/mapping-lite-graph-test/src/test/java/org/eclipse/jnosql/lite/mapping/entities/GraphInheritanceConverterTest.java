@@ -47,7 +47,7 @@ public abstract class GraphInheritanceConverterTest {
     }
 
     @Test
-    public void shouldConvertProjectToSmallProject() {
+    void shouldConvertProjectToSmallProject() {
         Vertex vertex = getGraph().addVertex(T.label, "Project",
                 "investor", "Otavio Santana",
                 "size", "Small", "name",
@@ -60,7 +60,7 @@ public abstract class GraphInheritanceConverterTest {
     }
 
     @Test
-    public void shouldConvertProjectToLargeProject() {
+    void shouldConvertProjectToLargeProject() {
         Vertex vertex = getGraph().addVertex(T.label, "Project",
                 "investor", "Otavio Santana",
                 "size", "Large",
@@ -75,7 +75,7 @@ public abstract class GraphInheritanceConverterTest {
     }
 
     @Test
-    public void shouldConvertLargeProjectToCommunicationEntity() {
+    void shouldConvertLargeProjectToCommunicationEntity() {
         LargeProject project = new LargeProject();
         project.setName("Large Project");
         project.setBudget(10D);
@@ -88,7 +88,7 @@ public abstract class GraphInheritanceConverterTest {
     }
 
     @Test
-    public void shouldConvertSmallProjectToCommunicationEntity() {
+    void shouldConvertSmallProjectToCommunicationEntity() {
         SmallProject project = new SmallProject();
         project.setName("Small Project");
         project.setInvestor("Otavio Santana");
@@ -101,7 +101,7 @@ public abstract class GraphInheritanceConverterTest {
     }
 
     @Test
-    public void shouldConvertDocumentEntityToSocialMedia(){
+    void shouldConvertDocumentEntityToSocialMedia(){
         LocalDate date = LocalDate.now();
         Vertex vertex = getGraph().addVertex(T.label, "Notification",
                 "name", "Social Media",
@@ -117,7 +117,7 @@ public abstract class GraphInheritanceConverterTest {
     }
 
     @Test
-    public void shouldConvertDocumentEntityToSms(){
+    void shouldConvertDocumentEntityToSms(){
         LocalDate date = LocalDate.now();
 
         Vertex vertex = getGraph().addVertex(T.label, "Notification",
@@ -134,7 +134,7 @@ public abstract class GraphInheritanceConverterTest {
     }
 
     @Test
-    public void shouldConvertDocumentEntityToEmail(){
+    void shouldConvertDocumentEntityToEmail(){
         LocalDate date = LocalDate.now();
 
         Vertex vertex = getGraph().addVertex(T.label, "Notification",
@@ -151,7 +151,7 @@ public abstract class GraphInheritanceConverterTest {
     }
 
     @Test
-    public void shouldConvertSocialMediaToCommunicationEntity(){
+    void shouldConvertSocialMediaToCommunicationEntity(){
         SocialMediaNotification notification = new SocialMediaNotification();
         notification.setName("Social Media");
         notification.setCreatedOn(LocalDate.now());
@@ -165,7 +165,7 @@ public abstract class GraphInheritanceConverterTest {
     }
 
     @Test
-    public void shouldConvertSmsToCommunicationEntity(){
+    void shouldConvertSmsToCommunicationEntity(){
         SmsNotification notification = new SmsNotification();
         notification.setName("SMS");
         notification.setCreatedOn(LocalDate.now());
@@ -179,7 +179,7 @@ public abstract class GraphInheritanceConverterTest {
     }
 
     @Test
-    public void shouldConvertEmailToCommunicationEntity(){
+    void shouldConvertEmailToCommunicationEntity(){
         EmailNotification notification = new EmailNotification();
         notification.setName("Email Media");
         notification.setCreatedOn(LocalDate.now());

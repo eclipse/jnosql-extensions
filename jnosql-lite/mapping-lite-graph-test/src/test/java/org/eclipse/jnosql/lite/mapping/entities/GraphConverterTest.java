@@ -44,12 +44,12 @@ abstract class GraphConverterTest {
     }
 
     @Test
-    public void shouldReturnErrorWhenToEntityHasNullParameter() {
+    void shouldReturnErrorWhenToEntityHasNullParameter() {
         assertThrows(NullPointerException.class, () -> getConverter().toEntity(null));
     }
 
     @Test
-    public void shouldReturnToEntity() {
+    void shouldReturnToEntity() {
         Vertex vertex = getGraph().addVertex(T.label, "Person", "age", 22, "name", "Ada");
         Person person = getConverter().toEntity(vertex);
 
@@ -59,7 +59,7 @@ abstract class GraphConverterTest {
     }
 
     @Test
-    public void shouldReturnToEntityInstance() {
+    void shouldReturnToEntityInstance() {
         Vertex vertex = getGraph().addVertex(T.label, "Person", "age", 22, "name", "Ada");
         Person person = Person.builder().build();
         Person result = getConverter().toEntity(person, vertex);
@@ -71,7 +71,7 @@ abstract class GraphConverterTest {
     }
 
     @Test
-    public void shouldReturnToEntityWithDifferentMap() {
+    void shouldReturnToEntityWithDifferentMap() {
         Vertex vertex = getGraph().addVertex(T.label, "movie", "title", "Matrix", "movie_year", "1999");
         Movie movie = getConverter().toEntity(vertex);
 
@@ -80,7 +80,7 @@ abstract class GraphConverterTest {
     }
 
     @Test
-    public void shouldReturnToEntityUsingConverter() {
+    void shouldReturnToEntityUsingConverter() {
         Vertex vertex = getGraph().addVertex(T.label, "Worker", "name", "James", "money", "USD 1000");
         Worker worker = getConverter().toEntity(vertex);
 
@@ -90,7 +90,7 @@ abstract class GraphConverterTest {
     }
 
     @Test
-    public void shouldConverterFromEmbeddable() {
+    void shouldConverterFromEmbeddable() {
         Job job = new Job();
         job.setCity("Salvador");
         job.setDescription("Java Developer");
@@ -109,13 +109,13 @@ abstract class GraphConverterTest {
 
 
     @Test
-    public void shouldReturnErrorWhenToVertexHasNullParameter() {
+    void shouldReturnErrorWhenToVertexHasNullParameter() {
         assertThrows(NullPointerException.class, () -> getConverter().toVertex(null));
     }
 
 
     @Test
-    public void shouldConvertEntityToTinkerPopVertex() {
+    void shouldConvertEntityToTinkerPopVertex() {
         Person person = Person.builder().withName("Ada").withAge(22).build();
         Vertex vertex = getConverter().toVertex(person);
 
@@ -125,7 +125,7 @@ abstract class GraphConverterTest {
     }
 
     @Test
-    public void shouldConvertEntityToTinkerPopVertexUsingNativeName() {
+    void shouldConvertEntityToTinkerPopVertexUsingNativeName() {
         Movie movie = new Movie("Matrix", 1999, null);
         Vertex vertex = getConverter().toVertex(movie);
 
@@ -136,7 +136,7 @@ abstract class GraphConverterTest {
 
 
     @Test
-    public void shouldConvertEntityToTinkerPopVertexUsingConverter() {
+    void shouldConvertEntityToTinkerPopVertexUsingConverter() {
         Worker worker = new Worker();
         worker.setName("Alexandre");
         worker.setSalary(new Money("BRL", BigDecimal.valueOf(1_000L)));
@@ -148,7 +148,7 @@ abstract class GraphConverterTest {
     }
 
     @Test
-    public void shouldConvertEntityWithIdExistToTinkerPopVertex() {
+    void shouldConvertEntityWithIdExistToTinkerPopVertex() {
         Vertex adaVertex = getGraph().addVertex(T.label, "Person", "age", 22, "name", "Ada");
         Person person = Person.builder().withName("Ada").withAge(22).withId((Long) adaVertex.id()).build();
         Vertex vertex = getConverter().toVertex(person);
@@ -160,7 +160,7 @@ abstract class GraphConverterTest {
     }
 
     @Test
-    public void shouldConvertEntityWithIdDoesNotExistToTinkerPopVertex() {
+    void shouldConvertEntityWithIdDoesNotExistToTinkerPopVertex() {
 
         UnsupportedOperationException exception = assertThrows(UnsupportedOperationException.class, () -> {
             Person person = Person.builder().withName("Ada").withAge(22).withId(10L).build();
@@ -172,13 +172,13 @@ abstract class GraphConverterTest {
     }
 
     @Test
-    public void shouldReturnErrorWhenToEdgeEntityIsNull() {
+    void shouldReturnErrorWhenToEdgeEntityIsNull() {
         assertThrows(NullPointerException.class, () -> getConverter().toEdgeEntity(null));
     }
 
 
     @Test
-    public void shouldToEdgeEntity() {
+    void shouldToEdgeEntity() {
         Vertex matrixVertex = getGraph().addVertex(T.label, "movie", "title", "Matrix", "movie_year", "1999");
         Vertex adaVertex = getGraph().addVertex(T.label, "Person", "age", 22, "name", "Ada");
         Edge edge = adaVertex.addEdge("watch", matrixVertex);
@@ -201,12 +201,12 @@ abstract class GraphConverterTest {
     }
 
     @Test
-    public void shouldReturnToEdgeErrorWhenIsNull() {
+    void shouldReturnToEdgeErrorWhenIsNull() {
         assertThrows(NullPointerException.class, () -> getConverter().toEdge(null));
     }
 
     @Test
-    public void shouldReturnToEdge() {
+    void shouldReturnToEdge() {
         Vertex matrixVertex = getGraph().addVertex(T.label, "movie", "title", "Matrix", "movie_year", "1999");
         Vertex adaVertex = getGraph().addVertex(T.label, "Person", "age", 22, "name", "Ada");
         Edge edge = adaVertex.addEdge("watch", matrixVertex);
@@ -218,12 +218,12 @@ abstract class GraphConverterTest {
     }
 
     @Test
-    public void shouldReturnErrorWhenGetPropertiesIsNull() {
+    void shouldReturnErrorWhenGetPropertiesIsNull() {
         assertThrows(NullPointerException.class, () -> getConverter().getProperties(null));
     }
 
     @Test
-    public void shouldGetProperties() {
+    void shouldGetProperties() {
         Job job = new Job();
         job.setCity("Salvador");
         job.setDescription("Java Developer");

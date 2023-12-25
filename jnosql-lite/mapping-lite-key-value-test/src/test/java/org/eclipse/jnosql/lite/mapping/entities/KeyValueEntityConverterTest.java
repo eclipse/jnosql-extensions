@@ -41,17 +41,17 @@ public class KeyValueEntityConverterTest {
     private KeyValueEntityConverter converter;
 
     @Test
-    public void shouldReturnNPEWhenEntityIsNull() {
+    void shouldReturnNPEWhenEntityIsNull() {
         Assertions.assertThrows(NullPointerException.class, () -> converter.toKeyValue(null));
     }
 
     @Test
-    public void shouldReturnErrorWhenThereIsNotKeyAnnotation() {
+    void shouldReturnErrorWhenThereIsNotKeyAnnotation() {
         Assertions.assertThrows(IdNotFoundException.class, () -> converter.toKeyValue(new Worker()));
     }
 
     @Test
-    public void shouldReturnErrorWhenTheKeyIsNull() {
+    void shouldReturnErrorWhenTheKeyIsNull() {
         Assertions.assertThrows(NullPointerException.class, () -> {
             User user = new User(null, "name", 24);
             converter.toKeyValue(user);
@@ -59,7 +59,7 @@ public class KeyValueEntityConverterTest {
     }
 
     @Test
-    public void shouldConvertToKeyValue() {
+    void shouldConvertToKeyValue() {
         User user = new User("nickname", "name", 24);
         KeyValueEntity keyValueEntity = converter.toKeyValue(user);
         assertEquals("nickname", keyValueEntity.key());
@@ -67,24 +67,24 @@ public class KeyValueEntityConverterTest {
     }
 
     @Test
-    public void shouldReturnNPEWhenKeyValueIsNull() {
+    void shouldReturnNPEWhenKeyValueIsNull() {
         Assertions.assertThrows(NullPointerException.class, () -> converter.toEntity(User.class, null));
     }
 
     @Test
-    public void shouldReturnNPEWhenClassIsNull() {
+    void shouldReturnNPEWhenClassIsNull() {
         Assertions.assertThrows(NullPointerException.class, () -> converter.toEntity(null,
                 KeyValueEntity.of("user", new User("nickname", "name", 21))));
     }
 
     @Test
-    public void shouldReturnErrorWhenTheKeyIsMissing() {
+    void shouldReturnErrorWhenTheKeyIsMissing() {
         Assertions.assertThrows(IdNotFoundException.class, () -> converter.toEntity(Worker.class,
                 KeyValueEntity.of("worker", new Worker())));
     }
 
     @Test
-    public void shouldConvertToEntity() {
+    void shouldConvertToEntity() {
         User expectedUser = new User("nickname", "name", 21);
         User user = converter.toEntity(User.class,
                 KeyValueEntity.of("user", expectedUser));
@@ -92,7 +92,7 @@ public class KeyValueEntityConverterTest {
     }
 
     @Test
-    public void shouldConvertAndFeedTheKeyValue() {
+    void shouldConvertAndFeedTheKeyValue() {
         User expectedUser = new User("nickname", "name", 21);
         User user = converter.toEntity(User.class,
                 KeyValueEntity.of("nickname", new User(null, "name", 21)));
@@ -100,7 +100,7 @@ public class KeyValueEntityConverterTest {
     }
 
     @Test
-    public void shouldConvertAndFeedTheKeyValueIfKeyAndFieldAreDifferent() {
+    void shouldConvertAndFeedTheKeyValueIfKeyAndFieldAreDifferent() {
         User expectedUser = new User("nickname", "name", 21);
         User user = converter.toEntity(User.class,
                 KeyValueEntity.of("nickname", new User("newName", "name", 21)));
@@ -108,14 +108,14 @@ public class KeyValueEntityConverterTest {
     }
 
     @Test
-    public void shouldConvertValueToEntity() {
+    void shouldConvertValueToEntity() {
         User expectedUser = new User("nickname", "name", 21);
         User user = converter.toEntity(User.class, KeyValueEntity.of("nickname", Value.of(expectedUser)));
         assertEquals(expectedUser, user);
     }
 
     @Test
-    public void shouldConvertToEntityKeyWhenThereIsConverterAnnotation() {
+    void shouldConvertToEntityKeyWhenThereIsConverterAnnotation() {
         Car car = new Car();
         car.setName("Ferrari");
 
@@ -125,7 +125,7 @@ public class KeyValueEntityConverterTest {
     }
 
     @Test
-    public void shouldConvertToKeyWhenThereIsConverterAnnotation() {
+    void shouldConvertToKeyWhenThereIsConverterAnnotation() {
         Car car = new Car();
         car.setPlate(Plate.of("123-BRL"));
         car.setName("Ferrari");
@@ -136,7 +136,7 @@ public class KeyValueEntityConverterTest {
     }
 
     @Test
-    public void shouldConvertToEntityKeyWhenKeyTypeIsDifferent() {
+    void shouldConvertToEntityKeyWhenKeyTypeIsDifferent() {
 
         Person person = Person.builder().withName("Ada").build();
         Person ada = converter.toEntity(Person.class, KeyValueEntity.of("123", person));
@@ -146,7 +146,7 @@ public class KeyValueEntityConverterTest {
     }
 
     @Test
-    public void shouldConvertToKeyWhenKeyTypeIsDifferent() {
+    void shouldConvertToKeyWhenKeyTypeIsDifferent() {
         Person person = Person.builder().withId(123L).withName("Ada").build();
         KeyValueEntity entity = converter.toKeyValue(person);
         Assertions.assertEquals(123L, entity.key());

@@ -19,8 +19,8 @@ import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 import org.eclipse.jnosql.mapping.metadata.FieldMetadata;
 
-import jakarta.data.repository.Page;
-import jakarta.data.repository.Pageable;
+import jakarta.data.page.Page;
+import jakarta.data.page.Pageable;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Default;
 import jakarta.inject.Inject;
@@ -83,7 +83,7 @@ public class {{className}} implements {{repository}} {
     }
 
     @Override
-    public void deleteAllById(Iterable<{{keyType}}> ids) {
+    public void deleteByIdIn(Iterable<{{keyType}}> ids) {
        requireNonNull(ids, "ids is required");
        this.template.delete(ids);
     }
@@ -95,7 +95,7 @@ public class {{className}} implements {{repository}} {
     }
 
     @Override
-    public Stream<{{entityType}}> findAllById(Iterable<{{keyType}}> ids) {
+    public Stream<{{entityType}}> findByIdIn(Iterable<{{keyType}}> ids) {
        requireNonNull(ids, "ids is required");
        return StreamSupport.stream(ids.spliterator(), false)
                .map(id -> this.template.get(id, {{entityType}}.class))
@@ -142,6 +142,28 @@ public class {{className}} implements {{repository}} {
         Object id = getIdField().read(entity);
         this.deleteById(({{keyType}}) id);
     }
+
+    public <S extends {{entityType}}> S insert(S entity) {
+        Objects.requireNonNull(entity, "entity is required");
+        return this.template.put(entity);
+    }
+
+    public <S extends {{entityType}}> Iterable<S> insertAll(Iterable<S> entities) {
+        Objects.requireNonNull(entities, "entities is required");
+        return this.template.put(entities);
+    }
+
+    public boolean update({{entityType}} entity) {
+        Objects.requireNonNull(entity, "entity is required");
+        return this.template.put(entity) != null;
+    }
+
+    public int updateAll(Iterable<{{entityType}}> entities) {
+        Objects.requireNonNull(entities, "entities is required");
+        this.template.put(entities);
+        return (int) StreamSupport.stream(entities.spliterator(), false).count();
+    }
+
 
     private FieldMetadata getIdField() {
         return getEntityMetadata().id().orElseThrow(KEY_NOT_FOUND_EXCEPTION_SUPPLIER);

@@ -40,7 +40,7 @@ class ComputerTest {
     }
 
     @Test
-    public void shouldReturnAsEmbeddable() {
+    void shouldReturnAsEmbeddable() {
         Map<String, FieldMetadata> groupByName = this.entityMetadata.fieldsGroupByName();
         FieldMetadata address = groupByName.get("address");
         SoftAssertions.assertSoftly(soft -> {
@@ -51,7 +51,7 @@ class ComputerTest {
     }
 
     @Test
-    public void shouldReturnAsEntity(){
+    void shouldReturnAsEntity(){
         Map<String, FieldMetadata> groupByName = this.entityMetadata.fieldsGroupByName();
         FieldMetadata fieldMetadata = groupByName.get("users");
         GenericFieldMetadata users = (GenericFieldMetadata) fieldMetadata;

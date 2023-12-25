@@ -92,8 +92,7 @@ public class ColumnEntityConverterTest {
                 , Column.of("movieRating", Collections.singletonMap("JavaZone", 10))};
     }
 
-    @Test
-    public void shouldConvertEntityFromColumnEntity() {
+    @Test void shouldConvertEntityFromColumnEntity() {
 
         Person person = Person.builder().withAge()
                 .withId(12)
@@ -110,7 +109,7 @@ public class ColumnEntityConverterTest {
     }
 
     @Test
-    public void shouldConvertColumnEntityFromEntity() {
+    void shouldConvertColumnEntityFromEntity() {
 
         ColumnEntity entity = converter.toColumn(actor);
         assertEquals("Actor", entity.name());
@@ -120,7 +119,7 @@ public class ColumnEntityConverterTest {
     }
 
     @Test
-    public void shouldConvertColumnEntityToEntity() {
+    void shouldConvertColumnEntityToEntity() {
         ColumnEntity entity = ColumnEntity.of("Actor");
         Stream.of(columns).forEach(entity::add);
 
@@ -134,7 +133,7 @@ public class ColumnEntityConverterTest {
     }
 
     @Test
-    public void shouldConvertColumnEntityToEntity2() {
+    void shouldConvertColumnEntityToEntity2() {
         ColumnEntity entity = ColumnEntity.of("Actor");
         Stream.of(columns).forEach(entity::add);
 
@@ -148,7 +147,7 @@ public class ColumnEntityConverterTest {
     }
 
     @Test
-    public void shouldConvertColumnEntityToExistEntity() {
+    void shouldConvertColumnEntityToExistEntity() {
         ColumnEntity entity = ColumnEntity.of("Actor");
         Stream.of(columns).forEach(entity::add);
         Actor actor = Actor.actorBuilder().build();
@@ -163,7 +162,7 @@ public class ColumnEntityConverterTest {
     }
 
     @Test
-    public void shouldReturnErrorWhenToEntityIsNull() {
+    void shouldReturnErrorWhenToEntityIsNull() {
         ColumnEntity entity = ColumnEntity.of("Actor");
         Stream.of(columns).forEach(entity::add);
         Actor actor = Actor.actorBuilder().build();
@@ -175,7 +174,7 @@ public class ColumnEntityConverterTest {
 
 
     @Test
-    public void shouldConvertEntityToColumnEntity2() {
+    void shouldConvertEntityToColumnEntity2() {
 
         Movie movie = new Movie("Matrix", 2012, Collections.singleton("Actor"));
         Director director = Director.builderDirector().withAge(12)
@@ -206,7 +205,7 @@ public class ColumnEntityConverterTest {
     }
 
     @Test
-    public void shouldConvertToEmbeddedClassWhenHasSubColumn() {
+    void shouldConvertToEmbeddedClassWhenHasSubColumn() {
         Movie movie = new Movie("Matrix", 2012, Collections.singleton("Actor"));
         Director director = Director.builderDirector().withAge(12)
                 .withId(12)
@@ -223,7 +222,7 @@ public class ColumnEntityConverterTest {
     }
 
     @Test
-    public void shouldConvertToEmbeddedClassWhenHasSubColumn2() {
+    void shouldConvertToEmbeddedClassWhenHasSubColumn2() {
         Movie movie = new Movie("Matrix", 2012, singleton("Actor"));
         Director director = Director.builderDirector().withAge(12)
                 .withId(12)
@@ -243,7 +242,7 @@ public class ColumnEntityConverterTest {
     }
 
     @Test
-    public void shouldConvertToEmbeddedClassWhenHasSubColumn3() {
+    void shouldConvertToEmbeddedClassWhenHasSubColumn3() {
         Movie movie = new Movie("Matrix", 2012, singleton("Actor"));
         Director director = Director.builderDirector().withAge(12)
                 .withId(12)
@@ -267,7 +266,7 @@ public class ColumnEntityConverterTest {
     }
 
     @Test
-    public void shouldConvertToColumnWhenHaConverter() {
+    void shouldConvertToColumnWhenHaConverter() {
         Worker worker = new Worker();
         Job job = new Job();
         job.setCity("Sao Paulo");
@@ -284,7 +283,7 @@ public class ColumnEntityConverterTest {
     }
 
     @Test
-    public void shouldConvertToEntityWhenHasConverter() {
+    void shouldConvertToEntityWhenHasConverter() {
         Worker worker = new Worker();
         Job job = new Job();
         job.setCity("Sao Paulo");
@@ -300,7 +299,7 @@ public class ColumnEntityConverterTest {
     }
 
     @Test
-    public void shouldConvertEmbeddableLazily() {
+    void shouldConvertEmbeddableLazily() {
         ColumnEntity entity = ColumnEntity.of("Worker");
         entity.add("name", "Otavio");
         entity.add("money", "BRL 10");
@@ -314,7 +313,7 @@ public class ColumnEntityConverterTest {
 
 
     @Test
-    public void shouldConvertToListEmbeddable() {
+    void shouldConvertToListEmbeddable() {
         AppointmentBook appointmentBook = new AppointmentBook("ids");
         appointmentBook.add(Contact.builder().withType(ContactType.EMAIL)
                 .withName("Ada").withInformation("ada@lovelace.com").build());
@@ -334,7 +333,7 @@ public class ColumnEntityConverterTest {
     }
 
     @Test
-    public void shouldConvertFromListEmbeddable() {
+    void shouldConvertFromListEmbeddable() {
         ColumnEntity entity = ColumnEntity.of("AppointmentBook");
         entity.add(Column.of("_id", "ids"));
         List<List<Column>> columns = new ArrayList<>();
@@ -360,7 +359,7 @@ public class ColumnEntityConverterTest {
 
 
     @Test
-    public void shouldConvertSubEntity() {
+    void shouldConvertSubEntity() {
         ZipCode zipcode = new ZipCode();
         zipcode.setZip("12321");
         zipcode.setPlusFour("1234");
@@ -386,7 +385,7 @@ public class ColumnEntityConverterTest {
     }
 
     @Test
-    public void shouldConvertColumnInSubEntity() {
+    void shouldConvertColumnInSubEntity() {
 
         ColumnEntity entity = ColumnEntity.of("Address");
 
@@ -407,7 +406,7 @@ public class ColumnEntityConverterTest {
     }
 
     @Test
-    public void shouldReturnNullWhenThereIsNotSubEntity() {
+    void shouldReturnNullWhenThereIsNotSubEntity() {
         ColumnEntity entity = ColumnEntity.of("Address");
 
         entity.add(Column.of("street", "Rua Engenheiro Jose Anasoh"));
@@ -425,7 +424,7 @@ public class ColumnEntityConverterTest {
     }
 
     @Test
-    public void shouldConvertAndDoNotUseUnmodifiableCollection() {
+    void shouldConvertAndDoNotUseUnmodifiableCollection() {
         ColumnEntity entity = ColumnEntity.of("vendors");
         entity.add("name", "name");
         entity.add("prefixes", Arrays.asList("value", "value2"));
@@ -438,7 +437,7 @@ public class ColumnEntityConverterTest {
     }
 
     @Test
-    public void shouldConvertEntityToDocumentWithArray() {
+    void shouldConvertEntityToDocumentWithArray() {
         byte[] contents = {1, 2, 3, 4, 5, 6};
 
         ColumnEntity entity = ColumnEntity.of("download");
@@ -451,7 +450,7 @@ public class ColumnEntityConverterTest {
     }
 
     @Test
-    public void shouldConvertDocumentToEntityWithArray() {
+    void shouldConvertDocumentToEntityWithArray() {
         byte[] contents = {1, 2, 3, 4, 5, 6};
 
         Download download = new Download();
@@ -466,7 +465,7 @@ public class ColumnEntityConverterTest {
     }
 
     @Test
-    public void shouldCreateUserScope() {
+    void shouldCreateUserScope() {
         ColumnEntity entity = ColumnEntity.of("UserScope");
         entity.add("_id", "userName");
         entity.add("scope", "scope");
@@ -481,7 +480,7 @@ public class ColumnEntityConverterTest {
     }
 
     @Test
-    public void shouldCreateUserScope2() {
+    void shouldCreateUserScope2() {
         ColumnEntity entity = ColumnEntity.of("UserScope");
         entity.add("_id", "userName");
         entity.add("scope", "scope");
@@ -496,7 +495,7 @@ public class ColumnEntityConverterTest {
     }
 
     @Test
-    public void shouldCreateLazilyEntity() {
+    void shouldCreateLazilyEntity() {
         ColumnEntity entity = ColumnEntity.of("Citizen");
         entity.add("id", "10");
         entity.add("name", "Salvador");

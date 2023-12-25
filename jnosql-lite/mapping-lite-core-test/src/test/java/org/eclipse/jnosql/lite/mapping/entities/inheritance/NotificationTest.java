@@ -42,39 +42,39 @@ public class NotificationTest {
     }
 
     @Test
-    public void shouldGetName() {
+    void shouldGetName() {
         Assertions.assertEquals("Notification", entityMetadata.name());
     }
 
     @Test
-    public void shouldGetSimpleName() {
+    void shouldGetSimpleName() {
         Assertions.assertEquals(Notification.class.getSimpleName(), entityMetadata.simpleName());
     }
 
     @Test
-    public void shouldGetClassName() {
+    void shouldGetClassName() {
         Assertions.assertEquals(Notification.class.getName(), entityMetadata.className());
     }
 
     @Test
-    public void shouldGetClassInstance() {
+    void shouldGetClassInstance() {
         Assertions.assertEquals(Notification.class, entityMetadata.type());
     }
 
     @Test
-    public void shouldGetId() {
+    void shouldGetId() {
         Optional<FieldMetadata> id = this.entityMetadata.id();
         Assertions.assertTrue(id.isPresent());
     }
 
     @Test
-    public void shouldReturnIssueWhenIsAbstractClass() {
+    void shouldReturnIssueWhenIsAbstractClass() {
         Assertions.assertThrows(UnsupportedOperationException.class, () ->
                 entityMetadata.newInstance());
     }
 
     @Test
-    public void shouldGetFieldsName() {
+    void shouldGetFieldsName() {
         List<String> fields = entityMetadata.fieldsName();
         Assertions.assertEquals(3, fields.size());
         Assertions.assertTrue(fields.contains("id"));
@@ -83,7 +83,7 @@ public class NotificationTest {
     }
 
     @Test
-    public void shouldGetFieldsGroupByName() {
+    void shouldGetFieldsGroupByName() {
         Map<String, FieldMetadata> groupByName = this.entityMetadata.fieldsGroupByName();
         Assertions.assertNotNull(groupByName);
         Assertions.assertNotNull(groupByName.get("_id"));
@@ -91,7 +91,7 @@ public class NotificationTest {
     }
 
     @Test
-    public void shouldGetInheritanceMetadata() {
+    void shouldGetInheritanceMetadata() {
         InheritanceMetadata inheritance = this.entityMetadata.inheritance()
                 .orElseThrow();
         Assertions.assertEquals("Notification", inheritance.discriminatorValue());

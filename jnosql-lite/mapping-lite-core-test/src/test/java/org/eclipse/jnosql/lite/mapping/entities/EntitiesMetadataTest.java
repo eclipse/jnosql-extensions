@@ -31,12 +31,12 @@ public class EntitiesMetadataTest {
     }
 
     @Test
-    public void shouldReturnNPEWhenIsNull() {
+    void shouldReturnNPEWhenIsNull() {
         Assertions.assertThrows(NullPointerException.class, () -> this.mappings.get(null));
     }
 
     @Test
-    public void shouldReturnFromClass() {
+    void shouldReturnFromClass() {
         EntityMetadata entityMetadata = this.mappings.get(Animal.class);
         Assertions.assertNotNull(entityMetadata);
         Assertions.assertEquals(Animal.class, entityMetadata.type());
@@ -45,7 +45,7 @@ public class EntitiesMetadataTest {
     }
 
     @Test
-    public void shouldReturnFromName() {
+    void shouldReturnFromName() {
         Assertions.assertEquals(Animal.class, mappings.findByName("kind").type());
         Assertions.assertEquals(Car.class, mappings.findByName("car").type());
         Assertions.assertEquals(Person.class, mappings.findByName("Person").type());

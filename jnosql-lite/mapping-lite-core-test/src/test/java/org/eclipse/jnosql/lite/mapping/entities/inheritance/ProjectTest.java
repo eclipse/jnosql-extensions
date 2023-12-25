@@ -41,54 +41,54 @@ public class ProjectTest {
     }
 
     @Test
-    public void shouldGetName() {
+    void shouldGetName() {
         Assertions.assertEquals("Project", entityMetadata.name());
     }
 
     @Test
-    public void shouldGetSimpleName() {
+    void shouldGetSimpleName() {
         Assertions.assertEquals(Project.class.getSimpleName(), entityMetadata.simpleName());
     }
 
     @Test
-    public void shouldGetClassName() {
+    void shouldGetClassName() {
         Assertions.assertEquals(Project.class.getName(), entityMetadata.className());
     }
 
     @Test
-    public void shouldGetClassInstance() {
+    void shouldGetClassInstance() {
         Assertions.assertEquals(Project.class, entityMetadata.type());
     }
 
     @Test
-    public void shouldGetId() {
+    void shouldGetId() {
         Optional<FieldMetadata> id = this.entityMetadata.id();
         Assertions.assertTrue(id.isPresent());
     }
 
     @Test
-    public void shouldCreateNewInstance() {
+    void shouldCreateNewInstance() {
         Project project = entityMetadata.newInstance();
         Assertions.assertNotNull(project);
         Assertions.assertTrue(project instanceof Project);
     }
 
     @Test
-    public void shouldGetFieldsName() {
+    void shouldGetFieldsName() {
         List<String> fields = entityMetadata.fieldsName();
         Assertions.assertEquals(1, fields.size());
         Assertions.assertTrue(fields.contains("name"));
     }
 
     @Test
-    public void shouldGetFieldsGroupByName() {
+    void shouldGetFieldsGroupByName() {
         Map<String, FieldMetadata> groupByName = this.entityMetadata.fieldsGroupByName();
         Assertions.assertNotNull(groupByName);
         Assertions.assertNotNull(groupByName.get("_id"));
     }
 
     @Test
-    public void shouldGetInheritanceMetadata() {
+    void shouldGetInheritanceMetadata() {
         InheritanceMetadata inheritance = this.entityMetadata.inheritance()
                 .orElseThrow();
         Assertions.assertEquals("Project", inheritance.discriminatorValue());

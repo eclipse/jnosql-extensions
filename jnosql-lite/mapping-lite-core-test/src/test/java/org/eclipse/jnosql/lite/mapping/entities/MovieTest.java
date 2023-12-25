@@ -40,40 +40,40 @@ public class MovieTest {
     }
 
     @Test
-    public void shouldGetName() {
+    void shouldGetName() {
         Assertions.assertEquals("Movie", entityMetadata.name());
     }
 
     @Test
-    public void shouldGetSimpleName() {
+    void shouldGetSimpleName() {
         Assertions.assertEquals(Movie.class.getSimpleName(), entityMetadata.simpleName());
     }
 
     @Test
-    public void shouldGetClassName() {
+    void shouldGetClassName() {
         Assertions.assertEquals(Movie.class.getName(), entityMetadata.className());
     }
 
     @Test
-    public void shouldGetClassInstance() {
+    void shouldGetClassInstance() {
         Assertions.assertEquals(Movie.class, entityMetadata.type());
     }
 
     @Test
-    public void shouldGetId() {
+    void shouldGetId() {
         Optional<FieldMetadata> id = this.entityMetadata.id();
         Assertions.assertFalse(id.isPresent());
     }
 
     @Test
-    public void shouldCreateNewInstance() {
+    void shouldCreateNewInstance() {
         Movie movie = entityMetadata.newInstance();
         Assertions.assertNotNull(movie);
         Assertions.assertTrue(movie instanceof Movie);
     }
 
     @Test
-    public void shouldGetFieldsName() {
+    void shouldGetFieldsName() {
         List<String> fields = entityMetadata.fieldsName();
         Assertions.assertEquals(2, fields.size());
         Assertions.assertTrue(fields.contains("title"));
@@ -81,7 +81,7 @@ public class MovieTest {
     }
 
     @Test
-    public void shouldGetFieldsGroupByName() {
+    void shouldGetFieldsGroupByName() {
         Map<String, FieldMetadata> groupByName = this.entityMetadata.fieldsGroupByName();
         Assertions.assertNotNull(groupByName);
         Assertions.assertNotNull(groupByName.get("title"));
@@ -89,7 +89,7 @@ public class MovieTest {
     }
 
     @Test
-    public void shouldGetter() {
+    void shouldGetter() {
         Map<String, FieldMetadata> groupByName = this.entityMetadata.fieldsGroupByName();
         Movie movie = new Movie();
         movie.setTitle("Movie");
@@ -108,7 +108,7 @@ public class MovieTest {
     }
 
     @Test
-    public void shouldSetter() {
+    void shouldSetter() {
         Map<String, FieldMetadata> groupByName = this.entityMetadata.fieldsGroupByName();
         Movie movie = new Movie();
 
