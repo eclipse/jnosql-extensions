@@ -14,7 +14,6 @@
  */
 package org.eclipse.jnosql.lite.mapping.repository;
 
-import java.util.Collections;
 import java.util.List;
 
 class KeyValueMethodGenerator implements MethodGenerator {
