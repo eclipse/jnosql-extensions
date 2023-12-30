@@ -22,6 +22,7 @@ import jakarta.data.repository.Param;
 import jakarta.data.repository.Query;
 import jakarta.data.repository.Repository;
 import jakarta.data.repository.Save;
+import jakarta.data.repository.Update;
 
 import java.util.List;
 
@@ -96,5 +97,34 @@ import java.util.List;
 
     @Save
     int saveArrayInt(Person[] people);
+
+    // update
+
+    @Update
+    Person updatePerson(Person person);
+
+    @Update
+    void updatePersonVoid(Person person);
+
+    @Update
+    int updatePersonInt(Person person);
+
+    @Update
+    Iterable<Person> updateIterable(Iterable<Person> people);
+
+    @Update
+    void updateIterableVoid(Iterable<Person> people);
+
+    @Update
+    int updateIterableInt(Iterable<Person> people);
+
+    @Update
+    Person[] updateArray(Person[] people);
+
+    @Update
+    void updateArrayVoid(Person[] people);
+
+    @Update
+    int updateArrayInt(Person[] people);
 
 }

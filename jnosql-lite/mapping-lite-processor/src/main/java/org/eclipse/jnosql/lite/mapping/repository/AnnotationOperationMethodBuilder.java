@@ -100,7 +100,40 @@ enum AnnotationOperationMethodBuilder implements Function<MethodMetadata, List<S
     UPDATE {
         @Override
         public List<String> apply(MethodMetadata methodMetadata) {
-            return null;
+            List<Parameter> parameters = methodMetadata.getParameters();
+            if(parameters.size()!= 1){
+                throw new IllegalStateException("The insert method must have only one parameter");
+            }
+            Parameter parameter = parameters.get(0);
+            var returnType = methodMetadata.getReturnType();
+            boolean isVoid = returnType.equals(Void.TYPE.getName());
+            boolean isInt = returnType.equals(Integer.TYPE.getName());
+            if(parameter.isGeneric()){
+                if(isVoid) {
+                    return Collections.singletonList( "this.template.update(" + parameter.name() + ")");
+                } else if(isInt){
+                    return List.of("this.template.update(" + parameter.name() + ")",
+                            "int result = (int)java.util.stream.StreamSupport.stream("+ parameter.name()+ ".spliterator(), false).count()");
+                }
+                return Collections.singletonList( "var result = this.template.update(" + parameter.name() + ")");
+            } else if(parameter.isArray()){
+                if(isVoid) {
+
+                    return Collections.singletonList("this.template.update(java.util.Arrays.stream(" + parameter.name() + ").toList())");
+                } else if(isInt){
+                    return List.of("this.template.update(java.util.Arrays.stream(" + parameter.name() + ").toList())",
+                            "int result = " + parameter.name() + ".length");
+                }
+                return List.of("var insertResult = this.template.insert(java.util.Arrays.stream(" + parameter.name() + ").toList())",
+                        "var result = java.util.stream.StreamSupport.stream(insertResult.spliterator(), false).toArray("+
+                                parameter.arrayType()+"::new)");
+            }
+            if(isVoid) {
+                return Collections.singletonList( "this.template.update(" + parameter.name() + ")");
+            } else if(isInt){
+                return List.of("this.template.update(" + parameter.name() + ")", "int result = 1");
+            }
+            return Collections.singletonList( "var result = this.template.update(" + parameter.name() + ")");
         }
     },
 
