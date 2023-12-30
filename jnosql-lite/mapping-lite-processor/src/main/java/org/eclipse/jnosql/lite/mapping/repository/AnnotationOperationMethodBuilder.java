@@ -112,7 +112,7 @@ enum AnnotationOperationMethodBuilder implements Function<MethodMetadata, List<S
                     return List.of("this.template.update(java.util.Arrays.stream(" + parameter.name() + ").toList())",
                             "int result = " + parameter.name() + ".length");
                 }
-                return List.of("var insertResult = this.template.insert(java.util.Arrays.stream(" + parameter.name() + ").toList())",
+                return List.of("var insertResult = this.template.update(java.util.Arrays.stream(" + parameter.name() + ").toList())",
                         "var result = java.util.stream.StreamSupport.stream(insertResult.spliterator(), false).toArray("+
                                 parameter.arrayType()+"::new)");
             }
