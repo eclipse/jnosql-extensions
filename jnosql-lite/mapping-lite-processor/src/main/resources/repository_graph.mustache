@@ -191,6 +191,9 @@ public class {{className}} implements {{repository}} {
     {{#sourceCode}}
        {{{.}}};
     {{/sourceCode}}
+    {{#hasReturn}}
+       return {{{returnValue}}};
+    {{/hasReturn}}
     }
     {{/methods}}
 
