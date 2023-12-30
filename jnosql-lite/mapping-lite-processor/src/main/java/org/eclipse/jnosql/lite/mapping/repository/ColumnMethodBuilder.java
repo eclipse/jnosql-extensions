@@ -58,7 +58,7 @@ enum ColumnMethodBuilder implements Function<MethodMetadata, List<String>> {
             lines.add("boolean result = entities.findAny().isPresent()");
             return lines;
         }
-    },COUNT_BY {
+    }, COUNT_BY {
         @Override
         public List<String> apply(MethodMetadata metadata) {
             List<String> lines = new ArrayList<>();
@@ -67,7 +67,7 @@ enum ColumnMethodBuilder implements Function<MethodMetadata, List<String>> {
             lines.add("long result = entities.count()");
             return lines;
         }
-    },DELETE_BY{
+    }, DELETE_BY {
         @Override
         public List<String> apply(MethodMetadata metadata) {
             List<String> lines = new ArrayList<>();
@@ -130,7 +130,7 @@ enum ColumnMethodBuilder implements Function<MethodMetadata, List<String>> {
             return EXIST_BY;
         } else if (methodName.startsWith("deleteBy")) {
             return DELETE_BY;
-        }  else if (metadata.hasQuery()) {
+        } else if (metadata.hasQuery()) {
             return ANNOTATION_QUERY;
         }
         return NOT_SUPPORTED;
