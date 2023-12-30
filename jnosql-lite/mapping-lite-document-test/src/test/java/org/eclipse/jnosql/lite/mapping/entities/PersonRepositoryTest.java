@@ -475,8 +475,6 @@ class PersonRepositoryTest {
         Assertions.assertThat(result).isEqualTo(1);
     }
 
-    //save
-
     @Test
     void shouldSavePerson(){
         Person person = ada();
@@ -555,6 +553,79 @@ class PersonRepositoryTest {
         when(template.insert(eq(person))).thenReturn(person);
         int result = this.personRepository.saveArrayInt(new Person[]{person});
         Mockito.verify(template).insert(eq(person));
+        Assertions.assertThat(result).isEqualTo(1);
+    }
+
+    //delete
+    @Test
+    void shouldDeletePerson(){
+        Person person = ada();
+        var result = this.personRepository.deletePerson(person);
+        assertThat(result).isTrue();
+        Mockito.verify(template).delete(Person.class, person.getId());
+    }
+
+    @Test
+    void shouldDeleteVoid(){
+        Person person = ada();
+        this.personRepository.deletePersonVoid(person);
+        Mockito.verify(template).delete(Person.class, person.getId());
+    }
+
+    @Test
+    void shouldDeleteInt(){
+        Person person = ada();
+        int result = this.personRepository.deletePersonInt(person);
+        Mockito.verify(template).delete(Person.class, person.getId());
+        Assertions.assertThat(result).isEqualTo(1);
+    }
+
+    @Test
+    void shouldDeletePersonIterable(){
+        Person person = ada();
+        Set<Person> people = Collections.singleton(person);
+        var result = this.personRepository.deleteIterable(people);
+        assertThat(result).isTrue();
+        Mockito.verify(template).delete(Person.class, person.getId());
+    }
+
+    @Test
+    void shouldDeletePersonIterableVoid(){
+        Person person = ada();
+        Set<Person> people = Collections.singleton(person);
+        this.personRepository.deleteIterableVoid(people);
+        Mockito.verify(template).delete(Person.class, person.getId());
+    }
+
+    @Test
+    void shouldDeletePersonIterableInt(){
+        Person person = ada();
+        Set<Person> people = Collections.singleton(person);
+        int result = this.personRepository.deleteIterableInt(people);
+        Mockito.verify(template).delete(Person.class, person.getId());
+        Assertions.assertThat(result).isEqualTo(1);
+    }
+
+    @Test
+    void shouldDeletePersonArray(){
+        Person person = ada();
+        var result = this.personRepository.deleteArray(new Person[]{person});
+        assertThat(result).isTrue();
+        Mockito.verify(template).delete(Person.class, person.getId());
+    }
+
+    @Test
+    void shouldDeletePersonArrayVoid(){
+        Person person = ada();
+        this.personRepository.deleteArrayVoid(new Person[]{person});
+        Mockito.verify(template).delete(Person.class, person.getId());
+    }
+
+    @Test
+    void shouldDeletePersonArrayInt(){
+        Person person = ada();
+        int result = this.personRepository.deleteArrayInt(new Person[]{person});
+        Mockito.verify(template).delete(Person.class, person.getId());
         Assertions.assertThat(result).isEqualTo(1);
     }
 

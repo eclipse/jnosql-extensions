@@ -135,7 +135,7 @@ import java.util.List;
     int deletePersonInt(Person person);
 
     @Delete
-    Iterable<Person> deleteIterable(Iterable<Person> people);
+    boolean deleteIterable(Iterable<Person> people);
 
     @Delete
     void deleteIterableVoid(Iterable<Person> people);
