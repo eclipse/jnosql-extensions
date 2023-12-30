@@ -33,15 +33,22 @@ record Parameter(String name, Param param, TypeElement type, String genericType,
     }
 
     public String parameterName() {
-        if(genericType != null && !genericType.isBlank()) {
+        if(isGeneric()) {
             return type.toString() + "<" +genericType+ "> " + name;
         }
-        if(arrayType != null ) {
+        if(isArray()) {
             return arrayType + " " + name;
         }
         return type.toString() + " " + name();
     }
 
+    public boolean isGeneric() {
+        return genericType != null && !genericType.isBlank();
+    }
+
+    public boolean isArray() {
+        return arrayType != null;
+    }
     public static Parameter of(VariableElement element, ProcessingEnvironment processingEnv) {
         String name = element.getSimpleName().toString();
         Param param = element.getAnnotation(Param.class);
@@ -58,6 +65,7 @@ record Parameter(String name, Param param, TypeElement type, String genericType,
         TypeElement type = (TypeElement) processingEnv.getTypeUtils().asElement(typeMirror);
         return new Parameter(name, param, type, genericType, arrayType);
     }
+
 
 
 }
