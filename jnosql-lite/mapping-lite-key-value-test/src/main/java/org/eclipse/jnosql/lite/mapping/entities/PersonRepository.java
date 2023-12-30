@@ -14,6 +14,7 @@
  */
 package org.eclipse.jnosql.lite.mapping.entities;
 
+
 import jakarta.data.page.Page;
 import jakarta.data.page.Pageable;
 import jakarta.data.repository.Delete;
