@@ -14,6 +14,7 @@
  */
 package org.eclipse.jnosql.lite.mapping.repository;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
 
@@ -22,7 +23,12 @@ enum AnnotationOperationMethodBuilder implements Function<MethodMetadata, List<S
     INSERT {
         @Override
         public List<String> apply(MethodMetadata methodMetadata) {
-            return null;
+            List<Parameter> parameters = methodMetadata.getParameters();
+            if(parameters.size()!= 1){
+                throw new IllegalStateException("The insert method must have only one parameter");
+            }
+            Parameter parameter = parameters.get(0);
+            return Collections.singletonList( "this.template.insert(" + parameter.getName() + ")");
         }
     },
     UPDATE {

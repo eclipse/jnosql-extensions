@@ -153,13 +153,13 @@ enum ColumnMethodBuilder implements Function<MethodMetadata, List<String>> {
         } else if (metadata.hasQuery()) {
             return ANNOTATION_QUERY;
         } else if(metadata.isInsert()){
-            return null;
+            return INSERT;
         }else if(metadata.isDelete()){
-            return null;
+            return DELETE;
         }else if(metadata.isUpdate()){
-            return null;
+            return UPDATE;
         }else if(metadata.isSave()){
-            return null;
+            return SAVE;
         }
         return NOT_SUPPORTED;
     }
