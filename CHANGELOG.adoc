@@ -11,6 +11,7 @@ and this project adheres to https://semver.org/spec/v2.0.0.html[Semantic Version
 === Added
 
 - Upgrade API to Jakarta Data 1.0.0-M2
+- Include Jakarta Data annotations operations to JNoSQL lite
 
 == [1.0.4] - 2023-12-20
 
