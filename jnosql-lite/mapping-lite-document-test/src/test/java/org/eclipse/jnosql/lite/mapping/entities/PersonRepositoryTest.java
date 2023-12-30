@@ -307,6 +307,7 @@ class PersonRepositoryTest {
             soft.assertThat(query.limit()).isEqualTo(10L);
         });
     }
+
     @Test
     void shouldInsertPerson(){
         Person person = ada();
@@ -556,7 +557,6 @@ class PersonRepositoryTest {
         Assertions.assertThat(result).isEqualTo(1);
     }
 
-    //delete
     @Test
     void shouldDeletePerson(){
         Person person = ada();
