@@ -507,57 +507,54 @@ class PersonRepositoryTest {
     void shouldSavePersonIterable(){
         Person person = ada();
         Set<Person> people = Collections.singleton(person);
-        when(template.insert(eq(people))).thenReturn(people);
+        when(template.insert(eq(person))).thenReturn(person);
         Iterable<Person> result = this.personRepository.saveIterable(people);
         assertThat(result).isNotNull().contains(person);
-        Mockito.verify(template).insert(eq(people));
+        Mockito.verify(template).insert(eq(person));
     }
 
     @Test
     void shouldSavePersonIterableVoid(){
         Person person = ada();
         Set<Person> people = Collections.singleton(person);
-        when(template.insert(eq(people))).thenReturn(people);
+        when(template.insert(eq(person))).thenReturn(person);
         this.personRepository.saveIterableVoid(people);
-        Mockito.verify(template).insert(eq(people));
+        Mockito.verify(template).insert(eq(person));
     }
 
     @Test
     void shouldSavePersonIterableInt(){
         Person person = ada();
         Set<Person> people = Collections.singleton(person);
-        when(template.insert(eq(people))).thenReturn(people);
+        when(template.insert(eq(person))).thenReturn(person);
         int result = this.personRepository.saveIterableInt(people);
-        Mockito.verify(template).insert(eq(people));
+        Mockito.verify(template).insert(eq(person));
         Assertions.assertThat(result).isEqualTo(1);
     }
 
     @Test
     void shouldSavePersonArray(){
         Person person = ada();
-        List<Person> people = Collections.singletonList(person);
-        when(template.insert(eq(people))).thenReturn(people);
+        when(template.insert(eq(person))).thenReturn(person);
         Person[] result = this.personRepository.saveArray(new Person[]{person});
         assertThat(result).isNotNull().contains(person);
-        Mockito.verify(template).insert(eq(people));
+        Mockito.verify(template).insert(eq(person));
     }
 
     @Test
     void shouldSavePersonArrayVoid(){
         Person person = ada();
-        List<Person> people = Collections.singletonList(person);
-        when(template.insert(eq(people))).thenReturn(people);
+        when(template.insert(eq(person))).thenReturn(person);
         this.personRepository.saveArrayVoid(new Person[]{person});
-        Mockito.verify(template).insert(eq(people));
+        Mockito.verify(template).insert(eq(person));
     }
 
     @Test
     void shouldSavePersonArrayInt(){
         Person person = ada();
-        List<Person> people = Collections.singletonList(person);
-        when(template.insert(eq(people))).thenReturn(people);
+        when(template.insert(eq(person))).thenReturn(person);
         int result = this.personRepository.saveArrayInt(new Person[]{person});
-        Mockito.verify(template).insert(eq(people));
+        Mockito.verify(template).insert(eq(person));
         Assertions.assertThat(result).isEqualTo(1);
     }
 
