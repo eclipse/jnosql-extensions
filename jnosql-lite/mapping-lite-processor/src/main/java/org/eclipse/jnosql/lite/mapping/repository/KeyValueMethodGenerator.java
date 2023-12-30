@@ -19,17 +19,19 @@ import java.util.List;
 
 class KeyValueMethodGenerator implements MethodGenerator {
 
-    KeyValueMethodGenerator() {
+    private final MethodMetadata metadata;
+    KeyValueMethodGenerator(MethodMetadata metadata) {
+        this.metadata = metadata;
     }
 
     @Override
     public List<String> getLines() {
-        return Collections.singletonList("throw new UnsupportedOperationException" +
-                "(\"The Key-value repository implementation does not support method query\")");
+        KeyValueMethodBuilder methodBuilder = KeyValueMethodBuilder.of(this.metadata);
+        return methodBuilder.apply(this.metadata);
     }
 
     @Override
     public boolean hasReturn() {
-        return true;
+        return !metadata.getReturnType().equals(Void.TYPE.getName());
     }
 }
