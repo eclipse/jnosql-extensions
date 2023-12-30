@@ -93,6 +93,26 @@ enum ColumnMethodBuilder implements Function<MethodMetadata, List<String>> {
         public List<String> apply(MethodMetadata metadata) {
             return List.of("//There is no support for this method type yet.");
         }
+    }, INSERT {
+        @Override
+        public List<String> apply(MethodMetadata methodMetadata) {
+            return AnnotationOperationMethodBuilder.INSERT.apply(methodMetadata);
+        }
+    }, UPDATE {
+        @Override
+        public List<String> apply(MethodMetadata methodMetadata) {
+            return AnnotationOperationMethodBuilder.UPDATE.apply(methodMetadata);
+        }
+    }, DELETE {
+        @Override
+        public List<String> apply(MethodMetadata methodMetadata) {
+            return AnnotationOperationMethodBuilder.DELETE.apply(methodMetadata);
+        }
+    }, SAVE {
+        @Override
+        public List<String> apply(MethodMetadata methodMetadata) {
+            return AnnotationOperationMethodBuilder.SAVE.apply(methodMetadata);
+        }
     };
 
     private static final String SPACE = "\n          ";
