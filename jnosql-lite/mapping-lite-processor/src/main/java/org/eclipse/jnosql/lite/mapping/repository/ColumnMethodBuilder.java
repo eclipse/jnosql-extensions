@@ -132,6 +132,14 @@ enum ColumnMethodBuilder implements Function<MethodMetadata, List<String>> {
             return DELETE_BY;
         } else if (metadata.hasQuery()) {
             return ANNOTATION_QUERY;
+        } else if(metadata.isInsert()){
+            return null;
+        }else if(metadata.isDelete()){
+            return null;
+        }else if(metadata.isUpdate()){
+            return null;
+        }else if(metadata.isSave()){
+            return null;
         }
         return NOT_SUPPORTED;
     }

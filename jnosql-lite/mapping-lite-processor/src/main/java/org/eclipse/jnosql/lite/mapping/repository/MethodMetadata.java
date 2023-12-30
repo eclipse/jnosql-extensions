@@ -30,6 +30,7 @@ import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -155,6 +156,23 @@ class MethodMetadata {
         }
         return Optional.empty();
     }
+
+    public boolean isInsert() {
+        return Objects.nonNull(insert);
+    }
+
+    public boolean isDelete() {
+        return Objects.nonNull(delete);
+    }
+
+    public boolean isUpdate() {
+        return Objects.nonNull(update);
+    }
+
+    public boolean isSave() {
+        return Objects.nonNull(save);
+    }
+
     public static MethodMetadata of(Element element, String entityType, DatabaseType type, ProcessingEnvironment processingEnv) {
         ElementKind kind = element.getKind();
         if (ElementKind.METHOD.equals(kind)) {
@@ -178,7 +196,4 @@ class MethodMetadata {
         }
         return null;
     }
-
-
-
 }
