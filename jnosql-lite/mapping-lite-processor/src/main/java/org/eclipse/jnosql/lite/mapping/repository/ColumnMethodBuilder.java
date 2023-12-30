@@ -18,6 +18,7 @@ import jakarta.data.repository.Param;
 import jakarta.data.repository.Query;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
 
@@ -141,26 +142,8 @@ enum ColumnMethodBuilder implements Function<MethodMetadata, List<String>> {
     }
 
     static ColumnMethodBuilder of(MethodMetadata metadata) {
-        var methodName = metadata.getMethodName();
-        if (methodName.startsWith("findBy")) {
-            return METHOD_QUERY;
-        } else if (methodName.startsWith("countBy")) {
-            return COUNT_BY;
-        } else if (methodName.startsWith("existsBy")) {
-            return EXIST_BY;
-        } else if (methodName.startsWith("deleteBy")) {
-            return DELETE_BY;
-        } else if (metadata.hasQuery()) {
-            return ANNOTATION_QUERY;
-        } else if(metadata.isInsert()){
-            return INSERT;
-        }else if(metadata.isDelete()){
-            return DELETE;
-        }else if(metadata.isUpdate()){
-            return UPDATE;
-        }else if(metadata.isSave()){
-            return SAVE;
-        }
-        return NOT_SUPPORTED;
+        MethodMetadataOperationType operationType = MethodMetadataOperationType.of(metadata);
+        return Arrays.stream(ColumnMethodBuilder.values()).filter(c -> c.name().equals(operationType.name()))
+                .findAny().orElse(NOT_SUPPORTED);
     }
 }

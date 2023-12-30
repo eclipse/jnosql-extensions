@@ -18,6 +18,7 @@ import jakarta.data.repository.Param;
 import jakarta.data.repository.Query;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
 
@@ -92,6 +93,26 @@ enum DocumentMethodBuilder implements Function<MethodMetadata, List<String>> {
         public List<String> apply(MethodMetadata metadata) {
             return List.of("//There is no support for this method type yet.");
         }
+    }, INSERT {
+        @Override
+        public List<String> apply(MethodMetadata methodMetadata) {
+            return AnnotationOperationMethodBuilder.INSERT.apply(methodMetadata);
+        }
+    }, UPDATE {
+        @Override
+        public List<String> apply(MethodMetadata methodMetadata) {
+            return AnnotationOperationMethodBuilder.UPDATE.apply(methodMetadata);
+        }
+    }, DELETE {
+        @Override
+        public List<String> apply(MethodMetadata methodMetadata) {
+            return AnnotationOperationMethodBuilder.DELETE.apply(methodMetadata);
+        }
+    }, SAVE {
+        @Override
+        public List<String> apply(MethodMetadata methodMetadata) {
+            return AnnotationOperationMethodBuilder.SAVE.apply(methodMetadata);
+        }
     };
 
     private static final String SPACE = "\n          ";
@@ -120,18 +141,8 @@ enum DocumentMethodBuilder implements Function<MethodMetadata, List<String>> {
     }
 
     static DocumentMethodBuilder of(MethodMetadata metadata) {
-        var methodName = metadata.getMethodName();
-        if (methodName.startsWith("findBy")) {
-            return METHOD_QUERY;
-        } else if (methodName.startsWith("countBy")) {
-            return COUNT_BY;
-        } else if (methodName.startsWith("existsBy")) {
-            return EXIST_BY;
-        } else if (methodName.startsWith("deleteBy")) {
-            return DELETE_BY;
-        }  else if (metadata.hasQuery()) {
-            return ANNOTATION_QUERY;
-        }
-        return NOT_SUPPORTED;
+        MethodMetadataOperationType operationType = MethodMetadataOperationType.of(metadata);
+        return Arrays.stream(DocumentMethodBuilder.values()).filter(c -> c.name().equals(operationType.name()))
+                .findAny().orElse(NOT_SUPPORTED);
     }
 }
