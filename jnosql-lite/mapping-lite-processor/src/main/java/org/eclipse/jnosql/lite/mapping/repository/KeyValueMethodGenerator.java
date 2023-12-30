@@ -31,6 +31,9 @@ class KeyValueMethodGenerator implements MethodGenerator {
 
     @Override
     public boolean hasReturn() {
-        return !metadata.getReturnType().equals(Void.TYPE.getName());
+        KeyValueMethodBuilder methodBuilder = KeyValueMethodBuilder.of(this.metadata);
+        return !KeyValueMethodBuilder.NOT_SUPPORTED.equals(methodBuilder)
+                &&
+                !metadata.getReturnType().equals(Void.TYPE.getName());
     }
 }

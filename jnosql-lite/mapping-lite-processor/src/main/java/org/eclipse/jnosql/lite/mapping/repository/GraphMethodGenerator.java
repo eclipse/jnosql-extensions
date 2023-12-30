@@ -31,6 +31,9 @@ class GraphMethodGenerator implements MethodGenerator {
 
     @Override
     public boolean hasReturn() {
-        return !metadata.getReturnType().equals(Void.TYPE.getName());
+        GraphMethodBuilder methodBuilder = GraphMethodBuilder.of(this.metadata);
+        return !GraphMethodBuilder.NOT_SUPPORTED.equals(methodBuilder)
+                &&
+               !metadata.getReturnType().equals(Void.TYPE.getName());
     }
 }
