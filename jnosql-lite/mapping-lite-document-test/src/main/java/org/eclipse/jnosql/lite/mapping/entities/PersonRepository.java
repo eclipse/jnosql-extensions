@@ -16,6 +16,7 @@ package org.eclipse.jnosql.lite.mapping.entities;
 
 import jakarta.data.page.Page;
 import jakarta.data.page.Pageable;
+import jakarta.data.repository.Delete;
 import jakarta.data.repository.Insert;
 import jakarta.data.repository.PageableRepository;
 import jakarta.data.repository.Param;
@@ -98,8 +99,6 @@ import java.util.List;
     @Save
     int saveArrayInt(Person[] people);
 
-    // update
-
     @Update
     Person updatePerson(Person person);
 
@@ -126,5 +125,31 @@ import java.util.List;
 
     @Update
     int updateArrayInt(Person[] people);
+    @Delete
+    boolean deletePerson(Person person);
+
+    @Delete
+    void deletePersonVoid(Person person);
+
+    @Delete
+    int deletePersonInt(Person person);
+
+    @Delete
+    Iterable<Person> deleteIterable(Iterable<Person> people);
+
+    @Delete
+    void deleteIterableVoid(Iterable<Person> people);
+
+    @Delete
+    int deleteIterableInt(Iterable<Person> people);
+
+    @Delete
+    boolean deleteArray(Person[] people);
+
+    @Delete
+    void deleteArrayVoid(Person[] people);
+
+    @Delete
+    int deleteArrayInt(Person[] people);
 
 }
