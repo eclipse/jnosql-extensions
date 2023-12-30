@@ -92,7 +92,7 @@ enum ColumnMethodBuilder implements Function<MethodMetadata, List<String>> {
     }, NOT_SUPPORTED {
         @Override
         public List<String> apply(MethodMetadata metadata) {
-            return List.of("throw new UnsupportedOperationException(\"There is no support for this method type yet.\");");
+            return List.of("throw new UnsupportedOperationException(\"There is no support for this method type yet.\")");
         }
     }, INSERT {
         @Override
