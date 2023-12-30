@@ -63,7 +63,7 @@ enum AnnotationOperationMethodBuilder implements Function<MethodMetadata, List<S
         public List<String> apply(MethodMetadata methodMetadata) {
             List<Parameter> parameters = methodMetadata.getParameters();
             if(parameters.size()!= 1){
-                throw new IllegalStateException("The insert method must have only one parameter");
+                throw new IllegalStateException("The save method must have only one parameter");
             }
             Parameter parameter = parameters.get(0);
             var returnType = methodMetadata.getReturnType();
@@ -71,22 +71,22 @@ enum AnnotationOperationMethodBuilder implements Function<MethodMetadata, List<S
             boolean isInt = returnType.equals(Integer.TYPE.getName());
             if(parameter.isGeneric()){
                 if(isVoid) {
-                    return Collections.singletonList( "this.template.save(" + parameter.name() + ")");
+                    return Collections.singletonList( "this.saveAll(" + parameter.name() + ")");
                 } else if(isInt){
-                    return List.of("this.template.save(" + parameter.name() + ")",
+                    return List.of("this.saveAll(" + parameter.name() + ")",
                             "int result = (int)java.util.stream.StreamSupport.stream("+ parameter.name()+ ".spliterator(), false).count()");
                 }
-                return Collections.singletonList( "var result = this.template.save(" + parameter.name() + ")");
+                return Collections.singletonList( "var result = this.saveAll(" + parameter.name() + ")");
             } else if(parameter.isArray()){
                 if(isVoid) {
 
-                    return Collections.singletonList("this.template.save(java.util.Arrays.stream(" + parameter.name() + ").toList())");
+                    return Collections.singletonList("this.saveAll(java.util.Arrays.stream(" + parameter.name() + ").toList())");
                 } else if(isInt){
-                    return List.of("this.template.insert(java.util.Arrays.stream(" + parameter.name() + ").toList())",
+                    return List.of("this.saveAll(java.util.Arrays.stream(" + parameter.name() + ").toList())",
                             "int result = " + parameter.name() + ".length");
                 }
-                return List.of("var saveResult = this.template.save(java.util.Arrays.stream(" + parameter.name() + ").toList())",
-                        "var result = java.util.stream.StreamSupport.stream(insertResult.spliterator(), false).toArray("+
+                return List.of("var saveResult = this.saveAll(java.util.Arrays.stream(" + parameter.name() + ").toList())",
+                        "var result = java.util.stream.StreamSupport.stream(saveResult.spliterator(), false).toArray("+
                                 parameter.arrayType()+"::new)");
             }
             if(isVoid) {

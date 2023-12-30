@@ -21,6 +21,7 @@ import jakarta.data.repository.PageableRepository;
 import jakarta.data.repository.Param;
 import jakarta.data.repository.Query;
 import jakarta.data.repository.Repository;
+import jakarta.data.repository.Save;
 
 import java.util.List;
 
@@ -51,7 +52,6 @@ import java.util.List;
     @Insert
     int insertPersonInt(Person person);
 
-
     @Insert
     Iterable<Person> insertIterable(Iterable<Person> people);
 
@@ -61,7 +61,6 @@ import java.util.List;
     @Insert
     int insertIterableInt(Iterable<Person> people);
 
-
     @Insert
     Person[] insertArray(Person[] people);
 
@@ -70,4 +69,32 @@ import java.util.List;
 
     @Insert
     int insertArrayInt(Person[] people);
+
+    @Save
+    Person savePerson(Person person);
+
+    @Save
+    void savePersonVoid(Person person);
+
+    @Save
+    int savePersonInt(Person person);
+
+    @Save
+    Iterable<Person> saveIterable(Iterable<Person> people);
+
+    @Save
+    void saveIterableVoid(Iterable<Person> people);
+
+    @Save
+    int saveIterableInt(Iterable<Person> people);
+
+    @Save
+    Person[] saveArray(Person[] people);
+
+    @Save
+    void saveArrayVoid(Person[] people);
+
+    @Save
+    int saveArrayInt(Person[] people);
+
 }
