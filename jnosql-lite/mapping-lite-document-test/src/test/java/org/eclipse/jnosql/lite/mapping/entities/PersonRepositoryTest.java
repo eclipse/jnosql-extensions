@@ -20,6 +20,7 @@ import jakarta.data.page.Pageable;
 import jakarta.data.Sort;
 
 import jakarta.nosql.PreparedStatement;
+import org.assertj.core.api.Assertions;
 import org.assertj.core.api.SoftAssertions;
 import org.eclipse.jnosql.communication.Condition;
 import org.eclipse.jnosql.communication.document.DocumentCondition;
@@ -37,8 +38,10 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -303,6 +306,67 @@ class PersonRepositoryTest {
             soft.assertThat(query.skip()).isEqualTo(90L);
             soft.assertThat(query.limit()).isEqualTo(10L);
         });
+    }
+    @Test
+    void shouldInsertPerson(){
+        Person person = ada();
+        when(template.insert(eq(person))).thenReturn(person);
+        Person result = this.personRepository.insertPerson(person);
+        assertThat(result).isNotNull().isEqualTo(person);
+        Mockito.verify(template).insert(eq(person));
+    }
 
+    @Test
+    void shouldInsertVoid(){
+        Person person = ada();
+        when(template.insert(eq(person))).thenReturn(person);
+        this.personRepository.insertPersonVoid(person);
+        Mockito.verify(template).insert(eq(person));
+    }
+
+    @Test
+    void shouldInsertInt(){
+        Person person = ada();
+        when(template.insert(eq(person))).thenReturn(person);
+        int result = this.personRepository.insertPersonInt(person);
+        Mockito.verify(template).insert(eq(person));
+        Assertions.assertThat(result).isEqualTo(1);
+    }
+    //
+    @Test
+    void shouldInsertPersonIterable(){
+        Person person = ada();
+        Set<Person> people = Collections.singleton(person);
+        when(template.insert(eq(people))).thenReturn(people);
+        Iterable<Person> result = this.personRepository.insertIterable(people);
+        assertThat(result).isNotNull().contains(person);
+        Mockito.verify(template).insert(eq(people));
+    }
+
+    @Test
+    void shouldInsertPersonIterableVoid(){
+        Person person = ada();
+        Set<Person> people = Collections.singleton(person);
+        when(template.insert(eq(people))).thenReturn(people);
+        this.personRepository.insertIterableVoid(people);
+        Mockito.verify(template).insert(eq(people));
+    }
+
+    @Test
+    void shouldInsertPersonIterableInt(){
+        Person person = ada();
+        Set<Person> people = Collections.singleton(person);
+        when(template.insert(eq(people))).thenReturn(people);
+        int result = this.personRepository.insertIterableInt(people);
+        Mockito.verify(template).insert(eq(people));
+        Assertions.assertThat(result).isEqualTo(1);
+    }
+
+    private static Person ada() {
+        Person person = new Person();
+        person.setId(10L);
+        person.setAge(12);
+        person.setName("Ada");
+        return person;
     }
 }
