@@ -17,7 +17,11 @@ package org.eclipse.jnosql.lite.mapping.repository;
 import jakarta.data.Limit;
 import jakarta.data.Sort;
 import jakarta.data.page.Pageable;
+import jakarta.data.repository.Delete;
+import jakarta.data.repository.Insert;
 import jakarta.data.repository.Query;
+import jakarta.data.repository.Save;
+import jakarta.data.repository.Update;
 import org.eclipse.jnosql.mapping.DatabaseType;
 
 import javax.annotation.processing.ProcessingEnvironment;
@@ -46,6 +50,10 @@ class MethodMetadata {
 
     private final List<Parameter> parameters;
 
+    private final Insert insert;
+    private final Update update;
+    private final Delete delete;
+    private final Save save;
     private final Query query;
 
     private final DatabaseType type;
@@ -54,8 +62,9 @@ class MethodMetadata {
 
     private final String entityType;
 
-    public MethodMetadata(String methodName, TypeElement returnElement, String returnType,
-                          List<Parameter> parameters, Query query, DatabaseType type, String entityType) {
+    private MethodMetadata(String methodName, TypeElement returnElement, String returnType,
+                          List<Parameter> parameters, DatabaseType type, String entityType,
+                           Query query, Insert insert, Update update, Delete delete, Save save) {
 
         this.methodName = methodName;
         this.returnElement = returnElement;
@@ -64,6 +73,10 @@ class MethodMetadata {
         this.query = query;
         this.type = type;
         this.entityType = entityType;
+        this.insert = insert;
+        this.update = update;
+        this.delete = delete;
+        this.save = save;
     }
 
     public String getMethodName() {
@@ -155,7 +168,13 @@ class MethodMetadata {
                     .collect(Collectors.toList());
 
             Query query = method.getAnnotation(Query.class);
-            return new MethodMetadata(methodName, returnElement, returnType, parameters, query, type, entityType);
+            Insert insert = method.getAnnotation(Insert.class);
+            Update update = method.getAnnotation(Update.class);
+            Delete delete = method.getAnnotation(Delete.class);
+            Save save = method.getAnnotation(Save.class);
+
+            return new MethodMetadata(methodName, returnElement, returnType, parameters, type, entityType, query,
+                    insert, update, delete, save);
         }
         return null;
     }
