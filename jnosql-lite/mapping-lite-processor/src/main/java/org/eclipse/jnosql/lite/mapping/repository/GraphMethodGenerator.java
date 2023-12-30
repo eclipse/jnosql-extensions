@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2021 Otávio Santana and others
+ *  Copyright (c) 2023 Otávio Santana and others
  *   All rights reserved. This program and the accompanying materials
  *   are made available under the terms of the Eclipse Public License v1.0
  *   and Apache License v2.0 which accompanies this distribution.
@@ -14,22 +14,23 @@
  */
 package org.eclipse.jnosql.lite.mapping.repository;
 
-import java.util.Collections;
 import java.util.List;
 
 class GraphMethodGenerator implements MethodGenerator {
 
-    GraphMethodGenerator() {
+    private final MethodMetadata metadata;
+    GraphMethodGenerator(MethodMetadata metadata) {
+        this.metadata = metadata;
     }
 
     @Override
     public List<String> getLines() {
-        return Collections.singletonList("throw new UnsupportedOperationException" +
-                "(\"The Graph repository implementation does not support method query\")");
+        GraphMethodBuilder methodBuilder = GraphMethodBuilder.of(this.metadata);
+        return methodBuilder.apply(this.metadata);
     }
 
     @Override
     public boolean hasReturn() {
-        return true;
+        return !metadata.getReturnType().equals(Void.TYPE.getName());
     }
 }
