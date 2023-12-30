@@ -18,6 +18,7 @@ import jakarta.data.repository.Param;
 import jakarta.data.repository.Query;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
 
@@ -41,8 +42,8 @@ enum ColumnMethodBuilder implements Function<MethodMetadata, List<String>> {
             lines.add("jakarta.nosql.PreparedStatement prepare = template.prepare(\"" + query.value() + "\")");
             for (Parameter parameter : metadata.getParameters()) {
                 if (parameter.hasParam()) {
-                    Param param = parameter.getParam();
-                    lines.add("prepare.bind(\"" + param.value() + "\", " + parameter.getName() + ")");
+                    Param param = parameter.param();
+                    lines.add("prepare.bind(\"" + param.value() + "\", " + parameter.name() + ")");
                 }
             }
             AnnotationQueryRepositoryReturnType returnType = AnnotationQueryRepositoryReturnType.of(metadata);
@@ -58,7 +59,7 @@ enum ColumnMethodBuilder implements Function<MethodMetadata, List<String>> {
             lines.add("boolean result = entities.findAny().isPresent()");
             return lines;
         }
-    },COUNT_BY {
+    }, COUNT_BY {
         @Override
         public List<String> apply(MethodMetadata metadata) {
             List<String> lines = new ArrayList<>();
@@ -67,7 +68,7 @@ enum ColumnMethodBuilder implements Function<MethodMetadata, List<String>> {
             lines.add("long result = entities.count()");
             return lines;
         }
-    },DELETE_BY{
+    }, DELETE_BY {
         @Override
         public List<String> apply(MethodMetadata metadata) {
             List<String> lines = new ArrayList<>();
@@ -83,7 +84,7 @@ enum ColumnMethodBuilder implements Function<MethodMetadata, List<String>> {
                     "DELETE_PARSER.apply(delete, parser)");
             lines.add("org.eclipse.jnosql.communication.Params params = queryParams.params()");
             for (Parameter parameter : metadata.getParameters()) {
-                lines.add("params.prefix(\"" + parameter.getName() + "\", " + parameter.getName() + ")");
+                lines.add("params.prefix(\"" + parameter.name() + "\", " + parameter.name() + ")");
             }
             lines.add("this.template.delete(queryParams.query())");
             return lines;
@@ -91,7 +92,27 @@ enum ColumnMethodBuilder implements Function<MethodMetadata, List<String>> {
     }, NOT_SUPPORTED {
         @Override
         public List<String> apply(MethodMetadata metadata) {
-            return List.of("//There is no support for this method type yet.");
+            return List.of("throw new UnsupportedOperationException(\"There is no support for this method type yet.\")");
+        }
+    }, INSERT {
+        @Override
+        public List<String> apply(MethodMetadata methodMetadata) {
+            return AnnotationOperationMethodBuilder.INSERT.apply(methodMetadata);
+        }
+    }, UPDATE {
+        @Override
+        public List<String> apply(MethodMetadata methodMetadata) {
+            return AnnotationOperationMethodBuilder.UPDATE.apply(methodMetadata);
+        }
+    }, DELETE {
+        @Override
+        public List<String> apply(MethodMetadata methodMetadata) {
+            return AnnotationOperationMethodBuilder.DELETE.apply(methodMetadata);
+        }
+    }, SAVE {
+        @Override
+        public List<String> apply(MethodMetadata methodMetadata) {
+            return AnnotationOperationMethodBuilder.SAVE.apply(methodMetadata);
         }
     };
 
@@ -116,23 +137,13 @@ enum ColumnMethodBuilder implements Function<MethodMetadata, List<String>> {
         }
         lines.add("org.eclipse.jnosql.communication.Params params = queryParams.params()");
         for (Parameter parameter : metadata.getQueryParams()) {
-            lines.add("params.prefix(\"" + parameter.getName() + "\", " + parameter.getName() + ")");
+            lines.add("params.prefix(\"" + parameter.name() + "\", " + parameter.name() + ")");
         }
     }
 
     static ColumnMethodBuilder of(MethodMetadata metadata) {
-        var methodName = metadata.getMethodName();
-        if (methodName.startsWith("findBy")) {
-            return METHOD_QUERY;
-        } else if (methodName.startsWith("countBy")) {
-            return COUNT_BY;
-        } else if (methodName.startsWith("existsBy")) {
-            return EXIST_BY;
-        } else if (methodName.startsWith("deleteBy")) {
-            return DELETE_BY;
-        }  else if (metadata.hasQuery()) {
-            return ANNOTATION_QUERY;
-        }
-        return NOT_SUPPORTED;
+        MethodMetadataOperationType operationType = MethodMetadataOperationType.of(metadata);
+        return Arrays.stream(ColumnMethodBuilder.values()).filter(c -> c.name().equals(operationType.name()))
+                .findAny().orElse(NOT_SUPPORTED);
     }
 }

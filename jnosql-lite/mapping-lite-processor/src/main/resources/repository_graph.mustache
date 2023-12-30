@@ -191,6 +191,9 @@ public class {{className}} implements {{repository}} {
     {{#sourceCode}}
        {{{.}}};
     {{/sourceCode}}
+    {{#hasReturn}}
+       return {{{returnValue}}};
+    {{/hasReturn}}
     }
     {{/methods}}
 
@@ -198,10 +201,10 @@ public class {{className}} implements {{repository}} {
         return getEntityMetadata().id().orElseThrow(KEY_NOT_FOUND_EXCEPTION_SUPPLIER);
     }
 
-    private Function optionalToStream() {
+    private Function<{{keyType}}, Stream<{{entityType}}>> optionalToStream() {
         return id -> {
             Optional entity = this.findById(({{keyType}}) id);
-            return entity.isPresent() ? Stream.of(entity.get()) : Stream.empty();
+            return entity.stream();
         };
     }
 

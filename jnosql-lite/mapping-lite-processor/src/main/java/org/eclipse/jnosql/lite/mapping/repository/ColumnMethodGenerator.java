@@ -19,12 +19,8 @@ import java.util.List;
 class ColumnMethodGenerator implements MethodGenerator {
 
     private final MethodMetadata metadata;
-
-    private final ColumnMethodBuilder methodBuilder;
-
     ColumnMethodGenerator(MethodMetadata metadata) {
         this.metadata = metadata;
-        this.methodBuilder = ColumnMethodBuilder.of(this.metadata);
     }
 
     @Override
@@ -35,6 +31,6 @@ class ColumnMethodGenerator implements MethodGenerator {
 
     @Override
     public boolean hasReturn() {
-        return !methodBuilder.equals(ColumnMethodBuilder.DELETE_BY);
+        return !metadata.getReturnType().equals(Void.TYPE.getName());
     }
 }

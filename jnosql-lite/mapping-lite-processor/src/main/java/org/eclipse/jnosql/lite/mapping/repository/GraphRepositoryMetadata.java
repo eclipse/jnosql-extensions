@@ -32,6 +32,6 @@ class GraphRepositoryMetadata extends RepositoryMetadata {
 
     @Override
     public MethodGenerator apply(MethodMetadata metadata) {
-        return new KeyValueMethodGenerator();
+        return new GraphMethodGenerator(metadata);
     }
 }
