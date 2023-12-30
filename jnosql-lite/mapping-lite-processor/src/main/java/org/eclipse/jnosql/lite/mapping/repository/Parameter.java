@@ -19,39 +19,45 @@ import jakarta.data.repository.Param;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
+import javax.lang.model.type.ArrayType;
+import javax.lang.model.type.DeclaredType;
+import javax.lang.model.type.TypeMirror;
+import java.util.List;
 
-class Parameter {
-    private final String name;
-    private final Param param;
-    private final TypeElement type;
+import static java.util.stream.Collectors.joining;
 
-    Parameter(String name, Param param, TypeElement type) {
-        this.name = name;
-        this.param = param;
-        this.type = type;
-    }
-
-
-    public String getName() {
-        return name;
-    }
-
-    public TypeElement getType() {
-        return type;
-    }
-
-    public Param getParam() {
-        return param;
-    }
+record Parameter(String name, Param param, TypeElement type, String genericType, String arrayType) {
 
     public boolean hasParam() {
         return param != null;
     }
 
+    public String parameterName() {
+        if(genericType != null && !genericType.isBlank()) {
+            return type.toString() + "<" +genericType+ "> " + name;
+        }
+        if(arrayType != null ) {
+            return arrayType + " " + name;
+        }
+        return type.toString() + " " + name();
+    }
+
     public static Parameter of(VariableElement element, ProcessingEnvironment processingEnv) {
         String name = element.getSimpleName().toString();
         Param param = element.getAnnotation(Param.class);
-        TypeElement type = (TypeElement) processingEnv.getTypeUtils().asElement(element.asType());
-        return new Parameter(name, param, type);
+        TypeMirror typeMirror = element.asType();
+        String arrayType = null;
+        String genericType = null;
+        if (typeMirror instanceof DeclaredType declaredType) {
+            List<? extends TypeMirror> typeArguments = declaredType.getTypeArguments();
+            genericType = typeArguments.stream().map(TypeMirror::toString).collect(joining(","));
+        }
+        if (typeMirror instanceof ArrayType) {
+            arrayType = typeMirror.toString();
+        }
+        TypeElement type = (TypeElement) processingEnv.getTypeUtils().asElement(typeMirror);
+        return new Parameter(name, param, type, genericType, arrayType);
     }
+
+
 }

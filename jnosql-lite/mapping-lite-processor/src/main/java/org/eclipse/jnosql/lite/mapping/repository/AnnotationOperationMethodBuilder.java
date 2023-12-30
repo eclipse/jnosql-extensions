@@ -15,6 +15,7 @@
 package org.eclipse.jnosql.lite.mapping.repository;
 
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.type.TypeMirror;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
@@ -29,14 +30,16 @@ enum AnnotationOperationMethodBuilder implements Function<MethodMetadata, List<S
                 throw new IllegalStateException("The insert method must have only one parameter");
             }
             Parameter parameter = parameters.get(0);
-            TypeElement type = parameter.getType();
+            TypeElement type = parameter.type();
+            TypeMirror typeMirror = type.asType();
+            Class<?> classType = getClass(typeMirror);
             var returnType = methodMetadata.getReturnType();
             if(returnType.equals(Void.TYPE.getName())) {
-                return Collections.singletonList( "this.template.insert(" + parameter.getName() + ")");
+                return Collections.singletonList( "this.template.insert(" + parameter.name() + ")");
             } else if(returnType.equals(Integer.TYPE.getName())){
-                return List.of("this.template.insert(" + parameter.getName() + ")", "int result = 1");
+                return List.of("this.template.insert(" + parameter.name() + ")", "int result = 1");
             }
-            return Collections.singletonList( "var result = this.template.insert(" + parameter.getName() + ")");
+            return Collections.singletonList( "var result = this.template.insert(" + parameter.name() + ")");
         }
     },
     UPDATE {
@@ -58,5 +61,13 @@ enum AnnotationOperationMethodBuilder implements Function<MethodMetadata, List<S
             return null;
         }
     };
+
+    static Class<?> getClass(TypeMirror typeMirror) {
+        try {
+            return Class.forName(typeMirror.toString());
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 }

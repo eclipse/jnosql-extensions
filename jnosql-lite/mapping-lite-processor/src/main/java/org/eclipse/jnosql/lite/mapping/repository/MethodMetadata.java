@@ -40,9 +40,9 @@ import static java.util.stream.Collectors.joining;
 
 class MethodMetadata {
 
-    private static final Predicate<Parameter> IS_SPECIAL_PARAM = p -> p.getType().getQualifiedName().toString().equals(Limit.class.getName()) ||
-            p.getType().getQualifiedName().toString().equals(Pageable.class.getName()) ||
-            p.getType().getQualifiedName().toString().equals(Sort.class.getName());
+    private static final Predicate<Parameter> IS_SPECIAL_PARAM = p -> p.type().getQualifiedName().toString().equals(Limit.class.getName()) ||
+            p.type().getQualifiedName().toString().equals(Pageable.class.getName()) ||
+            p.type().getQualifiedName().toString().equals(Sort.class.getName());
     private final String methodName;
 
     private final TypeElement returnElement;
@@ -89,7 +89,7 @@ class MethodMetadata {
     }
 
     public String getParametersSignature() {
-        return parameters.stream().map(p -> p.getType().toString() + " " + p.getName())
+        return parameters.stream().map(Parameter::parameterName)
                 .collect(joining(","));
     }
 
@@ -111,7 +111,7 @@ class MethodMetadata {
 
     public String getSpecialParameter() {
         return parameters.stream().filter(IS_SPECIAL_PARAM)
-                .map(Parameter::getName).collect(joining(", "));
+                .map(Parameter::name).collect(joining(", "));
     }
 
 
@@ -149,7 +149,7 @@ class MethodMetadata {
 
     public Optional<Parameter> findPageable(){
         for (Parameter parameter : this.parameters) {
-            TypeElement element = parameter.getType();
+            TypeElement element = parameter.type();
             if("jakarta.data.page.Pageable".equals(element.getQualifiedName().toString())){
                 return Optional.of(parameter);
             }

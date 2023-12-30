@@ -50,4 +50,24 @@ import java.util.List;
 
     @Insert
     int insertPersonInt(Person person);
+
+
+    @Insert
+    Iterable<Person> insertIterable(Iterable<Person> people);
+
+    @Insert
+    void insertIterableVoid(Iterable<Person> people);
+
+    @Insert
+    int insertIterableInt(Iterable<Person> people);
+
+
+    @Insert
+    Person[] insertArray(Person[] people);
+
+    @Insert
+    void insertArrayVoid(Person[] people);
+
+    @Insert
+    int insertArrayInt(Person[] people);
 }
