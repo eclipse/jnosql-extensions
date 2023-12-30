@@ -162,11 +162,11 @@ enum AnnotationOperationMethodBuilder implements Function<MethodMetadata, List<S
                                 parameter.arrayType()+"::new)");
             }
             if(isVoid) {
-                return Collections.singletonList( "this.template.delete(" + parameter.name() + ")");
+                return Collections.singletonList( "this.delete(" + parameter.name() + ")");
             } else if(isInt){
                 return List.of("this.delete(" + parameter.name() + ")", "int result = 1");
             } else if(isBoolean){
-                return List.of("this.delete(" + parameter.name() + ")", "int result = true");
+                return List.of("this.delete(" + parameter.name() + ")", "boolean result = true");
             }
             return List.of("this.delete(" + parameter.name() + ")", "var result =" + parameter.name());
         }
