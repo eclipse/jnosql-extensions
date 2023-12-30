@@ -14,6 +14,7 @@
  */
 package org.eclipse.jnosql.lite.mapping.repository;
 
+import javax.lang.model.element.TypeElement;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
@@ -28,7 +29,14 @@ enum AnnotationOperationMethodBuilder implements Function<MethodMetadata, List<S
                 throw new IllegalStateException("The insert method must have only one parameter");
             }
             Parameter parameter = parameters.get(0);
-            return Collections.singletonList( "this.template.insert(" + parameter.getName() + ")");
+            TypeElement type = parameter.getType();
+            var returnType = methodMetadata.getReturnType();
+            if(returnType.equals(Void.TYPE.getName())) {
+                return Collections.singletonList( "this.template.insert(" + parameter.getName() + ")");
+            } else if(returnType.equals(Integer.TYPE.getName())){
+                return List.of("this.template.insert(" + parameter.getName() + ")", "int result = 1");
+            }
+            return Collections.singletonList( "var result = this.template.insert(" + parameter.getName() + ")");
         }
     },
     UPDATE {
@@ -50,4 +58,5 @@ enum AnnotationOperationMethodBuilder implements Function<MethodMetadata, List<S
             return null;
         }
     };
+
 }
