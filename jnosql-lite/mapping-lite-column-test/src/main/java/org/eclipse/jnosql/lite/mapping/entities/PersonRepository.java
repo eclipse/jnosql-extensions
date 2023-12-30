@@ -16,10 +16,14 @@ package org.eclipse.jnosql.lite.mapping.entities;
 
 import jakarta.data.page.Page;
 import jakarta.data.page.Pageable;
+import jakarta.data.repository.Delete;
+import jakarta.data.repository.Insert;
 import jakarta.data.repository.PageableRepository;
 import jakarta.data.repository.Param;
 import jakarta.data.repository.Query;
 import jakarta.data.repository.Repository;
+import jakarta.data.repository.Save;
+import jakarta.data.repository.Update;
 
 import java.util.List;
 
@@ -38,5 +42,112 @@ public interface PersonRepository extends PageableRepository<Person, Long> {
     long countByName(String name);
 
     void deleteByName(String name);
+
+    @Insert
+    Person insertPerson(Person person);
+
+    @Insert
+    void insertPersonVoid(Person person);
+
+    @Insert
+    int insertPersonInt(Person person);
+
+    @Insert
+    Iterable<Person> insertIterable(Iterable<Person> people);
+
+    @Insert
+    void insertIterableVoid(Iterable<Person> people);
+
+    @Insert
+    int insertIterableInt(Iterable<Person> people);
+
+    @Insert
+    Person[] insertArray(Person[] people);
+
+    @Insert
+    void insertArrayVoid(Person[] people);
+
+    @Insert
+    int insertArrayInt(Person[] people);
+
+    @Save
+    Person savePerson(Person person);
+
+    @Save
+    void savePersonVoid(Person person);
+
+    @Save
+    int savePersonInt(Person person);
+
+    @Save
+    Iterable<Person> saveIterable(Iterable<Person> people);
+
+    @Save
+    void saveIterableVoid(Iterable<Person> people);
+
+    @Save
+    int saveIterableInt(Iterable<Person> people);
+
+    @Save
+    Person[] saveArray(Person[] people);
+
+    @Save
+    void saveArrayVoid(Person[] people);
+
+    @Save
+    int saveArrayInt(Person[] people);
+
+    @Update
+    Person updatePerson(Person person);
+
+    @Update
+    void updatePersonVoid(Person person);
+
+    @Update
+    int updatePersonInt(Person person);
+
+    @Update
+    Iterable<Person> updateIterable(Iterable<Person> people);
+
+    @Update
+    void updateIterableVoid(Iterable<Person> people);
+
+    @Update
+    int updateIterableInt(Iterable<Person> people);
+
+    @Update
+    Person[] updateArray(Person[] people);
+
+    @Update
+    void updateArrayVoid(Person[] people);
+
+    @Update
+    int updateArrayInt(Person[] people);
+    @Delete
+    boolean deletePerson(Person person);
+
+    @Delete
+    void deletePersonVoid(Person person);
+
+    @Delete
+    int deletePersonInt(Person person);
+
+    @Delete
+    boolean deleteIterable(Iterable<Person> people);
+
+    @Delete
+    void deleteIterableVoid(Iterable<Person> people);
+
+    @Delete
+    int deleteIterableInt(Iterable<Person> people);
+
+    @Delete
+    boolean deleteArray(Person[] people);
+
+    @Delete
+    void deleteArrayVoid(Person[] people);
+
+    @Delete
+    int deleteArrayInt(Person[] people);
 
 }
