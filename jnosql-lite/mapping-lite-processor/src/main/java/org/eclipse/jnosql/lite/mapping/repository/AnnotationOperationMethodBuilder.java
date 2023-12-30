@@ -23,14 +23,10 @@ enum AnnotationOperationMethodBuilder implements Function<MethodMetadata, List<S
     INSERT {
         @Override
         public List<String> apply(MethodMetadata methodMetadata) {
-            List<Parameter> parameters = methodMetadata.getParameters();
-            if(parameters.size()!= 1){
-                throw new IllegalStateException("The insert method must have only one parameter");
-            }
-            Parameter parameter = parameters.get(0);
+            Parameter parameter = getParameter(methodMetadata, "The insert method must have only one parameter");
             var returnType = methodMetadata.getReturnType();
-            boolean isVoid = returnType.equals(Void.TYPE.getName());
-            boolean isInt = returnType.equals(Integer.TYPE.getName());
+            boolean isVoid = AnnotationOperationMethodBuilder.isVoid(returnType);
+            boolean isInt = isInt(returnType);
            if(parameter.isGeneric()){
                if(isVoid) {
                    return Collections.singletonList( "this.template.insert(" + parameter.name() + ")");
@@ -61,14 +57,10 @@ enum AnnotationOperationMethodBuilder implements Function<MethodMetadata, List<S
     }, SAVE {
         @Override
         public List<String> apply(MethodMetadata methodMetadata) {
-            List<Parameter> parameters = methodMetadata.getParameters();
-            if(parameters.size()!= 1){
-                throw new IllegalStateException("The save method must have only one parameter");
-            }
-            Parameter parameter = parameters.get(0);
+            Parameter parameter = getParameter(methodMetadata, "The save method must have only one parameter");
             var returnType = methodMetadata.getReturnType();
-            boolean isVoid = returnType.equals(Void.TYPE.getName());
-            boolean isInt = returnType.equals(Integer.TYPE.getName());
+            boolean isVoid = isVoid(returnType);
+            boolean isInt = isInt(returnType);
             if(parameter.isGeneric()){
                 if(isVoid) {
                     return Collections.singletonList( "this.saveAll(" + parameter.name() + ")");
@@ -100,14 +92,10 @@ enum AnnotationOperationMethodBuilder implements Function<MethodMetadata, List<S
     UPDATE {
         @Override
         public List<String> apply(MethodMetadata methodMetadata) {
-            List<Parameter> parameters = methodMetadata.getParameters();
-            if(parameters.size()!= 1){
-                throw new IllegalStateException("The insert method must have only one parameter");
-            }
-            Parameter parameter = parameters.get(0);
+            Parameter parameter = getParameter(methodMetadata, "The insert method must have only one parameter");
             var returnType = methodMetadata.getReturnType();
-            boolean isVoid = returnType.equals(Void.TYPE.getName());
-            boolean isInt = returnType.equals(Integer.TYPE.getName());
+            boolean isVoid = isVoid(returnType);
+            boolean isInt = AnnotationOperationMethodBuilder.isInt(returnType);
             if(parameter.isGeneric()){
                 if(isVoid) {
                     return Collections.singletonList( "this.template.update(" + parameter.name() + ")");
@@ -140,8 +128,68 @@ enum AnnotationOperationMethodBuilder implements Function<MethodMetadata, List<S
     DELETE {
         @Override
         public List<String> apply(MethodMetadata methodMetadata) {
-            return null;
+            Parameter parameter = getParameter(methodMetadata, "The insert method must have only one parameter");
+            var returnType = methodMetadata.getReturnType();
+            boolean isVoid = isVoid(returnType);
+            boolean isInt = isInt(returnType);
+            boolean isBoolean = isBoolean(returnType);
+            if(parameter.isGeneric()){
+                if(isVoid) {
+                    return Collections.singletonList( "this.deleteAll(" + parameter.name() + ")");
+                } else if(isInt){
+                    return List.of("this.deleteAll(" + parameter.name() + ")",
+                            "int result = (int)java.util.stream.StreamSupport.stream("+ parameter.name()+ ".spliterator(), false).count()");
+                } else if (isBoolean) {
+                    return List.of("this.deleteAll(" + parameter.name() + ")",
+                            "boolean result = true");
+
+                }
+                return List.of( "this.deleteAll(" + parameter.name() + ")", "var result = "+parameter.name());
+            } else if(parameter.isArray()){
+                if(isVoid) {
+
+                    return Collections.singletonList("this.deleteAll(java.util.Arrays.stream(" + parameter.name() + ").toList())");
+                } else if(isInt){
+                    return List.of("this.deleteAll(java.util.Arrays.stream(" + parameter.name() + ").toList())",
+                            "int result = " + parameter.name() + ".length");
+                } else if (isBoolean) {
+                    return List.of("this.deleteAll(java.util.Arrays.stream(" + parameter.name() + ").toList())",
+                            "boolean result = true");
+
+                }
+                return List.of("var insertResult = this.deleteAll(java.util.Arrays.stream(" + parameter.name() + ").toList())",
+                        "var result = java.util.stream.StreamSupport.stream(insertResult.spliterator(), false).toArray("+
+                                parameter.arrayType()+"::new)");
+            }
+            if(isVoid) {
+                return Collections.singletonList( "this.template.delete(" + parameter.name() + ")");
+            } else if(isInt){
+                return List.of("this.delete(" + parameter.name() + ")", "int result = 1");
+            } else if(isBoolean){
+                return List.of("this.delete(" + parameter.name() + ")", "int result = true");
+            }
+            return List.of("this.delete(" + parameter.name() + ")", "var result =" + parameter.name());
         }
+    };
+
+    private static Parameter getParameter(MethodMetadata methodMetadata, String s) {
+        List<Parameter> parameters = methodMetadata.getParameters();
+        if (parameters.size() != 1) {
+            throw new IllegalStateException(s);
+        }
+        return parameters.get(0);
+    }
+
+    private static boolean isInt(String returnType) {
+        return returnType.equals(Integer.TYPE.getName())|| returnType.equals(Integer.class.getName());
+    }
+
+    private static boolean isBoolean(String returnType) {
+        return returnType.equals(Boolean.TYPE.getName())|| returnType.equals(Boolean.class.getName());
+    }
+
+    private static boolean isVoid(String returnType) {
+        return returnType.equals(Void.TYPE.getName());
     }
 
 }
