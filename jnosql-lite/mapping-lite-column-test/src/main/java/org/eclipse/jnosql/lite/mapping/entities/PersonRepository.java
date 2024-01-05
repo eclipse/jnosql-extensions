@@ -53,6 +53,9 @@ public interface PersonRepository extends PageableRepository<Person, Long> {
     int insertPersonInt(Person person);
 
     @Insert
+    long insertPersonLong(Person person);
+
+    @Insert
     Iterable<Person> insertIterable(Iterable<Person> people);
 
     @Insert
@@ -62,6 +65,9 @@ public interface PersonRepository extends PageableRepository<Person, Long> {
     int insertIterableInt(Iterable<Person> people);
 
     @Insert
+    long insertIterableLong(Iterable<Person> people);
+
+    @Insert
     Person[] insertArray(Person[] people);
 
     @Insert
@@ -69,6 +75,9 @@ public interface PersonRepository extends PageableRepository<Person, Long> {
 
     @Insert
     int insertArrayInt(Person[] people);
+
+    @Insert
+    long insertArrayLong(Person[] people);
 
     @Save
     Person savePerson(Person person);
@@ -80,6 +89,9 @@ public interface PersonRepository extends PageableRepository<Person, Long> {
     int savePersonInt(Person person);
 
     @Save
+    long savePersonLong(Person person);
+
+    @Save
     Iterable<Person> saveIterable(Iterable<Person> people);
 
     @Save
@@ -89,6 +101,9 @@ public interface PersonRepository extends PageableRepository<Person, Long> {
     int saveIterableInt(Iterable<Person> people);
 
     @Save
+    long saveIterableLong(Iterable<Person> people);
+
+    @Save
     Person[] saveArray(Person[] people);
 
     @Save
@@ -96,6 +111,9 @@ public interface PersonRepository extends PageableRepository<Person, Long> {
 
     @Save
     int saveArrayInt(Person[] people);
+
+    @Save
+    long saveArrayLong(Person[] people);
 
     @Update
     Person updatePerson(Person person);
@@ -107,6 +125,9 @@ public interface PersonRepository extends PageableRepository<Person, Long> {
     int updatePersonInt(Person person);
 
     @Update
+    long updatePersonLong(Person person);
+
+    @Update
     Iterable<Person> updateIterable(Iterable<Person> people);
 
     @Update
@@ -116,6 +137,9 @@ public interface PersonRepository extends PageableRepository<Person, Long> {
     int updateIterableInt(Iterable<Person> people);
 
     @Update
+    long updateIterableLong(Iterable<Person> people);
+
+    @Update
     Person[] updateArray(Person[] people);
 
     @Update
@@ -123,6 +147,9 @@ public interface PersonRepository extends PageableRepository<Person, Long> {
 
     @Update
     int updateArrayInt(Person[] people);
+
+    @Update
+    long updateArrayLong(Person[] people);
     @Delete
     boolean deletePerson(Person person);
 
@@ -142,6 +169,9 @@ public interface PersonRepository extends PageableRepository<Person, Long> {
     int deleteIterableInt(Iterable<Person> people);
 
     @Delete
+    long deleteIterableLong(Iterable<Person> people);
+
+    @Delete
     boolean deleteArray(Person[] people);
 
     @Delete
@@ -149,5 +179,8 @@ public interface PersonRepository extends PageableRepository<Person, Long> {
 
     @Delete
     int deleteArrayInt(Person[] people);
+
+    @Delete
+    long deleteArrayLong(Person[] people);
 
 }
