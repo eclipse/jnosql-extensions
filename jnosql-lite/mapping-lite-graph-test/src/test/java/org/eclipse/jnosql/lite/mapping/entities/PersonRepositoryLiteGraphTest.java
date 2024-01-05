@@ -541,21 +541,21 @@ public class PersonRepositoryLiteGraphTest {
         Person person = ada();
         var result = this.repository.deletePerson(person);
         assertThat(result).isTrue();
-        Mockito.verify(template).delete(Person.class, person.getId());
+        Mockito.verify(template).delete(person.getId());
     }
 
     @Test
     void shouldDeleteVoid(){
         Person person = ada();
         this.repository.deletePersonVoid(person);
-        Mockito.verify(template).delete(Person.class, person.getId());
+        Mockito.verify(template).delete(person.getId());
     }
 
     @Test
     void shouldDeleteInt(){
         Person person = ada();
         var result = this.repository.deletePersonInt(person);
-        Mockito.verify(template).delete(Person.class, person.getId());
+        Mockito.verify(template).delete(person.getId());
         Assertions.assertThat(result).isEqualTo(1);
     }
 
@@ -563,7 +563,7 @@ public class PersonRepositoryLiteGraphTest {
     void shouldDeleteLong(){
         Person person = ada();
         var result = this.repository.deletePersonLong(person);
-        Mockito.verify(template).delete(Person.class, person.getId());
+        Mockito.verify(template).delete(person.getId());
         Assertions.assertThat(result).isEqualTo(1);
     }
 
@@ -574,7 +574,7 @@ public class PersonRepositoryLiteGraphTest {
         Set<Person> people = Collections.singleton(person);
         var result = this.repository.deleteIterable(people);
         assertThat(result).isTrue();
-        Mockito.verify(template).delete(Person.class, person.getId());
+        Mockito.verify(template).delete(person.getId());
     }
 
     @Test
@@ -582,7 +582,7 @@ public class PersonRepositoryLiteGraphTest {
         Person person = ada();
         Set<Person> people = Collections.singleton(person);
         this.repository.deleteIterableVoid(people);
-        Mockito.verify(template).delete(Person.class, person.getId());
+        Mockito.verify(template).delete(person.getId());
     }
 
     @Test
@@ -590,7 +590,7 @@ public class PersonRepositoryLiteGraphTest {
         Person person = ada();
         Set<Person> people = Collections.singleton(person);
         var result = this.repository.deleteIterableInt(people);
-        Mockito.verify(template).delete(Person.class, person.getId());
+        Mockito.verify(template).delete(person.getId());
         Assertions.assertThat(result).isEqualTo(1);
     }
 
@@ -599,7 +599,7 @@ public class PersonRepositoryLiteGraphTest {
         Person person = ada();
         Set<Person> people = Collections.singleton(person);
         var result = this.repository.deleteIterableLong(people);
-        Mockito.verify(template).delete(Person.class, person.getId());
+        Mockito.verify(template).delete(person.getId());
         Assertions.assertThat(result).isEqualTo(1);
     }
 
@@ -609,21 +609,21 @@ public class PersonRepositoryLiteGraphTest {
         Person person = ada();
         var result = this.repository.deleteArray(new Person[]{person});
         assertThat(result).isTrue();
-        Mockito.verify(template).delete(Person.class, person.getId());
+        Mockito.verify(template).delete(person.getId());
     }
 
     @Test
     void shouldDeletePersonArrayVoid(){
         Person person = ada();
         this.repository.deleteArrayVoid(new Person[]{person});
-        Mockito.verify(template).delete(Person.class, person.getId());
+        Mockito.verify(template).delete(person.getId());
     }
 
     @Test
     void shouldDeletePersonArrayInt(){
         Person person = ada();
         var result = this.repository.deleteArrayInt(new Person[]{person});
-        Mockito.verify(template).delete(Person.class, person.getId());
+        Mockito.verify(template).delete(person.getId());
         Assertions.assertThat(result).isEqualTo(1);
     }
 
@@ -631,7 +631,7 @@ public class PersonRepositoryLiteGraphTest {
     void shouldDeletePersonArrayLong(){
         Person person = ada();
         var result = this.repository.deleteArrayLong(new Person[]{person});
-        Mockito.verify(template).delete(Person.class, person.getId());
+        Mockito.verify(template).delete(person.getId());
         Assertions.assertThat(result).isEqualTo(1L);
     }
 
