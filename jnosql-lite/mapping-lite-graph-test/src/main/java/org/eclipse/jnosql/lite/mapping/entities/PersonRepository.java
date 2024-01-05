@@ -179,4 +179,6 @@ public interface PersonRepository extends PageableRepository<Person, Long> {
     @Delete
     long deleteArrayLong(Person[] people);
 
+    @Delete
+    long deletePersonLong(Person person);
 }

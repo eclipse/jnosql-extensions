@@ -196,6 +196,7 @@ public class PersonRepositoryLiteGraphTest {
         });
     }
 
+
     @Test
     void shouldInsertPerson(){
         Person person = ada();
@@ -217,9 +218,18 @@ public class PersonRepositoryLiteGraphTest {
     void shouldInsertInt(){
         Person person = ada();
         when(template.insert(eq(person))).thenReturn(person);
-        int result = this.repository.insertPersonInt(person);
+        var result = this.repository.insertPersonInt(person);
         Mockito.verify(template).insert(eq(person));
         Assertions.assertThat(result).isEqualTo(1);
+    }
+
+    @Test
+    void shouldInsertLong(){
+        Person person = ada();
+        when(template.insert(eq(person))).thenReturn(person);
+        var result = this.repository.insertPersonLong(person);
+        Mockito.verify(template).insert(eq(person));
+        Assertions.assertThat(result).isEqualTo(1L);
     }
 
     @Test
@@ -246,10 +256,21 @@ public class PersonRepositoryLiteGraphTest {
         Person person = ada();
         Set<Person> people = Collections.singleton(person);
         when(template.insert(eq(people))).thenReturn(people);
-        int result = this.repository.insertIterableInt(people);
+        var result = this.repository.insertIterableInt(people);
         Mockito.verify(template).insert(eq(people));
         Assertions.assertThat(result).isEqualTo(1);
     }
+
+    @Test
+    void shouldInsertPersonIterableLong(){
+        Person person = ada();
+        Set<Person> people = Collections.singleton(person);
+        when(template.insert(eq(people))).thenReturn(people);
+        var result = this.repository.insertIterableLong(people);
+        Mockito.verify(template).insert(eq(people));
+        Assertions.assertThat(result).isEqualTo(1);
+    }
+
 
     @Test
     void shouldInsertPersonArray(){
@@ -275,9 +296,19 @@ public class PersonRepositoryLiteGraphTest {
         Person person = ada();
         List<Person> people = Collections.singletonList(person);
         when(template.insert(eq(people))).thenReturn(people);
-        int result = this.repository.insertArrayInt(new Person[]{person});
+        var result = this.repository.insertArrayInt(new Person[]{person});
         Mockito.verify(template).insert(eq(people));
         Assertions.assertThat(result).isEqualTo(1);
+    }
+
+    @Test
+    void shouldInsertPersonArrayLong(){
+        Person person = ada();
+        List<Person> people = Collections.singletonList(person);
+        when(template.insert(eq(people))).thenReturn(people);
+        var result = this.repository.insertArrayLong(new Person[]{person});
+        Mockito.verify(template).insert(eq(people));
+        Assertions.assertThat(result).isEqualTo(1L);
     }
 
     @Test
@@ -304,6 +335,16 @@ public class PersonRepositoryLiteGraphTest {
         int result = this.repository.updatePersonInt(person);
         Mockito.verify(template).update(eq(person));
         Assertions.assertThat(result).isEqualTo(1);
+    }
+
+
+    @Test
+    void shouldUpdateLong(){
+        Person person = ada();
+        when(template.update(eq(person))).thenReturn(person);
+        var result = this.repository.updatePersonLong(person);
+        Mockito.verify(template).update(eq(person));
+        Assertions.assertThat(result).isEqualTo(1L);
     }
 
     @Test
@@ -336,6 +377,17 @@ public class PersonRepositoryLiteGraphTest {
     }
 
     @Test
+    void shouldUpdatePersonIterableLong(){
+        Person person = ada();
+        Set<Person> people = Collections.singleton(person);
+        when(template.update(eq(people))).thenReturn(people);
+        var result = this.repository.updateIterableLong(people);
+        Mockito.verify(template).update(eq(people));
+        Assertions.assertThat(result).isEqualTo(1);
+    }
+
+
+    @Test
     void shouldUpdatePersonArray(){
         Person person = ada();
         List<Person> people = Collections.singletonList(person);
@@ -365,6 +417,16 @@ public class PersonRepositoryLiteGraphTest {
     }
 
     @Test
+    void shouldUpdatePersonArrayLong(){
+        Person person = ada();
+        List<Person> people = Collections.singletonList(person);
+        when(template.update(eq(people))).thenReturn(people);
+        var result = this.repository.updateArrayLong(new Person[]{person});
+        Mockito.verify(template).update(eq(people));
+        Assertions.assertThat(result).isEqualTo(1);
+    }
+
+    @Test
     void shouldSavePerson(){
         Person person = ada();
         when(template.insert(eq(person))).thenReturn(person);
@@ -385,10 +447,20 @@ public class PersonRepositoryLiteGraphTest {
     void shouldSaveInt(){
         Person person = ada();
         when(template.insert(eq(person))).thenReturn(person);
-        int result = this.repository.savePersonInt(person);
+        var result = this.repository.savePersonInt(person);
         Mockito.verify(template).insert(eq(person));
         Assertions.assertThat(result).isEqualTo(1);
     }
+
+    @Test
+    void shouldSaveLong(){
+        Person person = ada();
+        when(template.insert(eq(person))).thenReturn(person);
+        var result = this.repository.savePersonLong(person);
+        Mockito.verify(template).insert(eq(person));
+        Assertions.assertThat(result).isEqualTo(1);
+    }
+
 
     @Test
     void shouldSavePersonIterable(){
@@ -414,7 +486,17 @@ public class PersonRepositoryLiteGraphTest {
         Person person = ada();
         Set<Person> people = Collections.singleton(person);
         when(template.insert(eq(person))).thenReturn(person);
-        int result = this.repository.saveIterableInt(people);
+        var result = this.repository.saveIterableInt(people);
+        Mockito.verify(template).insert(eq(person));
+        Assertions.assertThat(result).isEqualTo(1);
+    }
+
+    @Test
+    void shouldSavePersonIterableLong(){
+        Person person = ada();
+        Set<Person> people = Collections.singleton(person);
+        when(template.insert(eq(person))).thenReturn(person);
+        var result = this.repository.saveIterableLong(people);
         Mockito.verify(template).insert(eq(person));
         Assertions.assertThat(result).isEqualTo(1);
     }
@@ -440,7 +522,16 @@ public class PersonRepositoryLiteGraphTest {
     void shouldSavePersonArrayInt(){
         Person person = ada();
         when(template.insert(eq(person))).thenReturn(person);
-        int result = this.repository.saveArrayInt(new Person[]{person});
+        var result = this.repository.saveArrayInt(new Person[]{person});
+        Mockito.verify(template).insert(eq(person));
+        Assertions.assertThat(result).isEqualTo(1);
+    }
+
+    @Test
+    void shouldSavePersonArrayLong(){
+        Person person = ada();
+        when(template.insert(eq(person))).thenReturn(person);
+        var result = this.repository.saveArrayLong(new Person[]{person});
         Mockito.verify(template).insert(eq(person));
         Assertions.assertThat(result).isEqualTo(1);
     }
@@ -450,23 +541,32 @@ public class PersonRepositoryLiteGraphTest {
         Person person = ada();
         var result = this.repository.deletePerson(person);
         assertThat(result).isTrue();
-        Mockito.verify(template).delete(person.getId());
+        Mockito.verify(template).delete(Person.class, person.getId());
     }
 
     @Test
     void shouldDeleteVoid(){
         Person person = ada();
         this.repository.deletePersonVoid(person);
-        Mockito.verify(template).delete(person.getId());
+        Mockito.verify(template).delete(Person.class, person.getId());
     }
 
     @Test
     void shouldDeleteInt(){
         Person person = ada();
-        int result = this.repository.deletePersonInt(person);
-        Mockito.verify(template).delete(person.getId());
+        var result = this.repository.deletePersonInt(person);
+        Mockito.verify(template).delete(Person.class, person.getId());
         Assertions.assertThat(result).isEqualTo(1);
     }
+
+    @Test
+    void shouldDeleteLong(){
+        Person person = ada();
+        var result = this.repository.deletePersonLong(person);
+        Mockito.verify(template).delete(Person.class, person.getId());
+        Assertions.assertThat(result).isEqualTo(1);
+    }
+
 
     @Test
     void shouldDeletePersonIterable(){
@@ -474,7 +574,7 @@ public class PersonRepositoryLiteGraphTest {
         Set<Person> people = Collections.singleton(person);
         var result = this.repository.deleteIterable(people);
         assertThat(result).isTrue();
-        Mockito.verify(template).delete(person.getId());
+        Mockito.verify(template).delete(Person.class, person.getId());
     }
 
     @Test
@@ -482,39 +582,57 @@ public class PersonRepositoryLiteGraphTest {
         Person person = ada();
         Set<Person> people = Collections.singleton(person);
         this.repository.deleteIterableVoid(people);
-        Mockito.verify(template).delete(person.getId());
+        Mockito.verify(template).delete(Person.class, person.getId());
     }
 
     @Test
     void shouldDeletePersonIterableInt(){
         Person person = ada();
         Set<Person> people = Collections.singleton(person);
-        int result = this.repository.deleteIterableInt(people);
-        Mockito.verify(template).delete(person.getId());
+        var result = this.repository.deleteIterableInt(people);
+        Mockito.verify(template).delete(Person.class, person.getId());
         Assertions.assertThat(result).isEqualTo(1);
     }
+
+    @Test
+    void shouldDeletePersonIterableLong(){
+        Person person = ada();
+        Set<Person> people = Collections.singleton(person);
+        var result = this.repository.deleteIterableLong(people);
+        Mockito.verify(template).delete(Person.class, person.getId());
+        Assertions.assertThat(result).isEqualTo(1);
+    }
+
 
     @Test
     void shouldDeletePersonArray(){
         Person person = ada();
         var result = this.repository.deleteArray(new Person[]{person});
         assertThat(result).isTrue();
-        Mockito.verify(template).delete(person.getId());
+        Mockito.verify(template).delete(Person.class, person.getId());
     }
 
     @Test
     void shouldDeletePersonArrayVoid(){
         Person person = ada();
         this.repository.deleteArrayVoid(new Person[]{person});
-        Mockito.verify(template).delete(person.getId());
+        Mockito.verify(template).delete(Person.class, person.getId());
     }
 
     @Test
     void shouldDeletePersonArrayInt(){
         Person person = ada();
-        int result = this.repository.deleteArrayInt(new Person[]{person});
-        Mockito.verify(template).delete(person.getId());
+        var result = this.repository.deleteArrayInt(new Person[]{person});
+        Mockito.verify(template).delete(Person.class, person.getId());
         Assertions.assertThat(result).isEqualTo(1);
+    }
+
+    @Test
+    void shouldDeletePersonArrayLong(){
+        Person person = ada();
+        var result = this.repository.deleteArrayLong(new Person[]{person});
+        Mockito.verify(template).delete(Person.class, person.getId());
+        Assertions.assertThat(result).isEqualTo(1L);
     }
 
     private static Person ada() {
