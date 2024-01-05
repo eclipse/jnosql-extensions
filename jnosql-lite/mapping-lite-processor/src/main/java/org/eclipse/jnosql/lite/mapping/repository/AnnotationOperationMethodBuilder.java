@@ -27,12 +27,16 @@ enum AnnotationOperationMethodBuilder implements Function<MethodMetadata, List<S
             var returnType = methodMetadata.getReturnType();
             boolean isVoid = AnnotationOperationMethodBuilder.isVoid(returnType);
             boolean isInt = isInt(returnType);
+            boolean isLong = isLong(returnType);
            if(parameter.isGeneric()){
                if(isVoid) {
                    return Collections.singletonList( "this.template.insert(" + parameter.name() + ")");
                } else if(isInt){
                    return List.of("this.template.insert(" + parameter.name() + ")",
                            "int result = (int)java.util.stream.StreamSupport.stream("+ parameter.name()+ ".spliterator(), false).count()");
+               } else if (isLong) {
+                   return List.of("this.template.insert(" + parameter.name() + ")",
+                           "long result = java.util.stream.StreamSupport.stream(" + parameter.name() + ".spliterator(), false).count()");
                }
                return Collections.singletonList( "var result = this.template.insert(" + parameter.name() + ")");
            } else if(parameter.isArray()){
@@ -42,6 +46,9 @@ enum AnnotationOperationMethodBuilder implements Function<MethodMetadata, List<S
                } else if(isInt){
                    return List.of("this.template.insert(java.util.Arrays.stream(" + parameter.name() + ").toList())",
                            "int result = " + parameter.name() + ".length");
+               }else if(isLong){
+                   return List.of("this.template.insert(java.util.Arrays.stream(" + parameter.name() + ").toList())",
+                           "long result = (long)" + parameter.name() + ".length");
                }
                return List.of("var insertResult = this.template.insert(java.util.Arrays.stream(" + parameter.name() + ").toList())",
                               "var result = java.util.stream.StreamSupport.stream(insertResult.spliterator(), false).toArray("+
@@ -51,6 +58,8 @@ enum AnnotationOperationMethodBuilder implements Function<MethodMetadata, List<S
                 return Collections.singletonList( "this.template.insert(" + parameter.name() + ")");
             } else if(isInt){
                     return List.of("this.template.insert(" + parameter.name() + ")", "int result = 1");
+            } else if(isLong){
+                return List.of("this.template.insert(" + parameter.name() + ")", "long result = 1L");
             }
             return Collections.singletonList( "var result = this.template.insert(" + parameter.name() + ")");
         }
@@ -61,12 +70,16 @@ enum AnnotationOperationMethodBuilder implements Function<MethodMetadata, List<S
             var returnType = methodMetadata.getReturnType();
             boolean isVoid = isVoid(returnType);
             boolean isInt = isInt(returnType);
+            boolean isLong = isLong(returnType);
             if(parameter.isGeneric()){
                 if(isVoid) {
                     return Collections.singletonList( "this.saveAll(" + parameter.name() + ")");
                 } else if(isInt){
                     return List.of("this.saveAll(" + parameter.name() + ")",
                             "int result = (int)java.util.stream.StreamSupport.stream("+ parameter.name()+ ".spliterator(), false).count()");
+                }else if(isLong){
+                    return List.of("this.saveAll(" + parameter.name() + ")",
+                            "long result = java.util.stream.StreamSupport.stream("+ parameter.name()+ ".spliterator(), false).count()");
                 }
                 return Collections.singletonList( "var result = this.saveAll(" + parameter.name() + ")");
             } else if(parameter.isArray()){
@@ -76,6 +89,9 @@ enum AnnotationOperationMethodBuilder implements Function<MethodMetadata, List<S
                 } else if(isInt){
                     return List.of("this.saveAll(java.util.Arrays.stream(" + parameter.name() + ").toList())",
                             "int result = " + parameter.name() + ".length");
+                } else if(isLong){
+                    return List.of("this.saveAll(java.util.Arrays.stream(" + parameter.name() + ").toList())",
+                            "long result = (long)" + parameter.name() + ".length");
                 }
                 return List.of("var saveResult = this.saveAll(java.util.Arrays.stream(" + parameter.name() + ").toList())",
                         "var result = java.util.stream.StreamSupport.stream(saveResult.spliterator(), false).toArray("+
@@ -85,6 +101,8 @@ enum AnnotationOperationMethodBuilder implements Function<MethodMetadata, List<S
                 return Collections.singletonList( "this.template.insert(" + parameter.name() + ")");
             } else if(isInt){
                 return List.of("this.template.insert(" + parameter.name() + ")", "int result = 1");
+            } else if(isLong){
+                return List.of("this.template.insert(" + parameter.name() + ")", "long result = 1");
             }
             return Collections.singletonList( "var result = this.template.insert(" + parameter.name() + ")");
         }
@@ -96,12 +114,16 @@ enum AnnotationOperationMethodBuilder implements Function<MethodMetadata, List<S
             var returnType = methodMetadata.getReturnType();
             boolean isVoid = isVoid(returnType);
             boolean isInt = AnnotationOperationMethodBuilder.isInt(returnType);
+            boolean isLong = isLong(returnType);
             if(parameter.isGeneric()){
                 if(isVoid) {
                     return Collections.singletonList( "this.template.update(" + parameter.name() + ")");
                 } else if(isInt){
                     return List.of("this.template.update(" + parameter.name() + ")",
                             "int result = (int)java.util.stream.StreamSupport.stream("+ parameter.name()+ ".spliterator(), false).count()");
+                } else if(isLong){
+                    return List.of("this.template.update(" + parameter.name() + ")",
+                            "long result = java.util.stream.StreamSupport.stream("+ parameter.name()+ ".spliterator(), false).count()");
                 }
                 return Collections.singletonList( "var result = this.template.update(" + parameter.name() + ")");
             } else if(parameter.isArray()){
@@ -111,6 +133,9 @@ enum AnnotationOperationMethodBuilder implements Function<MethodMetadata, List<S
                 } else if(isInt){
                     return List.of("this.template.update(java.util.Arrays.stream(" + parameter.name() + ").toList())",
                             "int result = " + parameter.name() + ".length");
+                } else if(isLong){
+                    return List.of("this.template.update(java.util.Arrays.stream(" + parameter.name() + ").toList())",
+                            "long result = (long)" + parameter.name() + ".length");
                 }
                 return List.of("var insertResult = this.template.update(java.util.Arrays.stream(" + parameter.name() + ").toList())",
                         "var result = java.util.stream.StreamSupport.stream(insertResult.spliterator(), false).toArray("+
@@ -120,6 +145,8 @@ enum AnnotationOperationMethodBuilder implements Function<MethodMetadata, List<S
                 return Collections.singletonList( "this.template.update(" + parameter.name() + ")");
             } else if(isInt){
                 return List.of("this.template.update(" + parameter.name() + ")", "int result = 1");
+            }else if(isLong){
+                return List.of("this.template.update(" + parameter.name() + ")", "long result = 1L");
             }
             return Collections.singletonList( "var result = this.template.update(" + parameter.name() + ")");
         }
@@ -132,6 +159,7 @@ enum AnnotationOperationMethodBuilder implements Function<MethodMetadata, List<S
             var returnType = methodMetadata.getReturnType();
             boolean isVoid = isVoid(returnType);
             boolean isInt = isInt(returnType);
+            boolean isLong = isLong(returnType);
             boolean isBoolean = isBoolean(returnType);
             if(parameter.isGeneric()){
                 if(isVoid) {
@@ -139,6 +167,9 @@ enum AnnotationOperationMethodBuilder implements Function<MethodMetadata, List<S
                 } else if(isInt){
                     return List.of("this.deleteAll(" + parameter.name() + ")",
                             "int result = (int)java.util.stream.StreamSupport.stream("+ parameter.name()+ ".spliterator(), false).count()");
+                } else if(isLong){
+                    return List.of("this.deleteAll(" + parameter.name() + ")",
+                            "long result = java.util.stream.StreamSupport.stream("+ parameter.name()+ ".spliterator(), false).count()");
                 } else if (isBoolean) {
                     return List.of("this.deleteAll(" + parameter.name() + ")",
                             "boolean result = true");
@@ -147,12 +178,14 @@ enum AnnotationOperationMethodBuilder implements Function<MethodMetadata, List<S
                 return List.of( "this.deleteAll(" + parameter.name() + ")", "var result = "+parameter.name());
             } else if(parameter.isArray()){
                 if(isVoid) {
-
                     return Collections.singletonList("this.deleteAll(java.util.Arrays.stream(" + parameter.name() + ").toList())");
                 } else if(isInt){
                     return List.of("this.deleteAll(java.util.Arrays.stream(" + parameter.name() + ").toList())",
                             "int result = " + parameter.name() + ".length");
-                } else if (isBoolean) {
+                } else if(isLong){
+                    return List.of("this.deleteAll(java.util.Arrays.stream(" + parameter.name() + ").toList())",
+                            "long result = (long)" + parameter.name() + ".length");
+                }  else if (isBoolean) {
                     return List.of("this.deleteAll(java.util.Arrays.stream(" + parameter.name() + ").toList())",
                             "boolean result = true");
 
@@ -165,6 +198,8 @@ enum AnnotationOperationMethodBuilder implements Function<MethodMetadata, List<S
                 return Collections.singletonList( "this.delete(" + parameter.name() + ")");
             } else if(isInt){
                 return List.of("this.delete(" + parameter.name() + ")", "int result = 1");
+            } else if(isLong){
+                return List.of("this.delete(" + parameter.name() + ")", "long result = 1L");
             } else if(isBoolean){
                 return List.of("this.delete(" + parameter.name() + ")", "boolean result = true");
             }
@@ -182,6 +217,10 @@ enum AnnotationOperationMethodBuilder implements Function<MethodMetadata, List<S
 
     private static boolean isInt(String returnType) {
         return returnType.equals(Integer.TYPE.getName())|| returnType.equals(Integer.class.getName());
+    }
+
+    private static boolean isLong(String returnType) {
+        return returnType.equals(Long.TYPE.getName())|| returnType.equals(Long.class.getName());
     }
 
     private static boolean isBoolean(String returnType) {
