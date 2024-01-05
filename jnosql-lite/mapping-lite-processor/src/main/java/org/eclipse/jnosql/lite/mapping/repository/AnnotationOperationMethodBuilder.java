@@ -36,7 +36,7 @@ enum AnnotationOperationMethodBuilder implements Function<MethodMetadata, List<S
                            "int result = (int)java.util.stream.StreamSupport.stream("+ parameter.name()+ ".spliterator(), false).count()");
                } else if (isLong) {
                    return List.of("this.template.insert(" + parameter.name() + ")",
-                           "int result = java.util.stream.StreamSupport.stream(" + parameter.name() + ".spliterator(), false).count()");
+                           "long result = java.util.stream.StreamSupport.stream(" + parameter.name() + ".spliterator(), false).count()");
                }
                return Collections.singletonList( "var result = this.template.insert(" + parameter.name() + ")");
            } else if(parameter.isArray()){
@@ -77,6 +77,9 @@ enum AnnotationOperationMethodBuilder implements Function<MethodMetadata, List<S
                 } else if(isInt){
                     return List.of("this.saveAll(" + parameter.name() + ")",
                             "int result = (int)java.util.stream.StreamSupport.stream("+ parameter.name()+ ".spliterator(), false).count()");
+                }else if(isLong){
+                    return List.of("this.saveAll(" + parameter.name() + ")",
+                            "long result = java.util.stream.StreamSupport.stream("+ parameter.name()+ ".spliterator(), false).count()");
                 }
                 return Collections.singletonList( "var result = this.saveAll(" + parameter.name() + ")");
             } else if(parameter.isArray()){
@@ -120,7 +123,7 @@ enum AnnotationOperationMethodBuilder implements Function<MethodMetadata, List<S
                             "int result = (int)java.util.stream.StreamSupport.stream("+ parameter.name()+ ".spliterator(), false).count()");
                 } else if(isLong){
                     return List.of("this.template.update(" + parameter.name() + ")",
-                            "int result = java.util.stream.StreamSupport.stream("+ parameter.name()+ ".spliterator(), false).count()");
+                            "long result = java.util.stream.StreamSupport.stream("+ parameter.name()+ ".spliterator(), false).count()");
                 }
                 return Collections.singletonList( "var result = this.template.update(" + parameter.name() + ")");
             } else if(parameter.isArray()){
