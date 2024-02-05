@@ -61,7 +61,7 @@ After removing the reflection engine, include the Java Annotation Processor. The
 <dependency>
     <groupId>org.eclipse.jnosql.lite</groupId>
     <artifactId>mapping-lite-processor</artifactId>
-    <version>1.0.4</version>
+    <version>1.1.0</version>
     <scope>provided</scope>
 </dependency>
 ----
@@ -83,7 +83,7 @@ After removing the reflection engine, include the Java Annotation Processor. The
                     <path>
                     <groupId>org.eclipse.jnosql.lite</groupId>
                     <artifactId>mapping-lite-processor</artifactId>
-                    <version>1.0.4</version>
+                    <version>1.1.0</version>
                     </path>
                     <!-- other annotation processors -->
                 </annotationProcessorPaths>
@@ -120,7 +120,7 @@ Eclipse JNoSQL provide support for bean validation. It will validate before inse
 <dependency>
     <groupId>org.eclipse.jnosql.mapping</groupId>
     <artifactId>jnosql-mapping-validation</artifactId>
-    <version>1.0.4</version>
+    <version>1.1.0</version>
 </dependency>
 ----
 
@@ -172,7 +172,7 @@ Graph connections is a project that contains several `GraphConfiguration` implem
 <dependency>
   <groupId>org.eclipse.jnosql.mapping</groupId>
   <artifactId>jnosql-jnosql-graph-connections</artifactId>
-  <version>1.0.4</version>
+  <version>1.1.0</version>
 </dependency>
 ----
 
@@ -302,13 +302,13 @@ The Criteria API can be used via CriteriaDocumentTemplate.
   <dependency>
     <groupId>org.eclipse.jnosql.mapping</groupId>
     <artifactId>jnosql-metamodel-processor-extension</artifactId>
-    <version>1.0.4</version>
+    <version>1.1.0</version>
     <optional>true</optional>
   </dependency>
   <dependency>
       <groupId>org.eclipse.jnosql.mapping</groupId>
       <artifactId>jnosql-criteria-extension</artifactId>
-      <version>1.0.4</version>
+      <version>1.1.0</version>
   </dependency>
 ----
 
