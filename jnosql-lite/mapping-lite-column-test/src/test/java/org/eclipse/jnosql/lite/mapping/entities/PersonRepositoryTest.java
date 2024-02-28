@@ -125,6 +125,12 @@ class PersonRepositoryTest {
         verify(template, times(1)).delete(eq(Person.class),eq(person.getId()));
     }
 
+    @Test
+    void shouldDeleteAllEntities() {
+        personRepository.deleteAll();
+
+        verify(template, times(1)).deleteAll(eq(Person.class));
+    }
 
     @Test
     void shouldUpdate(){
