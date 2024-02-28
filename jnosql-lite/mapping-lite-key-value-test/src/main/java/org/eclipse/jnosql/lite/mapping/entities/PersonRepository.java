@@ -17,7 +17,6 @@ package org.eclipse.jnosql.lite.mapping.entities;
 
 import jakarta.data.page.Page;
 import jakarta.data.page.PageRequest;
-import jakarta.data.repository.BasicRepository;
 import jakarta.data.repository.Delete;
 import jakarta.data.repository.Insert;
 import jakarta.data.repository.Param;
@@ -25,11 +24,12 @@ import jakarta.data.repository.Query;
 import jakarta.data.repository.Repository;
 import jakarta.data.repository.Save;
 import jakarta.data.repository.Update;
+import org.eclipse.jnosql.mapping.NoSQLRepository;
 
 import java.util.List;
 
 @Repository
-public interface PersonRepository extends BasicRepository<Person, Long> {
+public interface PersonRepository extends NoSQLRepository<Person, Long> {
 
     List<Person> findByName(String name);
 
