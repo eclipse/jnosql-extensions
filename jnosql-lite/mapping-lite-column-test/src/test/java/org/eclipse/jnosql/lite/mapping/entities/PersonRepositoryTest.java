@@ -207,10 +207,10 @@ class PersonRepositoryTest {
 
     @Test
     void shouldFindAllEntitiesWithPageRequest() {
-        PageRequest pageable = mock(PageRequest.class);
+        PageRequest pageRequest = mock(PageRequest.class);
         when(template.select(any(ColumnQuery.class))).thenReturn( Stream.of(new Person(), new Person()));
 
-        Page<Person> page = personRepository.findAll(pageable);
+        Page<Person> page = personRepository.findAll(pageRequest);
 
         assertNotNull(page);
         assertEquals(List.of(new Person(), new Person()), page.content());
@@ -298,8 +298,8 @@ class PersonRepositoryTest {
     @Test
     void shouldFindPageRequest(){
         when(template.select(any(ColumnQuery.class))).thenReturn( Stream.of(new Person(), new Person()));
-        PageRequest pageable = PageRequest.ofPage(10).sortBy(Sort.asc("name"));
-        Page<Person> result = this.personRepository.findByName("Ada", pageable);
+        PageRequest pageRequest = PageRequest.ofPage(10).sortBy(Sort.asc("name"));
+        Page<Person> result = this.personRepository.findByName("Ada", pageRequest);
         ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
         assertThat(result).isNotEmpty().hasSize(2);
         verify(template).select(captor.capture());

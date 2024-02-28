@@ -160,7 +160,7 @@ public class PersonCrudRepositoryLiteGraphTest {
 
     @Test
     void shouldFindAllEntitiesWithPageRequest() {
-        PageRequest pageable = PageRequest.ofPage(1);
+        PageRequest pageRequest = PageRequest.ofPage(1);
 
         VertexTraversal traversalVertex = Mockito.mock(VertexTraversal.class);
 
@@ -171,7 +171,7 @@ public class PersonCrudRepositoryLiteGraphTest {
         when(traversalVertex.result()).thenReturn(Stream.of(new Person()));
 
 
-        Page<Person> page = repository.findAll(pageable);
+        Page<Person> page = repository.findAll(pageRequest);
 
         verify(template).traversalVertex();
         Assertions.assertThat(page).isNotNull().isNotEmpty().hasSize(1);
