@@ -20,9 +20,6 @@ import org.eclipse.jnosql.communication.Condition;
 import org.eclipse.jnosql.communication.document.DocumentCondition;
 import org.eclipse.jnosql.communication.document.DocumentDeleteQuery;
 import org.eclipse.jnosql.communication.document.DocumentQuery;
-import org.eclipse.jnosql.lite.mapping.entities.Person;
-import org.eclipse.jnosql.lite.mapping.entities.PersonCrudRepositoryLiteDocument;
-import org.eclipse.jnosql.lite.mapping.entities.PersonRepositoryLiteDocument;
 import org.eclipse.jnosql.mapping.document.JNoSQLDocumentTemplate;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -112,13 +109,6 @@ class PersonCrudRepositoryTest {
     }
 
     @Test
-    void shouldDeleteAllEntities() {
-        personRepository.deleteAll();
-
-        verify(template, times(1)).deleteAll(eq(Person.class));
-    }
-
-    @Test
     void shouldFindAllEntitiesByIds() {
         List<Long> ids = Arrays.asList(123L, 456L);
         Person person1 = new Person();
@@ -137,7 +127,7 @@ class PersonCrudRepositoryTest {
         long expectedCount = 5L;
         when(template.count(eq(Person.class))).thenReturn(expectedCount);
 
-        long count = personRepository.count();
+        long count = personRepository.countBy();
 
         assertEquals(expectedCount, count);
         verify(template, times(1)).count(eq(Person.class));
