@@ -14,10 +14,9 @@
  */
 package org.eclipse.jnosql.lite.mapping.entities;
 
-import jakarta.data.Limit;
-import jakarta.data.page.Page;
-import jakarta.data.page.Pageable;
 import jakarta.data.Sort;
+import jakarta.data.page.Page;
+import jakarta.data.page.PageRequest;
 import jakarta.nosql.PreparedStatement;
 import org.assertj.core.api.Assertions;
 import org.assertj.core.api.SoftAssertions;
@@ -42,8 +41,19 @@ import java.util.Set;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.anyLong;
+import static org.mockito.Mockito.anyString;
+import static org.mockito.Mockito.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -115,12 +125,6 @@ class PersonRepositoryTest {
         verify(template, times(1)).delete(eq(Person.class),eq(person.getId()));
     }
 
-    @Test
-    void shouldDeleteAllEntities() {
-        personRepository.deleteAll();
-
-        verify(template, times(1)).deleteAll(eq(Person.class));
-    }
 
     @Test
     void shouldUpdate(){
@@ -166,7 +170,7 @@ class PersonRepositoryTest {
         long expectedCount = 5L;
         when(template.count(eq(Person.class))).thenReturn(expectedCount);
 
-        long count = personRepository.count();
+        long count = personRepository.countBy();
 
         assertEquals(expectedCount, count);
         verify(template, times(1)).count(eq(Person.class));
@@ -196,8 +200,8 @@ class PersonRepositoryTest {
 
 
     @Test
-    void shouldFindAllEntitiesWithPageable() {
-        Pageable pageable = mock(Pageable.class);
+    void shouldFindAllEntitiesWithPageRequest() {
+        PageRequest pageable = mock(PageRequest.class);
         when(template.select(any(ColumnQuery.class))).thenReturn( Stream.of(new Person(), new Person()));
 
         Page<Person> page = personRepository.findAll(pageable);
@@ -208,7 +212,7 @@ class PersonRepositoryTest {
     }
 
     @Test
-    void shouldThrowExceptionIfPageableIsNull() {
+    void shouldThrowExceptionIfPageRequestIsNull() {
         assertThrows(NullPointerException.class, () -> personRepository.findAll(null));
     }
 
@@ -286,9 +290,9 @@ class PersonRepositoryTest {
 
 
     @Test
-    void shouldFindPageable(){
+    void shouldFindPageRequest(){
         when(template.select(any(ColumnQuery.class))).thenReturn( Stream.of(new Person(), new Person()));
-        Pageable pageable = Pageable.ofPage(10).sortBy(Sort.asc("name"));
+        PageRequest pageable = PageRequest.ofPage(10).sortBy(Sort.asc("name"));
         Page<Person> result = this.personRepository.findByName("Ada", pageable);
         ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
         assertThat(result).isNotEmpty().hasSize(2);
