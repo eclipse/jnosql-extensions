@@ -14,13 +14,13 @@
  */
 package org.eclipse.jnosql.lite.mapping.entities;
 
-import jakarta.data.repository.PageableRepository;
+import jakarta.data.repository.CrudRepository;
 import jakarta.data.repository.Repository;
 
 import java.util.List;
 
 @Repository
-public interface UserRepository extends PageableRepository<User, String> {
+public interface UserRepository extends CrudRepository<User, String> {
 
     List<User> findByName(String name);
 }
