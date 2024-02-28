@@ -90,7 +90,7 @@ class MethodMetadata {
 
     public String getParametersSignature() {
         return parameters.stream().map(Parameter::parameterName)
-                .collect(joining(", "));
+                .collect(joining(", \n" + " ".repeat(30)));
     }
 
     void update(Function<MethodMetadata, MethodGenerator> methodGeneratorFactory) {
