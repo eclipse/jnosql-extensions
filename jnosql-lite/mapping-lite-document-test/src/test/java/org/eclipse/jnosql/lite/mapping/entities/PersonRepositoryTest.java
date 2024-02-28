@@ -126,6 +126,13 @@ class PersonRepositoryTest {
     }
 
     @Test
+    void shouldDeleteAllEntities() {
+        personRepository.deleteAll();
+
+        verify(template, times(1)).deleteAll(eq(Person.class));
+    }
+
+    @Test
     void shouldUpdate(){
         this.personRepository.update(new Person());
         verify(template).update(any(Person.class));
