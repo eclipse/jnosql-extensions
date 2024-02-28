@@ -20,7 +20,7 @@ import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 import org.eclipse.jnosql.mapping.metadata.FieldMetadata;
 
 import jakarta.data.page.Page;
-import jakarta.data.page.Pageable;
+import jakarta.data.page.PageRequest;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Default;
 import jakarta.inject.Inject;
@@ -112,22 +112,17 @@ public class {{className}} implements {{repository}} {
     }
 
     @Override
-    public long count() {
+    public long countBy() {
         throw new UnsupportedOperationException("Key-Value repository does not support count method");
     }
 
-    public Page<{{entityType}}> findAll(Pageable pageable) {
+    public Page<{{entityType}}> findAll(PageRequest<{{entityType}}> pageRequest) {
         throw new UnsupportedOperationException("Key-Value repository does not support findAll method");
     }
 
     @Override
     public Stream<{{entityType}}> findAll() {
          throw new UnsupportedOperationException("Key-Value repository does not support findAll method");
-    }
-
-    @Override
-    public void deleteAll() {
-         throw new UnsupportedOperationException("Key-Value repository does not support deleteAll method");
     }
 
     @Override
