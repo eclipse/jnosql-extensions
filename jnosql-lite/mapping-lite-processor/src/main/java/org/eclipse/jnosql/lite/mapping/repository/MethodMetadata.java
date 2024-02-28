@@ -43,6 +43,7 @@ class MethodMetadata {
     private static final Predicate<Parameter> IS_SPECIAL_PARAM = p -> p.type().getQualifiedName().toString().equals(Limit.class.getName()) ||
             p.type().getQualifiedName().toString().equals(PageRequest.class.getName()) ||
             p.type().getQualifiedName().toString().equals(Sort.class.getName());
+    public static final int DEFAULT_NEWLINE_SPACING = 30;
     private final String methodName;
 
     private final TypeElement returnElement;
@@ -90,7 +91,7 @@ class MethodMetadata {
 
     public String getParametersSignature() {
         return parameters.stream().map(Parameter::parameterName)
-                .collect(joining(", \n" + " ".repeat(30)));
+                .collect(joining(", \n" + " ".repeat(DEFAULT_NEWLINE_SPACING)));
     }
 
     void update(Function<MethodMetadata, MethodGenerator> methodGeneratorFactory) {
