@@ -59,7 +59,8 @@ abstract class RepositoryMetadata implements Function<MethodMetadata, MethodGene
         return this.element.getMethods();
     }
 
-    protected RepositoryElement getElement() {
+    public RepositoryElement getElement() {
         return element;
     }
+
 }

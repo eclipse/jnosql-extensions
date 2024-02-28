@@ -16,6 +16,7 @@ package org.eclipse.jnosql.lite.mapping.repository;
 
 import jakarta.data.repository.BasicRepository;
 import jakarta.data.repository.CrudRepository;
+import org.eclipse.jnosql.mapping.NoSQLRepository;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.TypeElement;
@@ -29,9 +30,10 @@ import java.util.stream.Collectors;
 
 final class RepositoryUtil {
 
-    static final Predicate<String> IS_BASIC_REPOSITORY = q -> BasicRepository.class.getName().equals(q);
+    static final Predicate<String> IS_NOSQL_REPOSITORY = q -> NoSQLRepository.class.getName().equals(q);
     static final Predicate<String> IS_CRUD_REPOSITORY = q -> CrudRepository.class.getName().equals(q);
-    static final Predicate<String> IS_JAKARTA_DATA_REPOSITORY = IS_BASIC_REPOSITORY.or(IS_CRUD_REPOSITORY);
+    static final Predicate<String> IS_BASIC_REPOSITORY = q -> BasicRepository.class.getName().equals(q);
+    static final Predicate<String> IS_JAKARTA_DATA_REPOSITORY = IS_NOSQL_REPOSITORY.or(IS_CRUD_REPOSITORY).or(IS_BASIC_REPOSITORY);
 
     private RepositoryUtil() {
     }
@@ -54,5 +56,13 @@ final class RepositoryUtil {
                     .collect(Collectors.toList());
         }
         return Collections.emptyList();
+    }
+
+    static boolean isNoSQLRepository(List<? extends TypeMirror> interfaces, ProcessingEnvironment processingEnv) {
+        return interfaces.stream()
+                .map(processingEnv.getTypeUtils()::asElement)
+                .map(TypeElement.class::cast)
+                .map(t -> t.getQualifiedName().toString())
+                .anyMatch(IS_NOSQL_REPOSITORY);
     }
 }

@@ -19,6 +19,7 @@ import jakarta.data.repository.BasicRepository;
 import jakarta.data.repository.CrudRepository;
 import org.eclipse.jnosql.lite.mapping.ValidationException;
 import org.eclipse.jnosql.mapping.DatabaseType;
+import org.eclipse.jnosql.mapping.NoSQLRepository;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.Element;
@@ -39,18 +40,21 @@ class RepositoryElement {
     private final String keyType;
     private final String repositoryInterface;
     private final DatabaseType type;
+    private final boolean isNoSQLRepository;
     private final List<MethodMetadata> methods;
 
     public RepositoryElement(TypeElement element,
                              String entityType, String keyType,
                              String repositoryInterface,
                              DatabaseType type,
+                             boolean isNoSQLRepository,
                              List<MethodMetadata> methods) {
         this.element = element;
         this.entityType = entityType;
         this.keyType = keyType;
         this.repositoryInterface = repositoryInterface;
         this.type = type;
+        this.isNoSQLRepository = isNoSQLRepository;
         this.methods = methods;
     }
 
@@ -103,6 +107,9 @@ class RepositoryElement {
             TypeElement typeElement = (TypeElement) element;
             Optional<TypeMirror> mirror = findRepository(typeElement.getInterfaces(), processingEnv);
             if (mirror.isPresent()) {
+
+                boolean isNoSQLRepository = RepositoryUtil.isNoSQLRepository(typeElement.getInterfaces(), processingEnv);
+
                 TypeMirror typeMirror = mirror.get();
                 List<String> parameters = RepositoryUtil.findParameters(typeMirror);
                 String entityType = parameters.get(0);
@@ -114,11 +121,16 @@ class RepositoryElement {
                         .filter(Objects::nonNull)
                         .collect(Collectors.toList());
                 return new RepositoryElement(typeElement,
-                        entityType, keyType, repositoryInterface, type, methods);
+                        entityType, keyType, repositoryInterface, type, isNoSQLRepository, methods);
             }
         }
         throw new ValidationException("The interface %s must extends %s"
-                .formatted(element.toString(), String.join(" or ", BasicRepository.class.getName(), CrudRepository.class.getName())));
+                .formatted(element.toString(), String.join(" or ",
+                        BasicRepository.class.getName(), CrudRepository.class.getName(), NoSQLRepository.class.getName())));
+    }
+
+    public boolean isNoSQLRepository() {
+        return isNoSQLRepository;
     }
 
 }

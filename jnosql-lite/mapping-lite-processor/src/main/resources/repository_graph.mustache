@@ -115,7 +115,14 @@ public class {{className}} implements {{repository}} {
         entities.forEach(this::delete);
     }
 
+    {{#element.isNoSQLRepository}}
     @Override
+    public void deleteAll() {
+        getTemplate().deleteAll(getEntityClass());
+    }
+    {{/element.isNoSQLRepository}}
+
+        @Override
     public Optional<{{entityType}}> findById({{keyType}} id) {
         requireNonNull(id, "id is required");
         return getTemplate().find(getEntityClass(), id);

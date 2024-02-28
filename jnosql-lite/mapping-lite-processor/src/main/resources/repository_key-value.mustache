@@ -125,6 +125,13 @@ public class {{className}} implements {{repository}} {
          throw new UnsupportedOperationException("Key-Value repository does not support findAll method");
     }
 
+    {{#element.isNoSQLRepository}}
+    @Override
+    public void deleteAll() {
+        throw new UnsupportedOperationException("Key-Value repository does not support deleteAll method");
+    }
+    {{/element.isNoSQLRepository}}
+
     @Override
     public void deleteAll(Iterable<? extends {{entityType}}> entities) {
         Objects.requireNonNull(entities, "entities is required");
