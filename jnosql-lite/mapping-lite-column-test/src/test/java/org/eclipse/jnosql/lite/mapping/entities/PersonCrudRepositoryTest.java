@@ -109,13 +109,6 @@ class PersonCrudRepositoryTest {
     }
 
     @Test
-    void shouldDeleteAllEntities() {
-        personRepository.deleteAll();
-
-        verify(template, times(1)).deleteAll(eq(Person.class));
-    }
-
-    @Test
     void shouldFindAllEntitiesByIds() {
         List<Long> ids = Arrays.asList(123L, 456L);
         Person person1 = new Person();
@@ -134,7 +127,7 @@ class PersonCrudRepositoryTest {
         long expectedCount = 5L;
         when(template.count(eq(Person.class))).thenReturn(expectedCount);
 
-        long count = personRepository.count();
+        long count = personRepository.countBy();
 
         assertEquals(expectedCount, count);
         verify(template, times(1)).count(eq(Person.class));
