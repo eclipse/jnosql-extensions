@@ -141,7 +141,7 @@ public class UserRepositoryLiteKeyValueTest {
 
     @Test
     void shouldThrowUnsupportedOperationExceptionOnCount() {
-        assertThrows(UnsupportedOperationException.class, () -> userRepository.count());
+        assertThrows(UnsupportedOperationException.class, () -> userRepository.countBy());
     }
 
     @Test

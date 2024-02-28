@@ -16,7 +16,7 @@ package org.eclipse.jnosql.lite.mapping.repository;
 
 import jakarta.data.Limit;
 import jakarta.data.Sort;
-import jakarta.data.page.Pageable;
+import jakarta.data.page.PageRequest;
 import jakarta.data.repository.Delete;
 import jakarta.data.repository.Insert;
 import jakarta.data.repository.Query;
@@ -41,8 +41,9 @@ import static java.util.stream.Collectors.joining;
 class MethodMetadata {
 
     private static final Predicate<Parameter> IS_SPECIAL_PARAM = p -> p.type().getQualifiedName().toString().equals(Limit.class.getName()) ||
-            p.type().getQualifiedName().toString().equals(Pageable.class.getName()) ||
+            p.type().getQualifiedName().toString().equals(PageRequest.class.getName()) ||
             p.type().getQualifiedName().toString().equals(Sort.class.getName());
+    public static final int DEFAULT_NEWLINE_SPACING = 30;
     private final String methodName;
 
     private final TypeElement returnElement;
@@ -90,7 +91,7 @@ class MethodMetadata {
 
     public String getParametersSignature() {
         return parameters.stream().map(Parameter::parameterName)
-                .collect(joining(","));
+                .collect(joining(", \n" + " ".repeat(DEFAULT_NEWLINE_SPACING)));
     }
 
     void update(Function<MethodMetadata, MethodGenerator> methodGeneratorFactory) {
@@ -147,10 +148,10 @@ class MethodMetadata {
         return entityType;
     }
 
-    public Optional<Parameter> findPageable(){
+    public Optional<Parameter> findPageRequest(){
         for (Parameter parameter : this.parameters) {
             TypeElement element = parameter.type();
-            if("jakarta.data.page.Pageable".equals(element.getQualifiedName().toString())){
+            if(PageRequest.class.getName().equals(element.getQualifiedName().toString())){
                 return Optional.of(parameter);
             }
         }

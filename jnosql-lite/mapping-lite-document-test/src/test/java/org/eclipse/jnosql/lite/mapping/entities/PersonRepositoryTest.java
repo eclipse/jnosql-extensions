@@ -16,7 +16,7 @@ package org.eclipse.jnosql.lite.mapping.entities;
 
 import jakarta.data.Sort;
 import jakarta.data.page.Page;
-import jakarta.data.page.Pageable;
+import jakarta.data.page.PageRequest;
 import jakarta.nosql.PreparedStatement;
 import org.assertj.core.api.Assertions;
 import org.assertj.core.api.SoftAssertions;
@@ -176,7 +176,7 @@ class PersonRepositoryTest {
         long expectedCount = 5L;
         when(template.count(eq(Person.class))).thenReturn(expectedCount);
 
-        long count = personRepository.count();
+        long count = personRepository.countBy();
 
         assertEquals(expectedCount, count);
         verify(template, times(1)).count(eq(Person.class));
@@ -206,11 +206,11 @@ class PersonRepositoryTest {
 
 
     @Test
-    void shouldFindAllEntitiesWithPageable() {
-        Pageable pageable = mock(Pageable.class);
+    void shouldFindAllEntitiesWithPageRequest() {
+        PageRequest pageRequest = mock(PageRequest.class);
         when(template.select(any(DocumentQuery.class))).thenReturn( Stream.of(new Person(), new Person()));
 
-        Page<Person> page = personRepository.findAll(pageable);
+        Page<Person> page = personRepository.findAll(pageRequest);
 
         assertNotNull(page);
         assertEquals(List.of(new Person(), new Person()), page.content());
@@ -218,7 +218,7 @@ class PersonRepositoryTest {
     }
 
     @Test
-    void shouldThrowExceptionIfPageableIsNull() {
+    void shouldThrowExceptionIfPageRequestIsNull() {
         assertThrows(NullPointerException.class, () -> personRepository.findAll(null));
     }
 
@@ -297,10 +297,10 @@ class PersonRepositoryTest {
     }
 
     @Test
-    void shouldFindPageable(){
+    void shouldFindPageRequest(){
         when(template.select(any(DocumentQuery.class))).thenReturn( Stream.of(new Person(), new Person()));
-        Pageable pageable = Pageable.ofPage(10).sortBy(Sort.asc("name"));
-        Page<Person> result = this.personRepository.findByName("Ada", pageable);
+        PageRequest<Person> pageRequest = PageRequest.of(Person.class).page(10).sortBy(Sort.asc("name"));
+        Page<Person> result = this.personRepository.findByName("Ada", pageRequest);
         ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
         assertThat(result).isNotEmpty().hasSize(2);
         verify(template).select(captor.capture());

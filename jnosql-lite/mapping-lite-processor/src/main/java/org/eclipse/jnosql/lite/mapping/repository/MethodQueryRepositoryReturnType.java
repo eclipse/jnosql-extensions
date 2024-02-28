@@ -14,6 +14,7 @@
  */
 package org.eclipse.jnosql.lite.mapping.repository;
 
+import jakarta.data.page.Page;
 import org.eclipse.jnosql.lite.mapping.ValidationException;
 
 import java.util.ArrayList;
@@ -85,12 +86,12 @@ enum MethodQueryRepositoryReturnType implements Function<MethodMetadata, List<St
         public List<String> apply(MethodMetadata metadata) {
             List<String> lines = new ArrayList<>();
             lines.add("Stream<" + getEntity(metadata) + "> entities = this.template.select(query)");
-            Parameter pageable = metadata.findPageable()
+            Parameter pageRequest = metadata.findPageRequest()
                     .orElseThrow(() -> new ValidationException("The method " + metadata.getMethodName() + " from " +
                             metadata.getParametersSignature() + " does not have a Pageable parameter in a pagination method"));
 
-            lines.add("jakarta.data.page.Page<" + getEntity(metadata) + "> result = \n      " +
-                    "org.eclipse.jnosql.mapping.core.NoSQLPage.of(entities.toList(), " + pageable.name() + ")");
+            lines.add(Page.class.getName() + "<" + getEntity(metadata) + "> result = \n      " +
+                    "org.eclipse.jnosql.mapping.core.NoSQLPage.of(entities.toList(), " + pageRequest.name() + ")");
             return lines;
         }
     };

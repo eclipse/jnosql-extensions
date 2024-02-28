@@ -14,8 +14,9 @@
  */
 package {{package}};
 
+import jakarta.data.Sort;
 import jakarta.data.page.Page;
-import jakarta.data.page.Pageable;
+import jakarta.data.page.PageRequest;
 import org.eclipse.jnosql.communication.document.DocumentQuery;
 import org.eclipse.jnosql.lite.mapping.metadata.LiteEntitiesMetadata;
 import org.eclipse.jnosql.mapping.core.NoSQLPage;
@@ -119,10 +120,12 @@ public class {{className}} implements {{repository}} {
         entities.forEach(this::delete);
     }
 
+    {{#element.isNoSQLRepository}}
     @Override
     public void deleteAll() {
-       getTemplate().deleteAll(getEntityClass());
+        getTemplate().deleteAll(getEntityClass());
     }
+    {{/element.isNoSQLRepository}}
 
     @Override
     public Optional<{{entityType}}> findById({{keyType}} id) {
@@ -138,7 +141,7 @@ public class {{className}} implements {{repository}} {
     }
 
     @Override
-    public long count() {
+    public long countBy() {
         return getTemplate().count(getEntityClass());
     }
 
@@ -153,14 +156,15 @@ public class {{className}} implements {{repository}} {
         return getTemplate().select(query);
     }
 
-    public Page<{{entityType}}> findAll(Pageable pageable) {
-        Objects.requireNonNull(pageable, "pageable is required");
+    public Page<{{entityType}}> findAll(PageRequest<{{entityType}}> pageRequest) {
+        Objects.requireNonNull(pageRequest, "pageRequest is required");
         EntityMetadata metadata = getEntityMetadata();
-        DocumentQuery query = new MappingDocumentQuery(pageable.sorts(),
-        pageable.size(), NoSQLPage.skip(pageable), null ,metadata.name());
+        List<Sort<?>> sorts = pageRequest.sorts().stream().collect(toList());
+        DocumentQuery query = new MappingDocumentQuery(sorts,
+        pageRequest.size(), NoSQLPage.skip(pageRequest), null ,metadata.name());
 
         List<{{entityType}}> entities = getTemplate().<{{entityType}}>select(query).toList();
-                return NoSQLPage.of(entities, pageable);
+                return NoSQLPage.of(entities, pageRequest);
     }
 
     public <S extends {{entityType}}> S insert(S entity) {

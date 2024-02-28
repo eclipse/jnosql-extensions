@@ -16,7 +16,7 @@ package org.eclipse.jnosql.lite.mapping.entities;
 
 
 import jakarta.data.page.Page;
-import jakarta.data.page.Pageable;
+import jakarta.data.page.PageRequest;
 import org.assertj.core.api.Assertions;
 import org.eclipse.jnosql.mapping.graph.GraphTemplate;
 import org.eclipse.jnosql.mapping.graph.VertexTraversal;
@@ -34,7 +34,10 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.anyLong;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class PersonCrudRepositoryLiteGraphTest {
@@ -96,13 +99,6 @@ public class PersonCrudRepositoryLiteGraphTest {
     }
 
     @Test
-    void shouldDeleteAllEntities() {
-        repository.deleteAll();
-
-        verify(template).deleteAll(eq(Person.class));
-    }
-
-    @Test
     void shouldInsert(){
         repository.insert(new Person());
         verify(template).insert(any(Person.class));
@@ -140,7 +136,7 @@ public class PersonCrudRepositoryLiteGraphTest {
     void shouldCountEntities() {
         when(template.count(eq(Person.class))).thenReturn(5L);
 
-        repository.count();
+        repository.countBy();
 
         verify(template).count(eq(Person.class));
     }
@@ -163,8 +159,8 @@ public class PersonCrudRepositoryLiteGraphTest {
     }
 
     @Test
-    void shouldFindAllEntitiesWithPageable() {
-        Pageable pageable = Pageable.ofPage(1);
+    void shouldFindAllEntitiesWithPageRequest() {
+        PageRequest pageRequest = PageRequest.ofPage(1);
 
         VertexTraversal traversalVertex = Mockito.mock(VertexTraversal.class);
 
@@ -175,7 +171,7 @@ public class PersonCrudRepositoryLiteGraphTest {
         when(traversalVertex.result()).thenReturn(Stream.of(new Person()));
 
 
-        Page<Person> page = repository.findAll(pageable);
+        Page<Person> page = repository.findAll(pageRequest);
 
         verify(template).traversalVertex();
         Assertions.assertThat(page).isNotNull().isNotEmpty().hasSize(1);

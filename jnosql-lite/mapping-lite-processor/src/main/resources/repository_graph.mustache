@@ -15,7 +15,7 @@
 package {{package}};
 
 import jakarta.data.page.Page;
-import jakarta.data.page.Pageable;
+import jakarta.data.page.PageRequest;
 import org.eclipse.jnosql.lite.mapping.metadata.LiteEntitiesMetadata;
 import org.eclipse.jnosql.mapping.core.NoSQLPage;
 import org.eclipse.jnosql.mapping.graph.GraphTemplate;
@@ -115,12 +115,14 @@ public class {{className}} implements {{repository}} {
         entities.forEach(this::delete);
     }
 
+    {{#element.isNoSQLRepository}}
     @Override
     public void deleteAll() {
-       getTemplate().deleteAll(getEntityClass());
+        getTemplate().deleteAll(getEntityClass());
     }
+    {{/element.isNoSQLRepository}}
 
-    @Override
+        @Override
     public Optional<{{entityType}}> findById({{keyType}} id) {
         requireNonNull(id, "id is required");
         return getTemplate().find(getEntityClass(), id);
@@ -134,7 +136,7 @@ public class {{className}} implements {{repository}} {
     }
 
     @Override
-    public long count() {
+    public long countBy() {
         return getTemplate().count(getEntityClass());
     }
 
@@ -148,17 +150,17 @@ public class {{className}} implements {{repository}} {
         return getTemplate().findAll(getEntityClass());
     }
 
-    public Page<{{entityType}}> findAll(Pageable pageable) {
-        Objects.requireNonNull(pageable, "pageable is required");
+    public Page<{{entityType}}> findAll(PageRequest<{{entityType}}> pageRequest) {
+        Objects.requireNonNull(pageRequest, "pageRequest is required");
         EntityMetadata metadata = getEntityMetadata();
 
         List<{{entityType}}> entities = getTemplate().traversalVertex()
             .hasLabel(metadata.type())
-            .skip(NoSQLPage.skip(pageable))
-            .limit(pageable.size())
+            .skip(NoSQLPage.skip(pageRequest))
+            .limit(pageRequest.size())
              .<{{entityType}}>result()
             .toList();
-        return NoSQLPage.of(entities, pageable);
+        return NoSQLPage.of(entities, pageRequest);
     }
 
     public <S extends {{entityType}}> S insert(S entity) {
