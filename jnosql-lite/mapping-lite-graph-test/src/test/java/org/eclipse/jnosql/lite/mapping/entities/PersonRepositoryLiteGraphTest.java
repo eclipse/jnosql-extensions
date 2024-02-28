@@ -17,7 +17,6 @@ package org.eclipse.jnosql.lite.mapping.entities;
 
 import jakarta.data.page.Page;
 import jakarta.data.page.PageRequest;
-import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
 import org.assertj.core.api.Assertions;
 import org.eclipse.jnosql.mapping.graph.GraphTemplate;
 import org.eclipse.jnosql.mapping.graph.VertexTraversal;
@@ -38,7 +37,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.anyLong;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class PersonRepositoryLiteGraphTest {
@@ -97,6 +99,13 @@ public class PersonRepositoryLiteGraphTest {
         repository.deleteByIdIn(List.of(1L, 2L, 3L));
 
         verify(template, times(3)).delete(anyLong());
+    }
+
+    @Test
+    void shouldDeleteAllEntities() {
+        repository.deleteAll();
+
+        verify(template).deleteAll(eq(Person.class));
     }
 
     @Test
