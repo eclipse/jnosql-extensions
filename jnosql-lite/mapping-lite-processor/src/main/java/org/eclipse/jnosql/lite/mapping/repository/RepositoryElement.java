@@ -15,8 +15,8 @@
  */
 package org.eclipse.jnosql.lite.mapping.repository;
 
+import jakarta.data.repository.BasicRepository;
 import jakarta.data.repository.CrudRepository;
-import jakarta.data.repository.PageableRepository;
 import org.eclipse.jnosql.lite.mapping.ValidationException;
 import org.eclipse.jnosql.mapping.DatabaseType;
 
@@ -118,7 +118,7 @@ class RepositoryElement {
             }
         }
         throw new ValidationException("The interface %s must extends %s"
-                .formatted(element.toString(), String.join(" or ", PageableRepository.class.getName(), CrudRepository.class.getName())));
+                .formatted(element.toString(), String.join(" or ", BasicRepository.class.getName(), CrudRepository.class.getName())));
     }
 
 }

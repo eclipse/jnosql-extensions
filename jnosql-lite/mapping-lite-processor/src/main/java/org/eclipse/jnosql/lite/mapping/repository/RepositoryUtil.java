@@ -14,8 +14,8 @@
  */
 package org.eclipse.jnosql.lite.mapping.repository;
 
+import jakarta.data.repository.BasicRepository;
 import jakarta.data.repository.CrudRepository;
-import jakarta.data.repository.PageableRepository;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.TypeElement;
@@ -29,9 +29,9 @@ import java.util.stream.Collectors;
 
 final class RepositoryUtil {
 
-    static final Predicate<String> IS_PAGEABLE_REPOSITORY = q -> PageableRepository.class.getName().equals(q);
+    static final Predicate<String> IS_BASIC_REPOSITORY = q -> BasicRepository.class.getName().equals(q);
     static final Predicate<String> IS_CRUD_REPOSITORY = q -> CrudRepository.class.getName().equals(q);
-    static final Predicate<String> IS_JAKARTA_DATA_REPOSITORY = IS_PAGEABLE_REPOSITORY.or(IS_CRUD_REPOSITORY);
+    static final Predicate<String> IS_JAKARTA_DATA_REPOSITORY = IS_BASIC_REPOSITORY.or(IS_CRUD_REPOSITORY);
 
     private RepositoryUtil() {
     }
