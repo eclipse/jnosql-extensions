@@ -70,11 +70,11 @@ public class {{className}} implements {{repository}} {
         this.metadata = null;
     }
 
-    ColumnTemplate getTemplate(){
+    ColumnTemplate template(){
         return template;
     }
 
-    EntityMetadata getEntityMetadata(){
+    EntityMetadata entityMetadata(){
         return metadata;
     }
 
@@ -83,9 +83,9 @@ public class {{className}} implements {{repository}} {
         Objects.requireNonNull(entity, "Entity is required");
         Object id = getIdField().read(entity);
         if (nonNull(id) && existsById(({{keyType}}) id)) {
-            return getTemplate().update(entity);
+            return template().update(entity);
         } else {
-            return getTemplate().insert(entity);
+            return template().insert(entity);
         }
     }
 
@@ -98,7 +98,7 @@ public class {{className}} implements {{repository}} {
     @Override
     public void deleteById({{keyType}} id) {
         requireNonNull(id, "is is required");
-        getTemplate().delete(getEntityClass(), id);
+        template().delete(getEntityClass(), id);
     }
 
     @Override
@@ -124,14 +124,14 @@ public class {{className}} implements {{repository}} {
     {{#element.isNoSQLRepository}}
     @Override
     public void deleteAll() {
-        getTemplate().deleteAll(getEntityClass());
+        template().deleteAll(getEntityClass());
     }
     {{/element.isNoSQLRepository}}
 
     @Override
     public Optional<{{entityType}}> findById({{keyType}} id) {
         requireNonNull(id, "id is required");
-        return getTemplate().find(getEntityClass(), id);
+        return template().find(getEntityClass(), id);
     }
 
 
@@ -144,7 +144,7 @@ public class {{className}} implements {{repository}} {
 
     @Override
     public long countBy() {
-        return getTemplate().count(getEntityClass());
+        return template().count(getEntityClass());
     }
 
     @Override
@@ -154,39 +154,39 @@ public class {{className}} implements {{repository}} {
 
     @Override
     public Stream<{{entityType}}> findAll() {
-        SelectQuery query = SelectQuery.select().from(getEntityMetadata().name()).build();
-        return getTemplate().select(query);
+        SelectQuery query = SelectQuery.select().from(entityMetadata().name()).build();
+        return template().select(query);
     }
 
     public Page<{{entityType}}> findAll(PageRequest<{{entityType}}> pageRequest) {
         Objects.requireNonNull(pageRequest, "pageRequest is required");
-        EntityMetadata metadata = getEntityMetadata();
+        EntityMetadata metadata = entityMetadata();
         List<Sort<?>> sorts = pageRequest.sorts().stream().collect(toList());
-        ColumnQuery query = new MappingQuery(sorts,
+        SelectQuery query = new MappingQuery(sorts,
         pageRequest.size(), NoSQLPage.skip(pageRequest), null ,metadata.name());
 
-        List<{{entityType}}> entities = getTemplate().<{{entityType}}>select(query).toList();
+        List<{{entityType}}> entities = template().<{{entityType}}>select(query).toList();
             return NoSQLPage.of(entities, pageRequest);
     }
 
     public <S extends {{entityType}}> S insert(S entity) {
         Objects.requireNonNull(entity, "entity is required");
-        return getTemplate().insert(entity);
+        return template().insert(entity);
     }
 
     public <S extends {{entityType}}> Iterable<S> insertAll(Iterable<S> entities) {
         Objects.requireNonNull(entities, "entities is required");
-        return getTemplate().insert(entities);
+        return template().insert(entities);
     }
 
     public boolean update({{entityType}} entity) {
         Objects.requireNonNull(entity, "entity is required");
-        return getTemplate().update(entity) != null;
+        return template().update(entity) != null;
     }
 
     public int updateAll(Iterable<{{entityType}}> entities) {
         Objects.requireNonNull(entities, "entities is required");
-        getTemplate().update(entities);
+        template().update(entities);
         return (int) StreamSupport.stream(entities.spliterator(), false).count();
     }
 
@@ -206,7 +206,7 @@ public class {{className}} implements {{repository}} {
     {{/methods}}
 
     private FieldMetadata getIdField() {
-        return getEntityMetadata().id().orElseThrow(KEY_NOT_FOUND_EXCEPTION_SUPPLIER);
+        return entityMetadata().id().orElseThrow(KEY_NOT_FOUND_EXCEPTION_SUPPLIER);
     }
 
     private Function<{{keyType}}, Stream<{{entityType}}>> optionalToStream() {
@@ -217,7 +217,7 @@ public class {{className}} implements {{repository}} {
     }
 
     private Class<{{entityType}}> getEntityClass() {
-        return (Class<{{entityType}}>) getEntityMetadata().type();
+        return (Class<{{entityType}}>) entityMetadata().type();
     }
 
 }

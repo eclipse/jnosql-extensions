@@ -73,7 +73,7 @@ public class {{className}} implements {{repository}} {
         return template;
     }
 
-    EntityMetadata getEntityMetadata(){
+    EntityMetadata entityMetadata(){
         return metadata;
     }
 
@@ -152,13 +152,13 @@ public class {{className}} implements {{repository}} {
 
     @Override
     public Stream<{{entityType}}> findAll() {
-        SelectQuery query = SelectQuery.select().from(getEntityMetadata().name()).build();
+        SelectQuery query = SelectQuery.select().from(entityMetadata().name()).build();
         return template().select(query);
     }
 
     public Page<{{entityType}}> findAll(PageRequest<{{entityType}}> pageRequest) {
         Objects.requireNonNull(pageRequest, "pageRequest is required");
-        EntityMetadata metadata = getEntityMetadata();
+        EntityMetadata metadata = entityMetadata();
         List<Sort<?>> sorts = pageRequest.sorts().stream().collect(toList());
         SelectQuery query = new MappingQuery(sorts,
         pageRequest.size(), NoSQLPage.skip(pageRequest), null ,metadata.name());
@@ -204,7 +204,7 @@ public class {{className}} implements {{repository}} {
     {{/methods}}
 
     private FieldMetadata getIdField() {
-        return getEntityMetadata().id().orElseThrow(KEY_NOT_FOUND_EXCEPTION_SUPPLIER);
+        return entityMetadata().id().orElseThrow(KEY_NOT_FOUND_EXCEPTION_SUPPLIER);
     }
 
     private Function<{{keyType}}, Stream<{{entityType}}>> optionalToStream() {
@@ -215,7 +215,7 @@ public class {{className}} implements {{repository}} {
     }
 
     private Class<{{entityType}}> getEntityClass() {
-        return (Class<{{entityType}}>) getEntityMetadata().type();
+        return (Class<{{entityType}}>) entityMetadata().type();
     }
 
 }
