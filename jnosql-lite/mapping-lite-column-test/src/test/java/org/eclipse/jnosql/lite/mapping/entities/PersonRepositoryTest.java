@@ -21,10 +21,10 @@ import jakarta.nosql.PreparedStatement;
 import org.assertj.core.api.Assertions;
 import org.assertj.core.api.SoftAssertions;
 import org.eclipse.jnosql.communication.Condition;
-import org.eclipse.jnosql.communication.column.ColumnCondition;
-import org.eclipse.jnosql.communication.column.ColumnDeleteQuery;
-import org.eclipse.jnosql.communication.column.ColumnQuery;
-import org.eclipse.jnosql.mapping.column.JNoSQLColumnTemplate;
+import org.eclipse.jnosql.communication.semistructured.CriteriaCondition;
+import org.eclipse.jnosql.communication.semistructured.DeleteQuery;
+import org.eclipse.jnosql.communication.semistructured.SelectQuery;
+import org.eclipse.jnosql.mapping.column.ColumnTemplate;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -59,7 +59,7 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class PersonRepositoryTest {
     @Mock
-    private JNoSQLColumnTemplate template;
+    private ColumnTemplate template;
 
     @InjectMocks
     private PersonRepositoryLiteColumn personRepository;
@@ -100,12 +100,12 @@ class PersonRepositoryTest {
     @Test
     void shouldFindAllEntities() {
         Stream<Object> personStream = Stream.of(new Person());
-        when(template.select(any(ColumnQuery.class))).thenReturn(personStream);
+        when(template.select(any(SelectQuery.class))).thenReturn(personStream);
 
         Stream<Person> allPersons = personRepository.findAll();
 
         assertNotNull(allPersons);
-        verify(template, times(1)).select(any(ColumnQuery.class));
+        verify(template, times(1)).select(any(SelectQuery.class));
     }
 
     @Test
@@ -208,13 +208,13 @@ class PersonRepositoryTest {
     @Test
     void shouldFindAllEntitiesWithPageRequest() {
         PageRequest pageRequest = mock(PageRequest.class);
-        when(template.select(any(ColumnQuery.class))).thenReturn( Stream.of(new Person(), new Person()));
+        when(template.select(any(SelectQuery.class))).thenReturn( Stream.of(new Person(), new Person()));
 
         Page<Person> page = personRepository.findAll(pageRequest);
 
         assertNotNull(page);
         assertEquals(List.of(new Person(), new Person()), page.content());
-        verify(template, times(1)).select(any(ColumnQuery.class));
+        verify(template, times(1)).select(any(SelectQuery.class));
     }
 
     @Test
@@ -224,16 +224,16 @@ class PersonRepositoryTest {
 
     @Test
     void shouldFindByName(){
-        when(template.select(any(ColumnQuery.class))).thenReturn( Stream.of(new Person(), new Person()));
+        when(template.select(any(SelectQuery.class))).thenReturn( Stream.of(new Person(), new Person()));
         List<Person> result = this.personRepository.findByName("Ada");
-        ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
+        ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
         assertThat(result).isNotEmpty().hasSize(2);
         verify(template).select(captor.capture());
-        ColumnQuery query = captor.getValue();
-        ColumnCondition condition = query.condition().orElseThrow();
+        SelectQuery query = captor.getValue();
+        CriteriaCondition condition = query.condition().orElseThrow();
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(condition.condition()).isEqualTo(Condition.EQUALS);
-            soft.assertThat(condition.column().get(String.class)).isEqualTo("Ada");
+            soft.assertThat(condition.element().get(String.class)).isEqualTo("Ada");
         });
 
     }
@@ -250,32 +250,32 @@ class PersonRepositoryTest {
 
     @Test
     void shouldExistByName(){
-        when(template.select(any(ColumnQuery.class))).thenReturn( Stream.of(new Person(), new Person()));
+        when(template.select(any(SelectQuery.class))).thenReturn( Stream.of(new Person(), new Person()));
         boolean result = this.personRepository.existsByName("Ada");
-        ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
+        ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
         assertThat(result).isTrue();
         verify(template).select(captor.capture());
-        ColumnQuery query = captor.getValue();
-        ColumnCondition condition = query.condition().orElseThrow();
+        SelectQuery query = captor.getValue();
+        CriteriaCondition condition = query.condition().orElseThrow();
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(condition.condition()).isEqualTo(Condition.EQUALS);
-            soft.assertThat(condition.column().get(String.class)).isEqualTo("Ada");
+            soft.assertThat(condition.element().get(String.class)).isEqualTo("Ada");
         });
 
     }
 
     @Test
     void shouldCountByName(){
-        when(template.select(any(ColumnQuery.class))).thenReturn( Stream.of(new Person(), new Person()));
+        when(template.select(any(SelectQuery.class))).thenReturn( Stream.of(new Person(), new Person()));
         long result = this.personRepository.countByName("Ada");
-        ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
+        ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
         assertThat(result).isEqualTo(2L);
         verify(template).select(captor.capture());
-        ColumnQuery query = captor.getValue();
-        ColumnCondition condition = query.condition().orElseThrow();
+        var query = captor.getValue();
+        CriteriaCondition condition = query.condition().orElseThrow();
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(condition.condition()).isEqualTo(Condition.EQUALS);
-            soft.assertThat(condition.column().get(String.class)).isEqualTo("Ada");
+            soft.assertThat(condition.element().get(String.class)).isEqualTo("Ada");
         });
 
     }
@@ -283,13 +283,13 @@ class PersonRepositoryTest {
     @Test
     void shouldDeleteByName(){
         this.personRepository.deleteByName("Ada");
-        ArgumentCaptor<ColumnDeleteQuery> captor = ArgumentCaptor.forClass(ColumnDeleteQuery.class);
+        ArgumentCaptor<DeleteQuery> captor = ArgumentCaptor.forClass(DeleteQuery.class);
         verify(template).delete(captor.capture());
-        ColumnDeleteQuery query = captor.getValue();
-        ColumnCondition condition = query.condition().orElseThrow();
+        var query = captor.getValue();
+        var condition = query.condition().orElseThrow();
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(condition.condition()).isEqualTo(Condition.EQUALS);
-            soft.assertThat(condition.column().get(String.class)).isEqualTo("Ada");
+            soft.assertThat(condition.element().get(String.class)).isEqualTo("Ada");
         });
 
     }
@@ -297,17 +297,17 @@ class PersonRepositoryTest {
 
     @Test
     void shouldFindPageRequest(){
-        when(template.select(any(ColumnQuery.class))).thenReturn( Stream.of(new Person(), new Person()));
+        when(template.select(any(SelectQuery.class))).thenReturn( Stream.of(new Person(), new Person()));
         PageRequest pageRequest = PageRequest.ofPage(10).sortBy(Sort.asc("name"));
         Page<Person> result = this.personRepository.findByName("Ada", pageRequest);
-        ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
+        ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
         assertThat(result).isNotEmpty().hasSize(2);
         verify(template).select(captor.capture());
-        ColumnQuery query = captor.getValue();
-        ColumnCondition condition = query.condition().orElseThrow();
+        var query = captor.getValue();
+        var condition = query.condition().orElseThrow();
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(condition.condition()).isEqualTo(Condition.EQUALS);
-            soft.assertThat(condition.column().get(String.class)).isEqualTo("Ada");
+            soft.assertThat(condition.element().get(String.class)).isEqualTo("Ada");
             soft.assertThat(query.sorts()).hasSize(1).contains(Sort.asc("name"));
             soft.assertThat(query.skip()).isEqualTo(90L);
             soft.assertThat(query.limit()).isEqualTo(10L);
