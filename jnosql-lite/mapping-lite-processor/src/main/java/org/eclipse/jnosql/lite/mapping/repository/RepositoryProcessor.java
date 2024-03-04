@@ -65,9 +65,9 @@ public class RepositoryProcessor extends AbstractProcessor {
 
     private static Set<DatabaseType> types() {
         Set<DatabaseType> types = EnumSet.noneOf(DatabaseType.class);
-        if (checkLibrary("org.eclipse.jnosql.mapping.document.JNoSQLDocumentTemplate")) {
+        if (checkLibrary("org.eclipse.jnosql.mapping.document.DocumentTemplate")) {
             types.add(DatabaseType.DOCUMENT);
-        } else if (checkLibrary("org.eclipse.jnosql.mapping.column.JNoSQLColumnTemplate")) {
+        } else if (checkLibrary("org.eclipse.jnosql.mapping.column.ColumnTemplate")) {
             types.add(DatabaseType.COLUMN);
         } else if (checkLibrary("jakarta.nosql.keyvalue.KeyValueTemplate")) {
             types.add(DatabaseType.KEY_VALUE);
