@@ -37,7 +37,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @EnableAutoWeld
-@AddPackages(value = {Converters.class, EntityConverter.class, EntityObserver.class})
+@AddPackages(value = {Converters.class, EntityConverter.class, EntityObserver.class, ColumnTemplate.class})
 @AddPackages(Person.class)
 @AddPackages(Reflections.class)
 @AddExtensions({EntityMetadataExtension.class, ColumnExtension.class})

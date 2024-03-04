@@ -12,6 +12,10 @@ and this project adheres to https://semver.org/spec/v2.0.0.html[Semantic Version
 
 - Upgrade API to Jakarta Data 1.0.0-M3
 
+=== Removed
+
+- Remove the metadata extension
+
 == [1.1.0] - 2023-02-05
 
 === Added
