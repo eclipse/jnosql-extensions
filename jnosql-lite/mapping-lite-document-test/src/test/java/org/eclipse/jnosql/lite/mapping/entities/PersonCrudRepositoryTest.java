@@ -166,7 +166,7 @@ class PersonCrudRepositoryTest {
         CriteriaCondition condition = query.condition().orElseThrow();
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(condition.condition()).isEqualTo(Condition.EQUALS);
-            soft.assertThat(condition.document().get(String.class)).isEqualTo("Ada");
+            soft.assertThat(condition.element().get(String.class)).isEqualTo("Ada");
         });
 
     }

@@ -105,7 +105,7 @@ class PersonRepositoryTest {
         Stream<Person> allPersons = personRepository.findAll();
 
         assertNotNull(allPersons);
-        verify(template, times(1)).select(any(DocumentQuery.class));
+        verify(template, times(1)).select(any(SelectQuery.class));
     }
 
     @Test
