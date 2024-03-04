@@ -160,7 +160,7 @@ public class {{className}} implements {{repository}} {
         Objects.requireNonNull(pageRequest, "pageRequest is required");
         EntityMetadata metadata = getEntityMetadata();
         List<Sort<?>> sorts = pageRequest.sorts().stream().collect(toList());
-        SelectQuery query = new MappingDocumentQuery(sorts,
+        SelectQuery query = new MappingQuery(sorts,
         pageRequest.size(), NoSQLPage.skip(pageRequest), null ,metadata.name());
 
         List<{{entityType}}> entities = template().<{{entityType}}>select(query).toList();

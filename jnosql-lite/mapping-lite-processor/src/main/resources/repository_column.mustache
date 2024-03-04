@@ -154,7 +154,7 @@ public class {{className}} implements {{repository}} {
 
     @Override
     public Stream<{{entityType}}> findAll() {
-        ColumnQuery query = ColumnQuery.select().from(getEntityMetadata().name()).build();
+        SelectQuery query = SelectQuery.select().from(getEntityMetadata().name()).build();
         return getTemplate().select(query);
     }
 
@@ -162,7 +162,7 @@ public class {{className}} implements {{repository}} {
         Objects.requireNonNull(pageRequest, "pageRequest is required");
         EntityMetadata metadata = getEntityMetadata();
         List<Sort<?>> sorts = pageRequest.sorts().stream().collect(toList());
-        ColumnQuery query = new MappingColumnQuery(sorts,
+        ColumnQuery query = new MappingQuery(sorts,
         pageRequest.size(), NoSQLPage.skip(pageRequest), null ,metadata.name());
 
         List<{{entityType}}> entities = getTemplate().<{{entityType}}>select(query).toList();

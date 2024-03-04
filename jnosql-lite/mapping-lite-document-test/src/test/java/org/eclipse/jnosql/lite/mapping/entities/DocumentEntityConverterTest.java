@@ -17,29 +17,13 @@ package org.eclipse.jnosql.lite.mapping.entities;
 import jakarta.inject.Inject;
 import org.eclipse.jnosql.communication.TypeReference;
 import org.eclipse.jnosql.communication.Value;
-import org.eclipse.jnosql.communication.document.Document;
-import org.eclipse.jnosql.communication.document.DocumentEntity;
+import org.eclipse.jnosql.communication.semistructured.CommunicationEntity;
+import org.eclipse.jnosql.communication.semistructured.Element;
 import org.eclipse.jnosql.lite.mapping.metadata.LiteEntitiesMetadata;
-import org.eclipse.jnosql.lite.mapping.entities.Actor;
-import org.eclipse.jnosql.lite.mapping.entities.Address;
-import org.eclipse.jnosql.lite.mapping.entities.AppointmentBook;
-import org.eclipse.jnosql.lite.mapping.entities.Citizen;
-import org.eclipse.jnosql.lite.mapping.entities.Contact;
-import org.eclipse.jnosql.lite.mapping.entities.ContactType;
-import org.eclipse.jnosql.lite.mapping.entities.Director;
-import org.eclipse.jnosql.lite.mapping.entities.Download;
-import org.eclipse.jnosql.lite.mapping.entities.Job;
-import org.eclipse.jnosql.lite.mapping.entities.Money;
-import org.eclipse.jnosql.lite.mapping.entities.Movie;
-import org.eclipse.jnosql.lite.mapping.entities.Person;
-import org.eclipse.jnosql.lite.mapping.entities.UserScope;
-import org.eclipse.jnosql.lite.mapping.entities.Vendor;
-import org.eclipse.jnosql.lite.mapping.entities.Worker;
-import org.eclipse.jnosql.lite.mapping.entities.ZipCode;
 import org.eclipse.jnosql.mapping.core.Converters;
-import org.eclipse.jnosql.mapping.document.DocumentEntityConverter;
-import org.eclipse.jnosql.mapping.document.spi.DocumentExtension;
 import org.eclipse.jnosql.mapping.core.spi.EntityMetadataExtension;
+import org.eclipse.jnosql.mapping.document.spi.DocumentExtension;
+import org.eclipse.jnosql.mapping.semistructured.EntityConverter;
 import org.jboss.weld.junit5.auto.AddExtensions;
 import org.jboss.weld.junit5.auto.AddPackages;
 import org.jboss.weld.junit5.auto.EnableAutoWeld;
@@ -61,18 +45,22 @@ import java.util.stream.Stream;
 import static java.util.Arrays.asList;
 import static java.util.Collections.singleton;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @EnableAutoWeld
-@AddPackages(value = {Converters.class, DocumentEntityConverter.class})
+@AddPackages(value = {Converters.class, EntityConverter.class})
 @AddPackages(LiteEntitiesMetadata.class)
 @AddExtensions({EntityMetadataExtension.class, DocumentExtension.class})
 public class DocumentEntityConverterTest {
 
     @Inject
-    private DocumentEntityConverter converter;
+    private EntityConverter converter;
 
-    private Document[] documents;
+    private Element[] documents;
 
     private final Actor actor = Actor.actorBuilder().withAge()
             .withId()
@@ -85,11 +73,11 @@ public class DocumentEntityConverterTest {
     @BeforeEach
     public void init() {
 
-        documents = new Document[]{Document.of("_id", 12L),
-                Document.of("age", 10), Document.of("name", "Otavio"),
-                Document.of("phones", asList("234", "2342"))
-                , Document.of("movieCharacter", Collections.singletonMap("JavaZone", "Jedi"))
-                , Document.of("movieRating", Collections.singletonMap("JavaZone", 10))};
+        documents = new Element[]{Element.of("_id", 12L),
+                Element.of("age", 10), Element.of("name", "Otavio"),
+                Element.of("phones", asList("234", "2342"))
+                , Element.of("movieCharacter", Collections.singletonMap("JavaZone", "Jedi"))
+                , Element.of("movieRating", Collections.singletonMap("JavaZone", 10))};
     }
 
     @Test
@@ -100,28 +88,28 @@ public class DocumentEntityConverterTest {
                 .withName("Otavio")
                 .withPhones(asList("234", "2342")).build();
 
-        DocumentEntity entity = converter.toDocument(person);
+        var entity = converter.toCommunication(person);
         assertEquals("Person", entity.name());
         assertEquals(4, entity.size());
-        assertThat(entity.documents()).contains(Document.of("_id", 12L),
-                Document.of("age", 10), Document.of("name", "Otavio"),
-                Document.of("phones", Arrays.asList("234", "2342")));
+        assertThat(entity.elements()).contains(Element.of("_id", 12L),
+                Element.of("age", 10), Element.of("name", "Otavio"),
+                Element.of("phones", Arrays.asList("234", "2342")));
 
     }
 
     @Test
     void shouldConvertDocumentEntityFromEntity() {
 
-        DocumentEntity entity = converter.toDocument(actor);
+        var entity = converter.toCommunication(actor);
         assertEquals("Actor", entity.name());
         assertEquals(6, entity.size());
 
-        assertThat(entity.documents()).contains(documents);
+        assertThat(entity.elements()).contains(documents);
     }
 
     @Test
     void shouldConvertDocumentEntityToEntity() {
-        DocumentEntity entity = DocumentEntity.of("Actor");
+        var entity = CommunicationEntity.of("Actor");
         Stream.of(documents).forEach(entity::add);
 
         Actor actor = converter.toEntity(Actor.class, entity);
@@ -135,7 +123,7 @@ public class DocumentEntityConverterTest {
 
     @Test
     void shouldConvertDocumentEntityToEntity2() {
-        DocumentEntity entity = DocumentEntity.of("Actor");
+        var entity = CommunicationEntity.of("Actor");
         Stream.of(documents).forEach(entity::add);
 
         Actor actor = converter.toEntity(entity);
@@ -149,7 +137,7 @@ public class DocumentEntityConverterTest {
 
     @Test
     void shouldConvertDocumentEntityToExistEntity() {
-        DocumentEntity entity = DocumentEntity.of("Actor");
+        var entity = CommunicationEntity.of("Actor");
         Stream.of(documents).forEach(entity::add);
         Actor actor = Actor.actorBuilder().build();
         Actor result = converter.toEntity(actor, entity);
@@ -164,7 +152,7 @@ public class DocumentEntityConverterTest {
 
     @Test
     void shouldReturnErrorWhenToEntityIsNull() {
-        DocumentEntity entity = DocumentEntity.of("Actor");
+        var entity = CommunicationEntity.of("Actor");
         Stream.of(documents).forEach(entity::add);
         Actor actor = Actor.actorBuilder().build();
 
@@ -183,7 +171,7 @@ public class DocumentEntityConverterTest {
                 .withName("Otavio")
                 .withPhones(asList("234", "2342")).withMovie(movie).build();
 
-        DocumentEntity entity = converter.toDocument(director);
+        var entity = converter.toCommunication(director);
         assertEquals(5, entity.size());
 
         assertEquals(getValue(entity.find("name")), director.getName());
@@ -192,8 +180,8 @@ public class DocumentEntityConverterTest {
         assertEquals(getValue(entity.find("phones")), director.getPhones());
 
 
-        Document subDocument = entity.find("movie").get();
-        List<Document> documents = subDocument.get(new TypeReference<>() {
+        Element subDocument = entity.find("movie").get();
+        List<Element> documents = subDocument.get(new TypeReference<>() {
         });
 
         assertEquals(3, documents.size());
@@ -213,7 +201,7 @@ public class DocumentEntityConverterTest {
                 .withName("Otavio")
                 .withPhones(asList("234", "2342")).withMovie(movie).build();
 
-        DocumentEntity entity = converter.toDocument(director);
+        CommunicationEntity entity = converter.toCommunication(director);
         Director director1 = converter.toEntity(entity);
 
         assertEquals(movie, director1.getMovie());
@@ -230,10 +218,10 @@ public class DocumentEntityConverterTest {
                 .withName("Otavio")
                 .withPhones(asList("234", "2342")).withMovie(movie).build();
 
-        DocumentEntity entity = converter.toDocument(director);
+        var entity = converter.toCommunication(director);
         entity.remove("movie");
-        entity.add(Document.of("movie", Arrays.asList(Document.of("title", "Matrix"),
-                Document.of("year", 2012), Document.of("actors", singleton("Actor")))));
+        entity.add(Element.of("movie", Arrays.asList(Element.of("title", "Matrix"),
+                Element.of("year", 2012), Element.of("actors", singleton("Actor")))));
         Director director1 = converter.toEntity(entity);
 
         assertEquals(movie, director1.getMovie());
@@ -250,14 +238,14 @@ public class DocumentEntityConverterTest {
                 .withName("Otavio")
                 .withPhones(asList("234", "2342")).withMovie(movie).build();
 
-        DocumentEntity entity = converter.toDocument(director);
+        var entity = converter.toCommunication(director);
         entity.remove("movie");
         Map<String, Object> map = new HashMap<>();
         map.put("title", "Matrix");
         map.put("year", 2012);
         map.put("actors", singleton("Actor"));
 
-        entity.add(Document.of("movie", map));
+        entity.add(Element.of("movie", map));
         Director director1 = converter.toEntity(entity);
 
         assertEquals(movie, director1.getMovie());
@@ -275,7 +263,7 @@ public class DocumentEntityConverterTest {
         worker.setName("Bob");
         worker.setSalary(new Money("BRL", BigDecimal.TEN));
         worker.setJob(job);
-        DocumentEntity entity = converter.toDocument(worker);
+        var entity = converter.toCommunication(worker);
         assertEquals("Worker", entity.name());
         assertEquals("Bob", entity.find("name").get().get());
         assertEquals("Sao Paulo", entity.find("city").get().get());
@@ -292,7 +280,7 @@ public class DocumentEntityConverterTest {
         worker.setName("Bob");
         worker.setSalary(new Money("BRL", BigDecimal.TEN));
         worker.setJob(job);
-        DocumentEntity entity = converter.toDocument(worker);
+        var entity = converter.toCommunication(worker);
         Worker worker1 = converter.toEntity(entity);
         assertEquals(worker.getSalary(), worker1.getSalary());
         assertEquals(job.getCity(), worker1.getJob().getCity());
@@ -301,7 +289,7 @@ public class DocumentEntityConverterTest {
 
     @Test
     void shouldConvertEmbeddableLazily() {
-        DocumentEntity entity = DocumentEntity.of("Worker");
+        var entity = CommunicationEntity.of("Worker");
         entity.add("name", "Otavio");
         entity.add("money", "BRL 10");
 
@@ -323,10 +311,10 @@ public class DocumentEntityConverterTest {
         appointmentBook.add(Contact.builder().withType(ContactType.PHONE)
                 .withName("Ada").withInformation("12 123 1231 123123").build());
 
-        DocumentEntity entity = converter.toDocument(appointmentBook);
-        Document contacts = entity.find("contacts").get();
+        var entity = converter.toCommunication(appointmentBook);
+        var contacts = entity.find("contacts").get();
         assertEquals("ids", appointmentBook.getId());
-        List<List<Document>> documents = (List<List<Document>>) contacts.get();
+        List<List<Element>> documents = (List<List<Element>>) contacts.get();
 
         assertEquals(3L, documents.stream().flatMap(Collection::stream)
                 .filter(c -> c.name().equals("contact_name"))
@@ -335,20 +323,20 @@ public class DocumentEntityConverterTest {
 
     @Test
     void shouldConvertFromListEmbeddable() {
-        DocumentEntity entity = DocumentEntity.of("AppointmentBook");
-        entity.add(Document.of("_id", "ids"));
-        List<List<Document>> documents = new ArrayList<>();
+        var entity = CommunicationEntity.of("AppointmentBook");
+        entity.add(Element.of("_id", "ids"));
+        List<List<Element>> documents = new ArrayList<>();
 
-        documents.add(asList(Document.of("contact_name", "Ada"), Document.of("type", ContactType.EMAIL),
-                Document.of("information", "ada@lovelace.com")));
+        documents.add(asList(Element.of("contact_name", "Ada"), Element.of("type", ContactType.EMAIL),
+                Element.of("information", "ada@lovelace.com")));
 
-        documents.add(asList(Document.of("contact_name", "Ada"), Document.of("type", ContactType.MOBILE),
-                Document.of("information", "11 1231231 123")));
+        documents.add(asList(Element.of("contact_name", "Ada"), Element.of("type", ContactType.MOBILE),
+                Element.of("information", "11 1231231 123")));
 
-        documents.add(asList(Document.of("contact_name", "Ada"), Document.of("type", ContactType.PHONE),
-                Document.of("information", "phone")));
+        documents.add(asList(Element.of("contact_name", "Ada"), Element.of("type", ContactType.PHONE),
+                Element.of("information", "phone")));
 
-        entity.add(Document.of("contacts", documents));
+        entity.add(Element.of("contacts", documents));
 
         AppointmentBook appointmentBook = converter.toEntity(entity);
 
@@ -371,16 +359,16 @@ public class DocumentEntityConverterTest {
         address.setStreet("Rua Engenheiro Jose Anasoh");
         address.setZipCode(zipcode);
 
-        DocumentEntity DocumentEntity = converter.toDocument(address);
-        List<Document> documents = DocumentEntity.documents();
-        assertEquals("Address", DocumentEntity.name());
+        var documentEntity = converter.toCommunication(address);
+        List<Element> documents = documentEntity.elements();
+        assertEquals("Address", documentEntity.name());
         assertEquals(4, documents.size());
-        List<Document> zip = DocumentEntity.find("zipCode").map(d -> d.get(new TypeReference<List<Document>>() {
+        List<Element> zip = documentEntity.find("zipCode").map(d -> d.get(new TypeReference<List<Element>>() {
         })).orElse(Collections.emptyList());
 
-        assertEquals("Rua Engenheiro Jose Anasoh", getValue(DocumentEntity.find("street")));
-        assertEquals("Salvador", getValue(DocumentEntity.find("city")));
-        assertEquals("Bahia", getValue(DocumentEntity.find("state")));
+        assertEquals("Rua Engenheiro Jose Anasoh", getValue(documentEntity.find("street")));
+        assertEquals("Salvador", getValue(documentEntity.find("city")));
+        assertEquals("Bahia", getValue(documentEntity.find("state")));
         assertEquals("12321", getValue(zip.stream().filter(d -> d.name().equals("zip")).findFirst()));
         assertEquals("1234", getValue(zip.stream().filter(d -> d.name().equals("plusFour")).findFirst()));
     }
@@ -388,14 +376,14 @@ public class DocumentEntityConverterTest {
     @Test
     void shouldConvertDocumentInSubEntity() {
 
-        DocumentEntity entity = DocumentEntity.of("Address");
+        var entity = CommunicationEntity.of("Address");
 
-        entity.add(Document.of("street", "Rua Engenheiro Jose Anasoh"));
-        entity.add(Document.of("city", "Salvador"));
-        entity.add(Document.of("state", "Bahia"));
-        entity.add(Document.of("zipCode", Arrays.asList(
-                Document.of("zip", "12321"),
-                Document.of("plusFour", "1234"))));
+        entity.add(Element.of("street", "Rua Engenheiro Jose Anasoh"));
+        entity.add(Element.of("city", "Salvador"));
+        entity.add(Element.of("state", "Bahia"));
+        entity.add(Element.of("zipCode", Arrays.asList(
+                Element.of("zip", "12321"),
+                Element.of("plusFour", "1234"))));
         Address address = converter.toEntity(entity);
 
         assertEquals("Rua Engenheiro Jose Anasoh", address.getStreet());
@@ -408,13 +396,13 @@ public class DocumentEntityConverterTest {
 
     @Test
     void shouldReturnNullWhenThereIsNotSubEntity() {
-        DocumentEntity entity = DocumentEntity.of("Address");
+        var entity = CommunicationEntity.of("Address");
 
-        entity.add(Document.of("street", "Rua Engenheiro Jose Anasoh"));
-        entity.add(Document.of("city", "Salvador"));
-        entity.add(Document.of("state", "Bahia"));
-        entity.add(Document.of("zip", "12321"));
-        entity.add(Document.of("plusFour", "1234"));
+        entity.add(Element.of("street", "Rua Engenheiro Jose Anasoh"));
+        entity.add(Element.of("city", "Salvador"));
+        entity.add(Element.of("state", "Bahia"));
+        entity.add(Element.of("zip", "12321"));
+        entity.add(Element.of("plusFour", "1234"));
 
         Address address = converter.toEntity(entity);
 
@@ -426,7 +414,7 @@ public class DocumentEntityConverterTest {
 
     @Test
     void shouldConvertAndDoNotUseUnmodifiableCollection() {
-        DocumentEntity entity = DocumentEntity.of("vendors");
+        var entity = CommunicationEntity.of("vendors");
         entity.add("name", "name");
         entity.add("prefixes", Arrays.asList("value", "value2"));
 
@@ -441,7 +429,7 @@ public class DocumentEntityConverterTest {
     void shouldConvertEntityToDocumentWithArray() {
         byte[] contents = {1, 2, 3, 4, 5, 6};
 
-        DocumentEntity entity = DocumentEntity.of("download");
+        var entity = CommunicationEntity.of("download");
         entity.add("_id", 1L);
         entity.add("contents", contents);
 
@@ -458,7 +446,7 @@ public class DocumentEntityConverterTest {
         download.setId(1L);
         download.setContents(contents);
 
-        DocumentEntity entity = converter.toDocument(download);
+        var entity = converter.toCommunication(download);
 
         Assertions.assertEquals(1L, entity.find("_id").get().get());
         final byte[] bytes = entity.find("contents").map(v -> v.get(byte[].class)).orElse(new byte[0]);
@@ -467,10 +455,10 @@ public class DocumentEntityConverterTest {
 
     @Test
     void shouldCreateUserScope() {
-        DocumentEntity entity = DocumentEntity.of("UserScope");
+        var entity = CommunicationEntity.of("UserScope");
         entity.add("_id", "userName");
         entity.add("scope", "scope");
-        entity.add("properties", Collections.singletonList(Document.of("halo", "weld")));
+        entity.add("properties", Collections.singletonList(Element.of("halo", "weld")));
 
         UserScope user = converter.toEntity(entity);
         Assertions.assertNotNull(user);
@@ -482,10 +470,10 @@ public class DocumentEntityConverterTest {
 
     @Test
     void shouldCreateUserScope2() {
-        DocumentEntity entity = DocumentEntity.of("UserScope");
+        var entity = CommunicationEntity.of("UserScope");
         entity.add("_id", "userName");
         entity.add("scope", "scope");
-        entity.add("properties", Document.of("halo", "weld"));
+        entity.add("properties", Element.of("halo", "weld"));
 
         UserScope user = converter.toEntity(entity);
         Assertions.assertNotNull(user);
@@ -497,7 +485,7 @@ public class DocumentEntityConverterTest {
 
     @Test
     void shouldCreateLazilyEntity() {
-        DocumentEntity entity = DocumentEntity.of("Citizen");
+        var entity = CommunicationEntity.of("Citizen");
         entity.add("id", "10");
         entity.add("name", "Salvador");
 
@@ -506,8 +494,8 @@ public class DocumentEntityConverterTest {
         Assertions.assertNull(citizen.getCity());
     }
 
-    private Object getValue(Optional<Document> document) {
-        return document.map(Document::value).map(Value::get).orElse(null);
+    private Object getValue(Optional<Element> document) {
+        return document.map(Element::value).map(Value::get).orElse(null);
     }
 
 }
