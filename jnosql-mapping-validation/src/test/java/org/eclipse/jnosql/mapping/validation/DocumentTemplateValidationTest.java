@@ -15,14 +15,14 @@
 package org.eclipse.jnosql.mapping.validation;
 
 import jakarta.inject.Inject;
-import jakarta.nosql.document.DocumentTemplate;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import org.eclipse.jnosql.mapping.core.Converters;
-import org.eclipse.jnosql.mapping.document.DocumentEntityConverter;
+import org.eclipse.jnosql.mapping.document.DocumentTemplate;
 import org.eclipse.jnosql.mapping.document.spi.DocumentExtension;
 import org.eclipse.jnosql.mapping.reflection.Reflections;
 import org.eclipse.jnosql.mapping.core.spi.EntityMetadataExtension;
+import org.eclipse.jnosql.mapping.semistructured.EntityConverter;
 import org.jboss.weld.junit5.auto.AddExtensions;
 import org.jboss.weld.junit5.auto.AddPackages;
 import org.jboss.weld.junit5.auto.EnableAutoWeld;
@@ -37,7 +37,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @EnableAutoWeld
-@AddPackages(value = {Converters.class, DocumentEntityConverter.class, EntityObserver.class})
+@AddPackages(value = {Converters.class, EntityConverter.class, DocumentTemplate.class, EntityObserver.class})
 @AddPackages(Person.class)
 @AddPackages(Reflections.class)
 @AddExtensions({EntityMetadataExtension.class, DocumentExtension.class})

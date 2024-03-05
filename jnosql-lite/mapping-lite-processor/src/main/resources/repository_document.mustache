@@ -17,14 +17,14 @@ package {{package}};
 import jakarta.data.Sort;
 import jakarta.data.page.Page;
 import jakarta.data.page.PageRequest;
-import org.eclipse.jnosql.communication.document.DocumentQuery;
+import org.eclipse.jnosql.communication.semistructured.SelectQuery;
 import org.eclipse.jnosql.lite.mapping.metadata.LiteEntitiesMetadata;
 import org.eclipse.jnosql.mapping.core.NoSQLPage;
-import org.eclipse.jnosql.mapping.document.JNoSQLDocumentTemplate;
-import org.eclipse.jnosql.mapping.document.MappingDocumentQuery;
+import org.eclipse.jnosql.mapping.document.DocumentTemplate;
 import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 import org.eclipse.jnosql.mapping.metadata.FieldMetadata;
+import org.eclipse.jnosql.mapping.semistructured.MappingQuery;
 
 import javax.annotation.processing.Generated;
 import java.util.List;
@@ -47,18 +47,18 @@ import static org.eclipse.jnosql.mapping.IdNotFoundException.KEY_NOT_FOUND_EXCEP
 public class {{className}} implements {{repository}} {
 
     {{^methods.isEmpty}}
-    private static final org.eclipse.jnosql.communication.document.SelectQueryParser SELECT_PARSER =
-            new org.eclipse.jnosql.communication.document.SelectQueryParser();
-    private static final org.eclipse.jnosql.communication.document.DeleteQueryParser DELETE_PARSER =
-            new org.eclipse.jnosql.communication.document.DeleteQueryParser();
+    private static final org.eclipse.jnosql.communication.semistructured.SelectQueryParser SELECT_PARSER =
+            new org.eclipse.jnosql.communication.semistructured.SelectQueryParser();
+    private static final org.eclipse.jnosql.communication.semistructured.DeleteQueryParser DELETE_PARSER =
+            new org.eclipse.jnosql.communication.semistructured.DeleteQueryParser();
     {{/methods.isEmpty}}
 
-    private final JNoSQLDocumentTemplate template;
+    private final DocumentTemplate template;
 
     private final EntityMetadata metadata;
 
     @jakarta.inject.Inject
-    public {{className}}(JNoSQLDocumentTemplate template) {
+    public {{className}}(DocumentTemplate template) {
         this.template = Objects.requireNonNull(template, "template is required");
         EntitiesMetadata entities = LiteEntitiesMetadata.INSTANCE;
         this.metadata = entities.get({{entityType}}.class);
@@ -69,11 +69,11 @@ public class {{className}} implements {{repository}} {
         this.metadata = null;
    }
 
-    JNoSQLDocumentTemplate getTemplate(){
+    DocumentTemplate template(){
         return template;
     }
 
-    EntityMetadata getEntityMetadata(){
+    EntityMetadata entityMetadata(){
         return metadata;
     }
 
@@ -82,9 +82,9 @@ public class {{className}} implements {{repository}} {
         Objects.requireNonNull(entity, "Entity is required");
         Object id = getIdField().read(entity);
         if (nonNull(id) && existsById(({{keyType}}) id)) {
-            return getTemplate().update(entity);
+            return template().update(entity);
         } else {
-            return getTemplate().insert(entity);
+            return template().insert(entity);
         }
     }
 
@@ -97,7 +97,7 @@ public class {{className}} implements {{repository}} {
     @Override
     public void deleteById({{keyType}} id) {
         requireNonNull(id, "is is required");
-        getTemplate().delete(getEntityClass(), id);
+        template().delete(getEntityClass(), id);
     }
 
     @Override
@@ -123,14 +123,14 @@ public class {{className}} implements {{repository}} {
     {{#element.isNoSQLRepository}}
     @Override
     public void deleteAll() {
-        getTemplate().deleteAll(getEntityClass());
+        template().deleteAll(getEntityClass());
     }
     {{/element.isNoSQLRepository}}
 
     @Override
     public Optional<{{entityType}}> findById({{keyType}} id) {
         requireNonNull(id, "id is required");
-        return getTemplate().find(getEntityClass(), id);
+        return template().find(getEntityClass(), id);
     }
 
     @Override
@@ -142,7 +142,7 @@ public class {{className}} implements {{repository}} {
 
     @Override
     public long countBy() {
-        return getTemplate().count(getEntityClass());
+        return template().count(getEntityClass());
     }
 
     @Override
@@ -152,39 +152,39 @@ public class {{className}} implements {{repository}} {
 
     @Override
     public Stream<{{entityType}}> findAll() {
-        DocumentQuery query = DocumentQuery.select().from(getEntityMetadata().name()).build();
-        return getTemplate().select(query);
+        SelectQuery query = SelectQuery.select().from(entityMetadata().name()).build();
+        return template().select(query);
     }
 
     public Page<{{entityType}}> findAll(PageRequest<{{entityType}}> pageRequest) {
         Objects.requireNonNull(pageRequest, "pageRequest is required");
-        EntityMetadata metadata = getEntityMetadata();
+        EntityMetadata metadata = entityMetadata();
         List<Sort<?>> sorts = pageRequest.sorts().stream().collect(toList());
-        DocumentQuery query = new MappingDocumentQuery(sorts,
+        SelectQuery query = new MappingQuery(sorts,
         pageRequest.size(), NoSQLPage.skip(pageRequest), null ,metadata.name());
 
-        List<{{entityType}}> entities = getTemplate().<{{entityType}}>select(query).toList();
+        List<{{entityType}}> entities = template().<{{entityType}}>select(query).toList();
                 return NoSQLPage.of(entities, pageRequest);
     }
 
     public <S extends {{entityType}}> S insert(S entity) {
         Objects.requireNonNull(entity, "entity is required");
-        return getTemplate().insert(entity);
+        return template().insert(entity);
     }
 
     public <S extends {{entityType}}> Iterable<S> insertAll(Iterable<S> entities) {
         Objects.requireNonNull(entities, "entities is required");
-        return getTemplate().insert(entities);
+        return template().insert(entities);
     }
 
     public boolean update({{entityType}} entity) {
         Objects.requireNonNull(entity, "entity is required");
-        return getTemplate().update(entity) != null;
+        return template().update(entity) != null;
     }
 
     public int updateAll(Iterable<{{entityType}}> entities) {
         Objects.requireNonNull(entities, "entities is required");
-        getTemplate().update(entities);
+        template().update(entities);
         return (int) StreamSupport.stream(entities.spliterator(), false).count();
     }
 
@@ -204,7 +204,7 @@ public class {{className}} implements {{repository}} {
     {{/methods}}
 
     private FieldMetadata getIdField() {
-        return getEntityMetadata().id().orElseThrow(KEY_NOT_FOUND_EXCEPTION_SUPPLIER);
+        return entityMetadata().id().orElseThrow(KEY_NOT_FOUND_EXCEPTION_SUPPLIER);
     }
 
     private Function<{{keyType}}, Stream<{{entityType}}>> optionalToStream() {
@@ -215,7 +215,7 @@ public class {{className}} implements {{repository}} {
     }
 
     private Class<{{entityType}}> getEntityClass() {
-        return (Class<{{entityType}}>) getEntityMetadata().type();
+        return (Class<{{entityType}}>) entityMetadata().type();
     }
 
 }

@@ -17,8 +17,8 @@ package org.eclipse.jnosql.lite.mapping.entities;
 import jakarta.data.exceptions.MappingException;
 import jakarta.inject.Inject;
 import org.eclipse.jnosql.communication.TypeReference;
-import org.eclipse.jnosql.communication.document.Document;
-import org.eclipse.jnosql.communication.document.DocumentEntity;
+import org.eclipse.jnosql.communication.semistructured.CommunicationEntity;
+import org.eclipse.jnosql.communication.semistructured.Element;
 import org.eclipse.jnosql.lite.mapping.metadata.LiteEntitiesMetadata;
 import org.eclipse.jnosql.lite.mapping.entities.inheritance.EmailNotification;
 import org.eclipse.jnosql.lite.mapping.entities.inheritance.LargeProject;
@@ -30,9 +30,10 @@ import org.eclipse.jnosql.lite.mapping.entities.inheritance.SmallProject;
 import org.eclipse.jnosql.lite.mapping.entities.inheritance.SmsNotification;
 import org.eclipse.jnosql.lite.mapping.entities.inheritance.SocialMediaNotification;
 import org.eclipse.jnosql.mapping.core.Converters;
-import org.eclipse.jnosql.mapping.document.DocumentEntityConverter;
+import org.eclipse.jnosql.mapping.document.DocumentTemplate;
 import org.eclipse.jnosql.mapping.document.spi.DocumentExtension;
 import org.eclipse.jnosql.mapping.core.spi.EntityMetadataExtension;
+import org.eclipse.jnosql.mapping.semistructured.EntityConverter;
 import org.jboss.weld.junit5.auto.AddExtensions;
 import org.jboss.weld.junit5.auto.AddPackages;
 import org.jboss.weld.junit5.auto.EnableAutoWeld;
@@ -50,17 +51,17 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @EnableAutoWeld
-@AddPackages(value = {Converters.class, DocumentEntityConverter.class})
+@AddPackages(value = {Converters.class, EntityConverter.class, DocumentTemplate.class})
 @AddExtensions({EntityMetadataExtension.class, DocumentExtension.class})
 @AddPackages(LiteEntitiesMetadata.class)
 class DocumentEntityConverterInheritanceTest {
 
     @Inject
-    private DocumentEntityConverter converter;
+    private EntityConverter converter;
 
     @Test
     void shouldConvertProjectToSmallProject() {
-        DocumentEntity entity = DocumentEntity.of("Project");
+        var entity = CommunicationEntity.of("Project");
         entity.add("_id", "Small Project");
         entity.add("investor", "Otavio Santana");
         entity.add("size", "Small");
@@ -73,7 +74,7 @@ class DocumentEntityConverterInheritanceTest {
 
     @Test
     void shouldConvertProjectToLargeProject() {
-        DocumentEntity entity = DocumentEntity.of("Project");
+        var entity = CommunicationEntity.of("Project");
         entity.add("_id", "Large Project");
         entity.add("budget", BigDecimal.TEN);
         entity.add("size", "Large");
@@ -89,7 +90,7 @@ class DocumentEntityConverterInheritanceTest {
         LargeProject project = new LargeProject();
         project.setName("Large Project");
         project.setBudget(BigDecimal.TEN);
-        DocumentEntity entity = this.converter.toDocument(project);
+        var entity = this.converter.toCommunication(project);
         assertNotNull(entity);
         assertEquals("Project", entity.name());
         assertEquals(project.getName(), entity.find("_id", String.class).get());
@@ -102,7 +103,7 @@ class DocumentEntityConverterInheritanceTest {
         SmallProject project = new SmallProject();
         project.setName("Small Project");
         project.setInvestor("Otavio Santana");
-        DocumentEntity entity = this.converter.toDocument(project);
+        var entity = this.converter.toCommunication(project);
         assertNotNull(entity);
         assertEquals("Project", entity.name());
         assertEquals(project.getName(), entity.find("_id", String.class).get());
@@ -112,7 +113,7 @@ class DocumentEntityConverterInheritanceTest {
 
     @Test
     void shouldConvertProject() {
-        DocumentEntity entity = DocumentEntity.of("Project");
+        var entity = CommunicationEntity.of("Project");
         entity.add("_id", "Project");
         entity.add("size", "Project");
         Project project = this.converter.toEntity(entity);
@@ -123,7 +124,7 @@ class DocumentEntityConverterInheritanceTest {
     void shouldConvertProjectToCommunicationEntity() {
         Project project = new Project();
         project.setName("Large Project");
-        DocumentEntity entity = this.converter.toDocument(project);
+        var entity = this.converter.toCommunication(project);
         assertNotNull(entity);
         assertEquals("Project", entity.name());
         assertEquals(project.getName(), entity.find("_id", String.class).get());
@@ -133,7 +134,7 @@ class DocumentEntityConverterInheritanceTest {
     @Test
     void shouldConvertDocumentEntityToSocialMedia(){
         LocalDate date = LocalDate.now();
-        DocumentEntity entity = DocumentEntity.of("Notification");
+        var entity = CommunicationEntity.of("Notification");
         entity.add("_id", 100L);
         entity.add("name", "Social Media");
         entity.add("nickname", "otaviojava");
@@ -149,7 +150,7 @@ class DocumentEntityConverterInheritanceTest {
     @Test
     void shouldConvertDocumentEntityToSms(){
         LocalDate date = LocalDate.now();
-        DocumentEntity entity = DocumentEntity.of("Notification");
+        var entity = CommunicationEntity.of("Notification");
         entity.add("_id", 100L);
         entity.add("name", "SMS Notification");
         entity.add("phone", "+351987654123");
@@ -165,7 +166,7 @@ class DocumentEntityConverterInheritanceTest {
     @Test
     void shouldConvertDocumentEntityToEmail(){
         LocalDate date = LocalDate.now();
-        DocumentEntity entity = DocumentEntity.of("Notification");
+        var entity = CommunicationEntity.of("Notification");
         entity.add("_id", 100L);
         entity.add("name", "Email Notification");
         entity.add("email", "otavio@otavio.test");
@@ -185,7 +186,7 @@ class DocumentEntityConverterInheritanceTest {
         notification.setName("Social Media");
         notification.setCreatedOn(LocalDate.now());
         notification.setNickname("otaviojava");
-        DocumentEntity entity = this.converter.toDocument(notification);
+        var entity = this.converter.toCommunication(notification);
         assertNotNull(entity);
         assertEquals("Notification", entity.name());
         assertEquals(notification.getId(), entity.find("_id", Long.class).get());
@@ -201,7 +202,7 @@ class DocumentEntityConverterInheritanceTest {
         notification.setName("SMS");
         notification.setCreatedOn(LocalDate.now());
         notification.setPhone("+351123456987");
-        DocumentEntity entity = this.converter.toDocument(notification);
+        var entity = this.converter.toCommunication(notification);
         assertNotNull(entity);
         assertEquals("Notification", entity.name());
         assertEquals(notification.getId(), entity.find("_id", Long.class).get());
@@ -217,7 +218,7 @@ class DocumentEntityConverterInheritanceTest {
         notification.setName("Email Media");
         notification.setCreatedOn(LocalDate.now());
         notification.setEmail("otavio@otavio.test.com");
-        DocumentEntity entity = this.converter.toDocument(notification);
+        var entity = this.converter.toCommunication(notification);
         assertNotNull(entity);
         assertEquals("Notification", entity.name());
         assertEquals(notification.getId(), entity.find("_id", Long.class).get());
@@ -229,7 +230,7 @@ class DocumentEntityConverterInheritanceTest {
     @Test
     void shouldReturnErrorWhenConvertMissingDocument(){
         LocalDate date = LocalDate.now();
-        DocumentEntity entity = DocumentEntity.of("Notification");
+        var entity = CommunicationEntity.of("Notification");
         entity.add("_id", 100L);
         entity.add("name", "SMS Notification");
         entity.add("phone", "+351987654123");
@@ -240,7 +241,7 @@ class DocumentEntityConverterInheritanceTest {
     @Test
     void shouldReturnErrorWhenMismatchField() {
         LocalDate date = LocalDate.now();
-        DocumentEntity entity = DocumentEntity.of("Notification");
+        var entity = CommunicationEntity.of("Notification");
         entity.add("_id", 100L);
         entity.add("name", "Email Notification");
         entity.add("email", "otavio@otavio.test");
@@ -253,15 +254,15 @@ class DocumentEntityConverterInheritanceTest {
 
     @Test
     void shouldConvertCommunicationNotificationReaderEmail() {
-        DocumentEntity entity = DocumentEntity.of("NotificationReader");
+        var entity = CommunicationEntity.of("NotificationReader");
         entity.add("_id", "poli");
         entity.add("name", "Poliana Santana");
         entity.add("notification", Arrays.asList(
-                Document.of("_id", 10L),
-                Document.of("name", "News"),
-                Document.of("email", "otavio@email.com"),
-                Document.of("_id", LocalDate.now()),
-                Document.of("dtype", "Email")
+                Element.of("_id", 10L),
+                Element.of("name", "News"),
+                Element.of("email", "otavio@email.com"),
+                Element.of("_id", LocalDate.now()),
+                Element.of("dtype", "Email")
         ));
 
         NotificationReader notificationReader = converter.toEntity(entity);
@@ -279,15 +280,15 @@ class DocumentEntityConverterInheritanceTest {
 
     @Test
     void shouldConvertCommunicationNotificationReaderSms() {
-        DocumentEntity entity = DocumentEntity.of("NotificationReader");
+        var entity = CommunicationEntity.of("NotificationReader");
         entity.add("_id", "poli");
         entity.add("name", "Poliana Santana");
         entity.add("notification", Arrays.asList(
-                Document.of("_id", 10L),
-                Document.of("name", "News"),
-                Document.of("phone", "123456789"),
-                Document.of("_id", LocalDate.now()),
-                Document.of("dtype", "SMS")
+                Element.of("_id", 10L),
+                Element.of("name", "News"),
+                Element.of("phone", "123456789"),
+                Element.of("_id", LocalDate.now()),
+                Element.of("dtype", "SMS")
         ));
 
         NotificationReader notificationReader = converter.toEntity(entity);
@@ -305,15 +306,15 @@ class DocumentEntityConverterInheritanceTest {
 
     @Test
     void shouldConvertCommunicationNotificationReaderSocial() {
-        DocumentEntity entity = DocumentEntity.of("NotificationReader");
+        var entity = CommunicationEntity.of("NotificationReader");
         entity.add("_id", "poli");
         entity.add("name", "Poliana Santana");
         entity.add("notification", Arrays.asList(
-                Document.of("_id", 10L),
-                Document.of("name", "News"),
-                Document.of("nickname", "123456789"),
-                Document.of("_id", LocalDate.now()),
-                Document.of("dtype", "SocialMediaNotification")
+                Element.of("_id", 10L),
+                Element.of("name", "News"),
+                Element.of("nickname", "123456789"),
+                Element.of("_id", LocalDate.now()),
+                Element.of("dtype", "SocialMediaNotification")
         ));
 
         NotificationReader notificationReader = converter.toEntity(entity);
@@ -337,19 +338,19 @@ class DocumentEntityConverterInheritanceTest {
         notification.setNickname("ada.lovelace");
         NotificationReader reader = new NotificationReader("otavio", "Otavio", notification);
 
-        DocumentEntity entity = this.converter.toDocument(reader);
+        var entity = this.converter.toCommunication(reader);
         assertNotNull(entity);
 
         assertEquals("NotificationReader", entity.name());
         assertEquals("otavio", entity.find("_id", String.class).get());
         assertEquals("Otavio", entity.find("name", String.class).get());
-        List<Document> documents = entity.find("notification", new TypeReference<List<Document>>() {
+        List<Element> documents = entity.find("notification", new TypeReference<List<Element>>() {
         }).get();
 
-        assertThat(documents).contains(Document.of("_id", 10L),
-                        Document.of("name", "Ada"),
-                        Document.of("dtype", "SocialMediaNotification"),
-                        Document.of("nickname", "ada.lovelace"));
+        assertThat(documents).contains(Element.of("_id", 10L),
+                Element.of("name", "Ada"),
+                Element.of("dtype", "SocialMediaNotification"),
+                Element.of("nickname", "ada.lovelace"));
     }
 
     @Test
@@ -367,46 +368,46 @@ class DocumentEntityConverterInheritanceTest {
         projects.add(small);
 
         ProjectManager manager = ProjectManager.of(10L, "manager", projects);
-        DocumentEntity entity = this.converter.toDocument(manager);
+        var entity = this.converter.toCommunication(manager);
         assertNotNull(entity);
 
         assertEquals("ProjectManager", entity.name());
         assertEquals(10L, entity.find("_id", Long.class).get());
         assertEquals("manager", entity.find("name", String.class).get());
 
-        List<List<Document>> documents = (List<List<Document>>) entity.find("projects").get().get();
+        List<List<Element>> documents = (List<List<Element>>) entity.find("projects").get().get();
 
-        List<Document> largeCommunication = documents.get(0);
-        List<Document> smallCommunication = documents.get(1);
+        List<Element> largeCommunication = documents.get(0);
+        List<Element> smallCommunication = documents.get(1);
         assertThat(largeCommunication).contains(
-                Document.of("_id", "large"),
-                Document.of("size", "Large"),
-                Document.of("budget", BigDecimal.TEN)
+                Element.of("_id", "large"),
+                Element.of("size", "Large"),
+                Element.of("budget", BigDecimal.TEN)
         );
 
         assertThat(smallCommunication).contains(
-                Document.of("size", "Small"),
-                Document.of("investor", "new investor"),
-                Document.of("_id", "Start up")
+                Element.of("size", "Small"),
+                Element.of("investor", "new investor"),
+                Element.of("_id", "Start up")
         );
 
     }
 
     @Test
     void shouldConvertConvertCommunicationProjectManager() {
-        DocumentEntity communication = DocumentEntity.of("ProjectManager");
+        var communication = CommunicationEntity.of("ProjectManager");
         communication.add("_id", 10L);
         communication.add("name", "manager");
-        List<List<Document>> documents = new ArrayList<>();
+        List<List<Element>> documents = new ArrayList<>();
         documents.add(Arrays.asList(
-                Document.of("_id","small-project"),
-                Document.of("size","Small"),
-                Document.of("investor","investor")
+                Element.of("_id","small-project"),
+                Element.of("size","Small"),
+                Element.of("investor","investor")
         ));
         documents.add(Arrays.asList(
-                Document.of("_id","large-project"),
-                Document.of("size","Large"),
-                Document.of("budget",BigDecimal.TEN)
+                Element.of("_id","large-project"),
+                Element.of("size","Large"),
+                Element.of("budget",BigDecimal.TEN)
         ));
         communication.add("projects", documents);
 

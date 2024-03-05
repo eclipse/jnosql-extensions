@@ -59,7 +59,7 @@ public class {{className}} implements {{repository}} {
         this.metadata = null;
     }
 
-    EntityMetadata getEntityMetadata(){
+    EntityMetadata entityMetadata(){
         return metadata;
     }
 
@@ -168,7 +168,7 @@ public class {{className}} implements {{repository}} {
 
 
     private FieldMetadata getIdField() {
-        return getEntityMetadata().id().orElseThrow(KEY_NOT_FOUND_EXCEPTION_SUPPLIER);
+        return entityMetadata().id().orElseThrow(KEY_NOT_FOUND_EXCEPTION_SUPPLIER);
     }
 
     {{#methods}}

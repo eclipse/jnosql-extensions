@@ -77,9 +77,9 @@ enum DocumentMethodBuilder implements Function<MethodMetadata, List<String>> {
                     " new org.eclipse.jnosql.communication.query.method.DeleteByMethodQueryProvider()");
             lines.add("org.eclipse.jnosql.communication.query.DeleteQuery delete = supplier.apply(\"" +
                     metadata.getMethodName() + "\", metadata.name())");
-            lines.add("org.eclipse.jnosql.communication.document.DocumentObserverParser parser = " + SPACE +
-                    "org.eclipse.jnosql.mapping.document.query.RepositoryDocumentObserverParser.of(metadata)");
-            lines.add("org.eclipse.jnosql.communication.document.DocumentDeleteQueryParams queryParams = " + SPACE +
+            lines.add("org.eclipse.jnosql.communication.semistructured.CommunicationObserverParser parser = " + SPACE +
+                    "org.eclipse.jnosql.mapping.semistructured.query.RepositorySemistructuredObserverParser.of(metadata)");
+            lines.add("org.eclipse.jnosql.communication.semistructured.DeleteQueryParams queryParams = " + SPACE +
                     "DELETE_PARSER.apply(delete, parser)");
             lines.add("org.eclipse.jnosql.communication.Params params = queryParams.params()");
             for (Parameter parameter : metadata.getParameters()) {
@@ -122,17 +122,17 @@ enum DocumentMethodBuilder implements Function<MethodMetadata, List<String>> {
                 "new org.eclipse.jnosql.communication.query.method.SelectMethodQueryProvider()");
         lines.add("org.eclipse.jnosql.communication.query.SelectQuery selectQuery = " + SPACE +
                 "supplier.apply(\"" + metadata.getMethodName() + "\", metadata.name())");
-        lines.add("org.eclipse.jnosql.communication.document.DocumentObserverParser parser = " + SPACE +
-                "org.eclipse.jnosql.mapping.document.query.RepositoryDocumentObserverParser.of(metadata)");
-        lines.add("org.eclipse.jnosql.communication.document.DocumentQueryParams queryParams = " + SPACE +
+        lines.add("org.eclipse.jnosql.communication.semistructured.CommunicationObserverParser parser = " + SPACE +
+                "org.eclipse.jnosql.mapping.semistructured.query.RepositorySemistructuredObserverParser.of(metadata)");
+        lines.add("org.eclipse.jnosql.communication.semistructured.QueryParams queryParams = " + SPACE +
                 "SELECT_PARSER.apply(selectQuery, parser)");
         if (metadata.hasSpecialParameter()) {
-            lines.add("org.eclipse.jnosql.communication.document.DocumentQuery query = " + SPACE +
-                    " org.eclipse.jnosql.mapping.document.query.DynamicQuery.of(new Object[]{" +
+            lines.add("SelectQuery query = " + SPACE +
+                    " org.eclipse.jnosql.mapping.semistructured.query.DynamicQuery.of(new Object[]{" +
                     metadata.getSpecialParameter() +
                     "},  " + SPACE + "queryParams.query()).get()");
         } else {
-            lines.add("org.eclipse.jnosql.communication.document.DocumentQuery query = queryParams.query()");
+            lines.add("SelectQuery query = queryParams.query()");
         }
         lines.add("org.eclipse.jnosql.communication.Params params = queryParams.params()");
         for (Parameter parameter : metadata.getQueryParams()) {
