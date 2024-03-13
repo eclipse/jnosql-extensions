@@ -19,7 +19,7 @@ import org.eclipse.jnosql.lite.mapping.metadata.LiteEntitiesMetadata;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 import org.eclipse.jnosql.mapping.metadata.FieldMetadata;
 import org.eclipse.jnosql.mapping.metadata.InheritanceMetadata;
-import org.eclipse.jnosql.mapping.DiscriminatorColumn;
+import jakarta.nosql.DiscriminatorColumn;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

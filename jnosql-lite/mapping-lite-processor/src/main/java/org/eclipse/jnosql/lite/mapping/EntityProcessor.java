@@ -51,7 +51,7 @@ import static javax.lang.model.element.Modifier.PUBLIC;
 
 @SupportedAnnotationTypes({"jakarta.nosql.Entity",
         "jakarta.nosql.Embeddable",
-        "org.eclipse.jnosql.mapping.MappedSuperclass"})
+        "jakarta.nosql.MappedSuperclass"})
 public class EntityProcessor extends AbstractProcessor {
 
     private static final Logger LOGGER = Logger.getLogger(EntityProcessor.class.getName());
