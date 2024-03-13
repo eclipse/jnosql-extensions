@@ -14,7 +14,7 @@
  */
 package org.eclipse.jnosql.lite.mapping.entities;
 
-import jakarta.nosql.PreparedStatement;
+import org.eclipse.jnosql.mapping.PreparedStatement;
 import org.assertj.core.api.SoftAssertions;
 import org.eclipse.jnosql.communication.Condition;
 import org.eclipse.jnosql.communication.semistructured.CriteriaCondition;

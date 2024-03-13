@@ -38,7 +38,7 @@ enum DocumentMethodBuilder implements Function<MethodMetadata, List<String>> {
         public List<String> apply(MethodMetadata metadata) {
             List<String> lines = new ArrayList<>();
             Query query = metadata.getQuery();
-            lines.add("jakarta.nosql.PreparedStatement prepare = template.prepare(\"" + query.value() + "\")");
+            lines.add("org.eclipse.jnosql.mapping.PreparedStatement prepare = template.prepare(\"" + query.value() + "\")");
             for (Parameter parameter : metadata.getParameters()) {
                 if (parameter.hasParam()) {
                     Param param = parameter.param();

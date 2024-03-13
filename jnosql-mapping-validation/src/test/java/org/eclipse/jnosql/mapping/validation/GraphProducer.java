@@ -26,7 +26,6 @@ import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.eclipse.jnosql.mapping.Database;
 import org.eclipse.jnosql.mapping.DatabaseType;
-import org.eclipse.jnosql.mapping.graph.GraphTraversalSourceSupplier;
 import org.mockito.Mockito;
 
 import java.io.File;
@@ -67,12 +66,6 @@ public class GraphProducer implements Supplier<Graph> {
     @Override
     public Graph get() {
         return graph;
-    }
-
-    @Produces
-    @ApplicationScoped
-    public GraphTraversalSourceSupplier getGraphTraversalSource() {
-        return () -> graph.traversal();
     }
 
     @Produces

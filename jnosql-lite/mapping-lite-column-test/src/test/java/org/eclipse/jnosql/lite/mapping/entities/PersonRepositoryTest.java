@@ -17,7 +17,7 @@ package org.eclipse.jnosql.lite.mapping.entities;
 import jakarta.data.Sort;
 import jakarta.data.page.Page;
 import jakarta.data.page.PageRequest;
-import jakarta.nosql.PreparedStatement;
+import org.eclipse.jnosql.mapping.PreparedStatement;
 import org.assertj.core.api.Assertions;
 import org.assertj.core.api.SoftAssertions;
 import org.eclipse.jnosql.communication.Condition;
