@@ -22,8 +22,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
 
-
-enum ColumnMethodBuilder implements Function<MethodMetadata, List<String>> {
+enum SemistructuredMethodBuilder implements Function<MethodMetadata, List<String>> {
 
     METHOD_QUERY {
         @Override
@@ -39,7 +38,7 @@ enum ColumnMethodBuilder implements Function<MethodMetadata, List<String>> {
         public List<String> apply(MethodMetadata metadata) {
             List<String> lines = new ArrayList<>();
             Query query = metadata.getQuery();
-            lines.add("jakarta.nosql.PreparedStatement prepare = template.prepare(\"" + query.value() + "\")");
+            lines.add("org.eclipse.jnosql.mapping.PreparedStatement prepare = template.prepare(\"" + query.value() + "\")");
             for (Parameter parameter : metadata.getParameters()) {
                 if (parameter.hasParam()) {
                     Param param = parameter.param();
@@ -59,7 +58,7 @@ enum ColumnMethodBuilder implements Function<MethodMetadata, List<String>> {
             lines.add("boolean result = entities.findAny().isPresent()");
             return lines;
         }
-    }, COUNT_BY {
+    },COUNT_BY {
         @Override
         public List<String> apply(MethodMetadata metadata) {
             List<String> lines = new ArrayList<>();
@@ -68,7 +67,7 @@ enum ColumnMethodBuilder implements Function<MethodMetadata, List<String>> {
             lines.add("long result = entities.count()");
             return lines;
         }
-    }, DELETE_BY {
+    },DELETE_BY{
         @Override
         public List<String> apply(MethodMetadata metadata) {
             List<String> lines = new ArrayList<>();
@@ -89,7 +88,7 @@ enum ColumnMethodBuilder implements Function<MethodMetadata, List<String>> {
             lines.add("this.template.delete(queryParams.query())");
             return lines;
         }
-    }, NOT_SUPPORTED {
+    },NOT_SUPPORTED {
         @Override
         public List<String> apply(MethodMetadata metadata) {
             return List.of("throw new UnsupportedOperationException(\"There is no support for this method type yet.\")");
@@ -141,9 +140,9 @@ enum ColumnMethodBuilder implements Function<MethodMetadata, List<String>> {
         }
     }
 
-    static ColumnMethodBuilder of(MethodMetadata metadata) {
+    static SemistructuredMethodBuilder of(MethodMetadata metadata) {
         MethodMetadataOperationType operationType = MethodMetadataOperationType.of(metadata);
-        return Arrays.stream(ColumnMethodBuilder.values()).filter(c -> c.name().equals(operationType.name()))
+        return Arrays.stream(SemistructuredMethodBuilder.values()).filter(c -> c.name().equals(operationType.name()))
                 .findAny().orElse(NOT_SUPPORTED);
     }
 }

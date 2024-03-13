@@ -15,11 +15,11 @@
 package org.eclipse.jnosql.lite.mapping.entities;
 
 import org.assertj.core.api.Assertions;
+import org.eclipse.jnosql.mapping.keyvalue.KeyValueTemplate;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import jakarta.nosql.keyvalue.KeyValueTemplate;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Arrays;

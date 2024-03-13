@@ -18,11 +18,11 @@ import com.github.mustachejava.DefaultMustacheFactory;
 import com.github.mustachejava.Mustache;
 import com.github.mustachejava.MustacheFactory;
 import jakarta.nosql.Entity;
-import org.eclipse.jnosql.mapping.DiscriminatorColumn;
-import org.eclipse.jnosql.mapping.DiscriminatorValue;
-import org.eclipse.jnosql.mapping.Embeddable;
-import org.eclipse.jnosql.mapping.Inheritance;
-import org.eclipse.jnosql.mapping.MappedSuperclass;
+import jakarta.nosql.DiscriminatorColumn;
+import jakarta.nosql.DiscriminatorValue;
+import jakarta.nosql.Embeddable;
+import jakarta.nosql.Inheritance;
+import jakarta.nosql.MappedSuperclass;
 
 import javax.annotation.processing.Filer;
 import javax.annotation.processing.ProcessingEnvironment;

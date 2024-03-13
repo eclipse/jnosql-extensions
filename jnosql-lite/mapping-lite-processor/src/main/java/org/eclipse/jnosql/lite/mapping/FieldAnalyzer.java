@@ -20,8 +20,8 @@ import com.github.mustachejava.MustacheFactory;
 import jakarta.nosql.Column;
 import jakarta.nosql.Entity;
 import jakarta.nosql.Id;
-import org.eclipse.jnosql.mapping.Convert;
-import org.eclipse.jnosql.mapping.Embeddable;
+import jakarta.nosql.Convert;
+import jakarta.nosql.Embeddable;
 import org.eclipse.jnosql.mapping.metadata.MappingType;
 
 import javax.annotation.processing.Filer;
@@ -159,6 +159,7 @@ class FieldAnalyzer implements Supplier<String> {
         final String packageName = ProcessorUtil.getPackageName(entity);
         final String entityName = ProcessorUtil.getSimpleNameAsString(this.entity);
         final String name = getName(fieldName, column, id);
+        final String udt = column != null ? column.udt() : null;
 
         final String getMethod = accessors.stream()
                 .map(ELEMENT_TO_STRING)
@@ -179,6 +180,7 @@ class FieldAnalyzer implements Supplier<String> {
                 .reader(getMethod)
                 .writer(setMethod)
                 .fieldName(fieldName)
+                .udt(udt)
                 .id(isId)
                 .elementType(elementType)
                 .converter(convert)

@@ -26,7 +26,7 @@ class DocumentMethodGenerator implements MethodGenerator {
 
     @Override
     public List<String> getLines() {
-        DocumentMethodBuilder methodBuilder = DocumentMethodBuilder.of(this.metadata);
+        var methodBuilder = SemistructuredMethodBuilder.of(this.metadata);
         return methodBuilder.apply(this.metadata);
     }
 

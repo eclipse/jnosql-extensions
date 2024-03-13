@@ -32,6 +32,10 @@ import java.util.logging.Logger;
 public class RepositoryProcessor extends AbstractProcessor {
 
     private static final Logger LOGGER = Logger.getLogger(RepositoryProcessor.class.getName());
+    private static final String DOCUMENT_TEMPLATE_CLASS = "org.eclipse.jnosql.mapping.document.DocumentTemplate";
+    private static final String COLUMN_TEMPLATE_CLASS = "org.eclipse.jnosql.mapping.column.ColumnTemplate";
+    private static final String KEY_VALUE_TEMPLATE_CLASS = "org.eclipse.jnosql.mapping.keyvalue.KeyValueTemplate";
+    private static final String GRAPH_TEMPLATE_CLASS = "org.eclipse.jnosql.mapping.graph.GraphTemplate";
 
     @Override
     public boolean process(Set<? extends TypeElement> annotations,
@@ -65,13 +69,13 @@ public class RepositoryProcessor extends AbstractProcessor {
 
     private static Set<DatabaseType> types() {
         Set<DatabaseType> types = EnumSet.noneOf(DatabaseType.class);
-        if (checkLibrary("org.eclipse.jnosql.mapping.document.DocumentTemplate")) {
+        if (checkLibrary(DOCUMENT_TEMPLATE_CLASS)) {
             types.add(DatabaseType.DOCUMENT);
-        } else if (checkLibrary("org.eclipse.jnosql.mapping.column.ColumnTemplate")) {
+        } else if (checkLibrary(COLUMN_TEMPLATE_CLASS)) {
             types.add(DatabaseType.COLUMN);
-        } else if (checkLibrary("jakarta.nosql.keyvalue.KeyValueTemplate")) {
+        } else if (checkLibrary(KEY_VALUE_TEMPLATE_CLASS)) {
             types.add(DatabaseType.KEY_VALUE);
-        } else if (checkLibrary("org.eclipse.jnosql.mapping.graph.GraphTemplate")) {
+        } else if (checkLibrary(GRAPH_TEMPLATE_CLASS)) {
             types.add(DatabaseType.GRAPH);
         }
         return types;

@@ -15,7 +15,7 @@
 package org.eclipse.jnosql.lite.mapping.entities;
 
 import jakarta.nosql.Column;
-import org.eclipse.jnosql.mapping.Embeddable;
+import jakarta.nosql.Embeddable;
 
 @Embeddable
 public class ComputerAddress {
