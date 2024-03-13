@@ -14,7 +14,7 @@
  */
 package org.eclipse.jnosql.lite.mapping;
 
-import org.eclipse.jnosql.mapping.Convert;
+import jakarta.nosql.Convert;
 
 import javax.lang.model.type.MirroredTypeException;
 import javax.lang.model.type.TypeMirror;

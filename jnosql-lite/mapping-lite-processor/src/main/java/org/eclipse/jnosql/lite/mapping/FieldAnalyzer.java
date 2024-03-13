@@ -20,8 +20,8 @@ import com.github.mustachejava.MustacheFactory;
 import jakarta.nosql.Column;
 import jakarta.nosql.Entity;
 import jakarta.nosql.Id;
-import org.eclipse.jnosql.mapping.Convert;
-import org.eclipse.jnosql.mapping.Embeddable;
+import jakarta.nosql.Convert;
+import jakarta.nosql.Embeddable;
 import org.eclipse.jnosql.mapping.metadata.MappingType;
 
 import javax.annotation.processing.Filer;

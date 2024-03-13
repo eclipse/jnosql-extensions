@@ -20,7 +20,7 @@ import com.github.mustachejava.MustacheFactory;
 import jakarta.nosql.Entity;
 import org.eclipse.jnosql.mapping.DiscriminatorColumn;
 import org.eclipse.jnosql.mapping.DiscriminatorValue;
-import org.eclipse.jnosql.mapping.Embeddable;
+import jakarta.nosql.Embeddable;
 import org.eclipse.jnosql.mapping.Inheritance;
 import org.eclipse.jnosql.mapping.MappedSuperclass;
 

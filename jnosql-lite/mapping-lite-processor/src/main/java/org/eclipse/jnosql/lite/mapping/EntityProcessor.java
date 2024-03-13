@@ -50,7 +50,7 @@ import static javax.lang.model.element.Modifier.PROTECTED;
 import static javax.lang.model.element.Modifier.PUBLIC;
 
 @SupportedAnnotationTypes({"jakarta.nosql.Entity",
-        "org.eclipse.jnosql.mapping.Embeddable",
+        "jakarta.nosql.Embeddable",
         "org.eclipse.jnosql.mapping.MappedSuperclass"})
 public class EntityProcessor extends AbstractProcessor {
 

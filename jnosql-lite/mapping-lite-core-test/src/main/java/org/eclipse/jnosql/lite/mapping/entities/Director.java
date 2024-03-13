@@ -14,7 +14,7 @@
  */
 package org.eclipse.jnosql.lite.mapping.entities;
 
-import org.eclipse.jnosql.mapping.Embeddable;
+import jakarta.nosql.Embeddable;
 
 import jakarta.nosql.Entity;
 
