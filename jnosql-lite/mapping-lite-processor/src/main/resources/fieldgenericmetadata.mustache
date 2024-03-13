@@ -59,6 +59,11 @@ public final class {{className}} implements GenericFieldMetadata {
     }
 
     @Override
+    public Optional<String> udt() {
+        return {{udt}};
+    }
+
+    @Override
     public <T extends Annotation> Optional<String> value(Class<T> type) {
         Objects.requireNonNull(type, "type is required");
         return Optional.ofNullable(this.valueByAnnotation.get(type));
