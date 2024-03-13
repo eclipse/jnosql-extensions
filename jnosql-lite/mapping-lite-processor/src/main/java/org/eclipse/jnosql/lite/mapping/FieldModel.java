@@ -47,6 +47,8 @@ final class FieldModel extends BaseMappingModel {
 
     private String supplierElement;
 
+    private String udt;
+
     private FieldModel() {
     }
 
@@ -123,6 +125,9 @@ final class FieldModel extends BaseMappingModel {
         return supplierElement;
     }
 
+    public String getUdt() {
+        return udt;
+    }
 
     @Override
     public String toString() {
@@ -143,6 +148,7 @@ final class FieldModel extends BaseMappingModel {
                 ", embeddable=" + embeddable +
                 ", collectionInstance='" + collectionInstance + '\'' +
                 ", supplierElement='" + supplierElement + '\'' +
+                ", udt='" + udt + '\'' +
                 '}';
     }
 
@@ -160,6 +166,7 @@ final class FieldModel extends BaseMappingModel {
             this.fieldModel.converter = "null";
             this.fieldModel.mappingType = "null";
             this.fieldModel.typeConverter = "null";
+            this.fieldModel.udt = "Optional.empty()";
         }
 
         public FieldMetaDataBuilder packageName(String packageName) {
@@ -194,6 +201,13 @@ final class FieldModel extends BaseMappingModel {
 
         public FieldMetaDataBuilder fieldName(String fieldName) {
             this.fieldModel.fieldName = fieldName;
+            return this;
+        }
+
+        public FieldMetaDataBuilder udt(String udt) {
+            if(udt != null && !udt.isEmpty() && !udt.isBlank()) {
+                this.fieldModel.udt = String.format("Optional.of(\"%s\")", udt);
+            }
             return this;
         }
 
