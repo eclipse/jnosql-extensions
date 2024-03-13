@@ -22,7 +22,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
 
-enum DocumentMethodBuilder implements Function<MethodMetadata, List<String>> {
+enum SemistructuredMethodBuilder implements Function<MethodMetadata, List<String>> {
 
     METHOD_QUERY {
         @Override
@@ -140,9 +140,9 @@ enum DocumentMethodBuilder implements Function<MethodMetadata, List<String>> {
         }
     }
 
-    static DocumentMethodBuilder of(MethodMetadata metadata) {
+    static SemistructuredMethodBuilder of(MethodMetadata metadata) {
         MethodMetadataOperationType operationType = MethodMetadataOperationType.of(metadata);
-        return Arrays.stream(DocumentMethodBuilder.values()).filter(c -> c.name().equals(operationType.name()))
+        return Arrays.stream(SemistructuredMethodBuilder.values()).filter(c -> c.name().equals(operationType.name()))
                 .findAny().orElse(NOT_SUPPORTED);
     }
 }
