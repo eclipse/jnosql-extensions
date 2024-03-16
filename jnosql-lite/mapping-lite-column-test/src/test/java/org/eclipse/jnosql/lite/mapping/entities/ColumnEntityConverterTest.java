@@ -15,6 +15,7 @@
 package org.eclipse.jnosql.lite.mapping.entities;
 
 import jakarta.inject.Inject;
+import org.assertj.core.api.SoftAssertions;
 import org.eclipse.jnosql.communication.TypeReference;
 import org.eclipse.jnosql.communication.Value;
 import org.eclipse.jnosql.communication.semistructured.CommunicationEntity;
@@ -488,6 +489,52 @@ public class ColumnEntityConverterTest {
         Citizen citizen = converter.toEntity(entity);
         Assertions.assertNotNull(citizen);
         Assertions.assertNull(citizen.getCity());
+    }
+
+    @Test
+    void shouldConvertGroupEmbeddable(){
+        CommunicationEntity entity = CommunicationEntity.of("Wine");
+        entity.add("_id", "id");
+        entity.add("name", "Vin Blanc");
+        entity.add("factory", List.of(Element.of("name", "Napa Valley Factory"),
+                Element.of("location", "Napa Valley")));
+
+        Wine wine = converter.toEntity(entity);
+
+        SoftAssertions.assertSoftly(soft ->{
+            WineFactory factory = wine.getFactory();
+            soft.assertThat(wine).isNotNull();
+            soft.assertThat(wine.getId()).isEqualTo("id");
+            soft.assertThat(wine.getName()).isEqualTo("Vin Blanc");
+            soft.assertThat(factory).isNotNull();
+            soft.assertThat(factory.getName()).isEqualTo("Napa Valley Factory");
+            soft.assertThat(factory.getLocation()).isEqualTo("Napa Valley");
+        });
+    }
+
+    @Test
+    void shouldConvertGroupEmbeddableToCommunication(){
+
+        Wine wine = Wine.of("id", "Vin Blanc", WineFactory.of("Napa Valley Factory", "Napa Valley"));
+
+
+        var communication = converter.toCommunication(wine);
+
+        SoftAssertions.assertSoftly(soft ->{
+            soft.assertThat(communication).isNotNull();
+            soft.assertThat(communication.name()).isEqualTo("Wine");
+            soft.assertThat(communication.find("_id").orElseThrow().get()).isEqualTo("id");
+            soft.assertThat(communication.find("name").orElseThrow().get()).isEqualTo("Vin Blanc");
+            communication.find("factory").ifPresent(e -> {
+                List<Element> elements = e.get(new TypeReference<>(){});
+                soft.assertThat(elements).hasSize(2);
+                soft.assertThat(elements.stream().filter(c -> "name".equals(c.name())).findFirst().orElseThrow().get())
+                        .isEqualTo("Napa Valley Factory");
+                soft.assertThat(elements.stream().filter(c -> "location".equals(c.name())).findFirst().orElseThrow().get())
+                        .isEqualTo("Napa Valley");
+            });
+
+        });
     }
 
     private Object getValue(Optional<Element> column) {
