@@ -210,26 +210,10 @@ class FieldAnalyzer implements Supplier<String> {
     }
 
 
-    private static MappingType of(TypeMirror type, String collection, String fieldType) {
-
-        if (type.getAnnotation(Embeddable.class) != null) {
-            return MappingType.EMBEDDED;
-        }
-        if (type.getAnnotation(Entity.class) != null) {
-            return MappingType.ENTITY;
-        }
-        if (!collection.equals(CollectionUtil.DEFAULT)) {
-            return MappingType.COLLECTION;
-        }
-        if (fieldType.equals("java.util.Map")) {
-            return MappingType.MAP;
-        }
-        return MappingType.DEFAULT;
-    }
-
     private static MappingType of(Element element, String collection, String fieldType) {
         if (element.getAnnotation(Embeddable.class) != null) {
-            return MappingType.EMBEDDED;
+            var type = element.getAnnotation(Embeddable.class).value();
+            return Embeddable.EmbeddableType.FLAT.equals(type)? MappingType.EMBEDDED: MappingType.EMBEDDED_GROUP;
         }
         if (element.getAnnotation(Entity.class) != null) {
             return MappingType.ENTITY;
