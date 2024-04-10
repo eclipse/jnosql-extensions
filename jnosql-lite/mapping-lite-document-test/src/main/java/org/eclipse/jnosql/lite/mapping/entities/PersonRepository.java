@@ -34,7 +34,7 @@ public interface PersonRepository extends NoSQLRepository<Person, Long> {
 
     List<Person> findByNameOrderbyId(String name);
 
-    Page<Person> findByName(String name, PageRequest<Person> pageRequest);
+    Page<Person> findByName(String name, PageRequest pageRequest);
 
     @Query("select * from Person where name = @name")
     List<Person> query(@Param("name") String name);
@@ -57,16 +57,16 @@ public interface PersonRepository extends NoSQLRepository<Person, Long> {
     long insertPersonLong(Person person);
 
     @Insert
-    Iterable<Person> insertIterable(Iterable<Person> people);
+    List<Person> insertIterable(List<Person> people);
 
     @Insert
-    void insertIterableVoid(Iterable<Person> people);
+    void insertIterableVoid(List<Person> people);
 
     @Insert
-    int insertIterableInt(Iterable<Person> people);
+    int insertIterableInt(List<Person> people);
 
     @Insert
-    long insertIterableLong(Iterable<Person> people);
+    long insertIterableLong(List<Person> people);
 
     @Insert
     Person[] insertArray(Person[] people);
@@ -93,16 +93,16 @@ public interface PersonRepository extends NoSQLRepository<Person, Long> {
     long savePersonLong(Person person);
 
     @Save
-    Iterable<Person> saveIterable(Iterable<Person> people);
+    List<Person> saveIterable(List<Person> people);
 
     @Save
-    void saveIterableVoid(Iterable<Person> people);
+    void saveIterableVoid(List<Person> people);
 
     @Save
-    int saveIterableInt(Iterable<Person> people);
+    int saveIterableInt(List<Person> people);
 
     @Save
-    long saveIterableLong(Iterable<Person> people);
+    long saveIterableLong(List<Person> people);
 
     @Save
     Person[] saveArray(Person[] people);
@@ -129,16 +129,16 @@ public interface PersonRepository extends NoSQLRepository<Person, Long> {
     long updatePersonLong(Person person);
 
     @Update
-    Iterable<Person> updateIterable(Iterable<Person> people);
+    List<Person> updateIterable(List<Person> people);
 
     @Update
-    void updateIterableVoid(Iterable<Person> people);
+    void updateIterableVoid(List<Person> people);
 
     @Update
-    int updateIterableInt(Iterable<Person> people);
+    int updateIterableInt(List<Person> people);
 
     @Update
-    long updateIterableLong(Iterable<Person> people);
+    long updateIterableLong(List<Person> people);
 
     @Update
     Person[] updateArray(Person[] people);
@@ -161,16 +161,16 @@ public interface PersonRepository extends NoSQLRepository<Person, Long> {
     int deletePersonInt(Person person);
 
     @Delete
-    boolean deleteIterable(Iterable<Person> people);
+    boolean deleteIterable(List<Person> people);
 
     @Delete
-    void deleteIterableVoid(Iterable<Person> people);
+    void deleteIterableVoid(List<Person> people);
 
     @Delete
-    int deleteIterableInt(Iterable<Person> people);
+    int deleteIterableInt(List<Person> people);
 
     @Delete
-    long deleteIterableLong(Iterable<Person> people);
+    long deleteIterableLong(List<Person> people);
 
     @Delete
     boolean deleteArray(Person[] people);

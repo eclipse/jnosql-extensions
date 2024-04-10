@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2023 Otávio Santana and others
+ *  Copyright (c) 2021 Otávio Santana and others
  *   All rights reserved. This program and the accompanying materials
  *   are made available under the terms of the Eclipse Public License v1.0
  *   and Apache License v2.0 which accompanies this distribution.
@@ -14,13 +14,13 @@
  */
 package {{package}};
 
+import jakarta.data.Order;
 import jakarta.data.Sort;
 import jakarta.data.page.Page;
 import jakarta.data.page.PageRequest;
 import org.eclipse.jnosql.communication.semistructured.SelectQuery;
 import org.eclipse.jnosql.lite.mapping.metadata.LiteEntitiesMetadata;
 import org.eclipse.jnosql.mapping.core.NoSQLPage;
-import org.eclipse.jnosql.mapping.column.ColumnTemplate;
 import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 import org.eclipse.jnosql.mapping.metadata.FieldMetadata;
@@ -32,7 +32,9 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
+import org.eclipse.jnosql.mapping.Database;
+import org.eclipse.jnosql.mapping.DatabaseType;
+import org.eclipse.jnosql.mapping.semistructured.SemiStructuredTemplate;
 
 import static java.util.Objects.nonNull;
 import static java.util.Objects.requireNonNull;
@@ -40,10 +42,10 @@ import static java.util.stream.Collectors.toList;
 import static java.util.stream.StreamSupport.stream;
 import static org.eclipse.jnosql.mapping.IdNotFoundException.KEY_NOT_FOUND_EXCEPTION_SUPPLIER;
 
-@Generated(value= "JNoSQL Lite Column Repository Generator", date = "{{now}}")
+@Generated(value= "JNoSQL Lite {{providerType}} Repository Generator", date = "{{now}}")
 @jakarta.enterprise.context.ApplicationScoped
 @jakarta.enterprise.inject.Default
-@org.eclipse.jnosql.mapping.Database(value = org.eclipse.jnosql.mapping.DatabaseType.COLUMN)
+@Database(value = DatabaseType.{{providerType}})
 public class {{className}} implements {{repository}} {
 
     {{^methods.isEmpty}}
@@ -53,13 +55,12 @@ public class {{className}} implements {{repository}} {
             new org.eclipse.jnosql.communication.semistructured.DeleteQueryParser();
     {{/methods.isEmpty}}
 
-    private final ColumnTemplate template;
+    private final SemiStructuredTemplate template;
 
     private final EntityMetadata metadata;
 
-
     @jakarta.inject.Inject
-    public {{className}}(ColumnTemplate template) {
+    public {{className}}(@Database(value = DatabaseType.{{providerType}}) SemiStructuredTemplate template) {
         this.template = Objects.requireNonNull(template, "template is required");
         EntitiesMetadata entities = LiteEntitiesMetadata.INSTANCE;
         this.metadata = entities.get({{entityType}}.class);
@@ -68,9 +69,9 @@ public class {{className}} implements {{repository}} {
     public {{className}}() {
         this.template = null;
         this.metadata = null;
-    }
+   }
 
-    ColumnTemplate template(){
+   SemiStructuredTemplate template(){
         return template;
     }
 
@@ -90,9 +91,9 @@ public class {{className}} implements {{repository}} {
     }
 
     @Override
-    public <S extends {{entityType}}> Iterable<S> saveAll(Iterable<S> entities) {
+    public <S extends {{entityType}}> List<S> saveAll(List<S> entities) {
         requireNonNull(entities, "entities is required");
-        return StreamSupport.stream(entities.spliterator(), false).map(this::save).collect(toList());
+        return stream(entities.spliterator(), false).map(this::save).collect(toList());
     }
 
     @Override
@@ -108,6 +109,12 @@ public class {{className}} implements {{repository}} {
         this.deleteById(({{keyType}}) id);
     }
 
+    {{#element.isNoSQLRepository}}
+
+    @Override
+    public void deleteAll() {
+        template().deleteAll(getEntityClass());
+    }
 
     @Override
     public void deleteByIdIn(Iterable<{{keyType}}> ids) {
@@ -115,41 +122,12 @@ public class {{className}} implements {{repository}} {
         ids.forEach(this::deleteById);
     }
 
-    @Override
-    public void deleteAll(Iterable<? extends {{entityType}}> entities) {
-        requireNonNull(entities, "entities is required");
-        entities.forEach(this::delete);
-    }
-
-    {{#element.isNoSQLRepository}}
-    @Override
-    public void deleteAll() {
-        template().deleteAll(getEntityClass());
-    }
     {{/element.isNoSQLRepository}}
 
-    @Override
-    public Optional<{{entityType}}> findById({{keyType}} id) {
-        requireNonNull(id, "id is required");
-        return template().find(getEntityClass(), id);
-    }
-
-
-    @Override
     public Stream<{{entityType}}> findByIdIn(Iterable<{{keyType}}> ids) {
         requireNonNull(ids, "ids is required");
         return stream(ids.spliterator(), false)
-                .flatMap(optionalToStream());
-    }
-
-    @Override
-    public long countBy() {
-        return template().count(getEntityClass());
-    }
-
-    @Override
-    public boolean existsById({{keyType}} id) {
-        return findById(id).isPresent();
+        .flatMap(optionalToStream());
     }
 
     @Override
@@ -158,15 +136,26 @@ public class {{className}} implements {{repository}} {
         return template().select(query);
     }
 
-    public Page<{{entityType}}> findAll(PageRequest<{{entityType}}> pageRequest) {
+    public long countBy() {
+        return template().count(getEntityClass());
+    }
+
+    @Override
+    public void deleteAll(List<? extends {{entityType}}> entities) {
+       requireNonNull(entities, "entities is required");
+       entities.forEach(this::delete);
+   }
+
+
+    public Page<{{entityType}}> findAll(PageRequest pageRequest, Order<{{entityType}}> order) {
         Objects.requireNonNull(pageRequest, "pageRequest is required");
         EntityMetadata metadata = entityMetadata();
-        List<Sort<?>> sorts = pageRequest.sorts().stream().collect(toList());
+        List<Sort<?>> sorts = order.sorts().stream().collect(toList());
         SelectQuery query = new MappingQuery(sorts,
         pageRequest.size(), NoSQLPage.skip(pageRequest), null ,metadata.name());
 
         List<{{entityType}}> entities = template().<{{entityType}}>select(query).toList();
-            return NoSQLPage.of(entities, pageRequest);
+                return NoSQLPage.of(entities, pageRequest);
     }
 
     public <S extends {{entityType}}> S insert(S entity) {
@@ -174,21 +163,29 @@ public class {{className}} implements {{repository}} {
         return template().insert(entity);
     }
 
-    public <S extends {{entityType}}> Iterable<S> insertAll(Iterable<S> entities) {
+    public <S extends {{entityType}}> List<S> insertAll(List<S> entities) {
         Objects.requireNonNull(entities, "entities is required");
-        return template().insert(entities);
+        return stream(template().insert(entities).spliterator(), false).toList();
     }
 
-    public boolean update({{entityType}} entity) {
+    public {{entityType}} update({{entityType}} entity) {
         Objects.requireNonNull(entity, "entity is required");
-        return template().update(entity) != null;
+        return template().update(entity);
     }
 
-    public int updateAll(Iterable<{{entityType}}> entities) {
-        Objects.requireNonNull(entities, "entities is required");
-        template().update(entities);
-        return (int) StreamSupport.stream(entities.spliterator(), false).count();
+    public <S extends {{entityType}}> List<S> updateAll(List<S> entities) {
+       Objects.requireNonNull(entities, "entities is required");
+       return stream(template().update(entities).spliterator(), false).toList();
     }
+
+   public Optional<{{entityType}}> findById({{keyType}} id) {
+       requireNonNull(id, "id is required");
+       return template().find(getEntityClass(), id);
+   }
+
+   public boolean existsById({{keyType}} id) {
+       return findById(id).isPresent();
+   }
 
     {{#methods}}
     @Override
@@ -203,6 +200,7 @@ public class {{className}} implements {{repository}} {
        return {{{returnValue}}};
     {{/hasReturn}}
     }
+
     {{/methods}}
 
     private FieldMetadata getIdField() {

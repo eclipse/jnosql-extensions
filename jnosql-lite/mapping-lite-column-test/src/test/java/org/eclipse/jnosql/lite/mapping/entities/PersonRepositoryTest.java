@@ -14,16 +14,16 @@
  */
 package org.eclipse.jnosql.lite.mapping.entities;
 
-import jakarta.data.Sort;
+import jakarta.data.Order;
 import jakarta.data.page.Page;
 import jakarta.data.page.PageRequest;
-import org.eclipse.jnosql.mapping.PreparedStatement;
 import org.assertj.core.api.Assertions;
 import org.assertj.core.api.SoftAssertions;
 import org.eclipse.jnosql.communication.Condition;
 import org.eclipse.jnosql.communication.semistructured.CriteriaCondition;
 import org.eclipse.jnosql.communication.semistructured.DeleteQuery;
 import org.eclipse.jnosql.communication.semistructured.SelectQuery;
+import org.eclipse.jnosql.mapping.PreparedStatement;
 import org.eclipse.jnosql.mapping.column.ColumnTemplate;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -37,7 +37,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -210,7 +209,7 @@ class PersonRepositoryTest {
         PageRequest pageRequest = mock(PageRequest.class);
         when(template.select(any(SelectQuery.class))).thenReturn( Stream.of(new Person(), new Person()));
 
-        Page<Person> page = personRepository.findAll(pageRequest);
+        Page<Person> page = personRepository.findAll(pageRequest, Order.by());
 
         assertNotNull(page);
         assertEquals(List.of(new Person(), new Person()), page.content());
@@ -219,7 +218,7 @@ class PersonRepositoryTest {
 
     @Test
     void shouldThrowExceptionIfPageRequestIsNull() {
-        assertThrows(NullPointerException.class, () -> personRepository.findAll(null));
+        assertThrows(NullPointerException.class, () -> personRepository.findAll(null, null));
     }
 
     @Test
@@ -298,7 +297,7 @@ class PersonRepositoryTest {
     @Test
     void shouldFindPageRequest(){
         when(template.select(any(SelectQuery.class))).thenReturn( Stream.of(new Person(), new Person()));
-        PageRequest pageRequest = PageRequest.ofPage(10).sortBy(Sort.asc("name"));
+        PageRequest pageRequest = PageRequest.ofPage(10);
         Page<Person> result = this.personRepository.findByName("Ada", pageRequest);
         ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
         assertThat(result).isNotEmpty().hasSize(2);
@@ -308,7 +307,7 @@ class PersonRepositoryTest {
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(condition.condition()).isEqualTo(Condition.EQUALS);
             soft.assertThat(condition.element().get(String.class)).isEqualTo("Ada");
-            soft.assertThat(query.sorts()).hasSize(1).contains(Sort.asc("name"));
+            soft.assertThat(query.sorts()).isEmpty();
             soft.assertThat(query.skip()).isEqualTo(90L);
             soft.assertThat(query.limit()).isEqualTo(10L);
         });
@@ -354,7 +353,7 @@ class PersonRepositoryTest {
     @Test
     void shouldInsertPersonIterable(){
         Person person = ada();
-        Set<Person> people = Collections.singleton(person);
+        List<Person> people = Collections.singletonList(person);
         when(template.insert(eq(people))).thenReturn(people);
         Iterable<Person> result = this.personRepository.insertIterable(people);
         assertThat(result).isNotNull().contains(person);
@@ -364,7 +363,7 @@ class PersonRepositoryTest {
     @Test
     void shouldInsertPersonIterableVoid(){
         Person person = ada();
-        Set<Person> people = Collections.singleton(person);
+        List<Person> people = Collections.singletonList(person);
         when(template.insert(eq(people))).thenReturn(people);
         this.personRepository.insertIterableVoid(people);
         Mockito.verify(template).insert(eq(people));
@@ -373,7 +372,7 @@ class PersonRepositoryTest {
     @Test
     void shouldInsertPersonIterableInt(){
         Person person = ada();
-        Set<Person> people = Collections.singleton(person);
+        List<Person> people = Collections.singletonList(person);
         when(template.insert(eq(people))).thenReturn(people);
         var result = this.personRepository.insertIterableInt(people);
         Mockito.verify(template).insert(eq(people));
@@ -383,7 +382,7 @@ class PersonRepositoryTest {
     @Test
     void shouldInsertPersonIterableLong(){
         Person person = ada();
-        Set<Person> people = Collections.singleton(person);
+        List<Person> people = Collections.singletonList(person);
         when(template.insert(eq(people))).thenReturn(people);
         var result = this.personRepository.insertIterableLong(people);
         Mockito.verify(template).insert(eq(people));
@@ -469,7 +468,7 @@ class PersonRepositoryTest {
     @Test
     void shouldUpdatePersonIterable(){
         Person person = ada();
-        Set<Person> people = Collections.singleton(person);
+        List<Person> people = Collections.singletonList(person);
         when(template.update(eq(people))).thenReturn(people);
         Iterable<Person> result = this.personRepository.updateIterable(people);
         assertThat(result).isNotNull().contains(person);
@@ -479,7 +478,7 @@ class PersonRepositoryTest {
     @Test
     void shouldUpdatePersonIterableVoid(){
         Person person = ada();
-        Set<Person> people = Collections.singleton(person);
+        List<Person> people = Collections.singletonList(person);
         when(template.update(eq(people))).thenReturn(people);
         this.personRepository.updateIterableVoid(people);
         Mockito.verify(template).update(eq(people));
@@ -488,7 +487,7 @@ class PersonRepositoryTest {
     @Test
     void shouldUpdatePersonIterableInt(){
         Person person = ada();
-        Set<Person> people = Collections.singleton(person);
+        List<Person> people = Collections.singletonList(person);
         when(template.update(eq(people))).thenReturn(people);
         int result = this.personRepository.updateIterableInt(people);
         Mockito.verify(template).update(eq(people));
@@ -498,7 +497,7 @@ class PersonRepositoryTest {
     @Test
     void shouldUpdatePersonIterableLong(){
         Person person = ada();
-        Set<Person> people = Collections.singleton(person);
+        List<Person> people = Collections.singletonList(person);
         when(template.update(eq(people))).thenReturn(people);
         var result = this.personRepository.updateIterableLong(people);
         Mockito.verify(template).update(eq(people));
@@ -584,7 +583,7 @@ class PersonRepositoryTest {
     @Test
     void shouldSavePersonIterable(){
         Person person = ada();
-        Set<Person> people = Collections.singleton(person);
+        List<Person> people = Collections.singletonList(person);
         when(template.insert(eq(person))).thenReturn(person);
         Iterable<Person> result = this.personRepository.saveIterable(people);
         assertThat(result).isNotNull().contains(person);
@@ -594,7 +593,7 @@ class PersonRepositoryTest {
     @Test
     void shouldSavePersonIterableVoid(){
         Person person = ada();
-        Set<Person> people = Collections.singleton(person);
+        List<Person> people = Collections.singletonList(person);
         when(template.insert(eq(person))).thenReturn(person);
         this.personRepository.saveIterableVoid(people);
         Mockito.verify(template).insert(eq(person));
@@ -603,7 +602,7 @@ class PersonRepositoryTest {
     @Test
     void shouldSavePersonIterableInt(){
         Person person = ada();
-        Set<Person> people = Collections.singleton(person);
+        List<Person> people = Collections.singletonList(person);
         when(template.insert(eq(person))).thenReturn(person);
         var result = this.personRepository.saveIterableInt(people);
         Mockito.verify(template).insert(eq(person));
@@ -613,7 +612,7 @@ class PersonRepositoryTest {
     @Test
     void shouldSavePersonIterableLong(){
         Person person = ada();
-        Set<Person> people = Collections.singleton(person);
+        List<Person> people = Collections.singletonList(person);
         when(template.insert(eq(person))).thenReturn(person);
         var result = this.personRepository.saveIterableLong(people);
         Mockito.verify(template).insert(eq(person));
@@ -690,7 +689,7 @@ class PersonRepositoryTest {
     @Test
     void shouldDeletePersonIterable(){
         Person person = ada();
-        Set<Person> people = Collections.singleton(person);
+        List<Person> people = Collections.singletonList(person);
         var result = this.personRepository.deleteIterable(people);
         assertThat(result).isTrue();
         Mockito.verify(template).delete(Person.class, person.getId());
@@ -699,7 +698,7 @@ class PersonRepositoryTest {
     @Test
     void shouldDeletePersonIterableVoid(){
         Person person = ada();
-        Set<Person> people = Collections.singleton(person);
+        List<Person> people = Collections.singletonList(person);
         this.personRepository.deleteIterableVoid(people);
         Mockito.verify(template).delete(Person.class, person.getId());
     }
@@ -707,7 +706,7 @@ class PersonRepositoryTest {
     @Test
     void shouldDeletePersonIterableInt(){
         Person person = ada();
-        Set<Person> people = Collections.singleton(person);
+        List<Person> people = Collections.singletonList(person);
         var result = this.personRepository.deleteIterableInt(people);
         Mockito.verify(template).delete(Person.class, person.getId());
         Assertions.assertThat(result).isEqualTo(1);
@@ -716,7 +715,7 @@ class PersonRepositoryTest {
     @Test
     void shouldDeletePersonIterableLong(){
         Person person = ada();
-        Set<Person> people = Collections.singleton(person);
+        List<Person> people = Collections.singletonList(person);
         var result = this.personRepository.deleteIterableLong(people);
         Mockito.verify(template).delete(Person.class, person.getId());
         Assertions.assertThat(result).isEqualTo(1);

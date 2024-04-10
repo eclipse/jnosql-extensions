@@ -33,12 +33,12 @@ enum AnnotationOperationMethodBuilder implements Function<MethodMetadata, List<S
                    return Collections.singletonList( "this.template.insert(" + parameter.name() + ")");
                } else if(isInt){
                    return List.of("this.template.insert(" + parameter.name() + ")",
-                           "int result = (int)java.util.stream.StreamSupport.stream("+ parameter.name()+ ".spliterator(), false).count()");
+                           "int result = (int)stream("+ parameter.name()+ ".spliterator(), false).count()");
                } else if (isLong) {
                    return List.of("this.template.insert(" + parameter.name() + ")",
-                           "long result = java.util.stream.StreamSupport.stream(" + parameter.name() + ".spliterator(), false).count()");
+                           "long result = stream(" + parameter.name() + ".spliterator(), false).count()");
                }
-               return Collections.singletonList( "var result = this.template.insert(" + parameter.name() + ")");
+               return Collections.singletonList( "var result = stream(this.template.insert(" + parameter.name() + ").spliterator(), false).toList()");
            } else if(parameter.isArray()){
                if(isVoid) {
 
@@ -51,7 +51,7 @@ enum AnnotationOperationMethodBuilder implements Function<MethodMetadata, List<S
                            "long result = (long)" + parameter.name() + ".length");
                }
                return List.of("var insertResult = this.template.insert(java.util.Arrays.stream(" + parameter.name() + ").toList())",
-                              "var result = java.util.stream.StreamSupport.stream(insertResult.spliterator(), false).toArray("+
+                              "var result = stream(insertResult.spliterator(), false).toArray("+
                                       parameter.arrayType()+"::new)");
            }
             if(isVoid) {
@@ -76,10 +76,10 @@ enum AnnotationOperationMethodBuilder implements Function<MethodMetadata, List<S
                     return Collections.singletonList( "this.saveAll(" + parameter.name() + ")");
                 } else if(isInt){
                     return List.of("this.saveAll(" + parameter.name() + ")",
-                            "int result = (int)java.util.stream.StreamSupport.stream("+ parameter.name()+ ".spliterator(), false).count()");
+                            "int result = (int)stream("+ parameter.name()+ ".spliterator(), false).count()");
                 }else if(isLong){
                     return List.of("this.saveAll(" + parameter.name() + ")",
-                            "long result = java.util.stream.StreamSupport.stream("+ parameter.name()+ ".spliterator(), false).count()");
+                            "long result = stream("+ parameter.name()+ ".spliterator(), false).count()");
                 }
                 return Collections.singletonList( "var result = this.saveAll(" + parameter.name() + ")");
             } else if(parameter.isArray()){
@@ -94,7 +94,7 @@ enum AnnotationOperationMethodBuilder implements Function<MethodMetadata, List<S
                             "long result = (long)" + parameter.name() + ".length");
                 }
                 return List.of("var saveResult = this.saveAll(java.util.Arrays.stream(" + parameter.name() + ").toList())",
-                        "var result = java.util.stream.StreamSupport.stream(saveResult.spliterator(), false).toArray("+
+                        "var result = stream(saveResult.spliterator(), false).toArray("+
                                 parameter.arrayType()+"::new)");
             }
             if(isVoid) {
@@ -120,12 +120,12 @@ enum AnnotationOperationMethodBuilder implements Function<MethodMetadata, List<S
                     return Collections.singletonList( "this.template.update(" + parameter.name() + ")");
                 } else if(isInt){
                     return List.of("this.template.update(" + parameter.name() + ")",
-                            "int result = (int)java.util.stream.StreamSupport.stream("+ parameter.name()+ ".spliterator(), false).count()");
+                            "int result = (int)stream("+ parameter.name()+ ".spliterator(), false).count()");
                 } else if(isLong){
                     return List.of("this.template.update(" + parameter.name() + ")",
-                            "long result = java.util.stream.StreamSupport.stream("+ parameter.name()+ ".spliterator(), false).count()");
+                            "long result = stream("+ parameter.name()+ ".spliterator(), false).count()");
                 }
-                return Collections.singletonList( "var result = this.template.update(" + parameter.name() + ")");
+                return Collections.singletonList( "var result = stream(this.template.update(" + parameter.name() + ").spliterator(), false).toList()");
             } else if(parameter.isArray()){
                 if(isVoid) {
 
@@ -138,7 +138,7 @@ enum AnnotationOperationMethodBuilder implements Function<MethodMetadata, List<S
                             "long result = (long)" + parameter.name() + ".length");
                 }
                 return List.of("var insertResult = this.template.update(java.util.Arrays.stream(" + parameter.name() + ").toList())",
-                        "var result = java.util.stream.StreamSupport.stream(insertResult.spliterator(), false).toArray("+
+                        "var result = stream(insertResult.spliterator(), false).toArray("+
                                 parameter.arrayType()+"::new)");
             }
             if(isVoid) {
@@ -166,10 +166,10 @@ enum AnnotationOperationMethodBuilder implements Function<MethodMetadata, List<S
                     return Collections.singletonList( "this.deleteAll(" + parameter.name() + ")");
                 } else if(isInt){
                     return List.of("this.deleteAll(" + parameter.name() + ")",
-                            "int result = (int)java.util.stream.StreamSupport.stream("+ parameter.name()+ ".spliterator(), false).count()");
+                            "int result = (int)stream("+ parameter.name()+ ".spliterator(), false).count()");
                 } else if(isLong){
                     return List.of("this.deleteAll(" + parameter.name() + ")",
-                            "long result = java.util.stream.StreamSupport.stream("+ parameter.name()+ ".spliterator(), false).count()");
+                            "long result = stream("+ parameter.name()+ ".spliterator(), false).count()");
                 } else if (isBoolean) {
                     return List.of("this.deleteAll(" + parameter.name() + ")",
                             "boolean result = true");
@@ -191,7 +191,7 @@ enum AnnotationOperationMethodBuilder implements Function<MethodMetadata, List<S
 
                 }
                 return List.of("var insertResult = this.deleteAll(java.util.Arrays.stream(" + parameter.name() + ").toList())",
-                        "var result = java.util.stream.StreamSupport.stream(insertResult.spliterator(), false).toArray("+
+                        "var result = stream(insertResult.spliterator(), false).toArray("+
                                 parameter.arrayType()+"::new)");
             }
             if(isVoid) {

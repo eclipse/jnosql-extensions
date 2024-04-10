@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2023 Otavio Santana and others
+ *  Copyright (c) 2021 Otavio Santana and others
  *   All rights reserved. This program and the accompanying materials
  *   are made available under the terms of the Eclipse Public License v1.0
  *   and Apache License v2.0 which accompanies this distribution.
@@ -14,24 +14,29 @@
  */
 package org.eclipse.jnosql.lite.mapping.repository;
 
-class GraphRepositoryMetadata extends RepositoryMetadata {
+import java.util.Locale;
 
-    GraphRepositoryMetadata(RepositoryElement element) {
-        super(element);
+class SemiStructureRepositoryMetadata extends RepositoryMetadata {
+
+    private final String provider;
+
+    SemiStructureRepositoryMetadata(RepositoryElement element, String provider) {
+        super(element, provider.toUpperCase(Locale.ENGLISH));
+        this.provider = provider;
     }
 
     @Override
     String getClassName() {
-        return this.getElement().getSimpleName() + "LiteGraph";
+        return this.getElement().getSimpleName() + "Lite" + provider;
     }
 
     @Override
     RepositoryTemplateType getTemplateType() {
-        return RepositoryTemplateType.GRAPH;
+        return RepositoryTemplateType.SEMI_STRUCTURE;
     }
 
     @Override
     public MethodGenerator apply(MethodMetadata metadata) {
-        return new GraphMethodGenerator(metadata);
+        return new SemiStructureMethodGenerator(metadata);
     }
 }

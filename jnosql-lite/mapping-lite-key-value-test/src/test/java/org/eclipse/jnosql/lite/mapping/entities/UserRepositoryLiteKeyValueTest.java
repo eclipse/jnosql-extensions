@@ -50,7 +50,7 @@ public class UserRepositoryLiteKeyValueTest {
     void shouldSaveAllEntities() {
         User user1 = new User();
         User user2 = new User();
-        Iterable<User> entities = Arrays.asList(user1, user2);
+        List<User> entities = Arrays.asList(user1, user2);
 
         userRepository.saveAll(entities);
 
@@ -146,7 +146,7 @@ public class UserRepositoryLiteKeyValueTest {
 
     @Test
     void shouldThrowUnsupportedOperationExceptionOnFindAllWithPageable() {
-        assertThrows(UnsupportedOperationException.class, () -> userRepository.findAll(null));
+        assertThrows(UnsupportedOperationException.class, () -> userRepository.findAll(null, null));
     }
 
     @Test

@@ -19,6 +19,7 @@ import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 import org.eclipse.jnosql.mapping.metadata.FieldMetadata;
 
+import jakarta.data.Order;
 import jakarta.data.page.Page;
 import jakarta.data.page.PageRequest;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -29,12 +30,15 @@ import org.eclipse.jnosql.mapping.Database;
 import org.eclipse.jnosql.mapping.DatabaseType;
 
 import javax.annotation.processing.Generated;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
+
 import static java.util.Objects.requireNonNull;
+import static java.util.stream.StreamSupport.stream;
 import static org.eclipse.jnosql.mapping.IdNotFoundException.KEY_NOT_FOUND_EXCEPTION_SUPPLIER;
 
 @ApplicationScoped
@@ -71,9 +75,9 @@ public class {{className}} implements {{repository}} {
     }
 
     @Override
-    public <S extends {{entityType}}> Iterable<S> saveAll(Iterable<S> entities) {
+    public <S extends {{entityType}}> List<S> saveAll(List<S> entities) {
         requireNonNull(entities, "entities is required");
-        return this.template.insert(entities);
+        return java.util.stream.StreamSupport.stream(this.template.insert(entities).spliterator(), false).toList();
    }
 
     @Override
@@ -82,7 +86,6 @@ public class {{className}} implements {{repository}} {
        this.template.delete(id);
     }
 
-    @Override
     public void deleteByIdIn(Iterable<{{keyType}}> ids) {
        requireNonNull(ids, "ids is required");
        this.template.delete(ids);
@@ -94,7 +97,6 @@ public class {{className}} implements {{repository}} {
         return this.template.get(id, {{entityType}}.class);
     }
 
-    @Override
     public Stream<{{entityType}}> findByIdIn(Iterable<{{keyType}}> ids) {
        requireNonNull(ids, "ids is required");
        return StreamSupport.stream(ids.spliterator(), false)
@@ -105,18 +107,16 @@ public class {{className}} implements {{repository}} {
                .filter(Objects::nonNull);
     }
 
-    @Override
     public boolean existsById({{keyType}} id) {
         requireNonNull(id, "id is required");
         return this.template.get(id, {{entityType}}.class).isPresent();
     }
 
-    @Override
     public long countBy() {
         throw new UnsupportedOperationException("Key-Value repository does not support count method");
     }
 
-    public Page<{{entityType}}> findAll(PageRequest<{{entityType}}> pageRequest) {
+    public Page<{{entityType}}> findAll(PageRequest pageRequest, Order<{{entityType}}> order) {
         throw new UnsupportedOperationException("Key-Value repository does not support findAll method");
     }
 
@@ -133,7 +133,7 @@ public class {{className}} implements {{repository}} {
     {{/element.isNoSQLRepository}}
 
     @Override
-    public void deleteAll(Iterable<? extends {{entityType}}> entities) {
+    public void deleteAll(List<? extends {{entityType}}> entities) {
         Objects.requireNonNull(entities, "entities is required");
         entities.forEach(this::delete);
     }
@@ -150,20 +150,19 @@ public class {{className}} implements {{repository}} {
         return this.template.put(entity);
     }
 
-    public <S extends {{entityType}}> Iterable<S> insertAll(Iterable<S> entities) {
+    public <S extends {{entityType}}> List<S> insertAll(List<S> entities) {
         Objects.requireNonNull(entities, "entities is required");
-        return this.template.put(entities);
+        return StreamSupport.stream(this.template.put(entities).spliterator(), false).toList();
     }
 
-    public boolean update({{entityType}} entity) {
+    public {{entityType}} update({{entityType}} entity) {
         Objects.requireNonNull(entity, "entity is required");
-        return this.template.put(entity) != null;
+        return this.template.put(entity);
     }
 
-    public int updateAll(Iterable<{{entityType}}> entities) {
+    public <S extends {{entityType}}> List<S> updateAll(List<S> entities) {
         Objects.requireNonNull(entities, "entities is required");
-        this.template.put(entities);
-        return (int) StreamSupport.stream(entities.spliterator(), false).count();
+        return StreamSupport.stream(this.template.put(entities).spliterator(), false).toList();
     }
 
 
@@ -184,6 +183,7 @@ public class {{className}} implements {{repository}} {
        return {{{returnValue}}};
     {{/hasReturn}}
     }
+
     {{/methods}}
 
 

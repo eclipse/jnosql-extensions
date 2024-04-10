@@ -78,7 +78,7 @@ enum SemistructuredMethodBuilder implements Function<MethodMetadata, List<String
             lines.add("org.eclipse.jnosql.communication.query.DeleteQuery delete = supplier.apply(\"" +
                     metadata.getMethodName() + "\", metadata.name())");
             lines.add("org.eclipse.jnosql.communication.semistructured.CommunicationObserverParser parser = " + SPACE +
-                    "org.eclipse.jnosql.mapping.semistructured.query.RepositorySemistructuredObserverParser.of(metadata)");
+                    "org.eclipse.jnosql.mapping.semistructured.query.RepositorySemiStructuredObserverParser.of(metadata)");
             lines.add("org.eclipse.jnosql.communication.semistructured.DeleteQueryParams queryParams = " + SPACE +
                     "DELETE_PARSER.apply(delete, parser)");
             lines.add("org.eclipse.jnosql.communication.Params params = queryParams.params()");
@@ -123,7 +123,7 @@ enum SemistructuredMethodBuilder implements Function<MethodMetadata, List<String
         lines.add("org.eclipse.jnosql.communication.query.SelectQuery selectQuery = " + SPACE +
                 "supplier.apply(\"" + metadata.getMethodName() + "\", metadata.name())");
         lines.add("org.eclipse.jnosql.communication.semistructured.CommunicationObserverParser parser = " + SPACE +
-                "org.eclipse.jnosql.mapping.semistructured.query.RepositorySemistructuredObserverParser.of(metadata)");
+                "org.eclipse.jnosql.mapping.semistructured.query.RepositorySemiStructuredObserverParser.of(metadata)");
         lines.add("org.eclipse.jnosql.communication.semistructured.QueryParams queryParams = " + SPACE +
                 "SELECT_PARSER.apply(selectQuery, parser)");
         if (metadata.hasSpecialParameter()) {
