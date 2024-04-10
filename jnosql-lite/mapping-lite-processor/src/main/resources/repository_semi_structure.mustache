@@ -21,7 +21,6 @@ import jakarta.data.page.PageRequest;
 import org.eclipse.jnosql.communication.semistructured.SelectQuery;
 import org.eclipse.jnosql.lite.mapping.metadata.LiteEntitiesMetadata;
 import org.eclipse.jnosql.mapping.core.NoSQLPage;
-import org.eclipse.jnosql.mapping.document.DocumentTemplate;
 import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 import org.eclipse.jnosql.mapping.metadata.FieldMetadata;
@@ -33,7 +32,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 import org.eclipse.jnosql.mapping.Database;
 import org.eclipse.jnosql.mapping.DatabaseType;
 import org.eclipse.jnosql.mapping.semistructured.SemiStructuredTemplate;
@@ -95,7 +93,7 @@ public class {{className}} implements {{repository}} {
     @Override
     public <S extends {{entityType}}> List<S> saveAll(List<S> entities) {
         requireNonNull(entities, "entities is required");
-        return StreamSupport.stream(entities.spliterator(), false).map(this::save).collect(toList());
+        return stream(entities.spliterator(), false).map(this::save).collect(toList());
     }
 
     @Override
@@ -112,6 +110,7 @@ public class {{className}} implements {{repository}} {
     }
 
     {{#element.isNoSQLRepository}}
+
     @Override
     public void deleteAll() {
         template().deleteAll(getEntityClass());
@@ -123,35 +122,12 @@ public class {{className}} implements {{repository}} {
         ids.forEach(this::deleteById);
     }
 
-    @Override
-    public void deleteAll(List<? extends {{entityType}}> entities) {
-       requireNonNull(entities, "entities is required");
-       entities.forEach(this::delete);
-    }
-
-    @Override
-    public long countBy() {
-       return template().count(getEntityClass());
-    }
-
-    @Override
-    public boolean existsById({{keyType}} id) {
-       return findById(id).isPresent();
-    }
-
     {{/element.isNoSQLRepository}}
 
-    @Override
-    public Optional<{{entityType}}> findById({{keyType}} id) {
-        requireNonNull(id, "id is required");
-        return template().find(getEntityClass(), id);
-    }
-
-    @Override
     public Stream<{{entityType}}> findByIdIn(Iterable<{{keyType}}> ids) {
         requireNonNull(ids, "ids is required");
         return stream(ids.spliterator(), false)
-                .flatMap(optionalToStream());
+        .flatMap(optionalToStream());
     }
 
     @Override
@@ -159,6 +135,18 @@ public class {{className}} implements {{repository}} {
         SelectQuery query = SelectQuery.select().from(entityMetadata().name()).build();
         return template().select(query);
     }
+
+    @Override
+    public long countBy() {
+        return template().count(getEntityClass());
+    }
+
+    @Override
+    public void deleteAll(List<? extends {{entityType}}> entities) {
+       requireNonNull(entities, "entities is required");
+       entities.forEach(this::delete);
+   }
+
 
     public Page<{{entityType}}> findAll(PageRequest pageRequest, Order<{{entityType}}> order) {
         Objects.requireNonNull(pageRequest, "pageRequest is required");
@@ -178,7 +166,7 @@ public class {{className}} implements {{repository}} {
 
     public <S extends {{entityType}}> List<S> insertAll(List<S> entities) {
         Objects.requireNonNull(entities, "entities is required");
-        return StreamSupport.stream(template().insert(entities).spliterator(), false).toList();
+        return stream(template().insert(entities).spliterator(), false).toList();
     }
 
     public {{entityType}} update({{entityType}} entity) {
@@ -187,10 +175,19 @@ public class {{className}} implements {{repository}} {
     }
 
     public <S extends {{entityType}}> List<S> updateAll(List<S> entities) {
-        Objects.requireNonNull(entities, "entities is required");
-        template().update(entities);
-        return StreamSupport.stream(template().update(entities).spliterator(), false).toList();
+       Objects.requireNonNull(entities, "entities is required");
+       template().update(entities);
+       return stream(template().update(entities).spliterator(), false).toList();
     }
+
+   public Optional<{{entityType}}> findById({{keyType}} id) {
+       requireNonNull(id, "id is required");
+       return template().find(getEntityClass(), id);
+   }
+
+   public boolean existsById({{keyType}} id) {
+       return findById(id).isPresent();
+   }
 
     {{#methods}}
     @Override
