@@ -68,10 +68,10 @@ class RepositoryElement {
 
     public RepositoryMetadata getMetadata(DatabaseType type) {
         return switch (type) {
-            case DOCUMENT -> new DocumentRepositoryMetadata(this);
-            case COLUMN -> new ColumnRepositoryMetadata(this);
+            case DOCUMENT -> new SemiStructureRepositoryMetadata(this, "Document");
+            case COLUMN -> new SemiStructureRepositoryMetadata(this, "Column");
+            case GRAPH -> new SemiStructureRepositoryMetadata(this, "Graph");
             case KEY_VALUE -> new KeyValueRepositoryMetadata(this);
-            case GRAPH -> new GraphRepositoryMetadata(this);
             default -> throw new UnsupportedOperationException("There is not template to this database type: " + type);
         };
     }

@@ -22,9 +22,12 @@ abstract class RepositoryMetadata implements Function<MethodMetadata, MethodGene
 
     private final RepositoryElement element;
 
-    protected RepositoryMetadata(RepositoryElement element) {
+    private final String providerType;
+
+    protected RepositoryMetadata(RepositoryElement element, String providerType) {
         this.element = element;
         this.element.getMethods().forEach(m -> m.update(this));
+        this.providerType = providerType;
     }
 
     abstract String getClassName();
@@ -63,4 +66,7 @@ abstract class RepositoryMetadata implements Function<MethodMetadata, MethodGene
         return element;
     }
 
+    public String getProviderType() {
+        return providerType;
+    }
 }

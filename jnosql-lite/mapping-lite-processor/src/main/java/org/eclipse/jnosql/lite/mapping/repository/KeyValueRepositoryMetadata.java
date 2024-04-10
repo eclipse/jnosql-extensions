@@ -17,7 +17,7 @@ package org.eclipse.jnosql.lite.mapping.repository;
 class KeyValueRepositoryMetadata extends RepositoryMetadata {
 
     KeyValueRepositoryMetadata(RepositoryElement element) {
-        super(element);
+        super(element, "KeyValue");
     }
 
     @Override
