@@ -125,7 +125,7 @@ enum AnnotationOperationMethodBuilder implements Function<MethodMetadata, List<S
                     return List.of("this.template.update(" + parameter.name() + ")",
                             "long result = java.util.stream.StreamSupport.stream("+ parameter.name()+ ".spliterator(), false).count()");
                 }
-                return Collections.singletonList( "var result = this.template.update(" + parameter.name() + ")");
+                return Collections.singletonList( "var result = StreamSupport.stream(this.template.update(" + parameter.name() + ").spliterator(), false).toList()");
             } else if(parameter.isArray()){
                 if(isVoid) {
 

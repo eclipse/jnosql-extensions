@@ -84,7 +84,6 @@ public class {{className}} implements {{repository}} {
        this.template.delete(id);
     }
 
-    @Override
     public void deleteByIdIn(Iterable<{{keyType}}> ids) {
        requireNonNull(ids, "ids is required");
        this.template.delete(ids);
@@ -96,7 +95,6 @@ public class {{className}} implements {{repository}} {
         return this.template.get(id, {{entityType}}.class);
     }
 
-    @Override
     public Stream<{{entityType}}> findByIdIn(Iterable<{{keyType}}> ids) {
        requireNonNull(ids, "ids is required");
        return StreamSupport.stream(ids.spliterator(), false)
@@ -107,13 +105,11 @@ public class {{className}} implements {{repository}} {
                .filter(Objects::nonNull);
     }
 
-    @Override
     public boolean existsById({{keyType}} id) {
         requireNonNull(id, "id is required");
         return this.template.get(id, {{entityType}}.class).isPresent();
     }
 
-    @Override
     public long countBy() {
         throw new UnsupportedOperationException("Key-Value repository does not support count method");
     }

@@ -146,7 +146,7 @@ public class UserRepositoryLiteKeyValueTest {
 
     @Test
     void shouldThrowUnsupportedOperationExceptionOnFindAllWithPageable() {
-        assertThrows(UnsupportedOperationException.class, () -> userRepository.findAll(null));
+        assertThrows(UnsupportedOperationException.class, () -> userRepository.findAll(null, null));
     }
 
     @Test
