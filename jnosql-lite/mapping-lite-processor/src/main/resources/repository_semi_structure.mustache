@@ -136,7 +136,6 @@ public class {{className}} implements {{repository}} {
         return template().select(query);
     }
 
-    @Override
     public long countBy() {
         return template().count(getEntityClass());
     }
@@ -176,7 +175,6 @@ public class {{className}} implements {{repository}} {
 
     public <S extends {{entityType}}> List<S> updateAll(List<S> entities) {
        Objects.requireNonNull(entities, "entities is required");
-       template().update(entities);
        return stream(template().update(entities).spliterator(), false).toList();
     }
 

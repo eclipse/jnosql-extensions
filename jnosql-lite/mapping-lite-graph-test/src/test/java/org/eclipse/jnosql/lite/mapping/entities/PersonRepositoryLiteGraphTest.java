@@ -237,7 +237,7 @@ public class PersonRepositoryLiteGraphTest {
     @Test
     void shouldInsertPersonIterable(){
         Person person = ada();
-        Set<Person> people = Collections.singleton(person);
+        List<Person> people = Collections.singletonList(person);
         when(template.insert(eq(people))).thenReturn(people);
         Iterable<Person> result = this.repository.insertIterable(people);
         assertThat(result).isNotNull().contains(person);
@@ -247,7 +247,7 @@ public class PersonRepositoryLiteGraphTest {
     @Test
     void shouldInsertPersonIterableVoid(){
         Person person = ada();
-        Set<Person> people = Collections.singleton(person);
+        List<Person> people = Collections.singletonList(person);
         when(template.insert(eq(people))).thenReturn(people);
         this.repository.insertIterableVoid(people);
         Mockito.verify(template).insert(eq(people));
@@ -256,7 +256,7 @@ public class PersonRepositoryLiteGraphTest {
     @Test
     void shouldInsertPersonIterableInt(){
         Person person = ada();
-        Set<Person> people = Collections.singleton(person);
+        List<Person> people = Collections.singletonList(person);
         when(template.insert(eq(people))).thenReturn(people);
         var result = this.repository.insertIterableInt(people);
         Mockito.verify(template).insert(eq(people));
@@ -266,7 +266,7 @@ public class PersonRepositoryLiteGraphTest {
     @Test
     void shouldInsertPersonIterableLong(){
         Person person = ada();
-        Set<Person> people = Collections.singleton(person);
+        List<Person> people = Collections.singletonList(person);
         when(template.insert(eq(people))).thenReturn(people);
         var result = this.repository.insertIterableLong(people);
         Mockito.verify(template).insert(eq(people));
@@ -352,7 +352,7 @@ public class PersonRepositoryLiteGraphTest {
     @Test
     void shouldUpdatePersonIterable(){
         Person person = ada();
-        Set<Person> people = Collections.singleton(person);
+        List<Person> people = Collections.singletonList(person);
         when(template.update(eq(people))).thenReturn(people);
         Iterable<Person> result = this.repository.updateIterable(people);
         assertThat(result).isNotNull().contains(person);
@@ -362,7 +362,7 @@ public class PersonRepositoryLiteGraphTest {
     @Test
     void shouldUpdatePersonIterableVoid(){
         Person person = ada();
-        Set<Person> people = Collections.singleton(person);
+        List<Person> people = Collections.singletonList(person);
         when(template.update(eq(people))).thenReturn(people);
         this.repository.updateIterableVoid(people);
         Mockito.verify(template).update(eq(people));
@@ -371,7 +371,7 @@ public class PersonRepositoryLiteGraphTest {
     @Test
     void shouldUpdatePersonIterableInt(){
         Person person = ada();
-        Set<Person> people = Collections.singleton(person);
+        List<Person> people = Collections.singletonList(person);
         when(template.update(eq(people))).thenReturn(people);
         int result = this.repository.updateIterableInt(people);
         Mockito.verify(template).update(eq(people));
@@ -381,7 +381,7 @@ public class PersonRepositoryLiteGraphTest {
     @Test
     void shouldUpdatePersonIterableLong(){
         Person person = ada();
-        Set<Person> people = Collections.singleton(person);
+        List<Person> people = Collections.singletonList(person);
         when(template.update(eq(people))).thenReturn(people);
         var result = this.repository.updateIterableLong(people);
         Mockito.verify(template).update(eq(people));
@@ -467,7 +467,7 @@ public class PersonRepositoryLiteGraphTest {
     @Test
     void shouldSavePersonIterable(){
         Person person = ada();
-        Set<Person> people = Collections.singleton(person);
+        List<Person> people = Collections.singletonList(person);
         when(template.insert(eq(person))).thenReturn(person);
         Iterable<Person> result = this.repository.saveIterable(people);
         assertThat(result).isNotNull().contains(person);
@@ -477,7 +477,7 @@ public class PersonRepositoryLiteGraphTest {
     @Test
     void shouldSavePersonIterableVoid(){
         Person person = ada();
-        Set<Person> people = Collections.singleton(person);
+        List<Person> people = Collections.singletonList(person);
         when(template.insert(eq(person))).thenReturn(person);
         this.repository.saveIterableVoid(people);
         Mockito.verify(template).insert(eq(person));
@@ -486,7 +486,7 @@ public class PersonRepositoryLiteGraphTest {
     @Test
     void shouldSavePersonIterableInt(){
         Person person = ada();
-        Set<Person> people = Collections.singleton(person);
+        List<Person> people = Collections.singletonList(person);
         when(template.insert(eq(person))).thenReturn(person);
         var result = this.repository.saveIterableInt(people);
         Mockito.verify(template).insert(eq(person));
@@ -496,7 +496,7 @@ public class PersonRepositoryLiteGraphTest {
     @Test
     void shouldSavePersonIterableLong(){
         Person person = ada();
-        Set<Person> people = Collections.singleton(person);
+        List<Person> people = Collections.singletonList(person);
         when(template.insert(eq(person))).thenReturn(person);
         var result = this.repository.saveIterableLong(people);
         Mockito.verify(template).insert(eq(person));
@@ -573,7 +573,7 @@ public class PersonRepositoryLiteGraphTest {
     @Test
     void shouldDeletePersonIterable(){
         Person person = ada();
-        Set<Person> people = Collections.singleton(person);
+        List<Person> people = Collections.singletonList(person);
         var result = this.repository.deleteIterable(people);
         assertThat(result).isTrue();
         Mockito.verify(template).delete(person.getId());
@@ -582,7 +582,7 @@ public class PersonRepositoryLiteGraphTest {
     @Test
     void shouldDeletePersonIterableVoid(){
         Person person = ada();
-        Set<Person> people = Collections.singleton(person);
+        List<Person> people = Collections.singletonList(person);
         this.repository.deleteIterableVoid(people);
         Mockito.verify(template).delete(person.getId());
     }
@@ -590,7 +590,7 @@ public class PersonRepositoryLiteGraphTest {
     @Test
     void shouldDeletePersonIterableInt(){
         Person person = ada();
-        Set<Person> people = Collections.singleton(person);
+        List<Person> people = Collections.singletonList(person);
         var result = this.repository.deleteIterableInt(people);
         Mockito.verify(template).delete(person.getId());
         Assertions.assertThat(result).isEqualTo(1);
@@ -599,7 +599,7 @@ public class PersonRepositoryLiteGraphTest {
     @Test
     void shouldDeletePersonIterableLong(){
         Person person = ada();
-        Set<Person> people = Collections.singleton(person);
+        List<Person> people = Collections.singletonList(person);
         var result = this.repository.deleteIterableLong(people);
         Mockito.verify(template).delete(person.getId());
         Assertions.assertThat(result).isEqualTo(1);
