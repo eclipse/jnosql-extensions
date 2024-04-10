@@ -34,7 +34,7 @@ public interface PersonRepository extends NoSQLRepository<Person, Long> {
 
     List<Person> findByNameOrderbyId(String name);
 
-    Page<Person> findByName(String name, PageRequest<Person> pageRequest);
+    Page<Person> findByName(String name, PageRequest pageRequest);
 
     @Query("select * from Person where name = @name")
     List<Person> query(@Param("name") String name);

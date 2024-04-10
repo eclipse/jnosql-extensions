@@ -50,7 +50,7 @@ public class UserRepositoryLiteKeyValueTest {
     void shouldSaveAllEntities() {
         User user1 = new User();
         User user2 = new User();
-        Iterable<User> entities = Arrays.asList(user1, user2);
+        List<User> entities = Arrays.asList(user1, user2);
 
         userRepository.saveAll(entities);
 

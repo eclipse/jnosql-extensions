@@ -299,7 +299,7 @@ class PersonRepositoryTest {
     @Test
     void shouldFindPageRequest(){
         when(template.select(any(SelectQuery.class))).thenReturn( Stream.of(new Person(), new Person()));
-        PageRequest<Person> pageRequest = PageRequest.of(Person.class).page(10).sortBy(Sort.asc("name"));
+        PageRequest pageRequest = PageRequest.of(Person.class).page(10).sortBy(Sort.asc("name"));
         Page<Person> result = this.personRepository.findByName("Ada", pageRequest);
         ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
         assertThat(result).isNotEmpty().hasSize(2);
