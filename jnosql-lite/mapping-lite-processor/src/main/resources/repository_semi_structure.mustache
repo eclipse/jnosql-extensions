@@ -14,6 +14,7 @@
  */
 package {{package}};
 
+import jakarta.data.Order;
 import jakarta.data.Sort;
 import jakarta.data.page.Page;
 import jakarta.data.page.PageRequest;
@@ -35,6 +36,7 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 import org.eclipse.jnosql.mapping.Database;
 import org.eclipse.jnosql.mapping.DatabaseType;
+import org.eclipse.jnosql.mapping.semistructured.SemiStructuredTemplate;
 
 import static java.util.Objects.nonNull;
 import static java.util.Objects.requireNonNull;
@@ -55,12 +57,12 @@ public class {{className}} implements {{repository}} {
             new org.eclipse.jnosql.communication.semistructured.DeleteQueryParser();
     {{/methods.isEmpty}}
 
-    private final SemistructuredTemplate template;
+    private final SemiStructuredTemplate template;
 
     private final EntityMetadata metadata;
 
     @jakarta.inject.Inject
-    public {{className}}(@Database(value = DatabaseType.{{providerType}}) SemistructuredTemplate template) {
+    public {{className}}(@Database(value = DatabaseType.{{providerType}}) SemiStructuredTemplate template) {
         this.template = Objects.requireNonNull(template, "template is required");
         EntitiesMetadata entities = LiteEntitiesMetadata.INSTANCE;
         this.metadata = entities.get({{entityType}}.class);
@@ -71,7 +73,7 @@ public class {{className}} implements {{repository}} {
         this.metadata = null;
    }
 
-    SemistructuredTemplate template(){
+   SemiStructuredTemplate template(){
         return template;
     }
 
@@ -91,7 +93,7 @@ public class {{className}} implements {{repository}} {
     }
 
     @Override
-    public <S extends {{entityType}}> Iterable<S> saveAll(Iterable<S> entities) {
+    public <S extends {{entityType}}> List<S> saveAll(List<S> entities) {
         requireNonNull(entities, "entities is required");
         return StreamSupport.stream(entities.spliterator(), false).map(this::save).collect(toList());
     }
@@ -110,6 +112,12 @@ public class {{className}} implements {{repository}} {
     }
 
 
+    {{#element.isNoSQLRepository}}
+    @Override
+    public void deleteAll() {
+        template().deleteAll(getEntityClass());
+    }
+
     @Override
     public void deleteByIdIn(Iterable<{{keyType}}> ids) {
         requireNonNull(ids, "ids is required");
@@ -117,16 +125,21 @@ public class {{className}} implements {{repository}} {
     }
 
     @Override
-    public void deleteAll(Iterable<? extends {{entityType}}> entities) {
-        requireNonNull(entities, "entities is required");
-        entities.forEach(this::delete);
+    public void deleteAll(List<? extends {{entityType}}> entities) {
+       requireNonNull(entities, "entities is required");
+       entities.forEach(this::delete);
     }
 
-    {{#element.isNoSQLRepository}}
     @Override
-    public void deleteAll() {
-        template().deleteAll(getEntityClass());
+    public long countBy() {
+       return template().count(getEntityClass());
     }
+
+    @Override
+    public boolean existsById({{keyType}} id) {
+       return findById(id).isPresent();
+    }
+
     {{/element.isNoSQLRepository}}
 
     @Override
@@ -143,25 +156,15 @@ public class {{className}} implements {{repository}} {
     }
 
     @Override
-    public long countBy() {
-        return template().count(getEntityClass());
-    }
-
-    @Override
-    public boolean existsById({{keyType}} id) {
-      return findById(id).isPresent();
-    }
-
-    @Override
     public Stream<{{entityType}}> findAll() {
         SelectQuery query = SelectQuery.select().from(entityMetadata().name()).build();
         return template().select(query);
     }
 
-    public Page<{{entityType}}> findAll(PageRequest<{{entityType}}> pageRequest) {
+    public Page<{{entityType}}> findAll(PageRequest pageRequest, Order<{{entityType}}> order) {
         Objects.requireNonNull(pageRequest, "pageRequest is required");
         EntityMetadata metadata = entityMetadata();
-        List<Sort<?>> sorts = pageRequest.sorts().stream().collect(toList());
+        List<Sort<?>> sorts = order.sorts().stream().collect(toList());
         SelectQuery query = new MappingQuery(sorts,
         pageRequest.size(), NoSQLPage.skip(pageRequest), null ,metadata.name());
 
@@ -174,20 +177,20 @@ public class {{className}} implements {{repository}} {
         return template().insert(entity);
     }
 
-    public <S extends {{entityType}}> Iterable<S> insertAll(Iterable<S> entities) {
+    public <S extends {{entityType}}> List<S> insertAll(List<S> entities) {
         Objects.requireNonNull(entities, "entities is required");
-        return template().insert(entities);
+        return StreamSupport.stream(template().insert(entities).spliterator(), false).toList();
     }
 
-    public boolean update({{entityType}} entity) {
+    public {{entityType}} update({{entityType}} entity) {
         Objects.requireNonNull(entity, "entity is required");
-        return template().update(entity) != null;
+        return template().update(entity);
     }
 
-    public int updateAll(Iterable<{{entityType}}> entities) {
+    public <S extends {{entityType}}> List<S> updateAll(List<S> entities) {
         Objects.requireNonNull(entities, "entities is required");
         template().update(entities);
-        return (int) StreamSupport.stream(entities.spliterator(), false).count();
+        return StreamSupport.stream(template().update(entities).spliterator(), false).toList();
     }
 
     {{#methods}}
@@ -203,6 +206,7 @@ public class {{className}} implements {{repository}} {
        return {{{returnValue}}};
     {{/hasReturn}}
     }
+
     {{/methods}}
 
     private FieldMetadata getIdField() {
