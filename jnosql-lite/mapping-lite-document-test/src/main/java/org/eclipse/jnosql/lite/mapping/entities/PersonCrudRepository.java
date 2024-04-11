@@ -20,6 +20,7 @@ import jakarta.data.repository.Query;
 import jakarta.data.repository.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public interface PersonCrudRepository extends CrudRepository<Person, Long> {
@@ -34,5 +35,9 @@ public interface PersonCrudRepository extends CrudRepository<Person, Long> {
     long countByName(String name);
 
     void deleteByName(String name);
+
+    default Map<Boolean, List<Person>> merge(String name) {
+        return Map.of(existsByName(name), findByName(name));
+    }
 
 }

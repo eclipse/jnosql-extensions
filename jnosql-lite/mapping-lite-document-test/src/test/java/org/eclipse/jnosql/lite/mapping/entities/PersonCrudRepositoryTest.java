@@ -31,6 +31,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -224,7 +225,15 @@ class PersonCrudRepositoryTest {
             soft.assertThat(condition.condition()).isEqualTo(Condition.EQUALS);
             soft.assertThat(condition.element().get(String.class)).isEqualTo("Ada");
         });
+    }
 
+    @Test
+    void shouldIgnoreDefaultMethod(){
+        Map<Boolean, List<Person>> result = this.personRepository.merge("Ada");
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(result).containsKeys(false);
+            soft.assertThat(result.get(false)).isEmpty();
+        });
     }
 
 }
