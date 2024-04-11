@@ -26,7 +26,7 @@ class SemiStructureMethodGenerator implements MethodGenerator {
 
     @Override
     public List<String> getLines() {
-        var methodBuilder = SemistructuredMethodBuilder.of(this.metadata);
+        var methodBuilder = SemiStructuredMethodBuilder.of(this.metadata);
         return methodBuilder.apply(this.metadata);
     }
 

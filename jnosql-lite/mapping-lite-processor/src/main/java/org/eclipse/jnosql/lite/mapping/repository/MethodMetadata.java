@@ -18,7 +18,9 @@ import jakarta.data.Limit;
 import jakarta.data.Sort;
 import jakarta.data.page.PageRequest;
 import jakarta.data.repository.Delete;
+import jakarta.data.repository.Find;
 import jakarta.data.repository.Insert;
+import jakarta.data.repository.OrderBy;
 import jakarta.data.repository.Query;
 import jakarta.data.repository.Save;
 import jakarta.data.repository.Update;
@@ -58,6 +60,8 @@ class MethodMetadata {
     private final Delete delete;
     private final Save save;
     private final Query query;
+    private final Find find;
+    private final OrderBy[] orders;
 
     private final DatabaseType type;
 
@@ -66,8 +70,8 @@ class MethodMetadata {
     private final String entityType;
 
     private MethodMetadata(String methodName, TypeElement returnElement, String returnType,
-                          List<Parameter> parameters, DatabaseType type, String entityType,
-                           Query query, Insert insert, Update update, Delete delete, Save save) {
+                           List<Parameter> parameters, DatabaseType type, String entityType,
+                           Query query, Insert insert, Update update, Delete delete, Save save, Find find, OrderBy[] orders) {
 
         this.methodName = methodName;
         this.returnElement = returnElement;
@@ -80,6 +84,8 @@ class MethodMetadata {
         this.update = update;
         this.delete = delete;
         this.save = save;
+        this.find = find;
+        this.orders = orders;
     }
 
     public String getMethodName() {
@@ -149,10 +155,10 @@ class MethodMetadata {
         return entityType;
     }
 
-    public Optional<Parameter> findPageRequest(){
+    public Optional<Parameter> findPageRequest() {
         for (Parameter parameter : this.parameters) {
             TypeElement element = parameter.type();
-            if(PageRequest.class.getName().equals(element.getQualifiedName().toString())){
+            if (PageRequest.class.getName().equals(element.getQualifiedName().toString())) {
                 return Optional.of(parameter);
             }
         }
@@ -175,6 +181,14 @@ class MethodMetadata {
         return Objects.nonNull(save);
     }
 
+    public boolean isFind() {
+        return Objects.nonNull(find);
+    }
+
+    public OrderBy[] orders() {
+        return orders;
+    }
+
     public static MethodMetadata of(Element element, String entityType, DatabaseType type, ProcessingEnvironment processingEnv) {
         ElementKind kind = element.getKind();
         if (ElementKind.METHOD.equals(kind) && !isDefaultMethod((ExecutableElement) element)) {
@@ -192,14 +206,16 @@ class MethodMetadata {
             Update update = method.getAnnotation(Update.class);
             Delete delete = method.getAnnotation(Delete.class);
             Save save = method.getAnnotation(Save.class);
+            Find find = method.getAnnotation(Find.class);
+            OrderBy[] orders = method.getAnnotationsByType(OrderBy.class);
 
             return new MethodMetadata(methodName, returnElement, returnType, parameters, type, entityType, query,
-                    insert, update, delete, save);
+                    insert, update, delete, save, find, orders);
         }
         return null;
     }
 
     private static boolean isDefaultMethod(ExecutableElement methodElement) {
-          return methodElement.getModifiers().contains(Modifier.DEFAULT);
+        return methodElement.getModifiers().contains(Modifier.DEFAULT);
     }
 }

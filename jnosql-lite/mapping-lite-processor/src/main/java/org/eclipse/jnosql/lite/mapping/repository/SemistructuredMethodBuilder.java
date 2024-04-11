@@ -14,6 +14,8 @@
  */
 package org.eclipse.jnosql.lite.mapping.repository;
 
+import jakarta.data.repository.By;
+import jakarta.data.repository.OrderBy;
 import jakarta.data.repository.Param;
 import jakarta.data.repository.Query;
 
@@ -22,7 +24,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
 
-enum SemistructuredMethodBuilder implements Function<MethodMetadata, List<String>> {
+enum SemiStructuredMethodBuilder implements Function<MethodMetadata, List<String>> {
 
     METHOD_QUERY {
         @Override
@@ -113,6 +115,30 @@ enum SemistructuredMethodBuilder implements Function<MethodMetadata, List<String
         public List<String> apply(MethodMetadata methodMetadata) {
             return AnnotationOperationMethodBuilder.SAVE.apply(methodMetadata);
         }
+    }, PARAMETER_BASED {
+        @Override
+        public List<String> apply(MethodMetadata metadata) {
+            List<String> lines = new ArrayList<>();
+            lines.add("java.util.Map<String, Object> parametersJNoSQL = new java.util.HashMap<>()");
+            for (Parameter parameter : metadata.getParameters()) {
+                By by = parameter.by();
+                if(by != null) {
+                    lines.add("parametersJNoSQL.put(\"" + by.value() + "\", " + parameter.name() + ")");
+                }
+            }
+            lines.add("java.util.List<Sort<?>> sortsJNoSQL = new java.util.ArrayList<>()");
+            for (OrderBy order : metadata.orders()) {
+                if(order.descending()){
+                    lines.add("sortsJNoSQL.add(jakarta.data.Sort.desc(\"" + order.value() + "\"))");
+                } else {
+                    lines.add("sortsJNoSQL.add(jakarta.data.Sort.asc(\"" + order.value() + "\"))");
+                }
+            }
+            lines.add("var query = org.eclipse.jnosql.mapping.semistructured.query.SemiStructuredParameterBasedQuery.INSTANCE.toQuery(parametersJNoSQL, sortsJNoSQL, entityMetadata())");
+            MethodQueryRepositoryReturnType returnType = MethodQueryRepositoryReturnType.of(metadata);
+            lines.addAll(returnType.apply(metadata));
+            return lines;
+        }
     };
 
     private static final String SPACE = "\n          ";
@@ -140,9 +166,9 @@ enum SemistructuredMethodBuilder implements Function<MethodMetadata, List<String
         }
     }
 
-    static SemistructuredMethodBuilder of(MethodMetadata metadata) {
+    static SemiStructuredMethodBuilder of(MethodMetadata metadata) {
         MethodMetadataOperationType operationType = MethodMetadataOperationType.of(metadata);
-        return Arrays.stream(SemistructuredMethodBuilder.values()).filter(c -> c.name().equals(operationType.name()))
+        return Arrays.stream(SemiStructuredMethodBuilder.values()).filter(c -> c.name().equals(operationType.name()))
                 .findAny().orElse(NOT_SUPPORTED);
     }
 }

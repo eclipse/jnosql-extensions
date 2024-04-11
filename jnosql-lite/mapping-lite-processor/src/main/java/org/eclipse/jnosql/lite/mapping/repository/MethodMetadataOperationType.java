@@ -15,11 +15,24 @@
 package org.eclipse.jnosql.lite.mapping.repository;
 
 enum MethodMetadataOperationType {
-    METHOD_QUERY, ANNOTATION_QUERY , EXIST_BY , COUNT_BY, DELETE_BY , NOT_SUPPORTED, INSERT , UPDATE, DELETE , SAVE;
+    METHOD_QUERY, ANNOTATION_QUERY, EXIST_BY, COUNT_BY, DELETE_BY, NOT_SUPPORTED, INSERT, UPDATE, DELETE, SAVE, PARAMETER_BASED;
 
     static MethodMetadataOperationType of(MethodMetadata metadata) {
         var methodName = metadata.getMethodName();
-        if (methodName.startsWith("findBy")) {
+
+        if (metadata.hasQuery()) {
+            return ANNOTATION_QUERY;
+        } else if (metadata.isInsert()) {
+            return INSERT;
+        } else if (metadata.isDelete()) {
+            return DELETE;
+        } else if (metadata.isUpdate()) {
+            return UPDATE;
+        } else if (metadata.isSave()) {
+            return SAVE;
+        } else if (metadata.isFind()) {
+            return PARAMETER_BASED;
+        } else if (methodName.startsWith("findBy")) {
             return METHOD_QUERY;
         } else if (methodName.startsWith("countBy")) {
             return COUNT_BY;
@@ -27,16 +40,6 @@ enum MethodMetadataOperationType {
             return EXIST_BY;
         } else if (methodName.startsWith("deleteBy")) {
             return DELETE_BY;
-        } else if (metadata.hasQuery()) {
-            return ANNOTATION_QUERY;
-        } else if(metadata.isInsert()){
-            return INSERT;
-        }else if(metadata.isDelete()){
-            return DELETE;
-        }else if(metadata.isUpdate()){
-            return UPDATE;
-        }else if(metadata.isSave()){
-            return SAVE;
         }
         return NOT_SUPPORTED;
     }
