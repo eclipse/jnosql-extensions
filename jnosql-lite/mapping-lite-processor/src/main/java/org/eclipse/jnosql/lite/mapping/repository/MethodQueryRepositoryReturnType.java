@@ -95,7 +95,7 @@ enum MethodQueryRepositoryReturnType implements Function<MethodMetadata, List<St
                     "org.eclipse.jnosql.mapping.core.NoSQLPage.of(entitiesJNoSQL.toList(), " + pageRequest.name() + ")");
             return lines;
         }
-    }, CURSOR_PAGINATION{
+    }, CURSOR_PAGINATION {
         @Override
         public List<String> apply(MethodMetadata metadata) {
             List<String> lines = new ArrayList<>();
@@ -103,7 +103,7 @@ enum MethodQueryRepositoryReturnType implements Function<MethodMetadata, List<St
                     .orElseThrow(() -> new ValidationException("The method " + metadata.getMethodName() + " from " +
                             metadata.getParametersSignature() + " does not have a Pageable parameter in a pagination cursor method"));
 
-            lines.add(CursoredPage.class.getName() + "<" + getEntity(metadata) + "> entitiesJNoSQL = this.template.select(queryJNoSQL, "
+            lines.add(CursoredPage.class.getName() + "<" + getEntity(metadata) + "> resultJNoSQL = this.template.selectCursor(queryJNoSQL, "
             + pageRequest.name() + ")");
             return lines;
         }
