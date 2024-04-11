@@ -14,6 +14,9 @@
  */
 package org.eclipse.jnosql.lite.mapping.entities;
 
+import jakarta.data.Sort;
+import jakarta.enterprise.inject.se.SeContainer;
+import jakarta.enterprise.inject.se.SeContainerInitializer;
 import org.eclipse.jnosql.mapping.PreparedStatement;
 import org.assertj.core.api.SoftAssertions;
 import org.eclipse.jnosql.communication.Condition;
@@ -106,7 +109,7 @@ class PersonCrudRepositoryTest {
 
         personRepository.delete(person);
 
-        verify(template, times(1)).delete(eq(Person.class),eq(person.getId()));
+        verify(template, times(1)).delete(eq(Person.class), eq(person.getId()));
     }
 
     @Test
@@ -157,8 +160,8 @@ class PersonCrudRepositoryTest {
     }
 
     @Test
-    void shouldFindByName(){
-        when(template.select(any(SelectQuery.class))).thenReturn( Stream.of(new Person(), new Person()));
+    void shouldFindByName() {
+        when(template.select(any(SelectQuery.class))).thenReturn(Stream.of(new Person(), new Person()));
         List<Person> result = this.personRepository.findByName("Ada");
         ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
         assertThat(result).isNotEmpty().hasSize(2);
@@ -173,7 +176,7 @@ class PersonCrudRepositoryTest {
     }
 
     @Test
-    void shouldQuery(){
+    void shouldQuery() {
         when(template.prepare(anyString())).thenReturn(Mockito.mock(PreparedStatement.class));
         this.personRepository.query("Ada");
         ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
@@ -183,8 +186,8 @@ class PersonCrudRepositoryTest {
     }
 
     @Test
-    void shouldExistByName(){
-        when(template.select(any(SelectQuery.class))).thenReturn( Stream.of(new Person(), new Person()));
+    void shouldExistByName() {
+        when(template.select(any(SelectQuery.class))).thenReturn(Stream.of(new Person(), new Person()));
         boolean result = this.personRepository.existsByName("Ada");
         ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
         assertThat(result).isTrue();
@@ -199,8 +202,8 @@ class PersonCrudRepositoryTest {
     }
 
     @Test
-    void shouldCountByName(){
-        when(template.select(any(SelectQuery.class))).thenReturn( Stream.of(new Person(), new Person()));
+    void shouldCountByName() {
+        when(template.select(any(SelectQuery.class))).thenReturn(Stream.of(new Person(), new Person()));
         long result = this.personRepository.countByName("Ada");
         ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
         assertThat(result).isEqualTo(2L);
@@ -215,7 +218,7 @@ class PersonCrudRepositoryTest {
     }
 
     @Test
-    void shouldDeleteByName(){
+    void shouldDeleteByName() {
         this.personRepository.deleteByName("Ada");
         ArgumentCaptor<DeleteQuery> captor = ArgumentCaptor.forClass(DeleteQuery.class);
         verify(template).delete(captor.capture());
@@ -228,12 +231,55 @@ class PersonCrudRepositoryTest {
     }
 
     @Test
-    void shouldIgnoreDefaultMethod(){
+    void shouldIgnoreDefaultMethod() {
         Map<Boolean, List<Person>> result = this.personRepository.merge("Ada");
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(result).containsKeys(false);
             soft.assertThat(result.get(false)).isEmpty();
         });
     }
+
+    @Test
+    void shouldParamMatcher() {
+        this.personRepository.age(10);
+        ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
+        verify(template).select(captor.capture());
+        var query = captor.getValue();
+        CriteriaCondition condition = query.condition().orElseThrow();
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(condition.condition()).isEqualTo(Condition.EQUALS);
+            soft.assertThat(condition.element().get(int.class)).isEqualTo(10);
+        });
+    }
+
+    @Test
+    void shouldParamMatcherOrder() {
+        this.personRepository.ageOrderName(10);
+        ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
+        verify(template).select(captor.capture());
+        var query = captor.getValue();
+        CriteriaCondition condition = query.condition().orElseThrow();
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(condition.condition()).isEqualTo(Condition.EQUALS);
+            soft.assertThat(condition.element().get(int.class)).isEqualTo(10);
+            soft.assertThat(query.sorts()).contains(Sort.asc("name"));
+        });
+    }
+
+    @Test
+    void shouldParamMatcherOrderAgeName() {
+        this.personRepository.ageOrderNameId(10);
+        ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
+        verify(template).select(captor.capture());
+        var query = captor.getValue();
+        CriteriaCondition condition = query.condition().orElseThrow();
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(condition.condition()).isEqualTo(Condition.EQUALS);
+            soft.assertThat(condition.element().get(int.class)).isEqualTo(10);
+            soft.assertThat(query.sorts()).hasSize(2)
+                    .contains(Sort.asc("name"), Sort.desc("_id"));
+        });
+    }
+
 
 }

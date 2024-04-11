@@ -14,7 +14,10 @@
  */
 package org.eclipse.jnosql.lite.mapping.entities;
 
+import jakarta.data.repository.By;
 import jakarta.data.repository.CrudRepository;
+import jakarta.data.repository.Find;
+import jakarta.data.repository.OrderBy;
 import jakarta.data.repository.Param;
 import jakarta.data.repository.Query;
 import jakarta.data.repository.Repository;
@@ -40,4 +43,16 @@ public interface PersonCrudRepository extends CrudRepository<Person, Long> {
         return Map.of(existsByName(name), findByName(name));
     }
 
+
+    @Find
+    List<Person> age(@By("age") int age);
+
+    @Find
+    @OrderBy("name")
+    List<Person> ageOrderName(@By("age") int age);
+
+    @Find
+    @OrderBy("name")
+    @OrderBy(value = "id", descending = true)
+    List<Person> ageOrderNameId(@By("age") int age);
 }
