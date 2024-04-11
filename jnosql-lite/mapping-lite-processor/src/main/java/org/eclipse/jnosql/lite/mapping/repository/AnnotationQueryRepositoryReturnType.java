@@ -35,7 +35,7 @@ enum AnnotationQueryRepositoryReturnType implements Function<MethodMetadata, Lis
         public List<String> apply(MethodMetadata metadata) {
             List<String> lines = new ArrayList<>();
             lines.add("Stream<" + getEntity(metadata) + "> entities = prepare.result()");
-            lines.add("java.util.List<" + getEntity(metadata) + "> result = entities.collect(java.util.stream.Collectors.toList())");
+            lines.add("java.util.List<" + getEntity(metadata) + "> result = entities.toList()");
             return lines;
         }
     }, SET {

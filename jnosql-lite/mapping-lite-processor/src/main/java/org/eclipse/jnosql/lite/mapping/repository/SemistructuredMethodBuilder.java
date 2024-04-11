@@ -134,7 +134,8 @@ enum SemiStructuredMethodBuilder implements Function<MethodMetadata, List<String
                     lines.add("sortsJNoSQL.add(jakarta.data.Sort.asc(\"" + order.value() + "\"))");
                 }
             }
-            lines.add("var query = org.eclipse.jnosql.mapping.semistructured.query.SemiStructuredParameterBasedQuery.INSTANCE.toQuery(parametersJNoSQL, sortsJNoSQL, entityMetadata())");
+            lines.add("var query = org.eclipse.jnosql.mapping.semistructured.query.SemiStructuredParameterBasedQuery.INSTANCE."+ SPACE +
+                    "toQueryNative(parametersJNoSQL, sortsJNoSQL, entityMetadata())");
             MethodQueryRepositoryReturnType returnType = MethodQueryRepositoryReturnType.of(metadata);
             lines.addAll(returnType.apply(metadata));
             return lines;
