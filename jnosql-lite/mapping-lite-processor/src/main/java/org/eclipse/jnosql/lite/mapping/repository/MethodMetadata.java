@@ -28,6 +28,7 @@ import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.ExecutableElement;
+import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import java.util.List;
 import java.util.Objects;
@@ -176,7 +177,7 @@ class MethodMetadata {
 
     public static MethodMetadata of(Element element, String entityType, DatabaseType type, ProcessingEnvironment processingEnv) {
         ElementKind kind = element.getKind();
-        if (ElementKind.METHOD.equals(kind)) {
+        if (ElementKind.METHOD.equals(kind) && !isDefaultMethod((ExecutableElement) element)) {
             ExecutableElement method = (ExecutableElement) element;
             String methodName = method.getSimpleName().toString();
             TypeElement returnElement = (TypeElement) processingEnv.getTypeUtils().asElement(method.getReturnType());
@@ -196,5 +197,9 @@ class MethodMetadata {
                     insert, update, delete, save);
         }
         return null;
+    }
+
+    private static boolean isDefaultMethod(ExecutableElement methodElement) {
+          return methodElement.getModifiers().contains(Modifier.DEFAULT);
     }
 }
