@@ -14,6 +14,8 @@
  */
 package org.eclipse.jnosql.lite.mapping.repository;
 
+import jakarta.data.repository.By;
+import jakarta.data.repository.OrderBy;
 import jakarta.data.repository.Param;
 import jakarta.data.repository.Query;
 
@@ -22,7 +24,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
 
-enum SemistructuredMethodBuilder implements Function<MethodMetadata, List<String>> {
+enum SemiStructuredMethodBuilder implements Function<MethodMetadata, List<String>> {
 
     METHOD_QUERY {
         @Override
@@ -38,11 +40,11 @@ enum SemistructuredMethodBuilder implements Function<MethodMetadata, List<String
         public List<String> apply(MethodMetadata metadata) {
             List<String> lines = new ArrayList<>();
             Query query = metadata.getQuery();
-            lines.add("org.eclipse.jnosql.mapping.PreparedStatement prepare = template.prepare(\"" + query.value() + "\")");
+            lines.add("org.eclipse.jnosql.mapping.PreparedStatement prepareJNoSQL = template.prepare(\"" + query.value() + "\")");
             for (Parameter parameter : metadata.getParameters()) {
                 if (parameter.hasParam()) {
                     Param param = parameter.param();
-                    lines.add("prepare.bind(\"" + param.value() + "\", " + parameter.name() + ")");
+                    lines.add("prepareJNoSQL.bind(\"" + param.value() + "\", " + parameter.name() + ")");
                 }
             }
             AnnotationQueryRepositoryReturnType returnType = AnnotationQueryRepositoryReturnType.of(metadata);
@@ -54,8 +56,8 @@ enum SemistructuredMethodBuilder implements Function<MethodMetadata, List<String
         public List<String> apply(MethodMetadata metadata) {
             List<String> lines = new ArrayList<>();
             feedSelectQuery(metadata, lines);
-            lines.add("Stream<" + metadata.getEntityType() + "> entities = this.template.select(query)");
-            lines.add("boolean result = entities.findAny().isPresent()");
+            lines.add("Stream<" + metadata.getEntityType() + "> entitiesJNoSQL = this.template.select(queryJNoSQL)");
+            lines.add("boolean resultJNoSQL = entitiesJNoSQL.findAny().isPresent()");
             return lines;
         }
     },COUNT_BY {
@@ -63,29 +65,29 @@ enum SemistructuredMethodBuilder implements Function<MethodMetadata, List<String
         public List<String> apply(MethodMetadata metadata) {
             List<String> lines = new ArrayList<>();
             feedSelectQuery(metadata, lines);
-            lines.add("Stream<" + metadata.getEntityType() + "> entities = this.template.select(query)");
-            lines.add("long result = entities.count()");
+            lines.add("Stream<" + metadata.getEntityType() + "> entitiesJNoSQL = this.template.select(queryJNoSQL)");
+            lines.add("long resultJNoSQL = entitiesJNoSQL.count()");
             return lines;
         }
     },DELETE_BY{
         @Override
         public List<String> apply(MethodMetadata metadata) {
             List<String> lines = new ArrayList<>();
-            lines.add("org.eclipse.jnosql.communication.query.method.DeleteMethodProvider deleteMethodFactory = " + SPACE +
+            lines.add("org.eclipse.jnosql.communication.query.method.DeleteMethodProvider deleteMethodFactoryJNoSQL = " + SPACE +
                     "org.eclipse.jnosql.communication.query.method.DeleteMethodProvider.INSTANCE");
-            lines.add("org.eclipse.jnosql.communication.query.method.DeleteByMethodQueryProvider supplier = " + SPACE +
+            lines.add("org.eclipse.jnosql.communication.query.method.DeleteByMethodQueryProvider supplierJNoSQL = " + SPACE +
                     " new org.eclipse.jnosql.communication.query.method.DeleteByMethodQueryProvider()");
-            lines.add("org.eclipse.jnosql.communication.query.DeleteQuery delete = supplier.apply(\"" +
+            lines.add("org.eclipse.jnosql.communication.query.DeleteQuery deleteJNoSQL = supplierJNoSQL.apply(\"" +
                     metadata.getMethodName() + "\", metadata.name())");
-            lines.add("org.eclipse.jnosql.communication.semistructured.CommunicationObserverParser parser = " + SPACE +
+            lines.add("org.eclipse.jnosql.communication.semistructured.CommunicationObserverParser parserJNoSQL = " + SPACE +
                     "org.eclipse.jnosql.mapping.semistructured.query.RepositorySemiStructuredObserverParser.of(metadata)");
-            lines.add("org.eclipse.jnosql.communication.semistructured.DeleteQueryParams queryParams = " + SPACE +
-                    "DELETE_PARSER.apply(delete, parser)");
-            lines.add("org.eclipse.jnosql.communication.Params params = queryParams.params()");
+            lines.add("org.eclipse.jnosql.communication.semistructured.DeleteQueryParams queryParamsJNoSQL = " + SPACE +
+                    "DELETE_PARSER.apply(deleteJNoSQL, parserJNoSQL)");
+            lines.add("org.eclipse.jnosql.communication.Params paramsJNoSQL = queryParamsJNoSQL.params()");
             for (Parameter parameter : metadata.getParameters()) {
-                lines.add("params.prefix(\"" + parameter.name() + "\", " + parameter.name() + ")");
+                lines.add("paramsJNoSQL.prefix(\"" + parameter.name() + "\", " + parameter.name() + ")");
             }
-            lines.add("this.template.delete(queryParams.query())");
+            lines.add("this.template.delete(queryParamsJNoSQL.query())");
             return lines;
         }
     },NOT_SUPPORTED {
@@ -113,36 +115,61 @@ enum SemistructuredMethodBuilder implements Function<MethodMetadata, List<String
         public List<String> apply(MethodMetadata methodMetadata) {
             return AnnotationOperationMethodBuilder.SAVE.apply(methodMetadata);
         }
+    }, PARAMETER_BASED {
+        @Override
+        public List<String> apply(MethodMetadata metadata) {
+            List<String> lines = new ArrayList<>();
+            lines.add("java.util.Map<String, Object> parametersJNoSQL = new java.util.HashMap<>()");
+            for (Parameter parameter : metadata.getParameters()) {
+                By by = parameter.by();
+                if(by != null) {
+                    lines.add("parametersJNoSQL.put(\"" + by.value() + "\", " + parameter.name() + ")");
+                }
+            }
+            lines.add("java.util.List<Sort<?>> sortsJNoSQL = new java.util.ArrayList<>()");
+            for (OrderBy order : metadata.orders()) {
+                if(order.descending()){
+                    lines.add("sortsJNoSQL.add(jakarta.data.Sort.desc(\"" + order.value() + "\"))");
+                } else {
+                    lines.add("sortsJNoSQL.add(jakarta.data.Sort.asc(\"" + order.value() + "\"))");
+                }
+            }
+            lines.add("var queryJNoSQL = org.eclipse.jnosql.mapping.semistructured.query.SemiStructuredParameterBasedQuery.INSTANCE."+ SPACE +
+                    "toQueryNative(parametersJNoSQL, sortsJNoSQL, entityMetadata())");
+            MethodQueryRepositoryReturnType returnType = MethodQueryRepositoryReturnType.of(metadata);
+            lines.addAll(returnType.apply(metadata));
+            return lines;
+        }
     };
 
     private static final String SPACE = "\n          ";
 
     private static void feedSelectQuery(MethodMetadata metadata, List<String> lines) {
-        lines.add("org.eclipse.jnosql.communication.query.method.SelectMethodQueryProvider supplier = " + SPACE +
+        lines.add("org.eclipse.jnosql.communication.query.method.SelectMethodQueryProvider supplierJNoSQL = " + SPACE +
                 "new org.eclipse.jnosql.communication.query.method.SelectMethodQueryProvider()");
-        lines.add("org.eclipse.jnosql.communication.query.SelectQuery selectQuery = " + SPACE +
-                "supplier.apply(\"" + metadata.getMethodName() + "\", metadata.name())");
-        lines.add("org.eclipse.jnosql.communication.semistructured.CommunicationObserverParser parser = " + SPACE +
+        lines.add("org.eclipse.jnosql.communication.query.SelectQuery selectQueryJNoSQL = " + SPACE +
+                "supplierJNoSQL.apply(\"" + metadata.getMethodName() + "\", metadata.name())");
+        lines.add("org.eclipse.jnosql.communication.semistructured.CommunicationObserverParser parserJNoSQL = " + SPACE +
                 "org.eclipse.jnosql.mapping.semistructured.query.RepositorySemiStructuredObserverParser.of(metadata)");
-        lines.add("org.eclipse.jnosql.communication.semistructured.QueryParams queryParams = " + SPACE +
-                "SELECT_PARSER.apply(selectQuery, parser)");
+        lines.add("org.eclipse.jnosql.communication.semistructured.QueryParams queryParamsJNoSQL = " + SPACE +
+                "SELECT_PARSER.apply(selectQueryJNoSQL, parserJNoSQL)");
         if (metadata.hasSpecialParameter()) {
-            lines.add("SelectQuery query = " + SPACE +
+            lines.add("SelectQuery queryJNoSQL = " + SPACE +
                     " org.eclipse.jnosql.mapping.semistructured.query.DynamicQuery.of(new Object[]{" +
                     metadata.getSpecialParameter() +
-                    "},  " + SPACE + "queryParams.query()).get()");
+                    "},  " + SPACE + "queryParamsJNoSQL.query()).get()");
         } else {
-            lines.add("SelectQuery query = queryParams.query()");
+            lines.add("SelectQuery queryJNoSQL = queryParamsJNoSQL.query()");
         }
-        lines.add("org.eclipse.jnosql.communication.Params params = queryParams.params()");
+        lines.add("org.eclipse.jnosql.communication.Params paramsJNoSQL = queryParamsJNoSQL.params()");
         for (Parameter parameter : metadata.getQueryParams()) {
-            lines.add("params.prefix(\"" + parameter.name() + "\", " + parameter.name() + ")");
+            lines.add("paramsJNoSQL.prefix(\"" + parameter.name() + "\", " + parameter.name() + ")");
         }
     }
 
-    static SemistructuredMethodBuilder of(MethodMetadata metadata) {
+    static SemiStructuredMethodBuilder of(MethodMetadata metadata) {
         MethodMetadataOperationType operationType = MethodMetadataOperationType.of(metadata);
-        return Arrays.stream(SemistructuredMethodBuilder.values()).filter(c -> c.name().equals(operationType.name()))
+        return Arrays.stream(SemiStructuredMethodBuilder.values()).filter(c -> c.name().equals(operationType.name()))
                 .findAny().orElse(NOT_SUPPORTED);
     }
 }

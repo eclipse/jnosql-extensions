@@ -27,31 +27,31 @@ enum AnnotationQueryRepositoryReturnType implements Function<MethodMetadata, Lis
     STREAM {
         @Override
         public List<String> apply(MethodMetadata metadata) {
-            String line = "Stream<" + getEntity(metadata) + "> result = prepare.result()";
+            String line = "Stream<" + getEntity(metadata) + "> resultJNoSQL = prepareJNoSQL.result()";
             return singletonList(line);
         }
     }, LIST {
         @Override
         public List<String> apply(MethodMetadata metadata) {
             List<String> lines = new ArrayList<>();
-            lines.add("Stream<" + getEntity(metadata) + "> entities = prepare.result()");
-            lines.add("java.util.List<" + getEntity(metadata) + "> result = entities.collect(java.util.stream.Collectors.toList())");
+            lines.add("Stream<" + getEntity(metadata) + "> entitiesJNoSQL = prepareJNoSQL.result()");
+            lines.add("java.util.List<" + getEntity(metadata) + "> resultJNoSQL = entitiesJNoSQL.toList()");
             return lines;
         }
     }, SET {
         @Override
         public List<String> apply(MethodMetadata metadata) {
             List<String> lines = new ArrayList<>();
-            lines.add("Stream<" + getEntity(metadata) + "> entities = prepare.result()");
-            lines.add("java.util.Set<" + getEntity(metadata) + "> result = entities.collect(java.util.stream.Collectors.toSet())");
+            lines.add("Stream<" + getEntity(metadata) + "> entitiesJNoSQL = prepareJNoSQL.result()");
+            lines.add("java.util.Set<" + getEntity(metadata) + "> resultJNoSQL = entitiesJNoSQL.collect(java.util.stream.Collectors.toSet())");
             return lines;
         }
     }, QUEUE {
         @Override
         public List<String> apply(MethodMetadata metadata) {
             List<String> lines = new ArrayList<>();
-            lines.add("Stream<" + getEntity(metadata) + "> entities = prepare.result()");
-            lines.add("java.util.Queue<" + getEntity(metadata) + "> result = entities.collect(java.util.stream" +
+            lines.add("Stream<" + getEntity(metadata) + "> entitiesJNoSQL = prepareJNoSQL.result()");
+            lines.add("java.util.Queue<" + getEntity(metadata) + "> resultJNoSQL = entitiesJNoSQL.collect(java.util.stream" +
                     ".Collectors.toCollection(java.util.LinkedList::new)");
             return lines;
         }
@@ -59,8 +59,8 @@ enum AnnotationQueryRepositoryReturnType implements Function<MethodMetadata, Lis
         @Override
         public List<String> apply(MethodMetadata metadata) {
             List<String> lines = new ArrayList<>();
-            lines.add("Stream<" + getEntity(metadata) + "> entities = prepare.result()");
-            lines.add("java.util.Queue<" + getEntity(metadata) + "> result = entities.collect(java.util.stream" +
+            lines.add("Stream<" + getEntity(metadata) + "> entitiesJNoSQL = prepareJNoSQL.result()");
+            lines.add("java.util.Queue<" + getEntity(metadata) + "> resultJNoSQL = entitiesJNoSQL.collect(java.util.stream" +
                     ".Collectors.toCollection(java.util.TreeSet::new)");
             return lines;
         }
@@ -68,7 +68,7 @@ enum AnnotationQueryRepositoryReturnType implements Function<MethodMetadata, Lis
         @Override
         public List<String> apply(MethodMetadata metadata) {
             List<String> lines = new ArrayList<>();
-            lines.add("java.util.Optional<" + getEntity(metadata) + "> result = prepare.singleResult()");
+            lines.add("java.util.Optional<" + getEntity(metadata) + "> resultJNoSQL = prepareJNoSQL.singleResult()");
             return lines;
         }
     },
@@ -77,7 +77,7 @@ enum AnnotationQueryRepositoryReturnType implements Function<MethodMetadata, Lis
         public List<String> apply(MethodMetadata metadata) {
             List<String> lines = new ArrayList<>();
             lines.add("java.util.Optional<" + getEntity(metadata) + "> entityResult = prepare.singleResult()");
-            lines.add(getEntity(metadata) + " result = entityResult.orElse(null)");
+            lines.add(getEntity(metadata) + " resultJNoSQL = entityResult.orElse(null)");
             return lines;
         }
     };
