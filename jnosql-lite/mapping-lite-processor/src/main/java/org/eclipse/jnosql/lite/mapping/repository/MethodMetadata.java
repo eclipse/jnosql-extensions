@@ -132,7 +132,7 @@ class MethodMetadata {
     }
 
     public String getReturnValue() {
-        return "result";
+        return "resultJNoSQL";
     }
 
     public DatabaseType getType() {
