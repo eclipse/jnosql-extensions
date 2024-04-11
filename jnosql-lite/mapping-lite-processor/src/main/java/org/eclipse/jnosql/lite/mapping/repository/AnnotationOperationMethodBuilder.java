@@ -57,9 +57,9 @@ enum AnnotationOperationMethodBuilder implements Function<MethodMetadata, List<S
             if(isVoid) {
                 return Collections.singletonList( "this.template.insert(" + parameter.name() + ")");
             } else if(isInt){
-                    return List.of("this.template.insert(" + parameter.name() + ")", "int result = 1");
+                    return List.of("this.template.insert(" + parameter.name() + ")", "int resultJNoSQL = 1");
             } else if(isLong){
-                return List.of("this.template.insert(" + parameter.name() + ")", "long result = 1L");
+                return List.of("this.template.insert(" + parameter.name() + ")", "long resultJNoSQL = 1L");
             }
             return Collections.singletonList( "var resultJNoSQL = this.template.insert(" + parameter.name() + ")");
         }
@@ -100,9 +100,9 @@ enum AnnotationOperationMethodBuilder implements Function<MethodMetadata, List<S
             if(isVoid) {
                 return Collections.singletonList( "this.template.insert(" + parameter.name() + ")");
             } else if(isInt){
-                return List.of("this.template.insert(" + parameter.name() + ")", "int result = 1");
+                return List.of("this.template.insert(" + parameter.name() + ")", "int resultJNoSQL = 1");
             } else if(isLong){
-                return List.of("this.template.insert(" + parameter.name() + ")", "long result = 1");
+                return List.of("this.template.insert(" + parameter.name() + ")", "long resultJNoSQL = 1");
             }
             return Collections.singletonList( "var resultJNoSQL = this.template.insert(" + parameter.name() + ")");
         }
@@ -144,9 +144,9 @@ enum AnnotationOperationMethodBuilder implements Function<MethodMetadata, List<S
             if(isVoid) {
                 return Collections.singletonList( "this.template.update(" + parameter.name() + ")");
             } else if(isInt){
-                return List.of("this.template.update(" + parameter.name() + ")", "int result = 1");
+                return List.of("this.template.update(" + parameter.name() + ")", "int resultJNoSQL = 1");
             }else if(isLong){
-                return List.of("this.template.update(" + parameter.name() + ")", "long result = 1L");
+                return List.of("this.template.update(" + parameter.name() + ")", "long resultJNoSQL = 1L");
             }
             return Collections.singletonList( "var resultJNoSQL = this.template.update(" + parameter.name() + ")");
         }
@@ -175,7 +175,7 @@ enum AnnotationOperationMethodBuilder implements Function<MethodMetadata, List<S
                             "boolean resultJNoSQL = true");
 
                 }
-                return List.of( "this.deleteAll(" + parameter.name() + ")", "var result = "+parameter.name());
+                return List.of( "this.deleteAll(" + parameter.name() + ")", "var resultJNoSQL = "+parameter.name());
             } else if(parameter.isArray()){
                 if(isVoid) {
                     return Collections.singletonList("this.deleteAll(java.util.Arrays.stream(" + parameter.name() + ").toList())");
@@ -197,13 +197,13 @@ enum AnnotationOperationMethodBuilder implements Function<MethodMetadata, List<S
             if(isVoid) {
                 return Collections.singletonList( "this.delete(" + parameter.name() + ")");
             } else if(isInt){
-                return List.of("this.delete(" + parameter.name() + ")", "int result = 1");
+                return List.of("this.delete(" + parameter.name() + ")", "int resultJNoSQL = 1");
             } else if(isLong){
-                return List.of("this.delete(" + parameter.name() + ")", "long result = 1L");
+                return List.of("this.delete(" + parameter.name() + ")", "long resultJNoSQL = 1L");
             } else if(isBoolean){
-                return List.of("this.delete(" + parameter.name() + ")", "boolean result = true");
+                return List.of("this.delete(" + parameter.name() + ")", "boolean resultJNoSQL = true");
             }
-            return List.of("this.delete(" + parameter.name() + ")", "var result =" + parameter.name());
+            return List.of("this.delete(" + parameter.name() + ")", "var resultJNoSQL =" + parameter.name());
         }
     };
 

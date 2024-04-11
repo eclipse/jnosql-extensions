@@ -28,14 +28,14 @@ enum MethodQueryRepositoryReturnType implements Function<MethodMetadata, List<St
     STREAM {
         @Override
         public List<String> apply(MethodMetadata metadata) {
-            String line = "Stream<" + getEntity(metadata) + "> resultJNoSQL = this.template.select(query)";
+            String line = "Stream<" + getEntity(metadata) + "> resultJNoSQL = this.template.select(queryJNoSQL)";
             return singletonList(line);
         }
     }, LIST {
         @Override
         public List<String> apply(MethodMetadata metadata) {
             List<String> lines = new ArrayList<>();
-            lines.add("Stream<" + getEntity(metadata) + "> entitiesJNoSQL = this.template.select(query)");
+            lines.add("Stream<" + getEntity(metadata) + "> entitiesJNoSQL = this.template.select(queryJNoSQL)");
             lines.add("java.util.List<" + getEntity(metadata) + "> resultJNoSQL = entitiesJNoSQL.toList()");
             return lines;
         }
@@ -43,7 +43,7 @@ enum MethodQueryRepositoryReturnType implements Function<MethodMetadata, List<St
         @Override
         public List<String> apply(MethodMetadata metadata) {
             List<String> lines = new ArrayList<>();
-            lines.add("Stream<" + getEntity(metadata) + "> entitiesJNoSQL = this.template.select(query)");
+            lines.add("Stream<" + getEntity(metadata) + "> entitiesJNoSQL = this.template.select(queryJNoSQL)");
             lines.add("java.util.Set<" + getEntity(metadata) + "> resultJNoSQL = entitiesJNoSQL.collect(java.util.stream.Collectors.toSet())");
             return lines;
         }
@@ -51,7 +51,7 @@ enum MethodQueryRepositoryReturnType implements Function<MethodMetadata, List<St
         @Override
         public List<String> apply(MethodMetadata metadata) {
             List<String> lines = new ArrayList<>();
-            lines.add("Stream<" + getEntity(metadata) + "> entitiesJNoSQL = this.template.select(query)");
+            lines.add("Stream<" + getEntity(metadata) + "> entitiesJNoSQL = this.template.select(queryJNoSQL)");
             lines.add("java.util.Queue<" + getEntity(metadata) + "> resultJNoSQL = entitiesJNoSQL.collect(java.util.stream" +
                     ".Collectors.toCollection(java.util.LinkedList::new)");
             return lines;
@@ -60,7 +60,7 @@ enum MethodQueryRepositoryReturnType implements Function<MethodMetadata, List<St
         @Override
         public List<String> apply(MethodMetadata metadata) {
             List<String> lines = new ArrayList<>();
-            lines.add("Stream<" + getEntity(metadata) + "> entitiesJNoSQL = this.template.select(query)");
+            lines.add("Stream<" + getEntity(metadata) + "> entitiesJNoSQL = this.template.select(queryJNoSQL)");
             lines.add("java.util.Queue<" + getEntity(metadata) + "> resultJNoSQL = entitiesJNoSQL.collect(java.util.stream" +
                     ".Collectors.toCollection(java.util.TreeSet::new)");
             return lines;
@@ -69,7 +69,7 @@ enum MethodQueryRepositoryReturnType implements Function<MethodMetadata, List<St
         @Override
         public List<String> apply(MethodMetadata metadata) {
             List<String> lines = new ArrayList<>();
-            lines.add("java.util.Optional<" + getEntity(metadata) + "> resultJNoSQL = this.template.singleResult(query)");
+            lines.add("java.util.Optional<" + getEntity(metadata) + "> resultJNoSQL = this.template.singleResult(queryJNoSQL)");
             return lines;
         }
     },
@@ -77,7 +77,7 @@ enum MethodQueryRepositoryReturnType implements Function<MethodMetadata, List<St
         @Override
         public List<String> apply(MethodMetadata metadata) {
             List<String> lines = new ArrayList<>();
-            lines.add("java.util.Optional<" + getEntity(metadata) + "> entityResultJNoSQL = this.template.singleResult(query)");
+            lines.add("java.util.Optional<" + getEntity(metadata) + "> entityResultJNoSQL = this.template.singleResult(queryJNoSQL)");
             lines.add(getEntity(metadata) + " resultJNoSQL = entityResultJNoSQL.orElse(null)");
             return lines;
         }
@@ -85,13 +85,13 @@ enum MethodQueryRepositoryReturnType implements Function<MethodMetadata, List<St
         @Override
         public List<String> apply(MethodMetadata metadata) {
             List<String> lines = new ArrayList<>();
-            lines.add("Stream<" + getEntity(metadata) + "> entitiesJNoSQL = this.template.select(query)");
+            lines.add("Stream<" + getEntity(metadata) + "> entitiesJNoSQL = this.template.select(queryJNoSQL)");
             Parameter pageRequest = metadata.findPageRequest()
                     .orElseThrow(() -> new ValidationException("The method " + metadata.getMethodName() + " from " +
                             metadata.getParametersSignature() + " does not have a Pageable parameter in a pagination method"));
 
             lines.add(Page.class.getName() + "<" + getEntity(metadata) + "> resultJNoSQL = \n      " +
-                    "org.eclipse.jnosql.mapping.core.NoSQLPage.of(entities.toList(), " + pageRequest.name() + ")");
+                    "org.eclipse.jnosql.mapping.core.NoSQLPage.of(entitiesJNoSQL.toList(), " + pageRequest.name() + ")");
             return lines;
         }
     };
