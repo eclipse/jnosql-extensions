@@ -14,6 +14,7 @@
  */
 package org.eclipse.jnosql.lite.mapping.repository;
 
+import jakarta.data.page.CursoredPage;
 import jakarta.data.page.Page;
 import org.eclipse.jnosql.lite.mapping.ValidationException;
 
@@ -94,6 +95,18 @@ enum MethodQueryRepositoryReturnType implements Function<MethodMetadata, List<St
                     "org.eclipse.jnosql.mapping.core.NoSQLPage.of(entitiesJNoSQL.toList(), " + pageRequest.name() + ")");
             return lines;
         }
+    }, CURSOR_PAGINATION{
+        @Override
+        public List<String> apply(MethodMetadata metadata) {
+            List<String> lines = new ArrayList<>();
+            Parameter pageRequest = metadata.findPageRequest()
+                    .orElseThrow(() -> new ValidationException("The method " + metadata.getMethodName() + " from " +
+                            metadata.getParametersSignature() + " does not have a Pageable parameter in a pagination cursor method"));
+
+            lines.add(CursoredPage.class.getName() + "<" + getEntity(metadata) + "> entitiesJNoSQL = this.template.select(queryJNoSQL, "
+            + pageRequest.name() + ")");
+            return lines;
+        }
     };
 
     static String getEntity(MethodMetadata metadata) {
@@ -113,6 +126,7 @@ enum MethodQueryRepositoryReturnType implements Function<MethodMetadata, List<St
             case "java.util.SortedSet", "java.util.TreeSet" -> SORTED_SET;
             case "java.util.Optional" -> OPTIONAL;
             case "jakarta.data.page.Page", "jakarta.data.page.Slice" -> PAGINATION;
+            case "jakarta.data.page.CursoredPage" -> CURSOR_PAGINATION;
             default -> throw new UnsupportedOperationException("This return is not supported: " + returnType);
         };
 
