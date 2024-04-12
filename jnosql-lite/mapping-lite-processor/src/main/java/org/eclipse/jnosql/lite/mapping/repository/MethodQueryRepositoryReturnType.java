@@ -14,6 +14,7 @@
  */
 package org.eclipse.jnosql.lite.mapping.repository;
 
+import jakarta.data.page.CursoredPage;
 import jakarta.data.page.Page;
 import org.eclipse.jnosql.lite.mapping.ValidationException;
 
@@ -86,12 +87,24 @@ enum MethodQueryRepositoryReturnType implements Function<MethodMetadata, List<St
         public List<String> apply(MethodMetadata metadata) {
             List<String> lines = new ArrayList<>();
             lines.add("Stream<" + getEntity(metadata) + "> entitiesJNoSQL = this.template.select(queryJNoSQL)");
-            Parameter pageRequest = metadata.findPageRequest()
+            var pageRequest = metadata.findPageRequest()
                     .orElseThrow(() -> new ValidationException("The method " + metadata.getMethodName() + " from " +
                             metadata.getParametersSignature() + " does not have a Pageable parameter in a pagination method"));
 
             lines.add(Page.class.getName() + "<" + getEntity(metadata) + "> resultJNoSQL = \n      " +
                     "org.eclipse.jnosql.mapping.core.NoSQLPage.of(entitiesJNoSQL.toList(), " + pageRequest.name() + ")");
+            return lines;
+        }
+    }, CURSOR_PAGINATION {
+        @Override
+        public List<String> apply(MethodMetadata metadata) {
+            List<String> lines = new ArrayList<>();
+            Parameter pageRequest = metadata.findPageRequest()
+                    .orElseThrow(() -> new ValidationException("The method " + metadata.getMethodName() + " from " +
+                            metadata.getParametersSignature() + " does not have a Pageable parameter in a pagination cursor method"));
+
+            lines.add(CursoredPage.class.getName() + "<" + getEntity(metadata) + "> resultJNoSQL = this.template.selectCursor(queryJNoSQL, "
+            + pageRequest.name() + ")");
             return lines;
         }
     };
@@ -113,6 +126,7 @@ enum MethodQueryRepositoryReturnType implements Function<MethodMetadata, List<St
             case "java.util.SortedSet", "java.util.TreeSet" -> SORTED_SET;
             case "java.util.Optional" -> OPTIONAL;
             case "jakarta.data.page.Page", "jakarta.data.page.Slice" -> PAGINATION;
+            case "jakarta.data.page.CursoredPage" -> CURSOR_PAGINATION;
             default -> throw new UnsupportedOperationException("This return is not supported: " + returnType);
         };
 

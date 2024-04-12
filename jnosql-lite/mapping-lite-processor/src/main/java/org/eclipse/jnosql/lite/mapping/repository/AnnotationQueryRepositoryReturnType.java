@@ -15,6 +15,10 @@
 package org.eclipse.jnosql.lite.mapping.repository;
 
 
+import jakarta.data.page.CursoredPage;
+import jakarta.data.page.Page;
+import org.eclipse.jnosql.lite.mapping.ValidationException;
+
 import javax.lang.model.element.TypeElement;
 import java.util.ArrayList;
 import java.util.List;
@@ -80,6 +84,32 @@ enum AnnotationQueryRepositoryReturnType implements Function<MethodMetadata, Lis
             lines.add(getEntity(metadata) + " resultJNoSQL = entityResult.orElse(null)");
             return lines;
         }
+    }, CURSOR_PAGINATION{
+        @Override
+        public List<String> apply(MethodMetadata metadata) {
+            List<String> lines = new ArrayList<>();
+            lines.add("var preparedStatementJNoSQL = (org.eclipse.jnosql.mapping.semistructured.PreparedStatement) prepareJNoSQL");
+            lines.add("var selectJNoSQL = preparedStatementJNoSQL.selectQuery().orElseThrow(() ->" +
+                    "\n         new jakarta.data.exceptions.MappingException(\"The select query is required\"))");
+            Parameter pageRequest = metadata.findPageRequest().orElseThrow(() -> new IllegalStateException("The page request is required"));
+            lines.add(CursoredPage.class.getName() + "<" + getEntity(metadata) + "> resultJNoSQL = template.selectCursor(selectJNoSQL, " + pageRequest.name() + ")");
+            return lines;
+        }
+    }, PAGINATION{
+
+        @Override
+        public List<String> apply(MethodMetadata metadata) {
+            List<String> lines = new ArrayList<>();
+
+            var pageRequest = metadata.findPageRequest()
+                    .orElseThrow(() -> new ValidationException("The method " + metadata.getMethodName() + " from " +
+                            metadata.getParametersSignature() + " does not have a Pageable parameter in a pagination method"));
+
+            lines.add("java.util.stream.Stream<"+  getEntity(metadata) + "> entitiesJNoSQL = prepareJNoSQL.result()");
+            lines.add(Page.class.getName()+ "<"+  getEntity(metadata) + ">  resultJNoSQL = \n      "
+            +  "org.eclipse.jnosql.mapping.core.NoSQLPage.of(entitiesJNoSQL.toList(), " + pageRequest.name() + ")");
+            return lines;
+        }
     };
 
     private static String getEntity(MethodMetadata metadata) {
@@ -100,6 +130,8 @@ enum AnnotationQueryRepositoryReturnType implements Function<MethodMetadata, Lis
             case "java.util.Queue", "java.util.Deque" -> QUEUE;
             case "java.util.SortedSet", "java.util.TreeSet" -> SORTED_SET;
             case "java.util.Optional" -> OPTIONAL;
+            case "jakarta.data.page.Page", "jakarta.data.page.Slice" -> PAGINATION;
+            case "jakarta.data.page.CursoredPage" -> CURSOR_PAGINATION;
             default -> throw new UnsupportedOperationException("This return is not supported: " + returnType);
         };
 
