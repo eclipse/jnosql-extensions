@@ -15,6 +15,7 @@
 package org.eclipse.jnosql.lite.mapping.entities;
 
 import jakarta.data.page.CursoredPage;
+import jakarta.data.page.Page;
 import jakarta.data.page.PageRequest;
 import jakarta.data.repository.By;
 import jakarta.data.repository.CrudRepository;
@@ -60,12 +61,17 @@ public interface PersonCrudRepository extends CrudRepository<Person, Long> {
 
     CursoredPage<Person> findByName(String name, PageRequest pageRequest);
 
+    @Find
+    CursoredPage<Person> findCursor(@By("name") String name, PageRequest pageRequest);
+
     @Query("select * from Person where name = @name")
-    CursoredPage<Person> queryPagination(@Param("name") String name, PageRequest pageRequest);
+    CursoredPage<Person> cursor(@Param("name") String name, PageRequest pageRequest);
+
+    @Query("select * from Person where name = @name")
+    Page<Person> offSet(@Param("name") String name, PageRequest pageRequest);
 
     @Find
-    CursoredPage<Person> find(@By("name") String name, PageRequest pageRequest);
+    Page<Person> findOffSet(@By("name") String name, PageRequest pageRequest);
 
-    @Find
-    CursoredPage<Person> name(@By("name") String name, PageRequest pageRequest);
+
 }

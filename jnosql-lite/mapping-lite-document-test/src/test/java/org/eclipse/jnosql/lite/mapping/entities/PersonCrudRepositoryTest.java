@@ -15,8 +15,8 @@
 package org.eclipse.jnosql.lite.mapping.entities;
 
 import jakarta.data.Sort;
-import jakarta.enterprise.inject.se.SeContainer;
-import jakarta.enterprise.inject.se.SeContainerInitializer;
+import jakarta.data.page.CursoredPage;
+import jakarta.data.page.PageRequest;
 import org.eclipse.jnosql.mapping.PreparedStatement;
 import org.assertj.core.api.SoftAssertions;
 import org.eclipse.jnosql.communication.Condition;
@@ -278,6 +278,70 @@ class PersonCrudRepositoryTest {
             soft.assertThat(condition.element().get(int.class)).isEqualTo(10);
             soft.assertThat(query.sorts()).hasSize(2)
                     .contains(Sort.asc("name"), Sort.desc("_id"));
+        });
+    }
+
+    @Test
+    void shouldFindByNamePagination() {
+        when(template.selectCursor(any(SelectQuery.class), any(PageRequest.class))).thenReturn(Mockito.mock(CursoredPage.class));
+        var result = this.personRepository.findByName("Ada", PageRequest.ofPage(1).size(2));
+        ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
+        assertThat(result).isNotNull();
+        verify(template).selectCursor(captor.capture(), Mockito.eq(PageRequest.ofPage(1).size(2)));
+        SelectQuery query = captor.getValue();
+        CriteriaCondition condition = query.condition().orElseThrow();
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(condition.condition()).isEqualTo(Condition.EQUALS);
+            soft.assertThat(condition.element().get(String.class)).isEqualTo("Ada");
+        });
+
+    }
+
+    @Test
+    void shouldFindByNameCursorPagination() {
+        when(template.selectCursor(any(SelectQuery.class), any(PageRequest.class))).thenReturn(Mockito.mock(CursoredPage.class));
+        var result = this.personRepository.findCursor("Ada", PageRequest.ofPage(1).size(2));
+        ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
+        assertThat(result).isNotNull();
+        verify(template).selectCursor(captor.capture(), Mockito.eq(PageRequest.ofPage(1).size(2)));
+        SelectQuery query = captor.getValue();
+        CriteriaCondition condition = query.condition().orElseThrow();
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(condition.condition()).isEqualTo(Condition.EQUALS);
+            soft.assertThat(condition.element().get(String.class)).isEqualTo("Ada");
+        });
+    }
+
+    @Test
+    void shouldFindByCursorPagination() {
+        try {
+            this.personRepository.cursor("Ada", PageRequest.ofPage(1).size(2));
+        } catch (NullPointerException ignored) {
+        }
+        Mockito.verify(template, Mockito.times(1)).prepare("select * from Person where name = @name");
+    }
+
+    @Test
+    void shouldQueryOffSetPagination() {
+        try {
+        var result = this.personRepository.offSet("Ada", PageRequest.ofPage(1).size(2));
+        } catch (NullPointerException ignored) {
+        }
+        Mockito.verify(template, Mockito.times(1)).prepare("select * from Person where name = @name");
+    }
+
+    @Test
+    void shouldFindByOffSetPagination() {
+        when(template.select(any(SelectQuery.class))).thenReturn(Stream.of(new Person(), new Person()));
+        var result = this.personRepository.findOffSet("Ada", PageRequest.ofPage(1).size(2));
+        ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
+        assertThat(result).isNotNull();
+        verify(template).select(captor.capture());
+        SelectQuery query = captor.getValue();
+        CriteriaCondition condition = query.condition().orElseThrow();
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(condition.condition()).isEqualTo(Condition.EQUALS);
+            soft.assertThat(condition.element().get(String.class)).isEqualTo("Ada");
         });
     }
 
