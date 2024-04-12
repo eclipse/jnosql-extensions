@@ -87,7 +87,7 @@ enum MethodQueryRepositoryReturnType implements Function<MethodMetadata, List<St
         public List<String> apply(MethodMetadata metadata) {
             List<String> lines = new ArrayList<>();
             lines.add("Stream<" + getEntity(metadata) + "> entitiesJNoSQL = this.template.select(queryJNoSQL)");
-            Parameter pageRequest = metadata.findPageRequest()
+            var pageRequest = metadata.findPageRequest()
                     .orElseThrow(() -> new ValidationException("The method " + metadata.getMethodName() + " from " +
                             metadata.getParametersSignature() + " does not have a Pageable parameter in a pagination method"));
 
