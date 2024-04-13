@@ -158,7 +158,7 @@ class MethodMetadata {
     public Optional<Parameter> findPageRequest() {
         for (Parameter parameter : this.parameters) {
             TypeElement element = parameter.type();
-            if (PageRequest.class.getName().equals(element.getQualifiedName().toString())) {
+            if (element != null && PageRequest.class.getName().equals(element.getQualifiedName().toString())) {
                 return Optional.of(parameter);
             }
         }
