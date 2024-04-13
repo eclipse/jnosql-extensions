@@ -138,6 +138,13 @@ enum SemiStructuredMethodBuilder implements Function<MethodMetadata, List<String
             var pageRequest = metadata.findPageRequest().map(Parameter::name).orElse("null");
             lines.add("var queryJNoSQL = org.eclipse.jnosql.mapping.semistructured.query.SemiStructuredParameterBasedQuery.INSTANCE."+ SPACE +
                     "toQueryNative(parametersJNoSQL, sortsJNoSQL," + pageRequest +", entityMetadata())");
+
+            if (metadata.hasSpecialParameter()) {
+                lines.add("queryJNoSQL = " + SPACE +
+                        " org.eclipse.jnosql.mapping.semistructured.query.DynamicQuery.of(new Object[]{" +
+                        metadata.getSpecialParameter() +
+                        "},  " + SPACE + "queryJNoSQL).get()");
+            }
             MethodQueryRepositoryReturnType returnType = MethodQueryRepositoryReturnType.of(metadata);
             lines.addAll(returnType.apply(metadata));
             return lines;

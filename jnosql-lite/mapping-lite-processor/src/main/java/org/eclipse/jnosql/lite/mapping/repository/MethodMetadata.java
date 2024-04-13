@@ -15,6 +15,7 @@
 package org.eclipse.jnosql.lite.mapping.repository;
 
 import jakarta.data.Limit;
+import jakarta.data.Order;
 import jakarta.data.Sort;
 import jakarta.data.page.PageRequest;
 import jakarta.data.repository.Delete;
@@ -43,9 +44,12 @@ import static java.util.stream.Collectors.joining;
 
 class MethodMetadata {
 
-    private static final Predicate<Parameter> IS_SPECIAL_PARAM = p -> p.type().getQualifiedName().toString().equals(Limit.class.getName()) ||
-            p.type().getQualifiedName().toString().equals(PageRequest.class.getName()) ||
-            p.type().getQualifiedName().toString().equals(Sort.class.getName());
+    private static final Predicate<Parameter> IS_SPECIAL_PARAM = p ->
+            p.type() != null &&
+                    (p.type().getQualifiedName().toString().equals(Limit.class.getName()) ||
+                            p.type().getQualifiedName().toString().equals(PageRequest.class.getName()) ||
+                            p.type().getQualifiedName().toString().equals(Sort.class.getName()) ||
+                            p.type().getQualifiedName().toString().equals(Order.class.getName()));
     public static final int DEFAULT_NEWLINE_SPACING = 30;
     private final String methodName;
 
