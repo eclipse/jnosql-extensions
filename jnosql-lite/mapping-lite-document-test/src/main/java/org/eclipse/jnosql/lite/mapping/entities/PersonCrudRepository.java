@@ -14,6 +14,8 @@
  */
 package org.eclipse.jnosql.lite.mapping.entities;
 
+import jakarta.data.Order;
+import jakarta.data.Sort;
 import jakarta.data.page.CursoredPage;
 import jakarta.data.page.Page;
 import jakarta.data.page.PageRequest;
@@ -73,5 +75,13 @@ public interface PersonCrudRepository extends CrudRepository<Person, Long> {
     @Find
     Page<Person> findOffSet(@By("name") String name, PageRequest pageRequest);
 
+    @Find
+    @OrderBy("name")
+    Page<Person> findOffSet(@By("name") String name, PageRequest pageRequest, Sort<Person> sort);
+
+
+    @Find
+    @OrderBy("name")
+    Page<Person> findOffSet(@By("name") String name, PageRequest pageRequest, Order<Person> order);
 
 }

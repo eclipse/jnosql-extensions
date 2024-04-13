@@ -14,6 +14,7 @@
  */
 package org.eclipse.jnosql.lite.mapping.entities;
 
+import jakarta.data.Order;
 import jakarta.data.Sort;
 import jakarta.data.page.CursoredPage;
 import jakarta.data.page.PageRequest;
@@ -342,6 +343,42 @@ class PersonCrudRepositoryTest {
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(condition.condition()).isEqualTo(Condition.EQUALS);
             soft.assertThat(condition.element().get(String.class)).isEqualTo("Ada");
+        });
+    }
+
+    @Test
+    void shouldFindByOffSetPaginationSpecialParameter() {
+        when(template.select(any(SelectQuery.class))).thenReturn(Stream.of(new Person(), new Person()));
+        var result = this.personRepository.findOffSet("Ada", PageRequest.ofPage(1).size(2),
+                Sort.asc("age"));
+        ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
+        assertThat(result).isNotNull();
+        verify(template).select(captor.capture());
+        SelectQuery query = captor.getValue();
+        CriteriaCondition condition = query.condition().orElseThrow();
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(condition.condition()).isEqualTo(Condition.EQUALS);
+            soft.assertThat(condition.element().get(String.class)).isEqualTo("Ada");
+            soft.assertThat(query.sorts()).hasSize(2);
+            soft.assertThat(query.sorts()).contains(Sort.asc("name"), Sort.asc("age"));
+        });
+    }
+
+    @Test
+    void shouldFindByOffSetPaginationSpecialParameter2() {
+        when(template.select(any(SelectQuery.class))).thenReturn(Stream.of(new Person(), new Person()));
+        var result = this.personRepository.findOffSet("Ada", PageRequest.ofPage(1).size(2),
+                Order.by(Sort.asc("age"), Sort.desc("name")));
+        ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
+        assertThat(result).isNotNull();
+        verify(template).select(captor.capture());
+        SelectQuery query = captor.getValue();
+        CriteriaCondition condition = query.condition().orElseThrow();
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(condition.condition()).isEqualTo(Condition.EQUALS);
+            soft.assertThat(condition.element().get(String.class)).isEqualTo("Ada");
+            soft.assertThat(query.sorts()).hasSize(3);
+            soft.assertThat(query.sorts()).contains(Sort.asc("name"), Sort.asc("age"), Sort.desc("name"));
         });
     }
 
