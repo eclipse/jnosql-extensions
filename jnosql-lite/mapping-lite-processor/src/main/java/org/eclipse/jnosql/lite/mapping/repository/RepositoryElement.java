@@ -112,8 +112,8 @@ class RepositoryElement {
             if (mirror.isPresent()) {
 
                 boolean isNoSQLRepository = RepositoryUtil.isNoSQLRepository(typeElement.getInterfaces(), processingEnv);
-
                 boolean isCrudRepository = RepositoryUtil.isCrudRepository(typeElement.getInterfaces(), processingEnv);
+
                 TypeMirror typeMirror = mirror.get();
                 List<String> parameters = RepositoryUtil.findParameters(typeMirror);
                 String entityType = parameters.get(0);

@@ -110,13 +110,6 @@ public class {{className}} implements {{repository}} {
     }
 
     @Override
-    public Stream<{{entityType}}> findByIdIn(Iterable<{{keyType}}> ids) {
-        requireNonNull(ids, "ids is required");
-        return stream(ids.spliterator(), false)
-        .flatMap(optionalToStream());
-    }
-
-    @Override
     public Stream<{{entityType}}> findAll() {
         SelectQuery query = SelectQuery.select().from(entityMetadata().name()).build();
         return template().select(query);
@@ -147,6 +140,11 @@ public class {{className}} implements {{repository}} {
        return template().find(getEntityClass(), id);
    }
 
+   @Override
+   public boolean existsById({{keyType}} id) {
+       return findById(id).isPresent();
+   }
+
 
     {{#element.isNoSQLRepository}}
 
@@ -166,8 +164,13 @@ public class {{className}} implements {{repository}} {
        return template().count(getEntityClass());
    }
 
+    @Override
+    public Stream<{{entityType}}> findByIdIn(Iterable<{{keyType}}> ids) {
+        requireNonNull(ids, "ids is required");
+        return stream(ids.spliterator(), false)
+        .flatMap(optionalToStream());
+    }
     {{/element.isNoSQLRepository}}
-
 
     {{#element.isCrudRepository}}
     @Override
@@ -192,11 +195,6 @@ public class {{className}} implements {{repository}} {
     public <S extends {{entityType}}> List<S> updateAll(List<S> entities) {
        Objects.requireNonNull(entities, "entities is required");
        return stream(template().update(entities).spliterator(), false).toList();
-    }
-
-    @Override
-    public boolean existsById({{keyType}} id) {
-        return findById(id).isPresent();
     }
 
     {{/element.isCrudRepository}}
