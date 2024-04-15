@@ -26,12 +26,13 @@ import jakarta.data.repository.OrderBy;
 import jakarta.data.repository.Param;
 import jakarta.data.repository.Query;
 import jakarta.data.repository.Repository;
+import org.eclipse.jnosql.mapping.NoSQLRepository;
 
 import java.util.List;
 import java.util.Map;
 
 @Repository
-public interface PersonCrudRepository extends CrudRepository<Person, Long> {
+public interface PersonCrudRepository extends NoSQLRepository<Person, Long> {
 
     List<Person> findByName(String name);
 

@@ -140,13 +140,14 @@ public class {{className}} implements {{repository}} {
        return template().find(getEntityClass(), id);
    }
 
+
+    {{#element.isNoSQLRepository}}
+
    @Override
    public boolean existsById({{keyType}} id) {
        return findById(id).isPresent();
    }
 
-
-    {{#element.isNoSQLRepository}}
 
     @Override
     public void deleteAll() {
