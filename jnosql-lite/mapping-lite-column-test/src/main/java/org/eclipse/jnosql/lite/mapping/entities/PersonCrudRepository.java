@@ -14,15 +14,15 @@
  */
 package org.eclipse.jnosql.lite.mapping.entities;
 
-import jakarta.data.repository.CrudRepository;
 import jakarta.data.repository.Param;
 import jakarta.data.repository.Query;
 import jakarta.data.repository.Repository;
+import org.eclipse.jnosql.mapping.NoSQLRepository;
 
 import java.util.List;
 
 @Repository
-public interface PersonCrudRepository extends CrudRepository<Person, Long> {
+public interface PersonCrudRepository extends NoSQLRepository<Person, Long> {
 
     List<Person> findByName(String name);
 

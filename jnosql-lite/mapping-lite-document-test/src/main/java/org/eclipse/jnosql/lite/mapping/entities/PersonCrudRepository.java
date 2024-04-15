@@ -20,7 +20,6 @@ import jakarta.data.page.CursoredPage;
 import jakarta.data.page.Page;
 import jakarta.data.page.PageRequest;
 import jakarta.data.repository.By;
-import jakarta.data.repository.CrudRepository;
 import jakarta.data.repository.Find;
 import jakarta.data.repository.OrderBy;
 import jakarta.data.repository.Param;
