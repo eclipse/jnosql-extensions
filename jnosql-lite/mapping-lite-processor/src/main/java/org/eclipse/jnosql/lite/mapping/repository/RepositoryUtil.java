@@ -65,4 +65,13 @@ final class RepositoryUtil {
                 .map(t -> t.getQualifiedName().toString())
                 .anyMatch(IS_NOSQL_REPOSITORY);
     }
+
+    static boolean isCrudRepository(List<? extends TypeMirror> interfaces, ProcessingEnvironment processingEnv) {
+        return isNoSQLRepository(interfaces, processingEnv) ||
+                interfaces.stream()
+                .map(processingEnv.getTypeUtils()::asElement)
+                .map(TypeElement.class::cast)
+                .map(t -> t.getQualifiedName().toString())
+                .anyMatch(IS_CRUD_REPOSITORY);
+    }
 }

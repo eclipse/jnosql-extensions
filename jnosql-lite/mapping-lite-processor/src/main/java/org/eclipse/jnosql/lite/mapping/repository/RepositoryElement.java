@@ -41,6 +41,7 @@ class RepositoryElement {
     private final String repositoryInterface;
     private final DatabaseType type;
     private final boolean isNoSQLRepository;
+    private final boolean isCrudRepository;
     private final List<MethodMetadata> methods;
 
     public RepositoryElement(TypeElement element,
@@ -48,6 +49,7 @@ class RepositoryElement {
                              String repositoryInterface,
                              DatabaseType type,
                              boolean isNoSQLRepository,
+                             boolean isCrudRepository,
                              List<MethodMetadata> methods) {
         this.element = element;
         this.entityType = entityType;
@@ -55,6 +57,7 @@ class RepositoryElement {
         this.repositoryInterface = repositoryInterface;
         this.type = type;
         this.isNoSQLRepository = isNoSQLRepository;
+        this.isCrudRepository = isCrudRepository;
         this.methods = methods;
     }
 
@@ -110,6 +113,7 @@ class RepositoryElement {
 
                 boolean isNoSQLRepository = RepositoryUtil.isNoSQLRepository(typeElement.getInterfaces(), processingEnv);
 
+                boolean isCrudRepository = RepositoryUtil.isCrudRepository(typeElement.getInterfaces(), processingEnv);
                 TypeMirror typeMirror = mirror.get();
                 List<String> parameters = RepositoryUtil.findParameters(typeMirror);
                 String entityType = parameters.get(0);
@@ -121,7 +125,7 @@ class RepositoryElement {
                         .filter(Objects::nonNull)
                         .collect(Collectors.toList());
                 return new RepositoryElement(typeElement,
-                        entityType, keyType, repositoryInterface, type, isNoSQLRepository, methods);
+                        entityType, keyType, repositoryInterface, type, isNoSQLRepository, isCrudRepository, methods);
             }
         }
         throw new ValidationException("The interface %s must extends %s"
@@ -131,6 +135,10 @@ class RepositoryElement {
 
     public boolean isNoSQLRepository() {
         return isNoSQLRepository;
+    }
+
+    public boolean isCrudRepository() {
+        return isCrudRepository;
     }
 
 }
