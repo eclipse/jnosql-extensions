@@ -83,7 +83,7 @@ public class {{className}} implements {{repository}} {
     public <S extends {{entityType}}> S save(S entity) {
         Objects.requireNonNull(entity, "Entity is required");
         Object id = getIdField().read(entity);
-        if (nonNull(id) && existsById(({{keyType}}) id)) {
+        if (nonNull(id) && existsByIdJNoSQL(({{keyType}}) id)) {
             return template().update(entity);
         } else {
             return template().insert(entity);
@@ -109,6 +109,45 @@ public class {{className}} implements {{repository}} {
         this.deleteById(({{keyType}}) id);
     }
 
+    @Override
+    public Stream<{{entityType}}> findByIdIn(Iterable<{{keyType}}> ids) {
+        requireNonNull(ids, "ids is required");
+        return stream(ids.spliterator(), false)
+        .flatMap(optionalToStream());
+    }
+
+    @Override
+    public Stream<{{entityType}}> findAll() {
+        SelectQuery query = SelectQuery.select().from(entityMetadata().name()).build();
+        return template().select(query);
+    }
+
+    @Override
+    public void deleteAll(List<? extends {{entityType}}> entities) {
+       requireNonNull(entities, "entities is required");
+       entities.forEach(this::delete);
+   }
+
+
+    @Override
+    public Page<{{entityType}}> findAll(PageRequest pageRequest, Order<{{entityType}}> order) {
+        Objects.requireNonNull(pageRequest, "pageRequest is required");
+        EntityMetadata metadata = entityMetadata();
+        List<Sort<?>> sorts = order.sorts().stream().collect(toList());
+        SelectQuery query = new MappingQuery(sorts,
+        pageRequest.size(), NoSQLPage.skip(pageRequest), null ,metadata.name());
+
+        List<{{entityType}}> entities = template().<{{entityType}}>select(query).toList();
+        return NoSQLPage.of(entities, pageRequest);
+    }
+
+   @Override
+   public Optional<{{entityType}}> findById({{keyType}} id) {
+       requireNonNull(id, "id is required");
+       return template().find(getEntityClass(), id);
+   }
+
+
     {{#element.isNoSQLRepository}}
 
     @Override
@@ -122,70 +161,47 @@ public class {{className}} implements {{repository}} {
         ids.forEach(this::deleteById);
     }
 
-    {{/element.isNoSQLRepository}}
-
-    public Stream<{{entityType}}> findByIdIn(Iterable<{{keyType}}> ids) {
-        requireNonNull(ids, "ids is required");
-        return stream(ids.spliterator(), false)
-        .flatMap(optionalToStream());
-    }
-
-    @Override
-    public Stream<{{entityType}}> findAll() {
-        SelectQuery query = SelectQuery.select().from(entityMetadata().name()).build();
-        return template().select(query);
-    }
-
-    public long countBy() {
-        return template().count(getEntityClass());
-    }
-
-    @Override
-    public void deleteAll(List<? extends {{entityType}}> entities) {
-       requireNonNull(entities, "entities is required");
-       entities.forEach(this::delete);
+   @Override
+   public long countBy() {
+       return template().count(getEntityClass());
    }
 
+    {{/element.isNoSQLRepository}}
 
-    public Page<{{entityType}}> findAll(PageRequest pageRequest, Order<{{entityType}}> order) {
-        Objects.requireNonNull(pageRequest, "pageRequest is required");
-        EntityMetadata metadata = entityMetadata();
-        List<Sort<?>> sorts = order.sorts().stream().collect(toList());
-        SelectQuery query = new MappingQuery(sorts,
-        pageRequest.size(), NoSQLPage.skip(pageRequest), null ,metadata.name());
 
-        List<{{entityType}}> entities = template().<{{entityType}}>select(query).toList();
-                return NoSQLPage.of(entities, pageRequest);
-    }
-
+    {{#element.isCrudRepository}}
+    @Override
     public <S extends {{entityType}}> S insert(S entity) {
         Objects.requireNonNull(entity, "entity is required");
         return template().insert(entity);
     }
-
+ 
+    @Override
     public <S extends {{entityType}}> List<S> insertAll(List<S> entities) {
         Objects.requireNonNull(entities, "entities is required");
         return stream(template().insert(entities).spliterator(), false).toList();
     }
 
+    @Override
     public {{entityType}} update({{entityType}} entity) {
         Objects.requireNonNull(entity, "entity is required");
         return template().update(entity);
     }
 
+    @Override
     public <S extends {{entityType}}> List<S> updateAll(List<S> entities) {
        Objects.requireNonNull(entities, "entities is required");
        return stream(template().update(entities).spliterator(), false).toList();
     }
 
-   public Optional<{{entityType}}> findById({{keyType}} id) {
-       requireNonNull(id, "id is required");
-       return template().find(getEntityClass(), id);
-   }
+    @Override
+    public boolean existsById({{keyType}} id) {
+        return findById(id).isPresent();
+    }
 
-   public boolean existsById({{keyType}} id) {
-       return findById(id).isPresent();
-   }
+    {{/element.isCrudRepository}}
+
+
 
     {{#methods}}
     @Override
@@ -205,6 +221,10 @@ public class {{className}} implements {{repository}} {
 
     private FieldMetadata getIdField() {
         return entityMetadata().id().orElseThrow(KEY_NOT_FOUND_EXCEPTION_SUPPLIER);
+    }
+
+    private boolean existsByIdJNoSQL({{keyType}} id) {
+        return findById(id).isPresent();
     }
 
     private Function<{{keyType}}, Stream<{{entityType}}>> optionalToStream() {
