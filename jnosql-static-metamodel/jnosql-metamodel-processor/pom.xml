@@ -18,12 +18,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>org.eclipse.jnosql.lite</groupId>
-        <artifactId>jnosql-lite-parent</artifactId>
+        <groupId>org.eclipse.jnosql.metamodel</groupId>
+        <artifactId>jnosql-static-metamodel-parent</artifactId>
         <version>1.1.1-RC1</version>
     </parent>
 
-    <artifactId>mapping-lite-processor</artifactId>
+    <artifactId>mapping-metamodel-processor</artifactId>
     <packaging>jar</packaging>
 
     <properties>
@@ -31,29 +31,14 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.eclipse.jnosql.communication</groupId>
-            <artifactId>jnosql-communication-core</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.jnosql.communication</groupId>
-            <artifactId>jnosql-communication-query</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>jakarta.nosql</groupId>
-            <artifactId>jakarta.nosql-api</artifactId>
-            <version>${jakarta.nosql.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.jnosql.mapping</groupId>
-            <artifactId>jnosql-mapping-api-core</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
             <groupId>com.github.spullara.mustache.java</groupId>
             <artifactId>compiler</artifactId>
             <version>0.9.11</version>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.jnosql.mapping</groupId>
+            <artifactId>jnosql-mapping-semistructured</artifactId>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
 
@@ -84,7 +69,7 @@
                             <outputDirectory>${basedir}/target/classes/metadata/</outputDirectory>
                             <resources>
                                 <resource>
-                                    <directory>src/main/java/org/eclipse/jnosql/lite/mapping/metadata/</directory>
+                                    <directory>src/main/java/org/eclipse/jnosql/metamodel/</directory>
                                     <filtering>true</filtering>
                                 </resource>
                             </resources>

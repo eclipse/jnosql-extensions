@@ -111,6 +111,53 @@ Additionally, you can use Repositories from Jakarta Data, but note that certain 
 
 Now you're ready to explore the enhanced features of Eclipse JNoSQL Lite and leverage its benefits without relying on Reflection.
 
+
+== JNoSQL Static Metamodel
+
+The JNoSQL Static Metamodel feature generates a Jakarta Data metamodel, facilitating type-safe access to entity attributes. This capability enhances compile-time safety, aids in refactoring, minimizes the use of "magic strings," and improves code documentation.
+
+=== Installing the Metamodel Processor
+
+To enable the generation of the static metamodel for your entities, include the Metamodel Processor in your project's build configuration. This processor automatically generates metamodel classes corresponding to your entity classes, ensuring type-safe queries and operations. Add the following dependency to your Maven project:
+
+[source,xml]
+----
+<dependency>
+    <groupId>org.eclipse.jnosql.metamodel</groupId>
+    <artifactId>mapping-metamodel-processor</artifactId>
+    <version>${project.version}</version>
+    <scope>provided</scope>
+</dependency>
+----
+
+With the metamodel classes generated, you can perform type-safe operations on your entities, such as querying, updating, or deleting records based on compile-time checked attributes.
+
+=== Example Usage
+
+Given an entity class, such as:
+
+[source,java]
+----
+@Entity
+public class Product {
+    public long id;
+    public String name;
+    public float price;
+}
+----
+
+You can use the statically generated metamodel to construct queries. For instance, to find products based on a dynamic search pattern and sort the results by price descending, name ascending, and ID ascending, you would use:
+
+[source,java]
+----
+List<Product> found = products.findByNameLike(searchPattern, Order.by(
+    _Product.price.desc(),
+    _Product.name.asc(),
+    _Product.id.asc()));
+----
+
+This approach ensures that query attribute references are both type-safe and refactor-safe, leading to more robust and maintainable code.
+
 == Bean Validation
 
 Eclipse JNoSQL provide support for bean validation. It will validate before inserting/updating and constructing an entity.
