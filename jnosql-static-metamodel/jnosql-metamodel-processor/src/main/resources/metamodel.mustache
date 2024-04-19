@@ -16,17 +16,18 @@ package {{packageName}};
 
 import jakarta.data.metamodel.StaticMetamodel;
 import javax.annotation.processing.Generated;
+
 //CHECKSTYLE:OFF
 @StaticMetamodel({{entity}}.class)
 @Generated(value = "The StaticMetamodel of the class {{entity}} provider by Eclipse JNoSQL", date = "{{now}}")
-public final class {{className}} {
+public interface {{className}} {
 
         {{#fields}}
-        public static final String {{constantName}} = "{{name}}";
+        String {{constantName}} = "{{name}}";
         {{/fields}}
    
         {{#fields}}
-        public static final {{className}}<{{entity}}> {{fieldName}} = new org.eclipse.jnosql.metamodel.NoSQLAttribute<>("{{name}}");
+        {{className}}<{{entity}}> {{fieldName}} = new org.eclipse.jnosql.metamodel.NoSQLAttribute<>({{constantName}});
         {{/fields}}
 
 }
