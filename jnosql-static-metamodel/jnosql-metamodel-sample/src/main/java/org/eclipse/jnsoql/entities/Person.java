@@ -20,7 +20,7 @@ import jakarta.nosql.Entity;
 import jakarta.nosql.Id;
 
 @Entity
-public class Fruit {
+public class Person {
 
     @Id
     private String id;
