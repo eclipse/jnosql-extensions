@@ -21,6 +21,8 @@ import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.Filer;
 import javax.annotation.processing.RoundEnvironment;
 import javax.annotation.processing.SupportedAnnotationTypes;
+import javax.annotation.processing.SupportedSourceVersion;
+import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.TypeElement;
@@ -39,6 +41,7 @@ import java.util.logging.Logger;
 
 
 @SupportedAnnotationTypes({"jakarta.nosql.Entity", "jakarta.nosql.MappedSuperclass"})
+@SupportedSourceVersion(SourceVersion.RELEASE_17)
 public class EntityProcessor extends AbstractProcessor {
 
     private static final Logger LOGGER = Logger.getLogger(EntityProcessor.class.getName());
