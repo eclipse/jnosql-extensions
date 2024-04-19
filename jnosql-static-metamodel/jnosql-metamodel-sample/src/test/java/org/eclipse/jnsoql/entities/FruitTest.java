@@ -14,6 +14,10 @@
  */
 package org.eclipse.jnsoql.entities;
 
+import jakarta.data.Sort;
+import org.assertj.core.api.SoftAssertions;
+import org.eclipse.jnosql.metamodel.BooleanAttribute;
+import org.eclipse.jnosql.metamodel.StringAttribute;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -23,6 +27,16 @@ class FruitTest {
 
     @Test
     void shouldGetId(){
+        var id = _Fruit.id;
 
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(id.name()).isEqualTo("_id");
+            soft.assertThat(id.desc()).isEqualTo(Sort.desc("_id"));
+            soft.assertThat(_Fruit.ID).isEqualTo("_id");
+            soft.assertThat(id).isInstanceOf(StringAttribute.class);
+            soft.assertThat(_Fruit.name).isInstanceOf(StringAttribute.class);
+            soft.assertThat(_Fruit.isTasty).isInstanceOf(BooleanAttribute.class);
+            soft.assertThat(_Fruit.isHealthy).isInstanceOf(BooleanAttribute.class);
+        });
     }
 }

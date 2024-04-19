@@ -14,24 +14,17 @@
  */
 package org.eclipse.jnsoql.entities;
 
-
 import jakarta.nosql.Column;
-import jakarta.nosql.Entity;
-import jakarta.nosql.Id;
+import jakarta.nosql.Embeddable;
 
-@Entity
-public class Fruit {
+import java.math.BigDecimal;
 
-    @Id
-    private String id;
+@Embeddable
+public class Product {
 
     @Column
     private String name;
 
     @Column
-    private boolean isTasty;
-
-    @Column
-    private Boolean isHealthy;
-
+    private BigDecimal price;
 }

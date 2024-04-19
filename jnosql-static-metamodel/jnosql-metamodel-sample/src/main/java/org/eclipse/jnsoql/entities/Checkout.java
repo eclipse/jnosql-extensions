@@ -19,19 +19,14 @@ import jakarta.nosql.Column;
 import jakarta.nosql.Entity;
 import jakarta.nosql.Id;
 
+import java.util.List;
+
 @Entity
-public class Fruit {
+public class Checkout {
 
     @Id
-    private String id;
+    private Long id;
 
     @Column
-    private String name;
-
-    @Column
-    private boolean isTasty;
-
-    @Column
-    private Boolean isHealthy;
-
+    private List<Product> products;
 }

@@ -14,24 +14,18 @@
  */
 package org.eclipse.jnsoql.entities;
 
+import org.assertj.core.api.SoftAssertions;
+import org.junit.jupiter.api.Test;
 
-import jakarta.nosql.Column;
-import jakarta.nosql.Entity;
-import jakarta.nosql.Id;
 
-@Entity
-public class Fruit {
+class PersonTest {
 
-    @Id
-    private String id;
 
-    @Column
-    private String name;
-
-    @Column
-    private boolean isTasty;
-
-    @Column
-    private Boolean isHealthy;
-
+    @Test
+    void shouldGenerateStaticMetamodel() {
+        SoftAssertions.assertSoftly(softly -> {
+            softly.assertThat(_Person.id).isNotNull();
+            softly.assertThat(_Person.name).isNotNull();
+        });
+    }
 }
