@@ -45,6 +45,7 @@
         <module>jnosql-lite</module>
         <module>jnosql-graph-connections</module>
         <module>jnosql-mapping-validation</module>
+        <module>jnosql-static-metamodel</module>
     </modules>
 
     <dependencyManagement>
