@@ -10,7 +10,7 @@ and this project adheres to https://semver.org/spec/v2.0.0.html[Semantic Version
 
 === Added
 
-- Upgrade API to Jakarta Data 1.0.0-M3
+- Upgrade API to Jakarta Data 1.0.0-RC1
 - Include support to default method at JNoSQL Lite
 - Include support to Find annotation at JNoSQL Lite
 - Include support to pagination offset and Cursor at JNoSQL Lite
