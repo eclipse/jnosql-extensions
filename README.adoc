@@ -359,6 +359,13 @@ The Criteria API can be used via CriteriaDocumentTemplate.
   </dependency>
 ----
 
+== TCK Runners
+
+The Eclipse JNoSQL project provides Technology Compatibility Kit (TCK) runners for Jakarta Data. These runners allow you to run the TCK tests against the Eclipse JNoSQL implementation to verify its compatibility with the Jakarta Data specifications.
+
+=== Jakarta Data TCK Runner
+
+The Jakarta Data TCK Runner is a project that runs the Jakarta Data TCK tests against the Eclipse JNoSQL implementation. It provides a convenient way to verify the compatibility of a Jakarta Data implementation with the Jakarta Data specification. Learn more about it link:jnosql-data-tck-runner/README.adoc[here].
 
 
 == Getting Help
