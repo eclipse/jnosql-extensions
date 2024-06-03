@@ -49,26 +49,47 @@
 		<targetDirectory>${project.basedir}/target</targetDirectory>
 
 		<!-- Dependency versions -->
-		<jakarta.data.tck.version>1.0.0-M4</jakarta.data.tck.version>
-		<sigtest.version>1.6</sigtest.version>
-		<arquillian.version>1.7.0.Final</arquillian.version>
+		<jakarta.data.version>1.0.0-RC1</jakarta.data.version>
+		<jakarta.servlet.version>6.1.0</jakarta.servlet.version>
+		<jakarta.enterprise.cdi.version>4.1.0</jakarta.enterprise.cdi.version>
+
+		<arquillian.version>1.8.0.Final</arquillian.version>
+		<junit.version>5.10.2</junit.version>
+		<shrinkwrap.version>1.2.6</shrinkwrap.version>
+		<sigtest.version>2.3</sigtest.version>
+
+		<!-- Pointer to logging.properties file that has the java.util.logging 
+   configuration -->
+		<logging.config>${project.basedir}/logging.properties</logging.config>
 
 		<!-- TCK settings -->
 		<included.groups><![CDATA[standalone & nosql]]></included.groups>
 	</properties>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.junit</groupId>
+				<artifactId>junit-bom</artifactId>
+				<version>${junit.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 
 	<dependencies>
 		<!-- tck - data - external TCK -->
 		<dependency>
 			<groupId>jakarta.data</groupId>
 			<artifactId>jakarta.data-tck</artifactId>
-			<version>${jakarta.data.tck.version}</version>
+			<version>${jakarta.data.version}</version>
 		</dependency>
 		<!-- api - data -->
 		<dependency>
 			<groupId>jakarta.data</groupId>
 			<artifactId>jakarta.data-api</artifactId>
-			<version>${jakarta.data.api.version}</version>
+			<version>${jakarta.data.version}</version>
 		</dependency>
 		<!-- impl - data -->
 		<!-- TODO figure out how to start a MongoDB instance, and configure it -->
@@ -84,7 +105,7 @@
 			<version>${junit.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>org.netbeans.tools</groupId>
+			<groupId>jakarta.tck</groupId>
 			<artifactId>sigtest-maven-plugin</artifactId>
 			<version>${sigtest.version}</version>
 		</dependency>
@@ -99,7 +120,7 @@
 		<dependency>
 			<groupId>org.jboss.shrinkwrap</groupId>
 			<artifactId>shrinkwrap-api</artifactId>
-			<version>1.2.6</version>
+			<version>${shrinkwrap.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.jboss.arquillian.junit5</groupId>
@@ -109,21 +130,14 @@
 		<dependency>
 			<groupId>jakarta.servlet</groupId>
 			<artifactId>jakarta.servlet-api</artifactId>
-			<version>6.0.0</version>
+			<version>${jakarta.servlet.version}</version>
 		</dependency>
+		<!-- APIs referenced by TCK that do require implementations for standalone tests -->
 		<dependency>
 			<groupId>jakarta.enterprise</groupId>
 			<artifactId>jakarta.enterprise.cdi-api</artifactId>
-			<version>4.0.0</version>
+			<version>${jakarta.enterprise.cdi.version}</version>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.jboss.arquillian.container/arquillian-weld-embedded -->
-		<dependency>
-			<groupId>org.jboss.arquillian.container</groupId>
-			<artifactId>arquillian-weld-embedded</artifactId>
-			<version>4.0.0.Final</version>
-			<scope>test</scope>
-		</dependency>
-
 	</dependencies>
 
 	<build>
@@ -153,10 +167,11 @@
 						<usePhrasedTestCaseClassName>true</usePhrasedTestCaseClassName>
 					</statelessTestsetReporter>
 					<systemPropertyVariables>
-						<java.util.logging.config.file>logging.properties</java.util.logging.config.file>
-						<jimage.dir>${project.build.directory}/jdk17-bundle</jimage.dir>
+						<java.util.logging.config.file>${logging.config}</java.util.logging.config.file>
+						<jimage.dir>target/tck-classes</jimage.dir>
 						<signature.sigTestClasspath>
-							${project.build.directory}/dependency/jakarta.data-api-${jakarta.data.api.version}.jar:${project.build.directory}/jdk11-bundle/java.base:${project.build.directory}/jdk11-bundle/java.rmi:${project.build.directory}/jdk11-bundle/java.sql:${project.build.directory}/jdk11-bundle/java.naming</signature.sigTestClasspath>
+							${project.build.directory}/dependency/jakarta.data-api-${jakarta.data.api.version}.jar
+						</signature.sigTestClasspath>
 						<jakarta.tck.skip.deployment>true</jakarta.tck.skip.deployment>
 					</systemPropertyVariables>
 					<groups>${included.groups}</groups>
