@@ -8,6 +8,8 @@ and this project adheres to https://semver.org/spec/v2.0.0.html[Semantic Version
 
 == [Unreleased]
 
+- Include Jakarta Data TCK Runner for Eclipse JNoSQL;
+
 == [1.1.1] - 2023-05-25
 
 === Added
