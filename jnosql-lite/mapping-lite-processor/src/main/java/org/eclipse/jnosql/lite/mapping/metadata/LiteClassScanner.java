@@ -49,4 +49,10 @@ public final class LiteClassScanner implements ClassScanner {
     public Set<Class<?>> repositoriesStandard() {
         return Collections.emptySet();
     }
+
+    @Override
+    public Set<Class<?>> customRepositories() {
+        return Collections.emptySet();
+    }
+
 }
