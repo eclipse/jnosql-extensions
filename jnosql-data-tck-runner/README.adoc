@@ -5,7 +5,7 @@ This project runs the Jakarta Data Technology Compatibility Kit (TCK) on standal
 
 == Overview
 
-In order to aid in the development of the `data-1.0` feature, this project is configured specifically to allow the feature developers to run the TCK against the Eclipse JNoSQL implementation.
+This project is configured specifically to allow the feature developers to run the TCK against the Eclipse JNoSQL implementation.
 
 == Running the TCK for Verification
 
@@ -20,5 +20,5 @@ Then, run the following command to execute the TCK:
 
 [source,shell]
 ----
-mvn clean test -B -Djakarta.tck.profile=standalone -Djnosql.document.database=jnosql -Djnosql.mongodb.host=localhost:27017
+mvn clean test -B -Djnosql.document.database=mongo -Djnosql.mongodb.host=localhost:27017
 ----
