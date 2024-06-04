@@ -57,10 +57,12 @@
 		<junit.version>5.10.2</junit.version>
 		<shrinkwrap.version>1.2.6</shrinkwrap.version>
 		<sigtest.version>2.3</sigtest.version>
+		<weld.junit5.version>4.0.3.Final</weld.junit5.version>
 
 		<!-- Pointer to logging.properties file that has the java.util.logging 
    configuration -->
 		<logging.config>${project.basedir}/logging.properties</logging.config>
+		<org.jboss.logging.provider>jdk</org.jboss.logging.provider>
 
 		<!-- TCK settings -->
 		<included.groups><![CDATA[standalone & nosql]]></included.groups>
@@ -109,13 +111,12 @@
 			<artifactId>sigtest-maven-plugin</artifactId>
 			<version>${sigtest.version}</version>
 		</dependency>
-		<!-- CDI for resource injection -->
-		<dependency>
-			<groupId>org.jboss.weld.se</groupId>
-			<artifactId>weld-se-core</artifactId>
-			<version>5.1.0.Final</version>
-			<scope>test</scope>
-		</dependency>
+	<!-- CDI for resource injection - managed by Junit -->
+        <dependency>
+            <groupId>org.jboss.weld</groupId>
+            <artifactId>weld-junit5</artifactId>
+            <version>${weld.junit5.version}</version>
+        </dependency>
 		<!-- APIs referenced by TCK that do not require implementations for standalone tests -->
 		<dependency>
 			<groupId>org.jboss.shrinkwrap</groupId>
@@ -160,7 +161,6 @@
 				<configuration>
 					<trimStackTrace>false</trimStackTrace>
 					<failIfNoTests>true</failIfNoTests>
-					<dependenciesToScan>jakarta.data:jakarta.data-tck</dependenciesToScan>
 					<statelessTestsetReporter
 						implementation="org.apache.maven.plugin.surefire.extensions.junit5.JUnit5Xml30StatelessReporter">
 						<usePhrasedTestCaseMethodName>true</usePhrasedTestCaseMethodName>
@@ -176,8 +176,6 @@
 					</systemPropertyVariables>
 					<groups>${included.groups}</groups>
 					<reportNameSuffix>standalone</reportNameSuffix>
-					<testSourceDirectory>
-						${basedir}${file.separarator}src${file.separarator}main${file.separarator}java${file.separarator}</testSourceDirectory>
 				</configuration>
 			</plugin>
 		</plugins>
