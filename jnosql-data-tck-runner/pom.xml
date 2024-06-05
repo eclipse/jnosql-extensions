@@ -58,8 +58,8 @@
 		<shrinkwrap.version>1.2.6</shrinkwrap.version>
 		<sigtest.version>2.3</sigtest.version>
 		<weld.junit5.version>4.0.3.Final</weld.junit5.version>
-
-		<!-- Pointer to logging.properties file that has the java.util.logging 
+		<testcontainers.version>1.19.8</testcontainers.version>
+		<!-- Pointer to logging.properties file that has the java.util.logging
    configuration -->
 		<logging.config>${project.basedir}/logging.properties</logging.config>
 		<org.jboss.logging.provider>jdk</org.jboss.logging.provider>
@@ -138,6 +138,13 @@
 			<groupId>jakarta.enterprise</groupId>
 			<artifactId>jakarta.enterprise.cdi-api</artifactId>
 			<version>${jakarta.enterprise.cdi.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.testcontainers</groupId>
+			<artifactId>testcontainers</artifactId>
+			<version>${testcontainers.version}</version>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 

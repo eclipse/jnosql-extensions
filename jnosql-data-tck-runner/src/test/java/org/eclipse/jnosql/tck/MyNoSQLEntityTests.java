@@ -14,6 +14,8 @@
  */
 package org.eclipse.jnosql.tck;
 
+import org.eclipse.jnosql.databases.mongodb.communication.MongoDBDocumentConfigurations;
+import org.eclipse.jnosql.mapping.core.config.MappingConfigurations;
 import org.eclipse.jnosql.mapping.core.spi.EntityMetadataExtension;
 import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.document.DocumentTemplate;
@@ -27,10 +29,21 @@ import org.jboss.weld.junit5.auto.EnableAutoWeld;
 
 import ee.jakarta.tck.data.standalone.nosql.example.NoSQLEntityTests;
 
+import static org.eclipse.jnosql.tck.DocumentDatabase.INSTANCE;
+
 @EnableAutoWeld
 @AddPackages(value = {Converters.class, EntityConverter.class, DocumentTemplate.class})
 @AddPackages(DocumentTemplateProducer.class)
 @AddPackages(Reflections.class)
 @AddExtensions({EntityMetadataExtension.class, DocumentExtension.class})
 public class MyNoSQLEntityTests extends NoSQLEntityTests {
+
+    public static final String DATABASE_NAME = "tck";
+
+    static {
+        INSTANCE.get(DATABASE_NAME);
+        System.setProperty(MongoDBDocumentConfigurations.HOST.get() + ".1", INSTANCE.host());
+        System.setProperty(MappingConfigurations.DOCUMENT_DATABASE.get(), DATABASE_NAME);
+    }
+
 }

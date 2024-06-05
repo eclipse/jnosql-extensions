@@ -26,4 +26,4 @@ jobs:
           cache: maven
       - name: Running Jakarta Data TCK tests
         # TODO start and stop mongo container
-        run: mvn test --file jnosql-data-tck-runner/pom.xml -Djnosql.document.database=mongodb -Djnosql.mongodb.host=localhost:27017
+        run: mvn test --file jnosql-data-tck-runner/pom.xml
