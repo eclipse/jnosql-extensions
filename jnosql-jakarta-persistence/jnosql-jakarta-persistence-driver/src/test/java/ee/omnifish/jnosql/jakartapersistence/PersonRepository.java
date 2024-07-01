@@ -17,11 +17,13 @@ package ee.omnifish.jnosql.jakartapersistence;
 import jakarta.data.repository.CrudRepository;
 import jakarta.data.repository.Repository;
 import java.util.List;
+import java.util.Set;
 
 @Repository
 public interface PersonRepository extends CrudRepository<Person, String> {
     long countAll();
     long countByNameNotNull();
     List<Person> findByNameAndAgeLessThanEqual(String name, long age);
+    List<Person> findByNameIn(Set<String> names);
 }
 

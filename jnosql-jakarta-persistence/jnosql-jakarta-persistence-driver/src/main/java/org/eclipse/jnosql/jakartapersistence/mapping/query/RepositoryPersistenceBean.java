@@ -21,7 +21,6 @@ import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.DatabaseType;
 import org.eclipse.jnosql.mapping.core.spi.AbstractBean;
 import org.eclipse.jnosql.mapping.core.util.AnnotationLiteralUtil;
-import org.eclipse.jnosql.mapping.semistructured.query.SemiStructuredRepositoryProxy;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Proxy;
@@ -82,7 +81,7 @@ public class RepositoryPersistenceBean<T extends DataRepository<T, ?>> extends A
 
         Converters converters = getInstance(Converters.class);
 
-        var handler = new SemiStructuredRepositoryProxy<>(template,
+        var handler = new JakartaPersistenceRepositoryProxy<>(template,
                 entities, type, converters);
         return (T) Proxy.newProxyInstance(type.getClassLoader(),
                 new Class[]{type},

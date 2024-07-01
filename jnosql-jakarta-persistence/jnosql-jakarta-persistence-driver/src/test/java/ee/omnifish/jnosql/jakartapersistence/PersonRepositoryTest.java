@@ -18,12 +18,14 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.greaterThan;
+import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.not;
 
 import jakarta.enterprise.inject.se.SeContainer;
 import jakarta.enterprise.inject.se.SeContainerInitializer;
 import jakarta.persistence.EntityManager;
 import java.util.List;
+import java.util.Set;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -40,6 +42,12 @@ public class PersonRepositoryTest {
                 .initialize();
         assertThat("repository can be resolved", cdiContainer.select(PersonRepository.class).isResolvable());
         personRepo = cdiContainer.select(PersonRepository.class).get();
+
+        // cleanup
+        getEntityManager().getTransaction().begin();
+        getEntityManager().createQuery("delete from Person p").executeUpdate();
+        getEntityManager().getTransaction().commit();
+
         getEntityManager().getTransaction().begin();
     }
 
@@ -69,23 +77,55 @@ public class PersonRepositoryTest {
 
     @Test
     void countByNotNull() {
-        final Person person = new Person();
-        person.setName("Jakarta");
-        personRepo.insert(person);
+        new PersonBuilder().name("Jakarta").insert(personRepo);
         final long count = personRepo.countByNameNotNull();
         assertThat(count, greaterThan(0L));
     }
 
     @Test
     void findByXAndYLessThanEqual() {
-        final Person person = new Person();
         final String NAME = "Jakarta";
-        person.setName(NAME);
-        person.setAge(35);
-        personRepo.insert(person);
+        new PersonBuilder().name(NAME).age(35).insert(personRepo);
 
         final List<Person> persons = personRepo.findByNameAndAgeLessThanEqual(NAME, 50);
         assertThat(persons, is(not(empty())));
+    }
+
+    @Test
+    void findByXIn() {
+        final String NAME1 = "Jakarta";
+        final String NAME2 = "JNoSQL";
+        final String NAME3 = "Data";
+        new PersonBuilder().name(NAME1).insert(personRepo);
+        new PersonBuilder().name(NAME2).insert(personRepo);
+        new PersonBuilder().name(NAME3).insert(personRepo);
+        new PersonBuilder().name("No name").insert(personRepo);
+
+        final List<Person> persons = personRepo.findByNameIn(Set.of(NAME1, NAME2, NAME3));
+        assertThat(persons, hasSize(3));
+    }
+
+    private class PersonBuilder {
+
+        Person p = new Person();
+
+        public PersonBuilder name(String name) {
+            p.setName(name);
+            return this;
+        }
+
+        public PersonBuilder age(long age) {
+            p.setAge(age);
+            return this;
+        }
+
+        public Person build() {
+            return p;
+        }
+
+        public void insert(PersonRepository personRepo) {
+            personRepo.insert(p);
+        }
     }
 
 }

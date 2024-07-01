@@ -28,6 +28,7 @@ import org.jboss.weld.junit5.auto.EnableAutoWeld;
 
 import org.eclipse.jnosql.jakartapersistence.communication.PersistenceDatabaseManager;
 import org.eclipse.jnosql.jakartapersistence.mapping.PersistenceDocumentTemplate;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 @EnableAutoWeld
@@ -39,5 +40,18 @@ import org.junit.jupiter.api.extension.ExtendWith;
 @AddPackages({JNoSqlEntityTests.class, EntityTests.class})
 @ExtendWith(TransactionExtension.class)
 public class JNoSqlEntityTests extends EntityTests {
+
+    @Override
+    @Test
+    public void testIn() {
+        super.testIn();
+    }
+
+    @Override
+    @Test
+    public void testFindList() {
+        super.testFindList();
+    }
+
 
 }
