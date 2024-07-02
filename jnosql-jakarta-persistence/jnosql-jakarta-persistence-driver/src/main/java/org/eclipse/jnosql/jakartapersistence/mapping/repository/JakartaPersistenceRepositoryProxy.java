@@ -13,7 +13,7 @@
  *
  *  Ondro Mihalyi
  */
-package org.eclipse.jnosql.jakartapersistence.mapping.query;
+package org.eclipse.jnosql.jakartapersistence.mapping.repository;
 
 import org.eclipse.jnosql.jakartapersistence.mapping.PersistenceDocumentTemplate;
 import org.eclipse.jnosql.mapping.core.Converters;

@@ -12,7 +12,7 @@
  *
  *   Otavio Santana
  */
-package org.eclipse.jnosql.jakartapersistence.mapping.query;
+package org.eclipse.jnosql.jakartapersistence.mapping.repository;
 
 import org.eclipse.jnosql.jakartapersistence.mapping.PersistenceDocumentTemplate;
 import jakarta.data.repository.DataRepository;

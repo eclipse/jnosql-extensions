@@ -17,18 +17,12 @@ package org.eclipse.jnosql.jakartapersistence.communication;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.TypedQuery;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
 import jakarta.persistence.metamodel.EntityType;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.stream.Stream;
-import org.eclipse.jnosql.communication.Value;
-import org.eclipse.jnosql.communication.semistructured.CommunicationEntity;
-import org.eclipse.jnosql.communication.semistructured.Element;
-import org.eclipse.jnosql.communication.semistructured.SelectQuery;
 
 @ApplicationScoped
 public class PersistenceDatabaseManager {
@@ -36,6 +30,9 @@ public class PersistenceDatabaseManager {
     private final EntityManager em;
 
     private final Map<String, EntityType<?>> entityTypesByName = new HashMap<>();
+
+    record QueryContext<FROM, RESULT>(CriteriaQuery<RESULT> query, Root<FROM> root, CriteriaBuilder builder) {
+    }
 
     @Inject
     public PersistenceDatabaseManager(EntityManager em) {
@@ -49,20 +46,6 @@ public class PersistenceDatabaseManager {
 
     public EntityManager getEntityManager() {
         return em;
-    }
-
-    public Stream<CommunicationEntity> select(SelectQuery sq) {
-        final String entityName = sq.name();
-        final EntityType<?> entityType = findEntityType(entityName);
-        final CriteriaQuery<Object> criteriaQuery = em.getCriteriaBuilder().createQuery();
-        final Root<?> from = criteriaQuery.from(entityType.getJavaType());
-        criteriaQuery.select(from);
-
-        final TypedQuery<Object> query = em.createQuery(criteriaQuery);
-        return query.getResultStream()
-                .map(persistenceEntity -> CommunicationEntity.of(entityName, List.of(
-                        Element.of("1", Value.of(persistenceEntity))
-                )));
     }
 
     public void close() {

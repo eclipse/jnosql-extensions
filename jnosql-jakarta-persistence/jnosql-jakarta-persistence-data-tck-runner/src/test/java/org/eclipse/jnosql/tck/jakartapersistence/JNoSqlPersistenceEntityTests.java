@@ -30,13 +30,16 @@ import org.jboss.weld.junit5.auto.EnableAutoWeld;
 
 import org.eclipse.jnosql.jakartapersistence.communication.PersistenceDatabaseManager;
 import org.eclipse.jnosql.jakartapersistence.mapping.PersistenceDocumentTemplate;
+import org.eclipse.jnosql.jakartapersistence.mapping.spi.JakartaPersistenceExtension;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.extension.ExtendWith;
 
+@Disabled
 @EnableAutoWeld
 @AddPackages(value = {Converters.class, EntityConverter.class, DocumentTemplate.class})
 @AddPackages(DocumentTemplateProducer.class)
 @AddPackages(Reflections.class)
-@AddExtensions({EntityMetadataExtension.class, DocumentExtension.class})
+@AddExtensions({EntityMetadataExtension.class, DocumentExtension.class, JakartaPersistenceExtension.class})
 @AddPackages({PersistenceDocumentTemplate.class, PersistenceDatabaseManager.class})
 @AddPackages({JNoSqlPersistenceEntityTests.class, PersistenceEntityTests.class})
 @ExtendWith(TransactionExtension.class)

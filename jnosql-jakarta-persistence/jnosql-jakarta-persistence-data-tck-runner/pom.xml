@@ -48,7 +48,8 @@
         <targetDirectory>${project.basedir}/target</targetDirectory>
 
         <!-- Dependency versions -->
-        <jakarta.data.version>1.0.0-RC1</jakarta.data.version>
+        <jakarta.data.version>1.0.0</jakarta.data.version>
+        <jakarta.data.tck.version>1.0.1</jakarta.data.tck.version>
         <jakarta.servlet.version>6.1.0</jakarta.servlet.version>
         <jakarta.enterprise.cdi.version>4.1.0</jakarta.enterprise.cdi.version>
 
@@ -85,7 +86,7 @@
         <dependency>
             <groupId>jakarta.data</groupId>
             <artifactId>jakarta.data-tck</artifactId>
-            <version>${jakarta.data.version}</version>
+            <version>${jakarta.data.tck.version}</version>
         </dependency>
         <!-- api - data -->
         <dependency>
