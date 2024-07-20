@@ -49,7 +49,7 @@
 		<targetDirectory>${project.basedir}/target</targetDirectory>
 
 		<!-- Dependency versions -->
-		<jakarta.data.version>1.0.0-RC1</jakarta.data.version>
+		<jakarta.data.version>1.0.1-SNAPSHOT</jakarta.data.version>
 		<jakarta.servlet.version>6.1.0</jakarta.servlet.version>
 		<jakarta.enterprise.cdi.version>4.1.0</jakarta.enterprise.cdi.version>
 
@@ -180,6 +180,7 @@
 							${project.build.directory}/dependency/jakarta.data-api-${jakarta.data.api.version}.jar
 						</signature.sigTestClasspath>
 						<jakarta.tck.skip.deployment>true</jakarta.tck.skip.deployment>
+						<jakarta.tck.database.type>DOCUMENT</jakarta.tck.database.type>
 					</systemPropertyVariables>
 					<groups>${included.groups}</groups>
 					<reportNameSuffix>standalone</reportNameSuffix>
