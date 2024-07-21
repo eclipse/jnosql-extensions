@@ -45,16 +45,19 @@ public class PersistenceDocumentTemplate implements DocumentTemplate {
 
     private final PersistenceDatabaseManager manager;
     private final SelectQueryParser selectParser;
+    private final DeleteQueryParser deleteParser;
 
     @Inject
     PersistenceDocumentTemplate(PersistenceDatabaseManager manager) {
         this.manager = manager;
         this.selectParser = new SelectQueryParser(manager);
+        this.deleteParser = new DeleteQueryParser(manager);
     }
 
     PersistenceDocumentTemplate() {
         manager = null;
         selectParser = null;
+        deleteParser = null;
     }
 
     private EntityManager entityManager() {
@@ -178,8 +181,8 @@ public class PersistenceDocumentTemplate implements DocumentTemplate {
     }
 
     @Override
-    public <T, K> void delete(Class<T> type, K k) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public <T, K> void delete(Class<T> type, K key) {
+        deleteParser.delete(type, key);
     }
 
     @Override

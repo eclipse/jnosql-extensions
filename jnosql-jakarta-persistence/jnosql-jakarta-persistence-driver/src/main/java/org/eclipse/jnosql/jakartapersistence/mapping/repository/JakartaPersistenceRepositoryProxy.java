@@ -15,6 +15,7 @@
  */
 package org.eclipse.jnosql.jakartapersistence.mapping.repository;
 
+import java.lang.reflect.Method;
 import org.eclipse.jnosql.jakartapersistence.mapping.PersistenceDocumentTemplate;
 import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
@@ -24,6 +25,13 @@ public class JakartaPersistenceRepositoryProxy<T,K> extends SemiStructuredReposi
 
     public JakartaPersistenceRepositoryProxy(PersistenceDocumentTemplate template, EntitiesMetadata entities, Class<?> repositoryType, Converters converters) {
         super(template, entities, repositoryType, converters);
+    }
+
+    @Override
+    protected Object executeCursorPagination(Object instance, Method method, Object[] params) {
+        // We need to override this because SemiStructuredRepositoryProxy
+        // expects the semistructured.PreparedStatement template
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
 }

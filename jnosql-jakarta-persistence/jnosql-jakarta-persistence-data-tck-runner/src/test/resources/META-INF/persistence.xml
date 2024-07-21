@@ -30,7 +30,7 @@
       <!-- Common properties -->
       <property name="jakarta.persistence.jdbc.driver" value="org.apache.derby.jdbc.ClientDataSource"/>
       <!-- In-memory transient DB -->
-      <property name="jakarta.persistence.jdbc.url" value="jdbc:derby:target/derbydb/test-jpa;create=true"/>
+      <property name="jakarta.persistence.jdbc.url" value="jdbc:derby:memory:test-jpa;create=true"/>
       <!-- Embedded DB persisted to filesystem -->
       <!--<property name="jakarta.persistence.jdbc.url" value="jdbc:derby:target/derbydb/test-jpa;create=true"/>-->
       <property name="jakarta.persistence.jdbc.user" value="APP"/>

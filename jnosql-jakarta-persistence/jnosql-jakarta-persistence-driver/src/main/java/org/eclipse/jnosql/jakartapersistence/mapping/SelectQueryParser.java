@@ -35,24 +35,14 @@ import org.eclipse.jnosql.communication.semistructured.Element;
 import org.eclipse.jnosql.communication.semistructured.SelectQuery;
 import org.eclipse.jnosql.jakartapersistence.communication.PersistenceDatabaseManager;
 
-public class SelectQueryParser {
-
-    private final PersistenceDatabaseManager manager;
+class SelectQueryParser extends BaseQueryParser {
 
     record QueryContext<FROM, RESULT>(CriteriaQuery<RESULT> query, Root<FROM> root, CriteriaBuilder builder) {
 
     }
 
     public SelectQueryParser(PersistenceDatabaseManager manager) {
-        this.manager = manager;
-    }
-
-    private <T> EntityType<T> findEntityType(String entityName) {
-        return manager.findEntityType(entityName);
-    }
-
-    private EntityManager entityManager() {
-        return manager.getEntityManager();
+        super(manager);
     }
 
     public long count(String entity) {

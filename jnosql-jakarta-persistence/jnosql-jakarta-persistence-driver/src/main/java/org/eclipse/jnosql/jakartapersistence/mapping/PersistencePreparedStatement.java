@@ -19,6 +19,7 @@ import jakarta.persistence.Query;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import org.eclipse.jnosql.mapping.PreparedStatement;
 
@@ -49,7 +50,13 @@ class PersistencePreparedStatement implements PreparedStatement {
 
     @Override
     public <T> Stream<T> result() {
-        return createQuery().getResultStream();
+        Query query = createQuery();
+        try {
+            return query.getResultStream();
+        } catch (IllegalStateException e) {
+            return IntStream.rangeClosed(1, query.executeUpdate())
+                    .mapToObj(i -> (T)Integer.valueOf(i));
+        }
     }
 
     @Override

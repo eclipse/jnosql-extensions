@@ -105,6 +105,11 @@ public class PersonRepositoryTest {
         assertThat(persons, hasSize(3));
     }
 
+    @Test
+    void hermesParser() {
+        getEntityManager().createQuery("UPDATE Person SET length = age + 1");
+    }
+
     private class PersonBuilder {
 
         Person p = new Person();
