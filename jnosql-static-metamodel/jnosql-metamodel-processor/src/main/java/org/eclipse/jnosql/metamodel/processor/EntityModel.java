@@ -70,15 +70,15 @@ final class EntityModel extends BaseMappingModel {
     }
 
     public boolean containsStringAttribute() {
-        return true;
+        return this.fields.stream().anyMatch(FieldModel::isStringAttribute);
     }
 
     public boolean containsBooleanAttribute() {
-        return true;
+        return this.fields.stream().anyMatch(FieldModel::isBooleanAttribute);
     }
 
     public boolean containsCriteriaAttribute() {
-        return true;
+        return this.fields.stream().anyMatch(FieldModel::isCriteriaAttribute);
     }
 
     @Override
