@@ -69,6 +69,18 @@ final class EntityModel extends BaseMappingModel {
         return superClass;
     }
 
+    public boolean containsStringAttribute() {
+        return true;
+    }
+
+    public boolean containsBooleanAttribute() {
+        return true;
+    }
+
+    public boolean containsCriteriaAttribute() {
+        return true;
+    }
+
     @Override
     public String toString() {
         return "EntityModel{" +

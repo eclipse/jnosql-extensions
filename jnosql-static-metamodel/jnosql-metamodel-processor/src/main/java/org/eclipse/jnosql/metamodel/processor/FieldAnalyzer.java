@@ -187,9 +187,9 @@ class FieldAnalyzer implements Supplier<List<FieldModel>> {
 
     private String className(String className) {
         return switch (className) {
-            case "java.lang.String" -> "org.eclipse.jnosql.mapping.semistructured.metamodel.attributes.StringAttribute";
-            case "java.lang.Boolean", "boolean" -> "org.eclipse.jnosql.mapping.semistructured.metamodel.attributes.BooleanAttribute";
-            default -> "org.eclipse.jnosql.mapping.semistructured.metamodel.attributes.CriteriaAttribute";
+            case "java.lang.String" -> "StringAttribute";
+            case "java.lang.Boolean", "boolean" -> "BooleanAttribute";
+            default -> "CriteriaAttribute";
         };
     }
 
