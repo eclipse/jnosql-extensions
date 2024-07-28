@@ -27,7 +27,7 @@ public interface {{className}} {
         {{/fields}}
    
         {{#fields}}
-        {{className}}<{{entity}}> {{fieldName}} = new org.eclipse.jnosql.metamodel.NoSQLAttribute<>({{constantName}});
+        {{className}}<{{entity}}> {{fieldName}} = new org.eclipse.jnosql.metamodel.attributes.NoSQLAttribute<>({{constantName}});
         {{/fields}}
 
 }

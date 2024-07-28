@@ -16,11 +16,9 @@ package org.eclipse.jnsoql.entities;
 
 import jakarta.data.Sort;
 import org.assertj.core.api.SoftAssertions;
-import org.eclipse.jnosql.metamodel.BooleanAttribute;
-import org.eclipse.jnosql.metamodel.StringAttribute;
+import org.eclipse.jnosql.metamodel.attributes.BooleanAttribute;
+import org.eclipse.jnosql.metamodel.attributes.StringAttribute;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class FruitTest {
 

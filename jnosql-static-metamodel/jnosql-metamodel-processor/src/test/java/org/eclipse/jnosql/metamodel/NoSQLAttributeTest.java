@@ -15,8 +15,8 @@
 package org.eclipse.jnosql.metamodel;
 
 import jakarta.data.Sort;
-import org.assertj.core.api.Assertions;
 import org.eclipse.jnosql.communication.semistructured.CriteriaCondition;
+import org.eclipse.jnosql.metamodel.attributes.NoSQLAttribute;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -24,7 +24,6 @@ import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
 
 class NoSQLAttributeTest {
 
