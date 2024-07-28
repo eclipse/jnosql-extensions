@@ -12,7 +12,7 @@
  *
  *   Otavio Santana
  */
-package org.eclipse.jnosql.metamodel;
+package org.eclipse.jnosql.metamodel.attributes;
 
 import jakarta.data.Sort;
 import org.eclipse.jnosql.communication.semistructured.CriteriaCondition;

@@ -18,7 +18,6 @@ import jakarta.nosql.Column;
 import jakarta.nosql.Id;
 
 import javax.annotation.processing.AbstractProcessor;
-import javax.annotation.processing.Filer;
 import javax.annotation.processing.RoundEnvironment;
 import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.annotation.processing.SupportedSourceVersion;
@@ -27,12 +26,8 @@ import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.TypeElement;
 import javax.tools.Diagnostic;
-import javax.tools.FileObject;
-import javax.tools.StandardLocation;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.nio.charset.StandardCharsets;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -68,21 +63,19 @@ public class EntityProcessor extends AbstractProcessor {
                     .map(ClassAnalyzer::get)
                     .filter(IS_NOT_BLANK).forEach(entities::add);
         }
-        LOGGER.info("Entities generated: " + entities);
+
+      try {
+            if (!entities.isEmpty()) {
+                LOGGER.info("Appending the metadata interfaces");
+                MetadataAppender.append(processingEnv);
+                LOGGER.info("Entities generated: " + entities);
+            }
+        } catch (IOException | URISyntaxException exception) {
+            error(exception);
+        }
+
         return false;
     }
-
-
-
-    private void createResource(String reference, String implementation) throws IOException {
-        Filer filer = processingEnv.getFiler();
-        FileObject file = filer.createResource(StandardLocation.CLASS_OUTPUT, "",
-                "META-INF/services/" + reference);
-        PrintWriter pw = new PrintWriter(new OutputStreamWriter(file.openOutputStream(), StandardCharsets.UTF_8));
-        pw.println(implementation);
-        pw.close();
-    }
-
 
     private void error(Exception exception) {
         processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR, "failed to write extension file: "

@@ -66,13 +66,32 @@
                             <goal>copy-resources</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>${basedir}/target/classes/metadata/</outputDirectory>
+                            <outputDirectory>${basedir}/target/classes/attributes/</outputDirectory>
                             <resources>
                                 <resource>
-                                    <directory>src/main/java/org/eclipse/jnosql/metamodel/</directory>
+                                    <directory>src/main/java/org/eclipse/jnosql/metamodel/attributes/</directory>
                                     <filtering>true</filtering>
                                 </resource>
                             </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>3.6.0</version>
+                <executions>
+                    <execution>
+                        <id>add-source</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>add-source</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>${project.build.directory}/generated-sources/annotations</source>
+                            </sources>
                         </configuration>
                     </execution>
                 </executions>
