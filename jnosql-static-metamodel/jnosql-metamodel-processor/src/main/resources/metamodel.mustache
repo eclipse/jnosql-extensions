@@ -16,6 +16,7 @@ package {{packageName}};
 
 import jakarta.data.metamodel.StaticMetamodel;
 import javax.annotation.processing.Generated;
+import org.eclipse.jnosql.mapping.semistructured.metamodel.attributes.NoSQLAttribute;
 
 //CHECKSTYLE:OFF
 @StaticMetamodel({{entity}}.class)
@@ -27,7 +28,7 @@ public interface {{className}} {
         {{/fields}}
    
         {{#fields}}
-        {{className}}<{{entity}}> {{fieldName}} = new org.eclipse.jnosql.metamodel.NoSQLAttribute<>({{constantName}});
+        {{className}}<{{entity}}> {{fieldName}} = new NoSQLAttribute<>({{constantName}});
         {{/fields}}
 
 }
