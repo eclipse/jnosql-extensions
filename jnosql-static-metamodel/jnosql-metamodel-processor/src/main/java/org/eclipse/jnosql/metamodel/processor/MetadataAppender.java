@@ -86,20 +86,21 @@ final class MetadataAppender {
     }
 
     private void loadClass(String file) {
+        LOGGER.fine("Loading the class: " + file);
         try {
-            LOGGER.fine("Loading the class: " + file);
-
             Filer filer = processingEnv.getFiler();
             JavaFileObject fileObject = filer.createSourceFile(PACKAGE + file);
-            try (Writer writer = fileObject.openWriter()) {
-                final InputStream stream = MetadataAppender.class
-                        .getClassLoader()
-                        .getResourceAsStream(METADATA + "/" + file + ".java");
-                String source = new BufferedReader(new InputStreamReader(stream, StandardCharsets.UTF_8)).lines()
-                        .collect(Collectors.joining("\n"));
+            try (Writer writer = fileObject.openWriter();
+                 InputStream stream = MetadataAppender.class
+                         .getClassLoader()
+                         .getResourceAsStream(METADATA + "/" + file + ".java");
+                 BufferedReader reader = new BufferedReader(new InputStreamReader(stream, StandardCharsets.UTF_8))) {
+                Objects.requireNonNull(stream, "Resource stream for " + file + " is null");
+                String source = reader.lines().collect(Collectors.joining("\n"));
                 writer.append(source);
             }
         } catch (IOException exp) {
+            LOGGER.severe("Error writing the class: " + file + " - " + exp.getMessage());
             throw new MappingException("There is an issue while it is loading the class: " + file, exp);
         }
     }
