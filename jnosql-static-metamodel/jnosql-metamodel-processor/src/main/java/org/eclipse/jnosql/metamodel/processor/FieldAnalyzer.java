@@ -34,6 +34,7 @@ import java.util.function.Supplier;
 
 class FieldAnalyzer implements Supplier<List<FieldModel>> {
 
+
     private final Element field;
     private final ProcessingEnvironment processingEnv;
     private final TypeElement entity;
@@ -187,9 +188,9 @@ class FieldAnalyzer implements Supplier<List<FieldModel>> {
 
     private String className(String className) {
         return switch (className) {
-            case "java.lang.String" -> "org.eclipse.jnosql.metamodel.StringAttribute";
-            case "java.lang.Boolean", "boolean" -> "org.eclipse.jnosql.metamodel.BooleanAttribute";
-            default -> "org.eclipse.jnosql.metamodel.CriteriaAttribute";
+            case "java.lang.String" -> FieldModel.STRING_ATTRIBUTE;
+            case "java.lang.Boolean", "boolean" -> FieldModel.BOOLEAN_ATTRIBUTE;
+            default -> FieldModel.CRITERIA_ATTRIBUTE;
         };
     }
 
