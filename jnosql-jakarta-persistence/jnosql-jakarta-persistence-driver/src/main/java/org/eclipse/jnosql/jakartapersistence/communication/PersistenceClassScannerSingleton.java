@@ -16,9 +16,6 @@
 package org.eclipse.jnosql.jakartapersistence.communication;
 
 
-import static java.util.Collections.unmodifiableSet;
-import static java.util.stream.Collectors.toUnmodifiableSet;
-
 import io.github.classgraph.ClassGraph;
 import io.github.classgraph.ScanResult;
 import jakarta.data.repository.BasicRepository;
@@ -28,6 +25,7 @@ import jakarta.data.repository.Repository;
 import jakarta.nosql.Embeddable;
 import jakarta.nosql.Entity;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
@@ -77,18 +75,18 @@ enum PersistenceClassScannerSingleton implements ClassScanner {
 
     @Override
     public Set<Class<?>> entities() {
-        return unmodifiableSet(entities);
+        return Collections.unmodifiableSet(entities);
     }
 
   @Override
     public Set<Class<?>> repositories() {
-        return unmodifiableSet(repositories);
+        return Collections.unmodifiableSet(repositories);
     }
 
 
    @Override
     public Set<Class<?>> embeddables() {
-        return unmodifiableSet(embeddables);
+        return Collections.unmodifiableSet(embeddables);
     }
 
     @Override
@@ -96,7 +94,7 @@ enum PersistenceClassScannerSingleton implements ClassScanner {
         Objects.requireNonNull(filter, "filter is required");
         return repositories.stream().filter(filter::isAssignableFrom)
                 .filter(c -> Arrays.asList(c.getInterfaces()).contains(filter))
-                .collect(toUnmodifiableSet());
+                .collect(Collectors.toUnmodifiableSet());
     }
 
 
