@@ -359,6 +359,10 @@ The Criteria API can be used via CriteriaDocumentTemplate.
   </dependency>
 ----
 
+== Driver for Jakarta Persistence entities
+
+Provides a driver for Eclipse JNoSQL that supports Jakarta Persistence entities over a Jakarta Persistence provider. This project also contains a runner for the Jakarta Data TCK.
+
 == TCK Runners
 
 The Eclipse JNoSQL project provides Technology Compatibility Kit (TCK) runners for Jakarta Data. These runners allow you to run the TCK tests against the Eclipse JNoSQL implementation to verify its compatibility with the Jakarta Data specifications.

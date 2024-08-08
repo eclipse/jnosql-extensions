@@ -1,0 +1,17 @@
+= Jakarta Data TCK Eclipse JNoSQL Implementation via Jakarta Persistence
+:toc: auto
+
+This project runs the Jakarta Data Technology Compatibility Kit (TCK) on standalone mode with Eclipse JNoSQL with the Jakarta Persistence connector. It uses EclipseLink and Derby DB as an implementation for Jakarta Persistence. Before running this project it is recommended to read the documentation located in the base link:https://github.com/jakartaee/data/blob/main/tck-dist/src/main/asciidoc/data-tck-reference-guide.adoc[TCK distribution project, _target=_blank].
+
+== Overview
+
+This project is configured specifically to allow the feature developers to run the TCK against the Eclipse JNoSQL implementation with the Jakarta Persistence backend.
+
+== Running the TCK for Verification
+
+Run the following command to execute the TCK:
+
+[source,shell]
+----
+mvn clean test -B
+----

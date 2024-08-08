@@ -1,0 +1,52 @@
+= Eclipse JNoSQL driver for Jakarta Persistence
+:toc: auto
+
+This project provides a driver for Eclipse JNoSQL that supports Jakarta Persistence entities over a Jakarta Persistence provider.
+
+Sub projects:
+
+* link:jnosql-jakarta-persistence-driver[Jakarta Persistence Driver] - the actual implementation
+* link:jnosql-jakarta-persistence-data-tck-runner[Jakarta Data TCK Runner] - the project to run the Jakarta Data TCK
+
+=== How To Install
+
+You can use either the Maven or Gradle dependencies:
+
+[source,xml]
+----
+<dependency>
+  <groupId>org.eclipse.jnosql.mapping</groupId>
+  <artifactId>jnosql-jakarta-persistence</artifactId>
+</dependency>
+----
+
+Then you need to provide an EntityManager instance using a CDI producer, e.g.:
+
+[source,java]
+----
+@ApplicationScoped
+public class EntityManagerProducer {
+    @Produces
+    @ApplicationScoped
+    public EntityManager createEntityManager() {
+        return Persistence.createEntityManagerFactory("testPersistenceUnit")
+                .createEntityManager();
+    }
+
+    public void closeEntityManager(@Disposes EntityManager entityManager) {
+        entityManager.close();
+    }
+}
+----
+
+Then you need to configure the persistence unit ("testPersistenceUnit") via standard Jakarta Persistence means, e.g.:
+
+[source,xml]
+----
+<persistence xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd" version="2.0">
+  <persistence-unit name="testPersistenceUnit" transaction-type="RESOURCE_LOCAL">
+     ... custom configuration ...
+  </persistence-unit>
+</persistence>
+
+For an example configuration, with EclipseLink and DerbyDB, look into the test setup of the link:jnosql-jakarta-persistence-connector[Jakarta Persistence Connector] project.

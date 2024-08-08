@@ -1,0 +1,4 @@
+= Eclipse JNoSQL driver implementation for Jakarta Persistence
+:toc: auto
+
+This project provides a driver for Eclipse JNoSQL that supports Jakarta Persistence entities over a Jakarta Persistence provider.
