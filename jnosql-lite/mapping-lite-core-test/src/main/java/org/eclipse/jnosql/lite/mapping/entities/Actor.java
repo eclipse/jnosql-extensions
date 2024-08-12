@@ -29,9 +29,6 @@ public class Actor extends Person {
     @Column
     private Map<String, String> movieCharacter;
 
-    @Column
-    private Map<String, Integer> movieRating;
-
 
     Actor() {
     }
@@ -40,15 +37,8 @@ public class Actor extends Person {
         return movieCharacter;
     }
 
-    public Map<String, Integer> getMovieRating() {
-        return movieRating;
-    }
-
     public void setMovieCharacter(Map<String, String> movieCharacter) {
         this.movieCharacter = movieCharacter;
     }
 
-    public void setMovieRating(Map<String, Integer> movieRating) {
-        this.movieRating = movieRating;
-    }
 }

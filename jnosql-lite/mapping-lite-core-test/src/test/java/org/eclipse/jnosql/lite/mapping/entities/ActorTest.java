@@ -42,27 +42,27 @@ public class ActorTest {
     @BeforeEach
     public void setUp() {
         this.mappings = new LiteEntitiesMetadata();
-        this.entityMetadata = this.mappings.get(Person.class);
+        this.entityMetadata = this.mappings.get(Actor.class);
     }
 
     @Test
     void shouldGetName() {
-        Assertions.assertEquals("Person", entityMetadata.name());
+        Assertions.assertEquals("Actor", entityMetadata.name());
     }
 
     @Test
     void shouldGetSimpleName() {
-        Assertions.assertEquals(Person.class.getSimpleName(), entityMetadata.simpleName());
+        Assertions.assertEquals(Actor.class.getSimpleName(), entityMetadata.simpleName());
     }
 
     @Test
     void shouldGetClassName() {
-        Assertions.assertEquals(Person.class.getSimpleName(), entityMetadata.simpleName());
+        Assertions.assertEquals(Actor.class.getSimpleName(), entityMetadata.simpleName());
     }
 
     @Test
     void shouldGetClassInstance() {
-        Assertions.assertEquals(Person.class, entityMetadata.type());
+        Assertions.assertEquals(Actor.class, entityMetadata.type());
     }
 
     @Test
@@ -81,12 +81,13 @@ public class ActorTest {
     @Test
     void shouldGetFieldsName() {
         List<String> fields = entityMetadata.fieldsName();
-        Assertions.assertEquals(5, fields.size());
+        Assertions.assertEquals(6, fields.size());
         Assertions.assertTrue(fields.contains("id"));
         Assertions.assertTrue(fields.contains("username"));
         Assertions.assertTrue(fields.contains("email"));
         Assertions.assertTrue(fields.contains("contacts"));
         Assertions.assertTrue(fields.contains("pet"));
+        Assertions.assertTrue(fields.contains("movieCharacter"));
     }
 
     @Test
@@ -103,15 +104,15 @@ public class ActorTest {
     @Test
     void shouldGetter() {
         Map<String, FieldMetadata> groupByName = this.entityMetadata.fieldsGroupByName();
-        Person person = new Person();
-        person.setId(1L);
-        person.setUsername("otaviojava");
-        person.setEmail("otavio@java.com");
-        person.setContacts(List.of("Poliana", "Maria"));
+        Actor actor = new Actor();
+        actor.setId(1L);
+        actor.setUsername("otaviojava");
+        actor.setEmail("otavio@java.com");
+        actor.setContacts(List.of("Poliana", "Maria"));
         Animal ada = new Animal();
         ada.setName("Ada");
         ada.setColor("black");
-        person.setPet(ada);
+        actor.setPet(ada);
 
         FieldMetadata id = groupByName.get("_id");
         FieldMetadata username = groupByName.get("native");
@@ -119,17 +120,17 @@ public class ActorTest {
         FieldMetadata contacts = groupByName.get("contacts");
         FieldMetadata pet = groupByName.get("pet");
 
-        Assertions.assertEquals(1L, id.read(person));
-        Assertions.assertEquals("otaviojava", username.read(person));
-        Assertions.assertEquals("otavio@java.com", email.read(person));
-        Assertions.assertEquals(List.of("Poliana", "Maria"), contacts.read(person));
-        Assertions.assertEquals(ada, pet.read(person));
+        Assertions.assertEquals(1L, id.read(actor));
+        Assertions.assertEquals("otaviojava", username.read(actor));
+        Assertions.assertEquals("otavio@java.com", email.read(actor));
+        Assertions.assertEquals(List.of("Poliana", "Maria"), contacts.read(actor));
+        Assertions.assertEquals(ada, pet.read(actor));
     }
 
     @Test
     void shouldSetter() {
         Map<String, FieldMetadata> groupByName = this.entityMetadata.fieldsGroupByName();
-        Person person = new Person();
+        Actor actor = new Actor();
         Animal ada = new Animal();
         ada.setName("Ada");
         ada.setColor("black");
@@ -140,17 +141,17 @@ public class ActorTest {
         FieldMetadata contacts = groupByName.get("contacts");
         FieldMetadata pet = groupByName.get("pet");
 
-        id.write(person, 1L);
-        username.write(person, "otaviojava");
-        email.write(person, "otavio@java.com");
-        contacts.write(person, List.of("Poliana", "Maria"));
-        pet.write(person, ada);
+        id.write(actor, 1L);
+        username.write(actor, "otaviojava");
+        email.write(actor, "otavio@java.com");
+        contacts.write(actor, List.of("Poliana", "Maria"));
+        pet.write(actor, ada);
 
-        Assertions.assertEquals(1L, id.read(person));
-        Assertions.assertEquals("otaviojava", username.read(person));
-        Assertions.assertEquals("otavio@java.com", email.read(person));
-        Assertions.assertEquals(List.of("Poliana", "Maria"), contacts.read(person));
-        Assertions.assertEquals(ada, pet.read(person));
+        Assertions.assertEquals(1L, id.read(actor));
+        Assertions.assertEquals("otaviojava", username.read(actor));
+        Assertions.assertEquals("otavio@java.com", email.read(actor));
+        Assertions.assertEquals(List.of("Poliana", "Maria"), contacts.read(actor));
+        Assertions.assertEquals(ada, pet.read(actor));
     }
 
     @Test
