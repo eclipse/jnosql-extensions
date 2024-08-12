@@ -40,7 +40,7 @@ final class FieldModel extends BaseMappingModel {
     private List<ValueAnnotationModel> valueByAnnotation;
 
     private String elementType;
-
+    private String valueType;
     private boolean embeddable;
 
     private String collectionInstance;
@@ -92,6 +92,9 @@ final class FieldModel extends BaseMappingModel {
         return id;
     }
 
+    public String getValueType() {
+        return valueType;
+    }
 
     public String getConverter() {
         return converter;
@@ -145,6 +148,7 @@ final class FieldModel extends BaseMappingModel {
                 ", typeConverter='" + typeConverter + '\'' +
                 ", valueByAnnotation=" + valueByAnnotation +
                 ", elementType='" + elementType + '\'' +
+                ", valueType='" + valueType + '\'' +
                 ", embeddable=" + embeddable +
                 ", collectionInstance='" + collectionInstance + '\'' +
                 ", supplierElement='" + supplierElement + '\'' +
@@ -246,6 +250,11 @@ final class FieldModel extends BaseMappingModel {
             return this;
         }
 
+        public FieldMetaDataBuilder valueType(String valueType) {
+            this.fieldModel.valueType = valueType;
+            return this;
+        }
+
         public FieldMetaDataBuilder embeddable(boolean embeddable) {
             this.fieldModel.embeddable = embeddable;
             return this;
@@ -262,8 +271,11 @@ final class FieldModel extends BaseMappingModel {
         }
 
 
+
         public FieldModel build() {
            return fieldModel;
         }
+
+
     }
 }

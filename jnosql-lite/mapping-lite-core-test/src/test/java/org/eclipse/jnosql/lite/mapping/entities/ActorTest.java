@@ -15,12 +15,14 @@
 package org.eclipse.jnosql.lite.mapping.entities;
 
 import org.assertj.core.api.SoftAssertions;
+import org.eclipse.jnosql.communication.Value;
 import org.eclipse.jnosql.lite.mapping.metadata.LiteEntitiesMetadata;
 import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 import org.eclipse.jnosql.mapping.metadata.FieldMetadata;
 import org.eclipse.jnosql.mapping.metadata.CollectionFieldMetadata;
 
+import org.eclipse.jnosql.mapping.metadata.MapFieldMetadata;
 import org.eclipse.jnosql.mapping.metadata.MappingType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -179,5 +181,87 @@ public class ActorTest {
         FieldMetadata email = groupByName.get("email");
         Optional<String> value = email.value(CustomAnnotation.class);
         assertThat(value).isNotEmpty().get().isEqualTo("email");
+    }
+
+    @Test
+    void shouldMovieCharacter() {
+        Map<String, FieldMetadata> groupByName = this.entityMetadata.fieldsGroupByName();
+        var movieCharacter = groupByName.get("movieCharacter");
+
+        SoftAssertions.assertSoftly(soft ->{
+            soft.assertThat(movieCharacter).isInstanceOf(MapFieldMetadata.class);
+            var mapFieldMetadata = (MapFieldMetadata) movieCharacter;
+            soft.assertThat(movieCharacter.isId()).isFalse();
+            soft.assertThat(movieCharacter.mappingType()).isEqualTo(MappingType.MAP);
+            soft.assertThat(movieCharacter.fieldName()).isEqualTo("movieCharacter");
+            soft.assertThat(mapFieldMetadata.keyType()).isEqualTo(String.class);
+            soft.assertThat(mapFieldMetadata.valueType()).isEqualTo(Object.class);
+        });
+    }
+
+    @SuppressWarnings("unchecked")
+    @Test
+    void shouldValueMap() {
+        Map<String, FieldMetadata> groupByName = this.entityMetadata.fieldsGroupByName();
+        var movieCharacter = groupByName.get("movieCharacter");
+        var mapFieldMetadata = (MapFieldMetadata) movieCharacter;
+        Object value = mapFieldMetadata.value(Value.of(Map.of("name", "Ada", "color", "black")));
+
+        SoftAssertions.assertSoftly(soft ->{
+            soft.assertThat(value).isInstanceOf(Map.class);
+            Map<String, Object> map = (Map<String, Object>) value;
+            soft.assertThat(map.get("name")).isEqualTo("Ada");
+            soft.assertThat(map.get("color")).isEqualTo("black");
+        });
+    }
+
+    @Test
+    void shouldGetMap() {
+        Actor actor = new Actor();
+        actor.setId(1L);
+        actor.setUsername("otaviojava");
+        actor.setEmail("otavio@java.com");
+        actor.setContacts(List.of("Poliana", "Maria"));
+        Animal ada = new Animal();
+        ada.setName("Ada");
+        ada.setColor("black");
+        actor.setPet(ada);
+        actor.setMovieCharacter(Map.of("name", "Ada", "color", "black"));
+
+        Map<String, FieldMetadata> groupByName = this.entityMetadata.fieldsGroupByName();
+        var movieCharacter = groupByName.get("movieCharacter");
+        var mapFieldMetadata = (MapFieldMetadata) movieCharacter;
+
+        Object value = mapFieldMetadata.read(actor);
+        SoftAssertions.assertSoftly(soft ->{
+            soft.assertThat(value).isInstanceOf(Map.class);
+            Map<String, Object> map = (Map<String, Object>) value;
+            soft.assertThat(map.get("name")).isEqualTo("Ada");
+            soft.assertThat(map.get("color")).isEqualTo("black");
+        });
+    }
+
+    @Test
+    void shouldSetMap() {
+        Actor actor = new Actor();
+        actor.setId(1L);
+        actor.setUsername("otaviojava");
+        actor.setEmail("otavio@java.com");
+        actor.setContacts(List.of("Poliana", "Maria"));
+        Animal ada = new Animal();
+        ada.setName("Ada");
+        ada.setColor("black");
+        actor.setPet(ada);
+
+        Map<String, FieldMetadata> groupByName = this.entityMetadata.fieldsGroupByName();
+        var movieCharacter = groupByName.get("movieCharacter");
+        var mapFieldMetadata = (MapFieldMetadata) movieCharacter;
+
+        mapFieldMetadata.write(actor, Map.of("name", "Ada", "color", "black"));
+        SoftAssertions.assertSoftly(soft ->{
+            Map<String, Object> map = actor.getMovieCharacter();
+            soft.assertThat(map.get("name")).isEqualTo("Ada");
+            soft.assertThat(map.get("color")).isEqualTo("black");
+        });
     }
 }

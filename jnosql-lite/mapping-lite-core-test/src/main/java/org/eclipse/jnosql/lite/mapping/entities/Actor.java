@@ -19,7 +19,6 @@ package org.eclipse.jnosql.lite.mapping.entities;
 import jakarta.nosql.Column;
 import jakarta.nosql.Entity;
 
-import java.util.List;
 import java.util.Map;
 
 
@@ -27,17 +26,17 @@ import java.util.Map;
 public class Actor extends Person {
 
     @Column
-    private Map<String, String> movieCharacter;
+    private Map<String, Object> movieCharacter;
 
 
     Actor() {
     }
 
-    public Map<String, String> getMovieCharacter() {
+    public Map<String, Object> getMovieCharacter() {
         return movieCharacter;
     }
 
-    public void setMovieCharacter(Map<String, String> movieCharacter) {
+    public void setMovieCharacter(Map<String, Object> movieCharacter) {
         this.movieCharacter = movieCharacter;
     }
 
