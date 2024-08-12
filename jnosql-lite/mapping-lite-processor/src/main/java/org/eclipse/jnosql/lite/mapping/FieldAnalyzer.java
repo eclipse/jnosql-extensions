@@ -48,8 +48,8 @@ import java.util.stream.Collectors;
 
 class FieldAnalyzer implements Supplier<String> {
 
-    private static final String DEFAULT_TEMPLATE = "fieldmetadata.mustache";
-    private static final String GENERIC_TEMPLATE = "fieldgenericmetadata.mustache";
+    private static final String DEFAULT_TEMPLATE = "field_metadata.mustache";
+    private static final String GENERIC_TEMPLATE = "field_collection_metadata.mustache";
     private static final Predicate<Element> IS_METHOD = el -> el.getKind() == ElementKind.METHOD;
     private static final Function<Element, String> ELEMENT_TO_STRING = el -> el.getSimpleName().toString();
     private static final String NULL = "null";

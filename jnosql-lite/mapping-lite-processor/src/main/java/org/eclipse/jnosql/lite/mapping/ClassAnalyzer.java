@@ -46,7 +46,7 @@ import java.util.stream.Stream;
 class ClassAnalyzer implements Supplier<String> {
 
     private static final Logger LOGGER = Logger.getLogger(ClassAnalyzer.class.getName());
-    private static final String NEW_INSTANCE = "entitymetadata.mustache";
+    private static final String NEW_INSTANCE = "entity_metadata.mustache";
 
     private final Element entity;
 

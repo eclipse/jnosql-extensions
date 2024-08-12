@@ -18,7 +18,7 @@ import java.lang.annotation.Annotation;
 
 import org.eclipse.jnosql.communication.Value;
 import jakarta.nosql.AttributeConverter;
-import org.eclipse.jnosql.mapping.metadata.GenericFieldMetadata;
+import org.eclipse.jnosql.mapping.metadata.CollectionFieldMetadata;
 import org.eclipse.jnosql.mapping.metadata.MappingType;
 import org.eclipse.jnosql.communication.TypeSupplier;
 import org.eclipse.jnosql.communication.TypeReference;
@@ -29,7 +29,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 @Generated(value= "JNoSQL Lite FieldMetadata Generator", date = "{{now}}")
-public final class {{className}} implements GenericFieldMetadata {
+public final class {{className}} implements CollectionFieldMetadata {
 
     private final AttributeConverter<?, ?> converter;
 
