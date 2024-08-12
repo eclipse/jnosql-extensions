@@ -20,7 +20,7 @@ import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 import org.eclipse.jnosql.mapping.metadata.FieldMetadata;
 import jakarta.nosql.AttributeConverter;
-import org.eclipse.jnosql.mapping.metadata.GenericFieldMetadata;
+import org.eclipse.jnosql.mapping.metadata.CollectionFieldMetadata;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -137,11 +137,11 @@ public class OrdersTest {
     public void shouldReturnGenerics() {
         Map<String, FieldMetadata> groupByName = this.entityMetadata.fieldsGroupByName();
         FieldMetadata items = groupByName.get("items");
-       GenericFieldMetadata genericFieldMetadata = (GenericFieldMetadata) items;
+       var fieldMetadata = (CollectionFieldMetadata) items;
 
        SoftAssertions.assertSoftly(soft -> {
-           soft.assertThat(genericFieldMetadata.elementType()).isEqualTo(Product.class);
-           soft.assertThat(genericFieldMetadata.collectionInstance()).isInstanceOf(List.class);
+           soft.assertThat(fieldMetadata.elementType()).isEqualTo(Product.class);
+           soft.assertThat(fieldMetadata.collectionInstance()).isInstanceOf(List.class);
        });
     }
 
@@ -149,7 +149,7 @@ public class OrdersTest {
     void shouldReturnConverter() {
         Map<String, FieldMetadata> groupByName = this.entityMetadata.fieldsGroupByName();
         FieldMetadata items = groupByName.get("items");
-        GenericFieldMetadata genericFieldMetadata = (GenericFieldMetadata) items;
+        var genericFieldMetadata = (CollectionFieldMetadata) items;
 
         Class<?> argument = genericFieldMetadata.elementType();
         EntityMetadata product = this.mappings.get(argument);
