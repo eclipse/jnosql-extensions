@@ -32,6 +32,7 @@ import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.type.ArrayType;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
 import javax.tools.JavaFileObject;
@@ -51,6 +52,7 @@ class FieldAnalyzer implements Supplier<String> {
     private static final String DEFAULT_TEMPLATE = "field_metadata.mustache";
     private static final String COLLECTION_TEMPLATE = "field_collection_metadata.mustache";
     private static final String MAP_TEMPLATE = "field_map_metadata.mustache";
+    private static final String ARRAY_TEMPLATE = "field_array_metadata.mustache";
     private static final Predicate<Element> IS_METHOD = el -> el.getKind() == ElementKind.METHOD;
     private static final Function<Element, String> ELEMENT_TO_STRING = el -> el.getSimpleName().toString();
     private static final String NULL = "null";
@@ -59,6 +61,7 @@ class FieldAnalyzer implements Supplier<String> {
 
     private final Mustache collectionTemplate;
     private final Mustache mapTemplate;
+    private final Mustache arrayTemplate;
     private final ProcessingEnvironment processingEnv;
     private final TypeElement entity;
 
@@ -70,6 +73,7 @@ class FieldAnalyzer implements Supplier<String> {
         this.template = createTemplate(DEFAULT_TEMPLATE);
         this.collectionTemplate = createTemplate(COLLECTION_TEMPLATE);
         this.mapTemplate = createTemplate(MAP_TEMPLATE);
+        this.arrayTemplate = createTemplate(ARRAY_TEMPLATE);
     }
 
     @Override
@@ -82,6 +86,8 @@ class FieldAnalyzer implements Supplier<String> {
                 template.execute(writer, metadata);
             } else if (metadata.getType().contains("Map")) {
                 mapTemplate.execute(writer, metadata);
+            } else if(metadata.getType().contains("[]")) {
+                arrayTemplate.execute(writer, metadata);
             } else {
                 collectionTemplate.execute(writer, metadata);
             }
@@ -123,6 +129,8 @@ class FieldAnalyzer implements Supplier<String> {
         String collectionInstance = CollectionUtil.DEFAULT;
         MappingType mappingType = MappingType.DEFAULT;
         String supplierElement = null;
+        String newArrayInstance = null;
+        String arrayElement = null;
 
 
         if (typeMirror instanceof DeclaredType declaredType) {
@@ -135,9 +143,25 @@ class FieldAnalyzer implements Supplier<String> {
             valuetype = valuetype(declaredType);
             mappingType = of(element, collectionInstance);
 
+        } else if (typeMirror instanceof ArrayType arrayType) {
+            TypeMirror componentType = arrayType.getComponentType();
+            if (componentType instanceof DeclaredType declaredType) {
+                var element = declaredType.asElement();
+                className = typeMirror.toString();
+                supplierElement = componentType.toString();
+                embeddable = element.getAnnotation(Entity.class) != null || element.getAnnotation(Embeddable.class) != null;
+                collectionInstance = CollectionUtil.DEFAULT;
+                elementType = element + ".class";
+                arrayElement = element.toString();
+                mappingType = MappingType.ARRAY;
+                newArrayInstance = className.replace("[]", "[collection.size()]");
+            } else {
+                className = componentType.toString();
+            }
         } else {
             className = typeMirror.toString();
         }
+
         Column column = field.getAnnotation(Column.class);
         Id id = field.getAnnotation(Id.class);
         Convert convert = field.getAnnotation(Convert.class);
@@ -197,6 +221,8 @@ class FieldAnalyzer implements Supplier<String> {
                 .valueByAnnotation(valueAnnotationModels)
                 .collectionInstance(collectionInstance)
                 .supplierElement(supplierElement)
+                .newArrayInstance(newArrayInstance)
+                .arrayElement(arrayElement)
                 .build();
     }
 

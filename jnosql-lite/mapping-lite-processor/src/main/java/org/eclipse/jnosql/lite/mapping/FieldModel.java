@@ -49,6 +49,10 @@ final class FieldModel extends BaseMappingModel {
 
     private String udt;
 
+    private String newArrayInstance;
+
+    private String arrayElement;
+
     private FieldModel() {
     }
 
@@ -132,6 +136,14 @@ final class FieldModel extends BaseMappingModel {
         return udt;
     }
 
+    public String getNewArrayInstance() {
+        return newArrayInstance;
+    }
+
+    public String getArrayElement() {
+        return arrayElement;
+    }
+
     @Override
     public String toString() {
         return "FieldModel{" +
@@ -153,6 +165,7 @@ final class FieldModel extends BaseMappingModel {
                 ", collectionInstance='" + collectionInstance + '\'' +
                 ", supplierElement='" + supplierElement + '\'' +
                 ", udt='" + udt + '\'' +
+                ", newArrayInstance='" + newArrayInstance + '\'' +
                 '}';
     }
 
@@ -270,12 +283,19 @@ final class FieldModel extends BaseMappingModel {
             return this;
         }
 
+        public FieldMetaDataBuilder newArrayInstance(String newArrayInstance) {
+            this.fieldModel.newArrayInstance = newArrayInstance;
+            return this;
+        }
+
+        public FieldMetaDataBuilder arrayElement(String arrayElement) {
+            this.fieldModel.arrayElement = arrayElement;
+            return this;
+        }
 
 
         public FieldModel build() {
            return fieldModel;
         }
-
-
     }
 }
