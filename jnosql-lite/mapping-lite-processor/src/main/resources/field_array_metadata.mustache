@@ -103,7 +103,7 @@ public final class {{className}} implements ArrayFieldMetadata {
         if(value.get() instanceof Iterable) {
             return value.get(TYPE_SUPPLIER).toArray();
         } else {
-          return Value.of(Collections.singletonList(value.get())).get(TYPE_SUPPLIER);
+          return Value.of(java.util.Collections.singletonList(value.get())).get(TYPE_SUPPLIER);
         }
     }
 
