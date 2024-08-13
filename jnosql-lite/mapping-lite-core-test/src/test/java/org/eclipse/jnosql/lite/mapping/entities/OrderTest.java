@@ -28,6 +28,7 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 public class OrderTest {
 
@@ -94,7 +95,7 @@ public class OrderTest {
     }
 
     @Test
-    void shouldGetUsers() {
+    void shouldUsers() {
         var groupByName = this.entityMetadata.fieldsGroupByName();
         var users = groupByName.get("users");
         SoftAssertions.assertSoftly(soft -> {
@@ -110,7 +111,7 @@ public class OrderTest {
     }
 
     @Test
-    void shouldGetProducts() {
+    void shouldProducts() {
         var groupByName = this.entityMetadata.fieldsGroupByName();
         var products = groupByName.get("products");
         SoftAssertions.assertSoftly(soft -> {
@@ -124,4 +125,84 @@ public class OrderTest {
             soft.assertThat(arrayFieldMetadata.mappingType()).isEqualTo(MappingType.ARRAY);
         });
     }
+
+    @Test
+    void shouldGetUsers() {
+        Order order = new Order();
+        order.setId(UUID.randomUUID().toString());
+        order.setUsers(new String[]{"Ada", "Lucas"});
+        order.setProducts(new Product[]{product("TV"), product("Radio")});
+        var groupByName = this.entityMetadata.fieldsGroupByName();
+        var users = (ArrayFieldMetadata) groupByName.get("users");
+        var value = users.read(order);
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(value).isNotNull();
+            soft.assertThat(value).isInstanceOf(String[].class);
+            var usersValue = (String[]) value;
+            soft.assertThat(usersValue).containsExactly("Ada", "Lucas");
+        });
+    }
+
+    @Test
+    void shouldSetUsers() {
+        Order order = new Order();
+        order.setId(UUID.randomUUID().toString());
+        order.setProducts(new Product[]{product("TV"), product("Radio")});
+        var groupByName = this.entityMetadata.fieldsGroupByName();
+        var users = (ArrayFieldMetadata) groupByName.get("users");
+        users.write(order, new String[]{"Ada", "Lucas"});
+        var value =order.getUsers();
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(value).isNotNull();
+            soft.assertThat(value).isInstanceOf(String[].class);
+            var usersValue = (String[]) value;
+            soft.assertThat(usersValue).containsExactly("Ada", "Lucas");
+        });
+    }
+
+
+    @Test
+    void shouldGetProducts() {
+        var tv = product("TV");
+        var radio = product("Radio");
+        Order order = new Order();
+        order.setId(UUID.randomUUID().toString());
+        order.setUsers(new String[]{"Ada", "Lucas"});
+        order.setProducts(new Product[]{tv ,radio });
+        var groupByName = this.entityMetadata.fieldsGroupByName();
+        var products = (ArrayFieldMetadata) groupByName.get("products");
+        var value = products.read(order);
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(value).isNotNull();
+            soft.assertThat(value).isInstanceOf(Product[].class);
+            soft.assertThat((Product[]) value).containsExactly(tv, radio);
+        });
+    }
+
+    @Test
+    void shouldSetProducts() {
+        var tv = product("TV");
+        var radio = product("Radio");
+        Order order = new Order();
+        order.setId(UUID.randomUUID().toString());
+        order.setUsers(new String[]{"Ada", "Lucas"});
+        var groupByName = this.entityMetadata.fieldsGroupByName();
+        var products = (ArrayFieldMetadata) groupByName.get("products");
+        products.write(order, new Product[]{tv ,radio });
+        var value = order.getProducts();
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(value).isNotNull();
+            soft.assertThat(value).isInstanceOf(Product[].class);
+            soft.assertThat((Product[]) value).containsExactly(tv, radio);
+        });
+    }
+
+
+    private Product product(String name){
+        Product product = new Product();
+        product.setName(name);
+        return product;
+    }
+
+
 }
