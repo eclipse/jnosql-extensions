@@ -14,10 +14,13 @@
  */
 package org.eclipse.jnosql.lite.mapping.entities;
 
+import org.assertj.core.api.SoftAssertions;
 import org.eclipse.jnosql.lite.mapping.metadata.LiteEntitiesMetadata;
+import org.eclipse.jnosql.mapping.metadata.ArrayFieldMetadata;
 import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 import org.eclipse.jnosql.mapping.metadata.FieldMetadata;
+import org.eclipse.jnosql.mapping.metadata.MappingType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -88,5 +91,37 @@ public class OrderTest {
         Assertions.assertNotNull(groupByName);
         Assertions.assertNotNull(groupByName.get("_id"));
         Assertions.assertNotNull(groupByName.get("users"));
+    }
+
+    @Test
+    void shouldGetUsers() {
+        var groupByName = this.entityMetadata.fieldsGroupByName();
+        var users = groupByName.get("users");
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(users).isNotNull();
+            soft.assertThat(users).isInstanceOf(ArrayFieldMetadata.class);
+            var arrayFieldMetadata = (ArrayFieldMetadata) users;
+            soft.assertThat(arrayFieldMetadata.fieldName()).isEqualTo("users");
+            soft.assertThat(arrayFieldMetadata.type()).isEqualTo(String[].class);
+            soft.assertThat(arrayFieldMetadata.isEmbeddable()).isFalse();
+            soft.assertThat(arrayFieldMetadata.elementType()).isEqualTo(String.class);
+            soft.assertThat(arrayFieldMetadata.mappingType()).isEqualTo(MappingType.ARRAY);
+        });
+    }
+
+    @Test
+    void shouldGetProducts() {
+        var groupByName = this.entityMetadata.fieldsGroupByName();
+        var products = groupByName.get("products");
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(products).isNotNull();
+            soft.assertThat(products).isInstanceOf(ArrayFieldMetadata.class);
+            var arrayFieldMetadata = (ArrayFieldMetadata) products;
+            soft.assertThat(arrayFieldMetadata.fieldName()).isEqualTo("products");
+            soft.assertThat(arrayFieldMetadata.type()).isEqualTo(Product[].class);
+            soft.assertThat(arrayFieldMetadata.isEmbeddable()).isTrue();
+            soft.assertThat(arrayFieldMetadata.elementType()).isEqualTo(Product.class);
+            soft.assertThat(arrayFieldMetadata.mappingType()).isEqualTo(MappingType.ARRAY);
+        });
     }
 }
