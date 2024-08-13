@@ -14,13 +14,10 @@
  */
 package org.eclipse.jnosql.lite.mapping.entities;
 
-import org.assertj.core.api.SoftAssertions;
 import org.eclipse.jnosql.lite.mapping.metadata.LiteEntitiesMetadata;
-import org.eclipse.jnosql.mapping.metadata.CollectionFieldMetadata;
 import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 import org.eclipse.jnosql.mapping.metadata.FieldMetadata;
-import org.eclipse.jnosql.mapping.metadata.MappingType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,8 +25,6 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 public class OrderTest {
 
