@@ -25,11 +25,14 @@ import org.eclipse.jnosql.communication.TypeReference;
 
 import javax.annotation.processing.Generated;
 import java.util.Map;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
 @Generated(value= "JNoSQL Lite FieldMetadata Generator", date = "{{now}}")
 public final class {{className}} implements ArrayFieldMetadata {
+
+    private static final TypeReference<List<Object>> TYPE_SUPPLIER = new TypeReference<>() {};
 
     private final AttributeConverter<?, ?> converter;
 
@@ -98,9 +101,9 @@ public final class {{className}} implements ArrayFieldMetadata {
     public Object value(Value value) {
         Objects.requireNonNull(value, "value is required");
         if(value.get() instanceof Iterable) {
-            return value.get(typeSupplier);
+            return value.get(TYPE_SUPPLIER).toArray();
         } else {
-            return Value.of(java.util.Collections.singletonList(value.get())).get(typeSupplier);
+          return Value.of(Collections.singletonList(value.get())).get(TYPE_SUPPLIER);
         }
     }
 
