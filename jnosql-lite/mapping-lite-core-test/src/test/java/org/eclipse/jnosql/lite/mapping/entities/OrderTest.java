@@ -193,6 +193,34 @@ public class OrderTest {
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(value).isNotNull();
             soft.assertThat(value).isInstanceOf(Product[].class);
+            soft.assertThat(value).containsExactly(tv, radio);
+        });
+    }
+
+    @Test
+    void shouldArrayInstanceUsers() {
+        var groupByName = this.entityMetadata.fieldsGroupByName();
+        var users = (ArrayFieldMetadata) groupByName.get("users");
+        List<String> names = List.of("Ada", "Lucas");
+        var value = users.arrayInstance(names);
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(value).isNotNull();
+            soft.assertThat(value).isInstanceOf(String[].class);
+            soft.assertThat((String[]) value).containsExactly("Ada", "Lucas");
+        });
+    }
+
+    @Test
+    void shouldArrayInstanceProducts() {
+        var tv = product("TV");
+        var radio = product("Radio");
+        var groupByName = this.entityMetadata.fieldsGroupByName();
+        var products = (ArrayFieldMetadata) groupByName.get("products");
+        List<Product> names = List.of(tv, radio);
+        var value = products.arrayInstance(names);
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(value).isNotNull();
+            soft.assertThat(value).isInstanceOf(Product[].class);
             soft.assertThat((Product[]) value).containsExactly(tv, radio);
         });
     }
