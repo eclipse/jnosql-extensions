@@ -15,10 +15,8 @@
 package org.eclipse.jnosql.lite.mapping.entities;
 
 import jakarta.nosql.Entity;
-import jakarta.nosql.Id;
 
 import jakarta.nosql.Column;
-import jakarta.nosql.Entity;
 import jakarta.nosql.Convert;
 
 @Entity

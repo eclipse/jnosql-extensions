@@ -145,18 +145,23 @@ class FieldAnalyzer implements Supplier<String> {
 
         } else if (typeMirror instanceof ArrayType arrayType) {
             TypeMirror componentType = arrayType.getComponentType();
+            mappingType = MappingType.ARRAY;
+            className = typeMirror.toString();
+            collectionInstance = CollectionUtil.DEFAULT;
+
             if (componentType instanceof DeclaredType declaredType) {
                 var element = declaredType.asElement();
-                className = typeMirror.toString();
                 supplierElement = componentType.toString();
                 embeddable = element.getAnnotation(Entity.class) != null || element.getAnnotation(Embeddable.class) != null;
-                collectionInstance = CollectionUtil.DEFAULT;
                 elementType = element + ".class";
                 arrayElement = element.toString();
-                mappingType = MappingType.ARRAY;
                 newArrayInstance = className.replace("[]", "[collection.size()]");
             } else {
-                className = componentType.toString();
+                className = typeMirror.toString();
+                supplierElement = typeMirror.toString();
+                arrayElement = componentType.toString();
+                elementType = componentType + ".class";
+                newArrayInstance = className.replace("[]", "[collection.size()]");
             }
         } else {
             className = typeMirror.toString();
