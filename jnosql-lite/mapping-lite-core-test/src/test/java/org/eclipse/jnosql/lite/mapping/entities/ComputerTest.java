@@ -19,7 +19,7 @@ import org.eclipse.jnosql.lite.mapping.metadata.LiteEntitiesMetadata;
 import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 import org.eclipse.jnosql.mapping.metadata.FieldMetadata;
-import org.eclipse.jnosql.mapping.metadata.GenericFieldMetadata;
+import org.eclipse.jnosql.mapping.metadata.CollectionFieldMetadata;
 import org.eclipse.jnosql.mapping.metadata.MappingType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -54,7 +54,7 @@ class ComputerTest {
     void shouldReturnAsEntity(){
         Map<String, FieldMetadata> groupByName = this.entityMetadata.fieldsGroupByName();
         FieldMetadata fieldMetadata = groupByName.get("users");
-        GenericFieldMetadata users = (GenericFieldMetadata) fieldMetadata;
+        var users = (CollectionFieldMetadata) fieldMetadata;
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(users.name()).isEqualTo("users");
             soft.assertThat(users.isId()).isFalse();

@@ -32,6 +32,7 @@ import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.type.ArrayType;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
 import javax.tools.JavaFileObject;
@@ -48,15 +49,19 @@ import java.util.stream.Collectors;
 
 class FieldAnalyzer implements Supplier<String> {
 
-    private static final String DEFAULT_TEMPLATE = "fieldmetadata.mustache";
-    private static final String GENERIC_TEMPLATE = "fieldgenericmetadata.mustache";
+    private static final String DEFAULT_TEMPLATE = "field_metadata.mustache";
+    private static final String COLLECTION_TEMPLATE = "field_collection_metadata.mustache";
+    private static final String MAP_TEMPLATE = "field_map_metadata.mustache";
+    private static final String ARRAY_TEMPLATE = "field_array_metadata.mustache";
     private static final Predicate<Element> IS_METHOD = el -> el.getKind() == ElementKind.METHOD;
     private static final Function<Element, String> ELEMENT_TO_STRING = el -> el.getSimpleName().toString();
     private static final String NULL = "null";
     private final Element field;
     private final Mustache template;
 
-    private final Mustache genericTemplate;
+    private final Mustache collectionTemplate;
+    private final Mustache mapTemplate;
+    private final Mustache arrayTemplate;
     private final ProcessingEnvironment processingEnv;
     private final TypeElement entity;
 
@@ -66,7 +71,9 @@ class FieldAnalyzer implements Supplier<String> {
         this.processingEnv = processingEnv;
         this.entity = entity;
         this.template = createTemplate(DEFAULT_TEMPLATE);
-        this.genericTemplate = createTemplate(GENERIC_TEMPLATE);
+        this.collectionTemplate = createTemplate(COLLECTION_TEMPLATE);
+        this.mapTemplate = createTemplate(MAP_TEMPLATE);
+        this.arrayTemplate = createTemplate(ARRAY_TEMPLATE);
     }
 
     @Override
@@ -75,10 +82,14 @@ class FieldAnalyzer implements Supplier<String> {
         Filer filer = processingEnv.getFiler();
         JavaFileObject fileObject = getFileObject(metadata, filer);
         try (Writer writer = fileObject.openWriter()) {
-            if(NULL.equals(metadata.getElementType())){
+            if (NULL.equals(metadata.getElementType())) {
                 template.execute(writer, metadata);
+            } else if (metadata.getType().contains("Map")) {
+                mapTemplate.execute(writer, metadata);
+            } else if(metadata.getType().contains("[]")) {
+                arrayTemplate.execute(writer, metadata);
             } else {
-                genericTemplate.execute(writer, metadata);
+                collectionTemplate.execute(writer, metadata);
             }
         } catch (IOException exception) {
             throw new ValidationException("An error to compile the class: " +
@@ -113,10 +124,13 @@ class FieldAnalyzer implements Supplier<String> {
         final TypeMirror typeMirror = field.asType();
         String className;
         String elementType = NULL;
+        String valuetype = NULL;
         boolean embeddable = false;
         String collectionInstance = CollectionUtil.DEFAULT;
         MappingType mappingType = MappingType.DEFAULT;
         String supplierElement = null;
+        String newArrayInstance = null;
+        String arrayElement = null;
 
 
         if (typeMirror instanceof DeclaredType declaredType) {
@@ -124,13 +138,35 @@ class FieldAnalyzer implements Supplier<String> {
             className = element.toString();
             supplierElement = typeMirror.toString();
             embeddable = isEmbeddable(declaredType);
-           collectionInstance = CollectionUtil.INSTANCE.apply(className);
-           elementType = elementType(declaredType);
-           mappingType = of(element, collectionInstance, collectionInstance);
+            collectionInstance = CollectionUtil.INSTANCE.apply(className);
+            elementType = elementType(declaredType);
+            valuetype = valuetype(declaredType);
+            mappingType = of(element, collectionInstance);
 
+        } else if (typeMirror instanceof ArrayType arrayType) {
+            TypeMirror componentType = arrayType.getComponentType();
+            mappingType = MappingType.ARRAY;
+            className = typeMirror.toString();
+            collectionInstance = CollectionUtil.DEFAULT;
+
+            if (componentType instanceof DeclaredType declaredType) {
+                var element = declaredType.asElement();
+                supplierElement = componentType.toString();
+                embeddable = element.getAnnotation(Entity.class) != null || element.getAnnotation(Embeddable.class) != null;
+                elementType = element + ".class";
+                arrayElement = element.toString();
+                newArrayInstance = className.replace("[]", "[collection.size()]");
+            } else {
+                className = typeMirror.toString();
+                supplierElement = typeMirror.toString();
+                arrayElement = componentType.toString();
+                elementType = componentType + ".class";
+                newArrayInstance = className.replace("[]", "[collection.size()]");
+            }
         } else {
             className = typeMirror.toString();
         }
+
         Column column = field.getAnnotation(Column.class);
         Id id = field.getAnnotation(Id.class);
         Convert convert = field.getAnnotation(Convert.class);
@@ -148,7 +184,7 @@ class FieldAnalyzer implements Supplier<String> {
             Predicate<Map.Entry<? extends ExecutableElement, ? extends AnnotationValue>> isNotDefaultAnnotation = e -> !
                     defaultJNoSQL.contains(annotationType.toString());
             elementValues.entrySet().stream().filter(isNotDefaultAnnotation.and(isValueMethod)).findFirst().ifPresent(e -> {
-                String key = annotationType.toString()+".class";
+                String key = annotationType.toString() + ".class";
                 String value = e.getValue().getValue().toString();
                 ValueAnnotationModel valueAnnotationModel = new ValueAnnotationModel(key, value);
                 valueAnnotationModels.add(valueAnnotationModel);
@@ -183,12 +219,15 @@ class FieldAnalyzer implements Supplier<String> {
                 .udt(udt)
                 .id(isId)
                 .elementType(elementType)
+                .valueType(valuetype)
                 .converter(convert)
                 .embeddable(embeddable)
                 .mappingType("MappingType." + mappingType.name())
                 .valueByAnnotation(valueAnnotationModels)
                 .collectionInstance(collectionInstance)
                 .supplierElement(supplierElement)
+                .newArrayInstance(newArrayInstance)
+                .arrayElement(arrayElement)
                 .build();
     }
 
@@ -210,10 +249,10 @@ class FieldAnalyzer implements Supplier<String> {
     }
 
 
-    private static MappingType of(Element element, String collection, String fieldType) {
+    private static MappingType of(Element element, String collection) {
         if (element.getAnnotation(Embeddable.class) != null) {
             var type = element.getAnnotation(Embeddable.class).value();
-            return Embeddable.EmbeddableType.FLAT.equals(type)? MappingType.EMBEDDED: MappingType.EMBEDDED_GROUP;
+            return Embeddable.EmbeddableType.FLAT.equals(type) ? MappingType.EMBEDDED : MappingType.EMBEDDED_GROUP;
         }
         if (element.getAnnotation(Entity.class) != null) {
             return MappingType.ENTITY;
@@ -221,7 +260,7 @@ class FieldAnalyzer implements Supplier<String> {
         if (!collection.equals(CollectionUtil.DEFAULT)) {
             return MappingType.COLLECTION;
         }
-        if (fieldType.equals("java.util.Map")) {
+        if (element.toString().equals("java.util.Map")) {
             return MappingType.MAP;
         }
         return MappingType.DEFAULT;
@@ -237,11 +276,21 @@ class FieldAnalyzer implements Supplier<String> {
         }
     }
 
+    private String valuetype(DeclaredType declaredType) {
+        Optional<? extends TypeMirror> genericMirrorOptional = declaredType.getTypeArguments().stream().skip(1L).findFirst();
+        if (genericMirrorOptional.isPresent()) {
+            TypeMirror genericMirror = genericMirrorOptional.get();
+            return genericMirror + ".class";
+        } else {
+            return NULL;
+        }
+    }
+
     private boolean isEmbeddable(DeclaredType declaredType) {
         return declaredType.getTypeArguments().stream()
                 .filter(DeclaredType.class::isInstance).map(DeclaredType.class::cast)
                 .map(DeclaredType::asElement).findFirst().map(e -> e.getAnnotation(Embeddable.class) != null ||
-                e.getAnnotation(Entity.class) != null).orElse(false);
+                        e.getAnnotation(Entity.class) != null).orElse(false);
     }
 
 }

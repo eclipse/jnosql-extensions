@@ -40,7 +40,7 @@ final class FieldModel extends BaseMappingModel {
     private List<ValueAnnotationModel> valueByAnnotation;
 
     private String elementType;
-
+    private String valueType;
     private boolean embeddable;
 
     private String collectionInstance;
@@ -48,6 +48,10 @@ final class FieldModel extends BaseMappingModel {
     private String supplierElement;
 
     private String udt;
+
+    private String newArrayInstance;
+
+    private String arrayElement;
 
     private FieldModel() {
     }
@@ -92,6 +96,9 @@ final class FieldModel extends BaseMappingModel {
         return id;
     }
 
+    public String getValueType() {
+        return valueType;
+    }
 
     public String getConverter() {
         return converter;
@@ -129,6 +136,14 @@ final class FieldModel extends BaseMappingModel {
         return udt;
     }
 
+    public String getNewArrayInstance() {
+        return newArrayInstance;
+    }
+
+    public String getArrayElement() {
+        return arrayElement;
+    }
+
     @Override
     public String toString() {
         return "FieldModel{" +
@@ -145,10 +160,12 @@ final class FieldModel extends BaseMappingModel {
                 ", typeConverter='" + typeConverter + '\'' +
                 ", valueByAnnotation=" + valueByAnnotation +
                 ", elementType='" + elementType + '\'' +
+                ", valueType='" + valueType + '\'' +
                 ", embeddable=" + embeddable +
                 ", collectionInstance='" + collectionInstance + '\'' +
                 ", supplierElement='" + supplierElement + '\'' +
                 ", udt='" + udt + '\'' +
+                ", newArrayInstance='" + newArrayInstance + '\'' +
                 '}';
     }
 
@@ -246,6 +263,11 @@ final class FieldModel extends BaseMappingModel {
             return this;
         }
 
+        public FieldMetaDataBuilder valueType(String valueType) {
+            this.fieldModel.valueType = valueType;
+            return this;
+        }
+
         public FieldMetaDataBuilder embeddable(boolean embeddable) {
             this.fieldModel.embeddable = embeddable;
             return this;
@@ -258,6 +280,16 @@ final class FieldModel extends BaseMappingModel {
 
         public FieldMetaDataBuilder supplierElement(String supplierElement) {
             this.fieldModel.supplierElement = supplierElement;
+            return this;
+        }
+
+        public FieldMetaDataBuilder newArrayInstance(String newArrayInstance) {
+            this.fieldModel.newArrayInstance = newArrayInstance;
+            return this;
+        }
+
+        public FieldMetaDataBuilder arrayElement(String arrayElement) {
+            this.fieldModel.arrayElement = arrayElement;
             return this;
         }
 

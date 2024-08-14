@@ -14,23 +14,43 @@
  */
 package org.eclipse.jnosql.lite.mapping.entities;
 
-import jakarta.nosql.Entity;
-
 import jakarta.nosql.Column;
-import jakarta.nosql.Convert;
+import jakarta.nosql.Entity;
+import jakarta.nosql.Id;
 
 @Entity
-public class Worker extends Person {
+public class Order {
+
+    @Id
+    private String id;
 
     @Column
-    @Convert(MoneyConverter.class)
-    private Money salary;
+    private String[] users;
 
-    public Money getSalary() {
-        return salary;
+    @Column
+    private Product[] products;
+
+    public String getId() {
+        return id;
     }
 
-    public void setSalary(Money salary) {
-        this.salary = salary;
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String[] getUsers() {
+        return users;
+    }
+
+    public void setUsers(String[] users) {
+        this.users = users;
+    }
+
+    public Product[] getProducts() {
+        return products;
+    }
+
+    public void setProducts(Product[] products) {
+        this.products = products;
     }
 }

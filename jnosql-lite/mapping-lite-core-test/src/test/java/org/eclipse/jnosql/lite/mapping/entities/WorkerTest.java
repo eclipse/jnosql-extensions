@@ -19,7 +19,7 @@ import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
 import org.eclipse.jnosql.lite.mapping.metadata.LiteEntitiesMetadata;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 import org.eclipse.jnosql.mapping.metadata.FieldMetadata;
-import org.eclipse.jnosql.mapping.metadata.GenericFieldMetadata;
+import org.eclipse.jnosql.mapping.metadata.CollectionFieldMetadata;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -162,10 +162,10 @@ public class WorkerTest {
     public void shouldReturnGenerics() {
         Map<String, FieldMetadata> groupByName = this.entityMetadata.fieldsGroupByName();
         FieldMetadata contacts = groupByName.get("contacts");
-       GenericFieldMetadata genericFieldMetadata = (GenericFieldMetadata) contacts;
+       var fieldMetadata = (CollectionFieldMetadata) contacts;
        SoftAssertions.assertSoftly(soft -> {
-           soft.assertThat(genericFieldMetadata.elementType()).isEqualTo(String.class);
-           soft.assertThat(genericFieldMetadata.collectionInstance()).isInstanceOf(List.class);
+           soft.assertThat(fieldMetadata.elementType()).isEqualTo(String.class);
+           soft.assertThat(fieldMetadata.collectionInstance()).isInstanceOf(List.class);
        });
     }
 }
