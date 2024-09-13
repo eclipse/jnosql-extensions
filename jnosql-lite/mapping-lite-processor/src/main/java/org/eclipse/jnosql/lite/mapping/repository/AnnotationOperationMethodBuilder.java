@@ -33,12 +33,13 @@ enum AnnotationOperationMethodBuilder implements Function<MethodMetadata, List<S
                    return Collections.singletonList( "this.template.insert(" + parameter.name() + ")");
                } else if(isInt){
                    return List.of("this.template.insert(" + parameter.name() + ")",
-                           "int resultJNoSQL = (int)stream("+ parameter.name()+ ".spliterator(), false).count()");
+                           "int resultJNoSQL = (int)java.util.stream.StreamSupport.stream("+ parameter.name()+ ".spliterator(), false).count()");
                } else if (isLong) {
                    return List.of("this.template.insert(" + parameter.name() + ")",
-                           "long resultJNoSQL = stream(" + parameter.name() + ".spliterator(), false).count()");
+                           "long resultJNoSQL = java.util.stream.StreamSupport.stream(" + parameter.name() + ".spliterator(), false).count()");
                }
-               return Collections.singletonList( "var resultJNoSQL = stream(this.template.insert(" + parameter.name() + ").spliterator(), false).toList()");
+               return Collections.singletonList( "var resultJNoSQL = " +
+                       "java.util.stream.StreamSupport.stream(this.template.insert(" + parameter.name() + ").spliterator(), false).toList()");
            } else if(parameter.isArray()){
                if(isVoid) {
 
@@ -51,7 +52,7 @@ enum AnnotationOperationMethodBuilder implements Function<MethodMetadata, List<S
                            "long resultJNoSQL = (long)" + parameter.name() + ".length");
                }
                return List.of("var insertResult = this.template.insert(java.util.Arrays.stream(" + parameter.name() + ").toList())",
-                              "var resultJNoSQL = stream(insertResult.spliterator(), false).toArray("+
+                              "var resultJNoSQL = java.util.stream.StreamSupport.stream(insertResult.spliterator(), false).toArray("+
                                       parameter.arrayType()+"::new)");
            }
             if(isVoid) {
@@ -76,10 +77,10 @@ enum AnnotationOperationMethodBuilder implements Function<MethodMetadata, List<S
                     return Collections.singletonList( "this.saveAll(" + parameter.name() + ")");
                 } else if(isInt){
                     return List.of("this.saveAll(" + parameter.name() + ")",
-                            "int resultJNoSQL = (int)stream("+ parameter.name()+ ".spliterator(), false).count()");
+                            "int resultJNoSQL = (int)java.util.stream.StreamSupport.stream("+ parameter.name()+ ".spliterator(), false).count()");
                 }else if(isLong){
                     return List.of("this.saveAll(" + parameter.name() + ")",
-                            "long resultJNoSQL = stream("+ parameter.name()+ ".spliterator(), false).count()");
+                            "long resultJNoSQL = java.util.stream.StreamSupport.stream("+ parameter.name()+ ".spliterator(), false).count()");
                 }
                 return Collections.singletonList( "var resultJNoSQL = this.saveAll(" + parameter.name() + ")");
             } else if(parameter.isArray()){
@@ -94,7 +95,7 @@ enum AnnotationOperationMethodBuilder implements Function<MethodMetadata, List<S
                             "long resultJNoSQL = (long)" + parameter.name() + ".length");
                 }
                 return List.of("var saveResult = this.saveAll(java.util.Arrays.stream(" + parameter.name() + ").toList())",
-                        "var resultJNoSQL = stream(saveResult.spliterator(), false).toArray("+
+                        "var resultJNoSQL = java.util.stream.StreamSupport.stream(saveResult.spliterator(), false).toArray("+
                                 parameter.arrayType()+"::new)");
             }
             if(isVoid) {
@@ -120,12 +121,13 @@ enum AnnotationOperationMethodBuilder implements Function<MethodMetadata, List<S
                     return Collections.singletonList( "this.template.update(" + parameter.name() + ")");
                 } else if(isInt){
                     return List.of("this.template.update(" + parameter.name() + ")",
-                            "int resultJNoSQL = (int)stream("+ parameter.name()+ ".spliterator(), false).count()");
+                            "int resultJNoSQL = (int)java.util.stream.StreamSupport.stream("+ parameter.name()+ ".spliterator(), false).count()");
                 } else if(isLong){
                     return List.of("this.template.update(" + parameter.name() + ")",
-                            "long resultJNoSQL = stream("+ parameter.name()+ ".spliterator(), false).count()");
+                            "long resultJNoSQL = java.util.stream.StreamSupport.stream("+ parameter.name()+ ".spliterator(), false).count()");
                 }
-                return Collections.singletonList( "var resultJNoSQL = stream(this.template.update(" + parameter.name() + ").spliterator(), false).toList()");
+                return Collections.singletonList( "var resultJNoSQL = " +
+                        "java.util.stream.StreamSupport.stream(this.template.update(" + parameter.name() + ").spliterator(), false).toList()");
             } else if(parameter.isArray()){
                 if(isVoid) {
 
@@ -138,7 +140,7 @@ enum AnnotationOperationMethodBuilder implements Function<MethodMetadata, List<S
                             "long resultJNoSQL = (long)" + parameter.name() + ".length");
                 }
                 return List.of("var insertResult = this.template.update(java.util.Arrays.stream(" + parameter.name() + ").toList())",
-                        "var resultJNoSQL = stream(insertResult.spliterator(), false).toArray("+
+                        "var resultJNoSQL = java.util.stream.StreamSupport.stream(insertResult.spliterator(), false).toArray("+
                                 parameter.arrayType()+"::new)");
             }
             if(isVoid) {
@@ -166,10 +168,10 @@ enum AnnotationOperationMethodBuilder implements Function<MethodMetadata, List<S
                     return Collections.singletonList( "this.deleteAll(" + parameter.name() + ")");
                 } else if(isInt){
                     return List.of("this.deleteAll(" + parameter.name() + ")",
-                            "int resultJNoSQL = (int)stream("+ parameter.name()+ ".spliterator(), false).count()");
+                            "int resultJNoSQL = (int)java.util.stream.StreamSupport.stream("+ parameter.name()+ ".spliterator(), false).count()");
                 } else if(isLong){
                     return List.of("this.deleteAll(" + parameter.name() + ")",
-                            "long resultJNoSQL = stream("+ parameter.name()+ ".spliterator(), false).count()");
+                            "long resultJNoSQL = java.util.stream.StreamSupport.stream("+ parameter.name()+ ".spliterator(), false).count()");
                 } else if (isBoolean) {
                     return List.of("this.deleteAll(" + parameter.name() + ")",
                             "boolean resultJNoSQL = true");
@@ -191,7 +193,7 @@ enum AnnotationOperationMethodBuilder implements Function<MethodMetadata, List<S
 
                 }
                 return List.of("var insertResultJNoSQL = this.deleteAll(java.util.Arrays.stream(" + parameter.name() + ").toList())",
-                        "var resultJNoSQL = stream(insertResultJNoSQL.spliterator(), false).toArray("+
+                        "var resultJNoSQL = java.util.stream.StreamSupport.stream(insertResultJNoSQL.spliterator(), false).toArray("+
                                 parameter.arrayType()+"::new)");
             }
             if(isVoid) {
