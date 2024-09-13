@@ -181,6 +181,7 @@
 						</signature.sigTestClasspath>
 						<jakarta.tck.skip.deployment>true</jakarta.tck.skip.deployment>
 						<jakarta.tck.database.type>DOCUMENT</jakarta.tck.database.type>
+						<jakarta.tck.consistency.delay>0</jakarta.tck.consistency.delay>
 					</systemPropertyVariables>
 					<groups>${included.groups}</groups>
 					<reportNameSuffix>standalone</reportNameSuffix>
