@@ -45,10 +45,11 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 class FieldAnalyzer implements Supplier<String> {
-
+    private static final Logger LOGGER = Logger.getLogger(FieldAnalyzer.class.getName());
     private static final String DEFAULT_TEMPLATE = "field_metadata.mustache";
     private static final String COLLECTION_TEMPLATE = "field_collection_metadata.mustache";
     private static final String MAP_TEMPLATE = "field_map_metadata.mustache";
@@ -110,9 +111,11 @@ class FieldAnalyzer implements Supplier<String> {
 
     private FieldModel getMetaData() {
         final String fieldName = field.getSimpleName().toString();
+        LOGGER.finest("Processing the field: " + fieldName);
         final Predicate<Element> validName = el -> el.getSimpleName().toString()
                 .contains(ProcessorUtil.capitalize(fieldName));
         final Predicate<String> hasGetterName = el -> el.equals("get" + ProcessorUtil.capitalize(fieldName));
+        final Predicate<String> hasRecordStyleName = el -> el.equals(fieldName);
         final Predicate<String> hasSetterName = el -> el.equals("set" + ProcessorUtil.capitalize(fieldName));
         final Predicate<String> hasIsName = el -> el.equals("is" + ProcessorUtil.capitalize(fieldName));
 
@@ -167,9 +170,9 @@ class FieldAnalyzer implements Supplier<String> {
             className = typeMirror.toString();
         }
 
-        Column column = field.getAnnotation(Column.class);
+        var column = field.getAnnotation(Column.class);
         Id id = field.getAnnotation(Id.class);
-        Convert convert = field.getAnnotation(Convert.class);
+        var convert = field.getAnnotation(Convert.class);
 
         List<ValueAnnotationModel> valueAnnotationModels = new ArrayList<>();
         for (AnnotationMirror annotationMirror : field.getAnnotationMirrors()) {
@@ -197,16 +200,23 @@ class FieldAnalyzer implements Supplier<String> {
         final String name = getName(fieldName, column, id);
         final String udt = column != null ? column.udt() : null;
 
-        final String getMethod = accessors.stream()
+        var isRecord =  !this.entity.getRecordComponents().isEmpty();
+        final String getMethod;
+
+        if(isRecord) {
+            getMethod = fieldName;
+        } else {
+            getMethod = accessors.stream()
                 .map(ELEMENT_TO_STRING)
-                .filter(hasGetterName)
+                .filter(hasGetterName.or(hasRecordStyleName))
                 .findFirst().orElseThrow(generateGetterError(fieldName, packageName, entityName,
                         "There is not valid getter method to the field: "));
+        }
+
         final String setMethod = accessors.stream()
                 .map(ELEMENT_TO_STRING)
                 .filter(hasSetterName.or(hasIsName))
-                .findFirst().orElseThrow(generateGetterError(fieldName, packageName, entityName,
-                        "There is not valid setter method to the field: "));
+                .findFirst().orElse(null);
 
         return FieldModel.builder()
                 .packageName(packageName)
