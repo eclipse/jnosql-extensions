@@ -50,18 +50,21 @@ class ClassAnalyzer implements Supplier<String> {
 
     private static final Logger LOGGER = Logger.getLogger(ClassAnalyzer.class.getName());
     private static final String NEW_INSTANCE = "entity_metadata.mustache";
+    private static final String INJECTABLE_CONSTRUCTOR = "constructor_metadata.mustache";
 
     private final Element entity;
 
     private final ProcessingEnvironment processingEnv;
 
     private final Mustache template;
+    private final Mustache constructorTemplate;
 
     ClassAnalyzer(Element entity, ProcessingEnvironment processingEnv) {
         this.entity = entity;
         this.processingEnv = processingEnv;
         MustacheFactory factory = new DefaultMustacheFactory();
         this.template = factory.compile(NEW_INSTANCE);
+        this.constructorTemplate = factory.compile(INJECTABLE_CONSTRUCTOR);
     }
 
     @Override
@@ -110,6 +113,7 @@ class ClassAnalyzer implements Supplier<String> {
                 .stream()
                 .filter(EntityProcessor.IS_CONSTRUCTOR.and(EntityProcessor.HAS_ACCESS)
                         .and(INJECT_CONSTRUCTOR)).findFirst();
+        String constructorClassName = null;
 
         if (constructor.isPresent()) {
             ExecutableElement executableElement = (ExecutableElement) constructor.get();
@@ -118,8 +122,13 @@ class ClassAnalyzer implements Supplier<String> {
                     .map(ParameterAnalyzer::get)
                     .toList();
            LOGGER.finest("Found the parameters: " + parametersClasses);
+            var constructorMetamodel = ConstructorMetamodel.of(ProcessorUtil.getPackageName(typeElement),
+                    ProcessorUtil.getSimpleNameAsString(typeElement), parametersClasses);
+
+            createConstructors(entity, constructorMetamodel);
+            constructorClassName = constructorMetamodel.getQualified();
         }
-        EntityModel metadata = getMetadata(typeElement, fields);
+        EntityModel metadata = getMetadata(typeElement, fields, constructorClassName);
         createClass(entity, metadata);
         LOGGER.info("Found the fields: " + fields);
 
@@ -136,7 +145,15 @@ class ClassAnalyzer implements Supplier<String> {
         }
     }
 
-    private EntityModel getMetadata(TypeElement element, List<String> fields) {
+    private void createConstructors(Element entity, ConstructorMetamodel metadata) throws IOException {
+        Filer filer = processingEnv.getFiler();
+        JavaFileObject fileObject = filer.createSourceFile(metadata.getQualified(), entity);
+        try (Writer writer = fileObject.openWriter()) {
+            constructorTemplate.execute(writer, metadata);
+        }
+    }
+
+    private EntityModel getMetadata(TypeElement element, List<String> fields, String constructorClassName) {
 
         TypeElement superclass =
                 (TypeElement) ((DeclaredType) element.getSuperclass()).asElement();
@@ -146,7 +163,6 @@ class ClassAnalyzer implements Supplier<String> {
         final boolean hasInheritanceAnnotation = Objects.nonNull(element.getAnnotation(Inheritance.class));
         String packageName = ProcessorUtil.getPackageName(element);
         String sourceClassName = ProcessorUtil.getSimpleNameAsString(element);
-
 
         String entityName = Optional.ofNullable(annotation)
                 .map(Entity::value)
@@ -163,7 +179,7 @@ class ClassAnalyzer implements Supplier<String> {
             inheritanceParameter = getInheritanceParameter(element, element);
         }
         return new EntityModel(packageName, sourceClassName, entityName, fields, embedded, notConcrete,
-                inheritanceParameter, entityAnnotation, hasInheritanceAnnotation);
+                inheritanceParameter, entityAnnotation, hasInheritanceAnnotation, constructorClassName);
     }
 
     private String getInheritanceParameter(TypeElement element, TypeElement superclass) {

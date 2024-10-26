@@ -26,17 +26,17 @@ import static java.util.Collections.emptyList;
 /**
  * The lite implementation of {@link ConstructorMetadata}
  */
-public class LiteConstructorMetadata implements ConstructorMetadata {
+public class DefaultConstructorMetadata implements ConstructorMetadata {
 
     /**
      * The empty instance
      */
-    public static final ConstructorMetadata EMPTY = new LiteConstructorMetadata(true, emptyList());
+    public static final ConstructorMetadata EMPTY = new DefaultConstructorMetadata(true, emptyList());
 
     private final boolean defaultConstructor;
     private final List<ParameterMetaData> parameters;
 
-    private LiteConstructorMetadata(boolean defaultConstructor, List<ParameterMetaData> parameters) {
+    private DefaultConstructorMetadata(boolean defaultConstructor, List<ParameterMetaData> parameters) {
         this.defaultConstructor = defaultConstructor;
         this.parameters = parameters;
     }
@@ -52,14 +52,14 @@ public class LiteConstructorMetadata implements ConstructorMetadata {
     }
 
     /**
-     * Creates a {@link LiteConstructorMetadata} instance
+     * Creates a {@link DefaultConstructorMetadata} instance
      * @param defaultConstructor if the constructor is the default
      * @param parameters the parameters
-     * @return a {@link LiteConstructorMetadata} instance
+     * @return a {@link DefaultConstructorMetadata} instance
      * @throws NullPointerException when there is null parameter
      */
-    public static LiteConstructorMetadata of(boolean defaultConstructor, List<ParameterMetaData> parameters) {
+    public static DefaultConstructorMetadata of(boolean defaultConstructor, List<ParameterMetaData> parameters) {
         Objects.requireNonNull(parameters, "parameters is required");
-        return new LiteConstructorMetadata(defaultConstructor, parameters);
+        return new DefaultConstructorMetadata(defaultConstructor, parameters);
     }
 }
