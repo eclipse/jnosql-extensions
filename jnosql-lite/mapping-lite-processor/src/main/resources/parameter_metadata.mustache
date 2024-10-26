@@ -33,36 +33,15 @@ public final class {{className}} implements ParameterMetaData {
 
     private final Class<? extends AttributeConverter<?, ?>> typeConverter;
 
-    private final Map<Class<? extends Annotation>, String> valueByAnnotation;
 
     public {{className}}() {
         this.converter = {{converter}};
         this.typeConverter = {{typeConverter}};
-        {{#valueByAnnotation.isEmpty}}
-         this.valueByAnnotation = java.util.Collections.emptyMap();
-        {{/valueByAnnotation.isEmpty}}
-        {{^valueByAnnotation.isEmpty}}
-        this.valueByAnnotation = new java.util.HashMap<>();
-        {{/valueByAnnotation.isEmpty}}
-        {{#valueByAnnotation}}
-        this.valueByAnnotation.put({{key}}, "{{value}}");
-        {{/valueByAnnotation}}
     }
 
     @Override
     public boolean isId() {
         return {{id}};
-    }
-
-    @Override
-    public Optional<String> udt() {
-        return {{udt}};
-    }
-
-    @Override
-    public <T extends Annotation> Optional<String> value(Class<T> type) {
-        Objects.requireNonNull(type, "type is required");
-        return Optional.ofNullable(this.valueByAnnotation.get(type));
     }
 
     @Override
@@ -86,35 +65,7 @@ public final class {{className}} implements ParameterMetaData {
     }
 
     @Override
-    public String fieldName() {
-        return "{{fieldName}}";
-    }
-
-    @Override
-    public Object value(Value value) {
-        Objects.requireNonNull(value, "value is required");
-        return value.get({{type}}.class);
-    }
-
-    @Override
-    public void write(Object bean, Object value) {
-        {{#writer}}
-        (({{entity}}) bean).{{writer}}(({{type}})value);
-        {{/writer}}
-        {{^writer}}
-         throw new UnsupportedOperationException("There is not setter method to the field: {{fieldName}} in the entity {{entity}}");
-        {{/writer}}
-
-    }
-
-    @Override
-    public Object read(Object bean) {
-        return (({{entity}}) bean).{{reader}}();
-    }
-
-    @Override
     public Class<?> type() {
         return {{type}}.class;
     }
-
 }

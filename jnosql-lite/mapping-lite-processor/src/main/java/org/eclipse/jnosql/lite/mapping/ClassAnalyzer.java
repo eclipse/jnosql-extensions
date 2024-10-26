@@ -17,16 +17,17 @@ package org.eclipse.jnosql.lite.mapping;
 import com.github.mustachejava.DefaultMustacheFactory;
 import com.github.mustachejava.Mustache;
 import com.github.mustachejava.MustacheFactory;
-import jakarta.nosql.Entity;
 import jakarta.nosql.DiscriminatorColumn;
 import jakarta.nosql.DiscriminatorValue;
 import jakarta.nosql.Embeddable;
+import jakarta.nosql.Entity;
 import jakarta.nosql.Inheritance;
 import jakarta.nosql.MappedSuperclass;
 
 import javax.annotation.processing.Filer;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.Element;
+import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.DeclaredType;
@@ -42,6 +43,8 @@ import java.util.function.Supplier;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static org.eclipse.jnosql.lite.mapping.ParameterAnalyzer.INJECT_CONSTRUCTOR;
 
 class ClassAnalyzer implements Supplier<String> {
 
@@ -103,9 +106,25 @@ class ClassAnalyzer implements Supplier<String> {
                 .map(FieldAnalyzer::get)
                 .collect(Collectors.toList());
 
+        var constructor = processingEnv.getElementUtils().getAllMembers(typeElement)
+                .stream()
+                .filter(EntityProcessor.IS_CONSTRUCTOR.and(EntityProcessor.HAS_ACCESS)
+                        .and(INJECT_CONSTRUCTOR)).findFirst();
+
+        if (constructor.isPresent()) {
+            ExecutableElement executableElement = (ExecutableElement) constructor.get();
+            List<String> parametersClasses = executableElement.getParameters().stream()
+                    .map(p -> new ParameterAnalyzer(p, processingEnv, typeElement))
+                    .map(ParameterAnalyzer::get)
+                    .toList();
+           LOGGER.finest("Found the parameters: " + parametersClasses);
+        }
         EntityModel metadata = getMetadata(typeElement, fields);
         createClass(entity, metadata);
         LOGGER.info("Found the fields: " + fields);
+
+
+
         return metadata.getQualified();
     }
 
@@ -134,7 +153,8 @@ class ClassAnalyzer implements Supplier<String> {
                 .filter(v -> !v.isBlank())
                 .orElse(sourceClassName);
         String inheritanceParameter = null;
-        boolean notConcrete = element.getModifiers().contains(Modifier.ABSTRACT);
+        boolean notConcrete = element.getModifiers().contains(Modifier.ABSTRACT)
+                || !element.getRecordComponents().isEmpty();
         if (superclass.getAnnotation(Inheritance.class) != null) {
             inheritanceParameter = getInheritanceParameter(element, superclass);
             Entity superEntity = superclass.getAnnotation(Entity.class);
