@@ -1,0 +1,142 @@
+/*
+ *  Copyright (c) 2023 Otávio Santana and others
+ *   All rights reserved. This program and the accompanying materials
+ *   are made available under the terms of the Eclipse Public License v1.0
+ *   and Apache License v2.0 which accompanies this distribution.
+ *   The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v10.html
+ *   and the Apache License v2.0 is available at http://www.opensource.org/licenses/apache2.0.php.
+ *
+ *   You may elect to redistribute this code under either of these licenses.
+ *
+ *   Contributors:
+ *
+ *   Otavio Santana
+ */
+package {{packageName}};
+
+import java.lang.annotation.Annotation;
+
+import org.eclipse.jnosql.communication.Value;
+import jakarta.nosql.AttributeConverter;
+import org.eclipse.jnosql.mapping.metadata.CollectionParameterMetaData;
+import org.eclipse.jnosql.mapping.metadata.MappingType;
+import org.eclipse.jnosql.communication.TypeSupplier;
+import org.eclipse.jnosql.communication.TypeReference;
+
+import javax.annotation.processing.Generated;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+
+@Generated(value= "JNoSQL Lite CollectionParameterMetaData Generator", date = "{{now}}")
+public final class {{className}} implements CollectionParameterMetaData {
+
+    private final AttributeConverter<?, ?> converter;
+
+    private final Class<? extends AttributeConverter<?, ?>> typeConverter;
+
+    private final Map<Class<? extends Annotation>, String> valueByAnnotation;
+
+    private final TypeSupplier<{{{supplierElement}}}> typeSupplier = new TypeReference<>(){};
+
+    public {{className}}() {
+        this.converter = {{converter}};
+        this.typeConverter = {{typeConverter}};
+        {{#valueByAnnotation.isEmpty}}
+        this.valueByAnnotation = java.util.Collections.emptyMap();
+        {{/valueByAnnotation.isEmpty}}
+        {{^valueByAnnotation.isEmpty}}
+        this.valueByAnnotation = new java.util.HashMap<>();
+        {{/valueByAnnotation.isEmpty}}
+        {{#valueByAnnotation}}
+        this.valueByAnnotation.put({{key}}, "{{value}}");
+        {{/valueByAnnotation}}
+    }
+
+    @Override
+    public boolean isId() {
+        return {{id}};
+    }
+
+    @Override
+    public Optional<String> udt() {
+        return {{udt}};
+    }
+
+    @Override
+    public <T extends Annotation> Optional<String> value(Class<T> type) {
+        Objects.requireNonNull(type, "type is required");
+        return Optional.ofNullable(this.valueByAnnotation.get(type));
+    }
+
+    @Override
+    public <X, Y, T extends AttributeConverter<X, Y>> Optional<Class<T>> converter() {
+        return Optional.ofNullable((Class<T>) typeConverter);
+    }
+
+    @Override
+    public <X, Y, T extends AttributeConverter<X, Y>> Optional<T> newConverter() {
+        return (Optional<T>) Optional.ofNullable(converter);
+    }
+
+    @Override
+    public MappingType mappingType() {
+        return {{mappingType}};
+    }
+
+    @Override
+    public String name() {
+        return "{{name}}";
+    }
+
+    @Override
+    public String fieldName() {
+        return "{{fieldName}}";
+    }
+
+    @Override
+    public Object value(Value value) {
+        Objects.requireNonNull(value, "value is required");
+        if(value.get() instanceof Iterable) {
+            return value.get(typeSupplier);
+        } else {
+            return Value.of(java.util.Collections.singletonList(value.get())).get(typeSupplier);
+        }
+    }
+
+    @Override
+    public void write(Object bean, Object value) {
+        {{#writer}}
+            (({{entity}}) bean).{{writer}}(({{type}})value);
+        {{/writer}}
+        {{^writer}}
+            throw new UnsupportedOperationException("There is not setter method to the field: {{fieldName}} in the entity {{entity}}");
+        {{/writer}}
+    }
+
+    @Override
+    public Object read(Object bean) {
+        return (({{entity}}) bean).{{reader}}();
+    }
+
+    @Override
+    public Class<?> type() {
+        return {{type}}.class;
+    }
+
+    @Override
+    public boolean isEmbeddable() {
+        return {{embeddable}};
+    }
+
+    @Override
+    public Class<?> elementType() {
+        return {{elementType}};
+    }
+
+    @Override
+    public java.util.Collection<?> collectionInstance() {
+        return {{{collectionInstance}}};
+    }
+
+}
