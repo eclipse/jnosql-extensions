@@ -28,7 +28,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@Generated(value= "JNoSQL Lite FieldMetadata Generator", date = "{{now}}")
+@Generated(value= "JNoSQL Lite MapFieldMetadata Generator", date = "{{now}}")
 public final class {{className}} implements MapFieldMetadata {
 
     private final AttributeConverter<?, ?> converter;
@@ -102,7 +102,12 @@ public final class {{className}} implements MapFieldMetadata {
 
     @Override
     public void write(Object bean, Object value) {
-        (({{entity}}) bean).{{writer}}(({{type}})value);
+        {{#writer}}
+            (({{entity}}) bean).{{writer}}(({{type}})value);
+        {{/writer}}
+        {{^writer}}
+            throw new UnsupportedOperationException("There is not setter method to the field: {{fieldName}} in the entity {{entity}}");
+        {{/writer}}
     }
 
     @Override
