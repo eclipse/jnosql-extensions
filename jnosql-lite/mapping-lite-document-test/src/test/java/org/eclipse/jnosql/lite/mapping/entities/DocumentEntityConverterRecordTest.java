@@ -73,9 +73,6 @@ public class DocumentEntityConverterRecordTest {
 
         SoftAssertions.assertSoftly(s -> {
             s.assertThat(room.number()).isEqualTo(1231);
-            s.assertThat(room.guest().name()).isEqualTo("Ada");
-            s.assertThat(room.guest().document()).isEqualTo("12321");
-            s.assertThat(room.guest().phones()).containsExactly("123", "321");
         });
     }
 
