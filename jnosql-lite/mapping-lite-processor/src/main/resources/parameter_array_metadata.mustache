@@ -62,17 +62,6 @@ public final class {{className}} implements ArrayParameterMetaData {
     }
 
     @Override
-    public Optional<String> udt() {
-        return {{udt}};
-    }
-
-    @Override
-    public <T extends Annotation> Optional<String> value(Class<T> type) {
-        Objects.requireNonNull(type, "type is required");
-        return Optional.ofNullable(this.valueByAnnotation.get(type));
-    }
-
-    @Override
     public <X, Y, T extends AttributeConverter<X, Y>> Optional<Class<T>> converter() {
         return Optional.ofNullable((Class<T>) typeConverter);
     }
@@ -93,43 +82,8 @@ public final class {{className}} implements ArrayParameterMetaData {
     }
 
     @Override
-    public String fieldName() {
-        return "{{fieldName}}";
-    }
-
-    @Override
-    public Object value(Value value) {
-        Objects.requireNonNull(value, "value is required");
-        if(value.get() instanceof Iterable) {
-            return value.get(TYPE_SUPPLIER).toArray();
-        } else {
-          return Value.of(java.util.Collections.singletonList(value.get())).get(TYPE_SUPPLIER);
-        }
-    }
-
-    @Override
-    public void write(Object bean, Object value) {
-        {{#writer}}
-            (({{entity}}) bean).{{writer}}(({{type}})value);
-        {{/writer}}
-        {{^writer}}
-            throw new UnsupportedOperationException("There is not setter method to the field: {{fieldName}} in the entity {{entity}}");
-        {{/writer}}
-    }
-
-    @Override
-    public Object read(Object bean) {
-        return (({{entity}}) bean).{{reader}}();
-    }
-
-    @Override
     public Class<?> type() {
         return {{type}}.class;
-    }
-
-    @Override
-    public boolean isEmbeddable() {
-        return {{embeddable}};
     }
 
     @Override

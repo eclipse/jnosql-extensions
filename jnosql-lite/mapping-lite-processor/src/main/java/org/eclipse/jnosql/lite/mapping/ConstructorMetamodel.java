@@ -22,12 +22,15 @@ public class ConstructorMetamodel {
 
     private final String className;
 
-    private final List<String> parameters;
+    private final List<ParameterResult> parameters;
 
-    private ConstructorMetamodel(String packageName, String className, List<String> parameters) {
+    private final String entityName;
+
+    private ConstructorMetamodel(String packageName, String className, List<ParameterResult> parameters,  String entityName) {
         this.packageName = packageName;
         this.className = className;
         this.parameters = parameters;
+        this.entityName = entityName;
     }
 
     public String getPackageName() {
@@ -39,15 +42,30 @@ public class ConstructorMetamodel {
     }
 
     public List<String> getParameters() {
-        return parameters;
+        return parameters.stream().map(ParameterResult::className).toList();
+    }
+
+    public String getConstructorParameters() {
+        var constructorParameters = new StringBuilder();
+        for (int index = 0; index < parameters.size(); index++) {
+            constructorParameters.append('(').append(parameters.get(index).type()).append(')');
+            constructorParameters.append(" parameters[").append(index).append("]");
+            if (index < parameters.size() - 1) {
+                constructorParameters.append(", ");
+            }
+        }
+        return constructorParameters.toString();
     }
 
     public String getQualified() {
         return packageName + "." + getClassName();
     }
 
+    public String getEntityName() {
+        return entityName;
+    }
 
-    public static ConstructorMetamodel of(String packageName, String className, List<String> parameters) {
-        return new ConstructorMetamodel(packageName, className, parameters);
+    public static ConstructorMetamodel of(String packageName, String className, List<ParameterResult> parameters, String entityName) {
+        return new ConstructorMetamodel(packageName, className, parameters, entityName);
     }
 }

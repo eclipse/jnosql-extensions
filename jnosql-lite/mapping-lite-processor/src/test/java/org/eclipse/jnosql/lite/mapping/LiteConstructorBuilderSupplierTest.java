@@ -24,6 +24,6 @@ class LiteConstructorBuilderSupplierTest {
     @Test
     void shouldReturnExceptionWhenApply() {
         LiteConstructorBuilderSupplier supplier = new LiteConstructorBuilderSupplier();
-        assertThrows(UnsupportedOperationException.class, () -> supplier.apply(null));
+        assertThrows(NullPointerException.class, () -> supplier.apply(null));
     }
 }

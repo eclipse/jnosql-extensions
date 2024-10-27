@@ -12,12 +12,7 @@
  *
  *   Otavio Santana
  */
-package org.eclipse.jnosql.lite.mapping.entities.record;
+package org.eclipse.jnosql.lite.mapping;
 
-import jakarta.nosql.Column;
-import jakarta.nosql.Entity;
-import jakarta.nosql.Id;
-
-@Entity
-public record Room(@Id int number, @Column Guest guest) {
+public record ParameterResult(String className, String type) {
 }

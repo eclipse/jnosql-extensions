@@ -117,13 +117,14 @@ class ClassAnalyzer implements Supplier<String> {
 
         if (constructor.isPresent()) {
             ExecutableElement executableElement = (ExecutableElement) constructor.get();
-            List<String> parametersClasses = executableElement.getParameters().stream()
+            var parameters = executableElement.getParameters().stream()
                     .map(p -> new ParameterAnalyzer(p, processingEnv, typeElement))
                     .map(ParameterAnalyzer::get)
                     .toList();
-           LOGGER.finest("Found the parameters: " + parametersClasses);
+           LOGGER.finest("Found the parameters: " + parameters);
             var constructorMetamodel = ConstructorMetamodel.of(ProcessorUtil.getPackageName(typeElement),
-                    ProcessorUtil.getSimpleNameAsString(typeElement), parametersClasses);
+                    ProcessorUtil.getSimpleNameAsString(typeElement), parameters,
+                    ProcessorUtil.getSimpleNameAsString(typeElement));
 
             createConstructors(entity, constructorMetamodel);
             constructorClassName = constructorMetamodel.getQualified();

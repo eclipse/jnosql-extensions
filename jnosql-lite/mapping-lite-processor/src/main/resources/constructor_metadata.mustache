@@ -14,7 +14,7 @@
 */
 package {{packageName}};
 
-import org.eclipse.jnosql.mapping.metadata.ConstructorMetadata;
+import org.eclipse.jnosql.lite.mapping.metadata.LiteConstructorMetadata;
 import org.eclipse.jnosql.mapping.metadata.ParameterMetaData;
 
 import javax.annotation.processing.Generated;
@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 @Generated(value= "JNoSQL Lite ConstructorMetadata Generator", date = "{{now}}")
-public final class {{className}} implements ConstructorMetadata {
+public final class {{className}} implements LiteConstructorMetadata {
 
     private final List<ParameterMetaData> parameters = new ArrayList<>();
 
@@ -40,5 +40,10 @@ public final class {{className}} implements ConstructorMetadata {
     @Override
     public List<ParameterMetaData> parameters() {
         return parameters;
+    }
+
+    @Override
+    public <T> T build(Object[] parameters) {
+      return (T) new {{entityName}}({{constructorParameters}});
     }
 }

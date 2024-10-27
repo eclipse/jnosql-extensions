@@ -15,9 +15,10 @@
 package org.eclipse.jnosql.lite.mapping.entities.record;
 
 import jakarta.nosql.Column;
-import jakarta.nosql.Entity;
-import jakarta.nosql.Id;
+import jakarta.nosql.Embeddable;
 
-@Entity
-public record Room(@Id int number, @Column Guest guest) {
+import java.util.List;
+
+@Embeddable
+public record Guest(@Column String name, @Column String document, @Column List<String> phones) {
 }

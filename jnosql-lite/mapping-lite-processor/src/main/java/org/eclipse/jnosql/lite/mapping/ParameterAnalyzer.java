@@ -45,7 +45,7 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.logging.Logger;
 
-class ParameterAnalyzer implements Supplier<String> {
+class ParameterAnalyzer implements Supplier<ParameterResult> {
 
     private static final Predicate<VariableElement> ID_PARAMETER = v -> v.getAnnotation(Id.class) != null;
     private static final Predicate<VariableElement> COLUMN_PARAMETER = v -> v.getAnnotation(Column.class) != null;
@@ -83,7 +83,7 @@ class ParameterAnalyzer implements Supplier<String> {
     }
 
     @Override
-    public String get() {
+    public ParameterResult get() {
         var metadata = getMetaData();
         Filer filer = processingEnv.getFiler();
         JavaFileObject fileObject = getFileObject(metadata, filer);
@@ -101,7 +101,8 @@ class ParameterAnalyzer implements Supplier<String> {
             throw new ValidationException("An error to compile the class: " +
                     metadata.getQualified(), exception);
         }
-        return metadata.getQualified();
+
+        return new ParameterResult(metadata.getQualified(), metadata.getType());
     }
 
     private JavaFileObject getFileObject(ParameterModel metadata, Filer filer) {

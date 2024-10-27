@@ -12,12 +12,11 @@
  *
  *   Otavio Santana
  */
-package org.eclipse.jnosql.lite.mapping.entities.record;
+package org.eclipse.jnosql.lite.mapping.metadata;
 
-import jakarta.nosql.Column;
-import jakarta.nosql.Entity;
-import jakarta.nosql.Id;
+import org.eclipse.jnosql.mapping.metadata.ConstructorMetadata;
 
-@Entity
-public record Room(@Id int number, @Column Guest guest) {
+public interface LiteConstructorMetadata extends ConstructorMetadata {
+
+    <T> T build(Object[] parameters);
 }
