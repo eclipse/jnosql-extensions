@@ -17,8 +17,6 @@ package org.eclipse.jnosql.lite.mapping.entities.record;
 import jakarta.nosql.Column;
 import jakarta.nosql.Embeddable;
 
-import java.util.List;
-
 @Embeddable(Embeddable.EmbeddableType.GROUPING)
 public record HotelManager(@Column String name, @Column String document) {
 }
