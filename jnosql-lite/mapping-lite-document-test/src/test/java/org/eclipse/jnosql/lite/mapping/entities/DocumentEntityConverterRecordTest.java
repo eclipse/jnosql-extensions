@@ -16,7 +16,6 @@ package org.eclipse.jnosql.lite.mapping.entities;
 
 import jakarta.inject.Inject;
 import org.assertj.core.api.SoftAssertions;
-import org.eclipse.jnosql.communication.Value;
 import org.eclipse.jnosql.communication.semistructured.CommunicationEntity;
 import org.eclipse.jnosql.communication.semistructured.Element;
 import org.eclipse.jnosql.lite.mapping.entities.record.Guest;
@@ -45,7 +44,6 @@ public class DocumentEntityConverterRecordTest {
 
     @Inject
     private EntityConverter converter;
-
 
     @Test
     void shouldConvertToCommunication() {
@@ -109,6 +107,5 @@ public class DocumentEntityConverterRecordTest {
             s.assertThat(room.manager().document()).isEqualTo("12321");
         });
     }
-
 
 }
