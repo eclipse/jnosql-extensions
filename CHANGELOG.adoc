@@ -8,7 +8,13 @@ and this project adheres to https://semver.org/spec/v2.0.0.html[Semantic Version
 
 == [Unreleased]
 
+=== Added
+
+- Include support to Record at JNoSQL Lite
+
 == [1.1.2] - 2023-09-15
+
+== Added
 
 - Include Jakarta Data TCK Runner for Eclipse JNoSQL;
 
