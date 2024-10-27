@@ -17,8 +17,8 @@ package {{packageName}};
 import org.eclipse.jnosql.mapping.metadata.ConstructorMetadata;
 import org.eclipse.jnosql.mapping.metadata.FieldMetadata;
 import org.eclipse.jnosql.mapping.metadata.InheritanceMetadata;
-import org.eclipse.jnosql.lite.mapping.metadata.LiteConstructorMetadata;
 import org.eclipse.jnosql.lite.mapping.metadata.LiteEntityMetadata;
+
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -55,7 +55,12 @@ public final class {{className}} implements LiteEntityMetadata {
         {{^inheritanceParameter}}
         this.inheritance = null;
         {{/inheritanceParameter}}
-        this.constructor = LiteConstructorMetadata.EMPTY;
+        {{#constructorClassName}}
+            this.constructor = new  {{constructorClassName}}();
+        {{/constructorClassName}}
+        {{^constructorClassName}}
+        this.constructor = org.eclipse.jnosql.lite.mapping.metadata.DefaultConstructorMetadata.EMPTY;
+        {{/constructorClassName}}
     }
 
     @Override

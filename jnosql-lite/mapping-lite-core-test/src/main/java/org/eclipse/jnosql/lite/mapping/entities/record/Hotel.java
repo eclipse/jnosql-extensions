@@ -12,11 +12,14 @@
  *
  *   Otavio Santana
  */
-package org.eclipse.jnosql.lite.mapping.metadata;
+package org.eclipse.jnosql.lite.mapping.entities.record;
 
-import org.eclipse.jnosql.mapping.metadata.ConstructorMetadata;
+import jakarta.nosql.Column;
+import jakarta.nosql.Entity;
+import jakarta.nosql.Id;
 
-public interface LiteConstructorMetadata extends ConstructorMetadata {
+import java.util.Map;
 
-    <T> T build(Object[] parameters);
+@Entity
+public record Hotel(@Id String document, @Column Map<String, String> socialMedias, @Column String[] cities) {
 }

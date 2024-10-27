@@ -18,12 +18,20 @@ import org.eclipse.jnosql.mapping.metadata.ConstructorBuilder;
 import org.eclipse.jnosql.mapping.metadata.ConstructorBuilderSupplier;
 import org.eclipse.jnosql.mapping.metadata.ConstructorMetadata;
 
+import java.util.Objects;
+
 /**
  * A supplier of constructor avoiding reflection.
  */
 public class LiteConstructorBuilderSupplier implements ConstructorBuilderSupplier {
+
     @Override
     public ConstructorBuilder apply(ConstructorMetadata constructorMetadata) {
-        throw new UnsupportedOperationException("Eclipse JNoSQL Lite does not support reflection, including the use of constructors.");
+        Objects.requireNonNull(constructorMetadata, "constructorMetadata is required");
+        if(constructorMetadata instanceof LiteConstructorMetadata) {
+            return new LiteConstructorBuilder((LiteConstructorMetadata) constructorMetadata);
+        } else {
+            throw new UnsupportedOperationException("Eclipse JNoSQL Lite does not support reflection, including the use of constructors.");
+        }
     }
 }

@@ -18,10 +18,10 @@ import com.github.mustachejava.DefaultMustacheFactory;
 import com.github.mustachejava.Mustache;
 import com.github.mustachejava.MustacheFactory;
 import jakarta.nosql.Column;
-import jakarta.nosql.Entity;
-import jakarta.nosql.Id;
 import jakarta.nosql.Convert;
 import jakarta.nosql.Embeddable;
+import jakarta.nosql.Entity;
+import jakarta.nosql.Id;
 import org.eclipse.jnosql.mapping.metadata.MappingType;
 
 import javax.annotation.processing.Filer;
@@ -29,35 +29,40 @@ import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.element.Element;
-import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.ArrayType;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
 import javax.tools.JavaFileObject;
 import java.io.IOException;
 import java.io.Writer;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
-class FieldAnalyzer implements Supplier<String> {
-    private static final Logger LOGGER = Logger.getLogger(FieldAnalyzer.class.getName());
-    private static final String DEFAULT_TEMPLATE = "field_metadata.mustache";
-    private static final String COLLECTION_TEMPLATE = "field_collection_metadata.mustache";
-    private static final String MAP_TEMPLATE = "field_map_metadata.mustache";
-    private static final String ARRAY_TEMPLATE = "field_array_metadata.mustache";
-    private static final Predicate<Element> IS_METHOD = el -> el.getKind() == ElementKind.METHOD;
-    private static final Function<Element, String> ELEMENT_TO_STRING = el -> el.getSimpleName().toString();
+class ParameterAnalyzer implements Supplier<ParameterResult> {
+
+    private static final Predicate<VariableElement> ID_PARAMETER = v -> v.getAnnotation(Id.class) != null;
+    private static final Predicate<VariableElement> COLUMN_PARAMETER = v -> v.getAnnotation(Column.class) != null;
+
+    static final Predicate<Element> INJECT_CONSTRUCTOR = e -> {
+        ExecutableElement executableElement = (ExecutableElement) e;
+        return executableElement.getParameters().stream().anyMatch(ID_PARAMETER.or(COLUMN_PARAMETER));
+    };
+
+
+    private static final Logger LOGGER = Logger.getLogger(ParameterAnalyzer.class.getName());
+    private static final String DEFAULT_TEMPLATE = "parameter_metadata.mustache";
+    private static final String COLLECTION_TEMPLATE = "parameter_collection_metadata.mustache";
+    private static final String MAP_TEMPLATE = "parameter_map_metadata.mustache";
+    private static final String ARRAY_TEMPLATE = "parameter_array_metadata.mustache";
     private static final String NULL = "null";
-    private final Element field;
+    private final VariableElement parameter;
     private final Mustache template;
 
     private final Mustache collectionTemplate;
@@ -66,9 +71,9 @@ class FieldAnalyzer implements Supplier<String> {
     private final ProcessingEnvironment processingEnv;
     private final TypeElement entity;
 
-    FieldAnalyzer(Element field, ProcessingEnvironment processingEnv,
-                  TypeElement entity) {
-        this.field = field;
+    ParameterAnalyzer(VariableElement parameter, ProcessingEnvironment processingEnv,
+                      TypeElement entity) {
+        this.parameter = parameter;
         this.processingEnv = processingEnv;
         this.entity = entity;
         this.template = createTemplate(DEFAULT_TEMPLATE);
@@ -78,8 +83,8 @@ class FieldAnalyzer implements Supplier<String> {
     }
 
     @Override
-    public String get() {
-        FieldModel metadata = getMetaData();
+    public ParameterResult get() {
+        var metadata = getMetaData();
         Filer filer = processingEnv.getFiler();
         JavaFileObject fileObject = getFileObject(metadata, filer);
         try (Writer writer = fileObject.openWriter()) {
@@ -96,10 +101,11 @@ class FieldAnalyzer implements Supplier<String> {
             throw new ValidationException("An error to compile the class: " +
                     metadata.getQualified(), exception);
         }
-        return metadata.getQualified();
+
+        return new ParameterResult(metadata.getQualified(), metadata.getType());
     }
 
-    private JavaFileObject getFileObject(FieldModel metadata, Filer filer) {
+    private JavaFileObject getFileObject(ParameterModel metadata, Filer filer) {
         try {
             return filer.createSourceFile(metadata.getQualified(), entity);
         } catch (IOException exception) {
@@ -109,22 +115,11 @@ class FieldAnalyzer implements Supplier<String> {
 
     }
 
-    private FieldModel getMetaData() {
-        final String fieldName = field.getSimpleName().toString();
-        LOGGER.finest("Processing the field: " + fieldName);
-        final Predicate<Element> validName = el -> el.getSimpleName().toString()
-                .contains(ProcessorUtil.capitalize(fieldName));
-        final Predicate<String> hasGetterName = el -> el.equals("get" + ProcessorUtil.capitalize(fieldName));
-        final Predicate<String> hasRecordStyleName = el -> el.equals(fieldName);
-        final Predicate<String> hasSetterName = el -> el.equals("set" + ProcessorUtil.capitalize(fieldName));
-        final Predicate<String> hasIsName = el -> el.equals("is" + ProcessorUtil.capitalize(fieldName));
+    private ParameterModel getMetaData() {
+        final String fieldName = parameter.getSimpleName().toString();
+        LOGGER.finest("Processing the parameter: " + fieldName);
 
-        final List<Element> accessors = processingEnv.getElementUtils()
-                .getAllMembers(entity).stream()
-                .filter(validName.and(IS_METHOD).and(EntityProcessor.HAS_ACCESS))
-                .collect(Collectors.toList());
-
-        final TypeMirror typeMirror = field.asType();
+        final TypeMirror typeMirror = parameter.asType();
         String className;
         String elementType = NULL;
         String valuetype = NULL;
@@ -170,12 +165,11 @@ class FieldAnalyzer implements Supplier<String> {
             className = typeMirror.toString();
         }
 
-        var column = field.getAnnotation(Column.class);
-        Id id = field.getAnnotation(Id.class);
-        var convert = field.getAnnotation(Convert.class);
+        var column = parameter.getAnnotation(Column.class);
+        Id id = parameter.getAnnotation(Id.class);
+        var convert = parameter.getAnnotation(Convert.class);
 
-        List<ValueAnnotationModel> valueAnnotationModels = new ArrayList<>();
-        for (AnnotationMirror annotationMirror : field.getAnnotationMirrors()) {
+        for (AnnotationMirror annotationMirror : parameter.getAnnotationMirrors()) {
             DeclaredType annotationType = annotationMirror.getAnnotationType();
             Map<? extends ExecutableElement, ? extends AnnotationValue> elementValues = annotationMirror.getElementValues();
             Predicate<Map.Entry<? extends ExecutableElement, ? extends AnnotationValue>> isValueMethod =
@@ -187,10 +181,6 @@ class FieldAnalyzer implements Supplier<String> {
             Predicate<Map.Entry<? extends ExecutableElement, ? extends AnnotationValue>> isNotDefaultAnnotation = e -> !
                     defaultJNoSQL.contains(annotationType.toString());
             elementValues.entrySet().stream().filter(isNotDefaultAnnotation.and(isValueMethod)).findFirst().ifPresent(e -> {
-                String key = annotationType.toString() + ".class";
-                String value = e.getValue().getValue().toString();
-                ValueAnnotationModel valueAnnotationModel = new ValueAnnotationModel(key, value);
-                valueAnnotationModels.add(valueAnnotationModel);
             });
         }
 
@@ -200,31 +190,11 @@ class FieldAnalyzer implements Supplier<String> {
         final String name = getName(fieldName, column, id);
         final String udt = column != null ? column.udt() : null;
 
-        var isRecord =  !this.entity.getRecordComponents().isEmpty();
-        final String getMethod;
-
-        if(isRecord) {
-            getMethod = fieldName;
-        } else {
-            getMethod = accessors.stream()
-                .map(ELEMENT_TO_STRING)
-                .filter(hasGetterName.or(hasRecordStyleName))
-                .findFirst().orElseThrow(generateGetterError(fieldName, packageName, entityName,
-                        "There is not valid getter method to the field: "));
-        }
-
-        final String setMethod = accessors.stream()
-                .map(ELEMENT_TO_STRING)
-                .filter(hasSetterName.or(hasIsName))
-                .findFirst().orElse(null);
-
-        return FieldModel.builder()
+        return ParameterModel.builder()
                 .packageName(packageName)
                 .name(name)
                 .type(className)
                 .entity(entityName)
-                .reader(getMethod)
-                .writer(setMethod)
                 .fieldName(fieldName)
                 .udt(udt)
                 .id(isId)
@@ -233,7 +203,6 @@ class FieldAnalyzer implements Supplier<String> {
                 .converter(convert)
                 .embeddable(embeddable)
                 .mappingType("MappingType." + mappingType.name())
-                .valueByAnnotation(valueAnnotationModels)
                 .collectionInstance(collectionInstance)
                 .supplierElement(supplierElement)
                 .newArrayInstance(newArrayInstance)
@@ -249,15 +218,10 @@ class FieldAnalyzer implements Supplier<String> {
         }
     }
 
-    private Supplier<ValidationException> generateGetterError(String fieldName, String packageName, String entity, String s) {
-        return () -> new ValidationException(s + fieldName + " in the class: " + packageName + "." + entity);
-    }
-
     private Mustache createTemplate(String template) {
         MustacheFactory factory = new DefaultMustacheFactory();
         return factory.compile(template);
     }
-
 
     private static MappingType of(Element element, String collection) {
         if (element.getAnnotation(Embeddable.class) != null) {

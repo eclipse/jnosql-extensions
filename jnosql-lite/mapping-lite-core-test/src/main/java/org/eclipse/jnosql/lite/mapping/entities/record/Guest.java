@@ -12,11 +12,13 @@
  *
  *   Otavio Santana
  */
-package org.eclipse.jnosql.lite.mapping.metadata;
+package org.eclipse.jnosql.lite.mapping.entities.record;
 
-import org.eclipse.jnosql.mapping.metadata.ConstructorMetadata;
+import jakarta.nosql.Column;
+import jakarta.nosql.Embeddable;
 
-public interface LiteConstructorMetadata extends ConstructorMetadata {
+import java.util.List;
 
-    <T> T build(Object[] parameters);
+@Embeddable
+public record Guest(@Column String name, @Column String document, @Column List<String> phones) {
 }

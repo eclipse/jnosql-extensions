@@ -12,11 +12,17 @@
  *
  *   Otavio Santana
  */
-package org.eclipse.jnosql.lite.mapping.metadata;
+package org.eclipse.jnosql.lite.mapping.entities.record;
 
-import org.eclipse.jnosql.mapping.metadata.ConstructorMetadata;
+import jakarta.nosql.Column;
+import jakarta.nosql.Convert;
+import jakarta.nosql.Entity;
+import jakarta.nosql.Id;
+import org.eclipse.jnosql.lite.mapping.entities.Money;
+import org.eclipse.jnosql.lite.mapping.entities.MoneyConverter;
 
-public interface LiteConstructorMetadata extends ConstructorMetadata {
+import java.util.Map;
 
-    <T> T build(Object[] parameters);
+@Entity
+public record DocumentRecord(@Id String id, @Column Map<String, String> data, @Column @Convert(MoneyConverter.class) Money money) {
 }

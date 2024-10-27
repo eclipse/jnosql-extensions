@@ -12,11 +12,7 @@
  *
  *   Otavio Santana
  */
-package org.eclipse.jnosql.lite.mapping.metadata;
+package org.eclipse.jnosql.lite.mapping;
 
-import org.eclipse.jnosql.mapping.metadata.ConstructorMetadata;
-
-public interface LiteConstructorMetadata extends ConstructorMetadata {
-
-    <T> T build(Object[] parameters);
+public record ParameterResult(String className, String type) {
 }
