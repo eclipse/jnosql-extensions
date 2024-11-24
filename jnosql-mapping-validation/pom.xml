@@ -31,6 +31,7 @@
         <hibernate.validator.version>8.0.0.Final</hibernate.validator.version>
         <el.impl.version>5.0.0-M1</el.impl.version>
         <tinkerpop.version>3.6.4</tinkerpop.version>
+        <neo4j.connector.version>0.9-3.4.0</neo4j.connector.version>
         <!-- it's required by the 'org.neo4j' libraries  -->
         <argLine> --add-opens java.base/java.lang=ALL-UNNAMED --add-exports java.base/sun.nio.ch=ALL-UNNAMED </argLine>
 
