@@ -33,6 +33,7 @@
     <properties>
         <jnosql-communication-driver.version>${project.version}</jnosql-communication-driver.version>
         <jnosql-mapping.version>${project.version}</jnosql-mapping.version>
+        <pmd.url>https://raw.githubusercontent.com/eclipse/jnosql-extensions/refs/heads/main/pmd/pmd-rules.xml</pmd.url>
     </properties>
 
     <scm>
